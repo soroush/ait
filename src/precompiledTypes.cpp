@@ -9,7 +9,7 @@
 
 using namespace AIT;
 
-typedef ABT_Solver<int> ABT_Solver_i;
+typedef ABT_Solver<int, int> ABT_Solver_i;
 
 //void test()
 //{

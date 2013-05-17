@@ -46,7 +46,7 @@ public:
 	void resolveConflict(const message&);
 	void checkAddLink(const message&);
 	void setLink(const message&);
-	bool consistent(const V&, const AgentView&);
+	bool consistent(const V&);
 	void sendMessage(const message&);
 
 private:
@@ -69,7 +69,7 @@ private:
 }
 
 template<typename V, typename T>
-inline AIT::ABT_Solver<V>::ABT_Solver(const std::string& host,
+inline AIT::ABT_Solver<V,T>::ABT_Solver(const std::string& host,
 		const long& port) :
 		address(host), portNumber(port) {
 	using boost::asio::ip::tcp;
@@ -137,6 +137,11 @@ inline void AIT::ABT_Solver<V,T>::checkAgentView() {
 		}
 	}
 }
+
+template<typename V, typename T>
+typename AIT::ABT_Solver<V,T>::message AIT::ABT_Solver<V, T>::getMessage() {
+}
+
 
 /* namespace AIT */
 #endif /* ABT_SOLVER_H_ */
