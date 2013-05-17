@@ -13,16 +13,20 @@
 #include <string>
 #include <boost/asio.hpp>
 
+#include "common_csp.hpp"
+
 namespace AIT {
 
 struct assignment;
 struct nogood;
 
-template<typename valueType>
+template<typename V, typename T>
 class ABT_Solver {
+
 	enum messageType {
 		OK, NOGOOD, ADDLINK, STOP,
 	};
+
 	struct message {
 		messageType type;
 	};
@@ -31,12 +35,10 @@ public:
 	ABT_Solver(const std::string&, const long&);
 	virtual ~ABT_Solver();
 
-	typedef std::map<unsigned long, valueType> AgentView;
-
 	void connect();
 	void solve();
 	void checkAgentView();
-	void chooseValue(valueType&);
+	void chooseValue(V&);
 	void backtrack();
 	void processInfo(const message&);
 	void updateAgentView(const assignment&);
@@ -44,17 +46,17 @@ public:
 	void resolveConflict(const message&);
 	void checkAddLink(const message&);
 	void setLink(const message&);
-	bool consistent(const valueType&, const AgentView&);
+	bool consistent(const V&, const AgentView&);
 	void sendMessage(const message&);
 
 private:
-	valueType* myValue;
+	T* myValue;
 	message getMessage();
 	void getAgentList();
 	unsigned long id;
-	std::list<unsigned long> preceding;
-	std::list<unsigned long> succeeding;
-	AgentView myAgentView;
+	std::list<unsigned long> preceding;   	// Γ+
+	std::list<unsigned long> succeeding;	// Γ-
+	CompoundAssignment<V,T> myAgentView;
 
 	std::string address;
 	long portNumber;
@@ -66,22 +68,22 @@ private:
 
 }
 
-template<typename valueType>
-inline AIT::ABT_Solver<valueType>::ABT_Solver(const std::string& host,
+template<typename V, typename T>
+inline AIT::ABT_Solver<V>::ABT_Solver(const std::string& host,
 		const long& port) :
 		address(host), portNumber(port) {
 	using boost::asio::ip::tcp;
-	this->resolver = tcp::resolver(this->io);
+	this->resolver = tcp::resolver(this->io)  ;
 	this->socket = tcp::socket(this->io);
 }
 
-template<typename valueType>
-inline AIT::ABT_Solver<valueType>::~ABT_Solver() {
+template<typename V, typename T>
+inline AIT::ABT_Solver<V,T>::~ABT_Solver() {
 	delete this->myValue;
 }
 
-template<typename valueType>
-inline void AIT::ABT_Solver<valueType>::solve() {
+template<typename V, typename T>
+inline void AIT::ABT_Solver<V,T>::solve() {
 	connect();
 	myValue = nullptr;
 	bool end = false;
@@ -109,8 +111,8 @@ inline void AIT::ABT_Solver<valueType>::solve() {
 	}
 }
 
-template<typename valueType>
-inline void AIT::ABT_Solver<valueType>::connect() {
+template<typename V, typename T>
+inline void AIT::ABT_Solver<V,T>::connect() {
 	using boost::asio::ip::tcp;
 	tcp::resolver::query query(this->address, this->portNumber);
 	tcp::resolver::iterator endpoint_iterator = resolver.resolve(query);
@@ -124,8 +126,8 @@ inline void AIT::ABT_Solver<valueType>::connect() {
 		throw boost::system::system_error(error);
 }
 
-template<typename valueType>
-inline void AIT::ABT_Solver<valueType>::checkAgentView() {
+template<typename V, typename T>
+inline void AIT::ABT_Solver<V,T>::checkAgentView() {
 	if (!consistent(*myValue, myAgentView)) {
 		chooseValue(*myValue);
 		if (myValue != nullptr) {
