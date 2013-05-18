@@ -14,17 +14,17 @@ namespace AIT {
 
 typedef unsigned long AgentID;
 
-template<typename valueType>
-struct Assignment {
-	AgentID id;
-	valueType value;
-};
-
-template<typename valueType>
-class NoGood {
-	Assignment lhs;
-	Assignment rhs;
-};
+//template<typename valueType>
+//struct Assignment {
+//	AgentID id;
+//	valueType value;
+//};
+//
+//template<typename valueType>
+//class NoGood {
+//	Assignment lhs;
+//	Assignment rhs;
+//};
 
 } // namespace AIT
 

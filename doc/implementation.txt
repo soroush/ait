@@ -1,0 +1,16 @@
+ABT Status:
+
+connect			Implemented
+solve			Pending
+checkAgentView		
+chooseValue		
+backtrack		
+processInfo		Pending
+updateAgentView
+coherent
+resolveConflict
+checkAddLink
+setLink
+consistent
+sendMessage
+getMessage

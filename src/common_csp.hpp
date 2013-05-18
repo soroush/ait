@@ -14,16 +14,18 @@
 
 namespace AIT {
 
-template<typename T, typename V>
+typedef unsigned char byte;
+
+template<typename V, typename T>
 class Assignment {
 public:
 	Assignment();
-	Assignment(T* instance, const T& value);
+	Assignment(T* variable, const T& value);
 	bool operator ==(const Assignment& rhs);
 	bool operator !=(const Assignment& rhs);
 private:
-	T* instance;
-	V value;
+	V* instance;
+	T value;
 };
 
 template<typename T, typename V>
@@ -37,25 +39,25 @@ private:
 
 }
 
-template<typename T, typename V>
-AIT::Assignment<T, V>::Assignment(T* instance_, const T& value_) :
+template<typename V, typename T>
+AIT::Assignment<V, T>::Assignment(V* instance_, const T& value_) :
 		instance(instance_), value(value_) {
 }
 
-template<typename T, typename V>
-inline bool AIT::Assignment<T, V>::operator ==(const Assignment& rhs) {
+template<typename V, typename T>
+inline bool AIT::Assignment<V, T>::operator ==(const Assignment& rhs) {
 	if (rhs.instance == this->instance && rhs.value == this->value)
 		return true;
 	return false;
 }
 
-template<typename T, typename V>
-inline bool AIT::Assignment<T, V>::operator !=(const Assignment& rhs) {
+template<typename V, typename T>
+inline bool AIT::Assignment<V, T>::operator !=(const Assignment& rhs) {
 	return !(*this == rhs);
 }
 
-template<typename T, typename V>
-inline void AIT::CompoundAssignment<T, V>::add(const Assignment<V, T>& item) {
+template<typename V, typename T>
+inline void AIT::CompoundAssignment<V, T>::add(const Assignment<V, T>& item) {
 	if (std::find(this->assignments.begin(), this->assignments.end(), item)
 			!= this->assignments.end()) {
 		this->assignments.push_back(item);

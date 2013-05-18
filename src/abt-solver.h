@@ -12,13 +12,13 @@
 #include <map>
 #include <string>
 #include <boost/asio.hpp>
+#include <boost/archive/binary_iarchive.hpp>
+#include <boost/archive/binary_oarchive.hpp>
 
 #include "common_csp.hpp"
+#include "common_async.hpp"
 
 namespace AIT {
-
-struct assignment;
-struct nogood;
 
 template<typename V, typename T>
 class ABT_Solver {
@@ -27,8 +27,23 @@ class ABT_Solver {
 		OK, NOGOOD, ADDLINK, STOP,
 	};
 
-	struct message {
+	class message {
+		friend class boost::serialization::access;
+	public:
+		message(const messageType&, const AgentID&, const Assignment<V, T>&,
+				const CompoundAssignment<V, T>);
 		messageType type;
+		AgentID sender;
+		Assignment<V, T> assignment;
+		CompoundAssignment<V, T> nogood;
+
+		template<class Archive>
+		void serialize(Archive & ar, const unsigned int version) {
+			ar & type;
+			ar & sender;
+			ar & assignment;
+			ar & nogood;
+		}
 	};
 public:
 
@@ -38,25 +53,26 @@ public:
 	void connect();
 	void solve();
 	void checkAgentView();
-	void chooseValue(V&);
+	void chooseValue(V*);
 	void backtrack();
-	void processInfo(const message&);
-	void updateAgentView(const assignment&);
-	bool coherent(const nogood&, const assignment&);
+	void processInfo(const message&); // OK
+	void updateAgentView(const Assignment<V, T>&);
+	bool coherent(const CompoundAssignment<V, T>& nogood,
+			const Assignment<V, T>& assign);
 	void resolveConflict(const message&);
 	void checkAddLink(const message&);
 	void setLink(const message&);
 	bool consistent(const V&);
-	void sendMessage(const message&);
+	void sendMessage(const AgentID&, const message&);
 
 private:
 	T* myValue;
 	message getMessage();
 	void getAgentList();
-	unsigned long id;
-	std::list<unsigned long> preceding;   	// Γ+
-	std::list<unsigned long> succeeding;	// Γ-
-	CompoundAssignment<V,T> myAgentView;
+	AgentID id;
+	std::list<AgentID> preceding; // Γ+
+	std::list<AgentID> succeeding; // Γ-
+	CompoundAssignment<V, T> myAgentView;
 
 	std::string address;
 	long portNumber;
@@ -69,21 +85,21 @@ private:
 }
 
 template<typename V, typename T>
-inline AIT::ABT_Solver<V,T>::ABT_Solver(const std::string& host,
+inline AIT::ABT_Solver<V, T>::ABT_Solver(const std::string& host,
 		const long& port) :
 		address(host), portNumber(port) {
 	using boost::asio::ip::tcp;
-	this->resolver = tcp::resolver(this->io)  ;
+	this->resolver = tcp::resolver(this->io);
 	this->socket = tcp::socket(this->io);
 }
 
 template<typename V, typename T>
-inline AIT::ABT_Solver<V,T>::~ABT_Solver() {
+inline AIT::ABT_Solver<V, T>::~ABT_Solver() {
 	delete this->myValue;
 }
 
 template<typename V, typename T>
-inline void AIT::ABT_Solver<V,T>::solve() {
+inline void AIT::ABT_Solver<V, T>::solve() {
 	connect();
 	myValue = nullptr;
 	bool end = false;
@@ -112,7 +128,7 @@ inline void AIT::ABT_Solver<V,T>::solve() {
 }
 
 template<typename V, typename T>
-inline void AIT::ABT_Solver<V,T>::connect() {
+inline void AIT::ABT_Solver<V, T>::connect() {
 	using boost::asio::ip::tcp;
 	tcp::resolver::query query(this->address, this->portNumber);
 	tcp::resolver::iterator endpoint_iterator = resolver.resolve(query);
@@ -127,21 +143,47 @@ inline void AIT::ABT_Solver<V,T>::connect() {
 }
 
 template<typename V, typename T>
-inline void AIT::ABT_Solver<V,T>::checkAgentView() {
+inline void AIT::ABT_Solver<V, T>::checkAgentView() {
 	if (!consistent(*myValue, myAgentView)) {
-		chooseValue(*myValue);
+		chooseValue(myValue);
 		if (myValue != nullptr) {
 			for (const auto& agent : succeeding) {
-
+				sendMessage(agent,
+						message(messageType::OK, this->id,
+								Assignment<T, V>(this->id, *(this->myValue))));
+				// FIXME: replace assignment with a new structure designed for
+				//        Asynchronous algorithms
 			}
+		} else {
+			backtrack();
 		}
+	} // end if !consistent
+}
+
+template<typename V, typename T>
+inline void AIT::ABT_Solver<V, T>::processInfo(const message& m) {
+	updateAgentView(m.assignment);
+	checkAgentView();
+}
+
+template<typename V, typename T>
+typename AIT::ABT_Solver<V, T>::message AIT::ABT_Solver<V, T>::getMessage() {
+	using namespace boost;
+	using namespace boost::asio;
+	using boost::asio::ip::tcp;
+	using namespace std;
+
+	while (true) {
+		// TODO: implement messaging mechanism using ASIO/Serialization.
 	}
 }
 
 template<typename V, typename T>
-typename AIT::ABT_Solver<V,T>::message AIT::ABT_Solver<V, T>::getMessage() {
+inline AIT::ABT_Solver<V, T>::message::message(
+		const AIT::ABT_Solver<V, T>::messageType& type, const AgentID& id,
+		const Assignment<V, T>& assignment,
+		const CompoundAssignment<V, T> compoundAssignment) {
 }
-
 
 /* namespace AIT */
 #endif /* ABT_SOLVER_H_ */
