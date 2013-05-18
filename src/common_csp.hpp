@@ -20,7 +20,7 @@ template<typename V, typename T>
 class Assignment {
 public:
 	Assignment();
-	Assignment(T* variable, const T& value);
+	Assignment(V* variable, const T& value);
 	bool operator ==(const Assignment& rhs);
 	bool operator !=(const Assignment& rhs);
 private:
@@ -28,7 +28,7 @@ private:
 	T value;
 };
 
-template<typename T, typename V>
+template<typename V, typename T>
 class CompoundAssignment {
 public:
 	CompoundAssignment();
@@ -49,6 +49,10 @@ inline bool AIT::Assignment<V, T>::operator ==(const Assignment& rhs) {
 	if (rhs.instance == this->instance && rhs.value == this->value)
 		return true;
 	return false;
+}
+
+template<typename V, typename T>
+inline AIT::Assignment<V, T>::Assignment() {
 }
 
 template<typename V, typename T>

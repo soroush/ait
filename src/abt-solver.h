@@ -30,12 +30,13 @@ class ABT_Solver {
 	class message {
 		friend class boost::serialization::access;
 	public:
-		message(const messageType&, const AgentID&, const Assignment<V, T>&,
-				const CompoundAssignment<V, T>);
+		message(const messageType&, const AgentID&,
+				const Assignment<AgentID, T>&,
+				const CompoundAssignment<AgentID, T>);
 		messageType type;
 		AgentID sender;
-		Assignment<V, T> assignment;
-		CompoundAssignment<V, T> nogood;
+		Assignment<AgentID, T> assignment;
+		CompoundAssignment<AgentID, T> nogood;
 
 		template<class Archive>
 		void serialize(Archive & ar, const unsigned int version) {
@@ -148,11 +149,10 @@ inline void AIT::ABT_Solver<V, T>::checkAgentView() {
 		chooseValue(myValue);
 		if (myValue != nullptr) {
 			for (const auto& agent : succeeding) {
-				sendMessage(agent,
-						message(messageType::OK, this->id,
-								Assignment<T, V>(this->id, *(this->myValue))));
-				// FIXME: replace assignment with a new structure designed for
-				//        Asynchronous algorithms
+				sendMessage(
+						agent,
+						message(messageType::OK, this->id,Assignment<AgentID, V>(this->id,*(this->myValue)))
+						);
 			}
 		} else {
 			backtrack();
@@ -181,8 +181,8 @@ typename AIT::ABT_Solver<V, T>::message AIT::ABT_Solver<V, T>::getMessage() {
 template<typename V, typename T>
 inline AIT::ABT_Solver<V, T>::message::message(
 		const AIT::ABT_Solver<V, T>::messageType& type, const AgentID& id,
-		const Assignment<V, T>& assignment,
-		const CompoundAssignment<V, T> compoundAssignment) {
+		const Assignment<AgentID, T>& assignment,
+		const CompoundAssignment<AgentID, T> compoundAssignment) {
 }
 
 /* namespace AIT */
