@@ -27,6 +27,29 @@ class ABT_Solver {
 		OK, NOGOOD, ADDLINK, STOP,
 	};
 
+	class CommunicationRequest {
+		friend class boost::serialization::access;
+	public:
+		enum Type {
+			INTRODUCE, BYE,
+		};
+
+		CommunicationRequest(const Type&, const AgentID&);
+		~CommunicationRequest();
+	public:
+		AgentID id();
+		Type type();
+
+	private:
+		Type type_;
+		AgentID senderID_;
+		template<class Archive>
+		void serialize(Archive & ar, const unsigned int version) {
+			ar & type_;
+			ar & senderID_;
+		}
+	};
+
 	class message {
 		friend class boost::serialization::access;
 	public:
@@ -131,16 +154,27 @@ inline void AIT::ABT_Solver<V, T>::solve() {
 template<typename V, typename T>
 inline void AIT::ABT_Solver<V, T>::connect() {
 	using boost::asio::ip::tcp;
+	using namespace boost::asio;
+	using namespace std;
+
 	tcp::resolver::query query(this->address, this->portNumber);
 	tcp::resolver::iterator endpoint_iterator = resolver.resolve(query);
 	tcp::resolver::iterator end;
-	boost::system::error_code error = boost::asio::error::host_not_found;
+	boost::system::error_code error = error::host_not_found;
 	while (error && endpoint_iterator != end) {
 		socket.close();
 		socket.connect(*endpoint_iterator++, error);
 	}
 	if (error)
 		throw boost::system::system_error(error);
+
+	// Let's introduce ourselves to synchronizer agent
+	boost::asio::streambuf bufx;
+	ostream os(&bufx);
+	boost::archive::binary_oarchive ar(os);
+	CommunicationRequest request(CommunicationRequest::INTRODUCE, this->id);
+	ar << request;
+	const size_t sc = boost::asio::write(this->socket, bufx);
 }
 
 template<typename V, typename T>
@@ -149,10 +183,10 @@ inline void AIT::ABT_Solver<V, T>::checkAgentView() {
 		chooseValue(myValue);
 		if (myValue != nullptr) {
 			for (const auto& agent : succeeding) {
-				sendMessage(
-						agent,
-						message(messageType::OK, this->id,Assignment<AgentID, V>(this->id,*(this->myValue)))
-						);
+				sendMessage(agent,
+						message(messageType::OK, this->id,
+								Assignment<AgentID, V>(this->id,
+										*(this->myValue))));
 			}
 		} else {
 			backtrack();
@@ -183,6 +217,28 @@ inline AIT::ABT_Solver<V, T>::message::message(
 		const AIT::ABT_Solver<V, T>::messageType& type, const AgentID& id,
 		const Assignment<AgentID, T>& assignment,
 		const CompoundAssignment<AgentID, T> compoundAssignment) {
+}
+
+template<typename V, typename T>
+AIT::AgentID AIT::ABT_Solver<V, T>::CommunicationRequest::id() {
+	return this->senderID_;
+}
+
+template<typename V, typename T>
+inline AIT::ABT_Solver<V, T>::CommunicationRequest::CommunicationRequest(
+		const Type& messageType, const AgentID& agent) :
+		type_(messageType), senderID_(agent) {
+}
+
+template<typename V, typename T>
+inline AIT::ABT_Solver<V, T>::CommunicationRequest::~CommunicationRequest() {
+	delete senderID_;
+	delete type_;
+}
+
+template<typename V, typename T>
+typename AIT::ABT_Solver<V, T>::CommunicationRequest::Type AIT::ABT_Solver<V, T>::CommunicationRequest::type() {
+	return this->type_;
 }
 
 /* namespace AIT */
