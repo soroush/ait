@@ -1,6 +1,7 @@
 AUTOMAKE_OPTIONS = subdir-objects
 ACLOCAL_AMFLAGS = ${ACLOCAL_FLAGS} -I m4
 lib_LTLIBRARIES = libait-@AIT_API_VERSION@.la
+AM_CPPFLAGS = -pipe
 libait_@AIT_API_VERSION@_la_SOURCES = \
 					src/precompiledTypes.cpp
 libait_@AIT_API_VERSION@_la_LDFLAGS = -version-info $(AIT_SO_VERSION)

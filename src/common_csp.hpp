@@ -20,11 +20,11 @@ template<typename V, typename T>
 class Assignment {
 public:
 	Assignment();
-	Assignment(V* variable, const T& value);
+	Assignment(V variable, const T& value);
 	bool operator ==(const Assignment& rhs);
 	bool operator !=(const Assignment& rhs);
 private:
-	V* instance;
+	V instance;
 	T value;
 };
 
@@ -40,7 +40,7 @@ private:
 }
 
 template<typename V, typename T>
-AIT::Assignment<V, T>::Assignment(V* instance_, const T& value_) :
+AIT::Assignment<V, T>::Assignment(V instance_, const T& value_) :
 		instance(instance_), value(value_) {
 }
 
