@@ -89,7 +89,8 @@ am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(pkgconfigdir)" \
 LTLIBRARIES = $(lib_LTLIBRARIES)
 libait_@AIT_API_VERSION@_la_LIBADD =
 am__dirstamp = $(am__leading_dot)dirstamp
-am_libait_@AIT_API_VERSION@_la_OBJECTS = src/precompiledTypes.lo
+am_libait_@AIT_API_VERSION@_la_OBJECTS = src/abt-monitor.lo \
+	src/precompiledTypes.lo
 libait_@AIT_API_VERSION@_la_OBJECTS =  \
 	$(am_libait_@AIT_API_VERSION@_la_OBJECTS)
 libait_@AIT_API_VERSION@_la_LINK = $(LIBTOOL) --tag=CXX \
@@ -256,12 +257,14 @@ ACLOCAL_AMFLAGS = ${ACLOCAL_FLAGS} -I m4
 lib_LTLIBRARIES = libait-@AIT_API_VERSION@.la
 AM_CPPFLAGS = -pipe
 libait_@AIT_API_VERSION@_la_SOURCES = \
+					src/abt-monitor.cpp \
 					src/precompiledTypes.cpp
 
 libait_@AIT_API_VERSION@_la_LDFLAGS = -version-info $(AIT_SO_VERSION)
 ait_includedir = $(includedir)/ait
 ait_include_HEADERS = \
-			src/abt-solver.h \
+			src/abt-monitor.h \
+			src/abt-solver.hpp \
 			src/common_async.hpp \
 			src/common_csp.hpp
 
@@ -362,6 +365,7 @@ src/$(am__dirstamp):
 src/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) src/$(DEPDIR)
 	@: > src/$(DEPDIR)/$(am__dirstamp)
+src/abt-monitor.lo: src/$(am__dirstamp) src/$(DEPDIR)/$(am__dirstamp)
 src/precompiledTypes.lo: src/$(am__dirstamp) \
 	src/$(DEPDIR)/$(am__dirstamp)
 libait-@AIT_API_VERSION@.la: $(libait_@AIT_API_VERSION@_la_OBJECTS) $(libait_@AIT_API_VERSION@_la_DEPENDENCIES) $(EXTRA_libait_@AIT_API_VERSION@_la_DEPENDENCIES) 
@@ -369,12 +373,15 @@ libait-@AIT_API_VERSION@.la: $(libait_@AIT_API_VERSION@_la_OBJECTS) $(libait_@AI
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
+	-rm -f src/abt-monitor.$(OBJEXT)
+	-rm -f src/abt-monitor.lo
 	-rm -f src/precompiledTypes.$(OBJEXT)
 	-rm -f src/precompiledTypes.lo
 
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/abt-monitor.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/precompiledTypes.Plo@am__quote@
 
 .cpp.o:

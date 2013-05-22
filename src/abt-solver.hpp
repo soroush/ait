@@ -17,6 +17,7 @@
 #include <boost/asio.hpp>
 #include <boost/archive/binary_iarchive.hpp>
 #include <boost/archive/binary_oarchive.hpp>
+#include <boost/serialization/list.hpp>
 
 #include "common_csp.hpp"
 #include "common_async.hpp"
@@ -26,50 +27,58 @@ namespace AIT {
 template<typename V, typename T>
 class ABT_Solver {
 
-	enum messageType {
+	enum class messageType {
 		OK, NOGOOD, ADDLINK, STOP,
+	};
+
+	enum class CommunicationPacketType {
+		INTRODUCE, GET_LIST, BYE,
 	};
 
 	class CommunicationPacket {
 		friend class boost::serialization::access;
 	public:
-		enum Type {
-			INTRODUCE, GET_LIST, BYE,
-		};
-
-		CommunicationPacket(const Type&, const AgentID&);
+		CommunicationPacket(const CommunicationPacketType&, const AgentID&);
 		~CommunicationPacket();
 	public:
 		AgentID id();
-		Type type();
-//		struct AgentAdresses {
-//			AgentID id;
-//			boost::asio::ip::address address;
-//			unsigned short port;
-//		};
-//		std::list<AgentAdresses> agents();
+		CommunicationPacketType type();
+		struct AgentAdresses {
+			AgentID id;
+			std::string address;
+			unsigned short port;
+
+			template<class Archive>
+			void serialize(Archive & ar, const unsigned int version) {
+				ar & id;
+				ar & address;
+				ar & port;
+			}
+		};
+
+		std::list<AgentAdresses> agents();
 
 	private:
-		Type type_;
+		CommunicationPacketType type_;
 		AgentID senderID_;
-//		std::list<AgentAdresses> agents_;
+		std::list<AgentAdresses> agents_;
 
 		template<class Archive>
 		void serialize(Archive & ar, const unsigned int version) {
 			ar & type_;
 			ar & senderID_;
-//			ar & agents_;
+			ar & agents_;
 		}
 	};
 
-	class message {
+	class Message {
 		friend class boost::serialization::access;
 	public:
-		message();
-		message(const messageType&, const AgentID&,
+		Message();
+		Message(const messageType&, const AgentID&,
 				const Assignment<AgentID, T>&,
 				const CompoundAssignment<AgentID, T>);
-		message(const messageType&, const AgentID&,
+		Message(const messageType&, const AgentID&,
 				const Assignment<AgentID, T>&);
 		messageType type;
 		AgentID sender;
@@ -94,17 +103,18 @@ public:
 	void checkAgentView();
 	void chooseValue(V*);
 	void backtrack();
-	void processInfo(const message&); // OK
+	void processInfo(const Message&); // OK
 	void updateAgentView(const Assignment<AgentID, T>&);
 	bool coherent(const CompoundAssignment<V, T>& nogood,
 			const Assignment<V, T>& assign);
-	void resolveConflict(const message&);
-	void checkAddLink(const message&);
-	void setLink(const message&);
+	void resolveConflict(const Message&);
+	void checkAddLink(const Message&);
+	void setLink(const Message&);
 	bool consistent(const V&);
-	void sendMessage(const AgentID&, const message&);
-	message getMessage();
+	void sendMessage(const AgentID&, const Message&);
+	Message getMessage();
 	static void* messageReaderWorkhorse(void*);
+	static void* peerReaderWorkhorse(void*);
 
 private:
 	T* myValue;
@@ -123,7 +133,7 @@ private:
 	boost::asio::ip::tcp::socket p2pSocket;
 
 	// Messaging
-	std::queue<message> messages;
+	std::queue<Message> messages;
 
 	// P2P connection information
 
@@ -139,9 +149,6 @@ template<typename V, typename T>
 inline AIT::ABT_Solver<V, T>::ABT_Solver(const std::string& host,
 		const std::string& port):
 		serverSocket(this->io), p2pSocket(this->io){
-//	using boost::asio::ip::tcp;
-//	resolver = tcp::resolver(this->io);
-//	this->serverSocket = tcp::socket(this->io);
 }
 
 template<typename V, typename T>
@@ -157,18 +164,18 @@ inline void AIT::ABT_Solver<V, T>::solve() {
 	getAgentList();
 	checkAgentView();
 	while (!end) {
-		message m = getMessage();
+		Message m = getMessage();
 		switch (m.type) {
-		case OK:
+		case messageType::OK:
 			processInfo(m);
 			break;
-		case NOGOOD:
+		case messageType::NOGOOD:
 			resolveConflict(m);
 			break;
-		case ADDLINK:
+		case messageType::ADDLINK:
 			setLink(m);
 			break;
-		case STOP:
+		case messageType::STOP:
 			end = true;
 			break;
 		default:
@@ -198,15 +205,14 @@ inline void AIT::ABT_Solver<V, T>::connect() {
 		throw boost::system::system_error(error);
 
 	// Start message reader thread
-
 	pthread_create(&(this->messageReader), NULL,ABT_Solver<V, T>::messageReaderWorkhorse,NULL);
 
 	// Let's introduce ourselves to synchronizer agent
 	boost::asio::streambuf bufx;
 	ostream os(&bufx);
 	boost::archive::binary_oarchive ar(os);
-	CommunicationPacket request(CommunicationPacket::INTRODUCE, this->id);
-	ar << request;
+	CommunicationPacket introduce(CommunicationPacketType::INTRODUCE, this->id);
+	ar << introduce;
 	const size_t sc = boost::asio::write(this->serverSocket, bufx);
 	// TODO: Wait for list of agents and their addresses
 }
@@ -217,7 +223,7 @@ inline void AIT::ABT_Solver<V, T>::checkAgentView() {
 		chooseValue(myValue);
 		if (myValue != nullptr) {
 			for (const auto& agentID : succeeding) {
-				sendMessage(agentID, message());
+				sendMessage(agentID, Message());
 			}
 		} else {
 			backtrack();
@@ -226,13 +232,13 @@ inline void AIT::ABT_Solver<V, T>::checkAgentView() {
 }
 
 template<typename V, typename T>
-inline void AIT::ABT_Solver<V, T>::processInfo(const message& m) {
+inline void AIT::ABT_Solver<V, T>::processInfo(const Message& m) {
 	updateAgentView(m.assignment);
 	checkAgentView();
 }
 
 template<typename V, typename T>
-typename AIT::ABT_Solver<V, T>::message AIT::ABT_Solver<V, T>::getMessage() {
+typename AIT::ABT_Solver<V, T>::Message AIT::ABT_Solver<V, T>::getMessage() {
 	using namespace boost;
 	using namespace boost::asio;
 	using boost::asio::ip::tcp;
@@ -244,7 +250,7 @@ typename AIT::ABT_Solver<V, T>::message AIT::ABT_Solver<V, T>::getMessage() {
 }
 
 template<typename V, typename T>
-inline AIT::ABT_Solver<V, T>::message::message(
+inline AIT::ABT_Solver<V, T>::Message::Message(
 		const AIT::ABT_Solver<V, T>::messageType& type, const AgentID& id,
 		const Assignment<AgentID, T>& assignment,
 		const CompoundAssignment<AgentID, T> compoundAssignment) {
@@ -257,7 +263,7 @@ AIT::AgentID AIT::ABT_Solver<V, T>::CommunicationPacket::id() {
 
 template<typename V, typename T>
 inline AIT::ABT_Solver<V, T>::CommunicationPacket::CommunicationPacket(
-		const Type& messageType, const AgentID& agent) :
+		const CommunicationPacketType& messageType, const AgentID& agent) :
 		type_(messageType), senderID_(agent) {
 }
 
@@ -266,13 +272,22 @@ inline AIT::ABT_Solver<V, T>::CommunicationPacket::~CommunicationPacket() {
 }
 
 template<typename V, typename T>
-typename AIT::ABT_Solver<V, T>::CommunicationPacket::Type AIT::ABT_Solver<V, T>::CommunicationPacket::type() {
+typename AIT::ABT_Solver<V, T>::CommunicationPacketType AIT::ABT_Solver<V, T>::CommunicationPacket::type() {
 	return this->type_;
 }
 
 template<typename V, typename T>
 inline void* AIT::ABT_Solver<V, T>::messageReaderWorkhorse(void*) {
+
 }
+
+template<typename V, typename T>
+inline void* AIT::ABT_Solver<V, T>::peerReaderWorkhorse(void* parameter) {
+	using namespace AIT;
+	ABT_Solver<V,T> *solver = static_cast<ABT_Solver<V,T> >(parameter);
+
+}
+
 
 /* namespace AIT */
 #endif /* ABT_SOLVER_H_ */
