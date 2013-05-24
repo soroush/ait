@@ -1,6 +1,6 @@
 ## libAIT
 
-AC_INIT([libait], [0.1.0], [soroush-r@users.sf.net] ,[http://sourceforge.net/projects/ait++/])
+AC_INIT([libait], [0.1.0], [soroush-r@users.sf.net], [libait], [http://sourceforge.net/projects/ait++/])
 AC_PREREQ([2.59])
 AM_INIT_AUTOMAKE([1.10 -Wall no-define])
 AC_CONFIG_MACRO_DIR([m4])
