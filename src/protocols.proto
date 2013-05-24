@@ -1,0 +1,52 @@
+message ABT_CommunicationProtocol
+{
+  enum MessageType {
+    T_INTRODUCE = 1;
+    T_GET_LIST = 2;
+    T_BYE = 3;
+    T_ACK = 4;
+  }
+  
+  message AgentIdentity {
+    required int32 id = 1;
+    required string host = 2;
+    required int32 port = 3;
+  }
+  
+  required MessageType type = 1;
+  optional AgentIdentity identity = 2;
+  repeated AgentIdentity others = 3;
+}
+
+message ABT_Assignment
+{
+  required int32 id = 1;
+  required int32 value = 2;
+}
+
+message ABT_CompoundAssignment
+{
+  repeated ABT_Assignment assignments = 1;
+}
+
+message ABT_Message {
+
+    enum MessageType {
+        T_OK = 1;
+        T_NOGOOD = 2;
+        T_ADDLINK = 3;
+        T_STOP = 4;
+    }
+
+    required MessageType type = 1;
+    required int32 id = 2;
+
+    message OK {
+      required ABT_Assignment assignment = 1;
+    }
+    message NOGOOD {
+      required ABT_CompoundAssignment nogood = 1;
+    }
+    optional OK ok_data = 3;
+    optional NOGOOD nogood_data = 4;
+} 
