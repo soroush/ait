@@ -1,6 +1,6 @@
 ## libAIT
 
-AC_INIT([libAIT], [0.1.0], [soroush-r@users.sf.net], [libait],[http://sourceforge.net/projects/ait++/])
+AC_INIT([libait], [0.1.0], [soroush-r@users.sf.net] ,[http://sourceforge.net/projects/ait++/])
 AC_PREREQ([2.59])
 AM_INIT_AUTOMAKE([1.10 -Wall no-define])
 AC_CONFIG_MACRO_DIR([m4])
@@ -27,6 +27,8 @@ AC_COMPILE_IFELSE([AC_LANG_SOURCE(
     check_type&& cr = static_cast<check_type&&>(c);]])],,
   AC_MSG_FAILURE(['$CXX $CXXFLAGS' does not accept ISO C++11]))
 
+PKG_CHECK_MODULES([ZMQ], [libzmq >= 3.2.3])
+PKG_CHECK_MODULES([PROTOCOL_BUFFERS], [protobuf >= 2.5.0])
 AC_PROG_CXX
 LT_INIT([shared static])
 
@@ -34,5 +36,5 @@ AC_SUBST([AIT_SO_VERSION], [0:1:0])
 AC_SUBST([AIT_API_VERSION], [0.1.0])
 
 AC_CONFIG_FILES([Makefile
-                 ait-${AIT_API_VERSION}.pc:ait.pc.in])
+                 libait.pc:libait.pc.in])
 AC_OUTPUT
