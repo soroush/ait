@@ -14,40 +14,40 @@
 using namespace AIT;
 using namespace zmq;
 
-ABT_Socket::ABT_Socket(context_t &context_, int type_) :
+Socket::Socket(context_t &context_, int type_) :
 		socket_t(context_, type_) {
 	// TODO Auto-generated constructor stub
 }
 
-ABT_Socket::~ABT_Socket() {
+Socket::~Socket() {
 	// TODO Auto-generated destructor stub
 }
 
-size_t ABT_Socket::sendMessage(const ABT_CommunicationProtocol& packet) {
+size_t Socket::sendMessage(const protocols::ABT::P_CommunicationProtocol& packet) {
 	size_t length = packet.ByteSize();
 	message_t message(length);
 	packet.SerializeToArray(message.data(), length);
 	return socket_t::send(message);
 }
 
-size_t ABT_Socket::sendMessage(const ABT_Message& packet) {
+size_t Socket::sendMessage(const protocols::ABT::P_Message& packet) {
 	size_t length = packet.ByteSize();
 	message_t message(length);
 	packet.SerializeToArray(message.data(), length);
 	return socket_t::send(message);
 }
 
-size_t AIT::ABT_Socket::recvMessage(ABT_CommunicationProtocol& packet) {
+size_t AIT::Socket::recvMessage(protocols::ABT::P_CommunicationProtocol& packet) {
 	message_t message;
 	bool returnValue = recv(&message);
 	packet.ParseFromArray(message.data(), message.size());
 	return returnValue;
 }
 
-size_t AIT::ABT_Socket::recvMessage(ABT_Message& packet) {
+size_t AIT::Socket::recvMessage(protocols::ABT::P_Message& packet) {
 }
 
-std::string AIT::ABT_Socket::getIP() {
+std::string AIT::Socket::getIP() {
 	std::string address = "";
 	FILE * fp = popen("ifconfig", "r");
 	if (fp) {

@@ -27,71 +27,78 @@
 #include <google/protobuf/unknown_field_set.h>
 // @@protoc_insertion_point(includes)
 
+namespace protocols {
+namespace ABT {
+
 // Internal implementation detail -- do not call these.
 void  protobuf_AddDesc_protocols_2eproto();
 void protobuf_AssignDesc_protocols_2eproto();
 void protobuf_ShutdownFile_protocols_2eproto();
 
-class ABT_CommunicationProtocol;
-class ABT_CommunicationProtocol_AgentIdentity;
-class ABT_Assignment;
-class ABT_CompoundAssignment;
-class ABT_Message;
-class ABT_Message_OK;
-class ABT_Message_NOGOOD;
+class P_EndPoint;
+class P_CommunicationProtocol;
+class P_Assignment;
+class P_CompoundAssignment;
+class P_Message;
+class P_Message_OK;
+class P_Message_NOGOOD;
 
-enum ABT_CommunicationProtocol_MessageType {
-  ABT_CommunicationProtocol_MessageType_T_INTRODUCE = 1,
-  ABT_CommunicationProtocol_MessageType_T_GET_LIST = 2,
-  ABT_CommunicationProtocol_MessageType_T_BYE = 3,
-  ABT_CommunicationProtocol_MessageType_T_ACK = 4
+enum CP_MessageType {
+  T_INTRODUCE = 1,
+  T_INTRODUCE_ACK = 2,
+  T_REQUEST_LIST = 3,
+  T_REQUEST_ACK = 4,
+  T_LIST = 5,
+  ERR_NO_MORE_AGENTS = 6,
+  ERR_REPEATED_ID = 7,
+  ERR_UNKNOWN = 8
 };
-bool ABT_CommunicationProtocol_MessageType_IsValid(int value);
-const ABT_CommunicationProtocol_MessageType ABT_CommunicationProtocol_MessageType_MessageType_MIN = ABT_CommunicationProtocol_MessageType_T_INTRODUCE;
-const ABT_CommunicationProtocol_MessageType ABT_CommunicationProtocol_MessageType_MessageType_MAX = ABT_CommunicationProtocol_MessageType_T_ACK;
-const int ABT_CommunicationProtocol_MessageType_MessageType_ARRAYSIZE = ABT_CommunicationProtocol_MessageType_MessageType_MAX + 1;
+bool CP_MessageType_IsValid(int value);
+const CP_MessageType CP_MessageType_MIN = T_INTRODUCE;
+const CP_MessageType CP_MessageType_MAX = ERR_UNKNOWN;
+const int CP_MessageType_ARRAYSIZE = CP_MessageType_MAX + 1;
 
-const ::google::protobuf::EnumDescriptor* ABT_CommunicationProtocol_MessageType_descriptor();
-inline const ::std::string& ABT_CommunicationProtocol_MessageType_Name(ABT_CommunicationProtocol_MessageType value) {
+const ::google::protobuf::EnumDescriptor* CP_MessageType_descriptor();
+inline const ::std::string& CP_MessageType_Name(CP_MessageType value) {
   return ::google::protobuf::internal::NameOfEnum(
-    ABT_CommunicationProtocol_MessageType_descriptor(), value);
+    CP_MessageType_descriptor(), value);
 }
-inline bool ABT_CommunicationProtocol_MessageType_Parse(
-    const ::std::string& name, ABT_CommunicationProtocol_MessageType* value) {
-  return ::google::protobuf::internal::ParseNamedEnum<ABT_CommunicationProtocol_MessageType>(
-    ABT_CommunicationProtocol_MessageType_descriptor(), name, value);
+inline bool CP_MessageType_Parse(
+    const ::std::string& name, CP_MessageType* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<CP_MessageType>(
+    CP_MessageType_descriptor(), name, value);
 }
-enum ABT_Message_MessageType {
-  ABT_Message_MessageType_T_OK = 1,
-  ABT_Message_MessageType_T_NOGOOD = 2,
-  ABT_Message_MessageType_T_ADDLINK = 3,
-  ABT_Message_MessageType_T_STOP = 4
+enum ABT_MessageType {
+  T_OK = 1,
+  T_NOGOOD = 2,
+  T_ADDLINK = 3,
+  T_STOP = 4
 };
-bool ABT_Message_MessageType_IsValid(int value);
-const ABT_Message_MessageType ABT_Message_MessageType_MessageType_MIN = ABT_Message_MessageType_T_OK;
-const ABT_Message_MessageType ABT_Message_MessageType_MessageType_MAX = ABT_Message_MessageType_T_STOP;
-const int ABT_Message_MessageType_MessageType_ARRAYSIZE = ABT_Message_MessageType_MessageType_MAX + 1;
+bool ABT_MessageType_IsValid(int value);
+const ABT_MessageType ABT_MessageType_MIN = T_OK;
+const ABT_MessageType ABT_MessageType_MAX = T_STOP;
+const int ABT_MessageType_ARRAYSIZE = ABT_MessageType_MAX + 1;
 
-const ::google::protobuf::EnumDescriptor* ABT_Message_MessageType_descriptor();
-inline const ::std::string& ABT_Message_MessageType_Name(ABT_Message_MessageType value) {
+const ::google::protobuf::EnumDescriptor* ABT_MessageType_descriptor();
+inline const ::std::string& ABT_MessageType_Name(ABT_MessageType value) {
   return ::google::protobuf::internal::NameOfEnum(
-    ABT_Message_MessageType_descriptor(), value);
+    ABT_MessageType_descriptor(), value);
 }
-inline bool ABT_Message_MessageType_Parse(
-    const ::std::string& name, ABT_Message_MessageType* value) {
-  return ::google::protobuf::internal::ParseNamedEnum<ABT_Message_MessageType>(
-    ABT_Message_MessageType_descriptor(), name, value);
+inline bool ABT_MessageType_Parse(
+    const ::std::string& name, ABT_MessageType* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<ABT_MessageType>(
+    ABT_MessageType_descriptor(), name, value);
 }
 // ===================================================================
 
-class ABT_CommunicationProtocol_AgentIdentity : public ::google::protobuf::Message {
+class P_EndPoint : public ::google::protobuf::Message {
  public:
-  ABT_CommunicationProtocol_AgentIdentity();
-  virtual ~ABT_CommunicationProtocol_AgentIdentity();
+  P_EndPoint();
+  virtual ~P_EndPoint();
 
-  ABT_CommunicationProtocol_AgentIdentity(const ABT_CommunicationProtocol_AgentIdentity& from);
+  P_EndPoint(const P_EndPoint& from);
 
-  inline ABT_CommunicationProtocol_AgentIdentity& operator=(const ABT_CommunicationProtocol_AgentIdentity& from) {
+  inline P_EndPoint& operator=(const P_EndPoint& from) {
     CopyFrom(from);
     return *this;
   }
@@ -105,17 +112,17 @@ class ABT_CommunicationProtocol_AgentIdentity : public ::google::protobuf::Messa
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
-  static const ABT_CommunicationProtocol_AgentIdentity& default_instance();
+  static const P_EndPoint& default_instance();
 
-  void Swap(ABT_CommunicationProtocol_AgentIdentity* other);
+  void Swap(P_EndPoint* other);
 
   // implements Message ----------------------------------------------
 
-  ABT_CommunicationProtocol_AgentIdentity* New() const;
+  P_EndPoint* New() const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const ABT_CommunicationProtocol_AgentIdentity& from);
-  void MergeFrom(const ABT_CommunicationProtocol_AgentIdentity& from);
+  void CopyFrom(const P_EndPoint& from);
+  void MergeFrom(const P_EndPoint& from);
   void Clear();
   bool IsInitialized() const;
 
@@ -164,7 +171,7 @@ class ABT_CommunicationProtocol_AgentIdentity : public ::google::protobuf::Messa
   inline ::google::protobuf::int32 port() const;
   inline void set_port(::google::protobuf::int32 value);
 
-  // @@protoc_insertion_point(class_scope:ABT_CommunicationProtocol.AgentIdentity)
+  // @@protoc_insertion_point(class_scope:protocols.ABT.P_EndPoint)
  private:
   inline void set_has_id();
   inline void clear_has_id();
@@ -187,18 +194,18 @@ class ABT_CommunicationProtocol_AgentIdentity : public ::google::protobuf::Messa
   friend void protobuf_ShutdownFile_protocols_2eproto();
 
   void InitAsDefaultInstance();
-  static ABT_CommunicationProtocol_AgentIdentity* default_instance_;
+  static P_EndPoint* default_instance_;
 };
 // -------------------------------------------------------------------
 
-class ABT_CommunicationProtocol : public ::google::protobuf::Message {
+class P_CommunicationProtocol : public ::google::protobuf::Message {
  public:
-  ABT_CommunicationProtocol();
-  virtual ~ABT_CommunicationProtocol();
+  P_CommunicationProtocol();
+  virtual ~P_CommunicationProtocol();
 
-  ABT_CommunicationProtocol(const ABT_CommunicationProtocol& from);
+  P_CommunicationProtocol(const P_CommunicationProtocol& from);
 
-  inline ABT_CommunicationProtocol& operator=(const ABT_CommunicationProtocol& from) {
+  inline P_CommunicationProtocol& operator=(const P_CommunicationProtocol& from) {
     CopyFrom(from);
     return *this;
   }
@@ -212,17 +219,17 @@ class ABT_CommunicationProtocol : public ::google::protobuf::Message {
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
-  static const ABT_CommunicationProtocol& default_instance();
+  static const P_CommunicationProtocol& default_instance();
 
-  void Swap(ABT_CommunicationProtocol* other);
+  void Swap(P_CommunicationProtocol* other);
 
   // implements Message ----------------------------------------------
 
-  ABT_CommunicationProtocol* New() const;
+  P_CommunicationProtocol* New() const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const ABT_CommunicationProtocol& from);
-  void MergeFrom(const ABT_CommunicationProtocol& from);
+  void CopyFrom(const P_CommunicationProtocol& from);
+  void MergeFrom(const P_CommunicationProtocol& from);
   void Clear();
   bool IsInitialized() const;
 
@@ -243,97 +250,79 @@ class ABT_CommunicationProtocol : public ::google::protobuf::Message {
 
   // nested types ----------------------------------------------------
 
-  typedef ABT_CommunicationProtocol_AgentIdentity AgentIdentity;
-
-  typedef ABT_CommunicationProtocol_MessageType MessageType;
-  static const MessageType T_INTRODUCE = ABT_CommunicationProtocol_MessageType_T_INTRODUCE;
-  static const MessageType T_GET_LIST = ABT_CommunicationProtocol_MessageType_T_GET_LIST;
-  static const MessageType T_BYE = ABT_CommunicationProtocol_MessageType_T_BYE;
-  static const MessageType T_ACK = ABT_CommunicationProtocol_MessageType_T_ACK;
-  static inline bool MessageType_IsValid(int value) {
-    return ABT_CommunicationProtocol_MessageType_IsValid(value);
-  }
-  static const MessageType MessageType_MIN =
-    ABT_CommunicationProtocol_MessageType_MessageType_MIN;
-  static const MessageType MessageType_MAX =
-    ABT_CommunicationProtocol_MessageType_MessageType_MAX;
-  static const int MessageType_ARRAYSIZE =
-    ABT_CommunicationProtocol_MessageType_MessageType_ARRAYSIZE;
-  static inline const ::google::protobuf::EnumDescriptor*
-  MessageType_descriptor() {
-    return ABT_CommunicationProtocol_MessageType_descriptor();
-  }
-  static inline const ::std::string& MessageType_Name(MessageType value) {
-    return ABT_CommunicationProtocol_MessageType_Name(value);
-  }
-  static inline bool MessageType_Parse(const ::std::string& name,
-      MessageType* value) {
-    return ABT_CommunicationProtocol_MessageType_Parse(name, value);
-  }
-
   // accessors -------------------------------------------------------
 
-  // required .ABT_CommunicationProtocol.MessageType type = 1;
+  // required .protocols.ABT.CP_MessageType type = 1;
   inline bool has_type() const;
   inline void clear_type();
   static const int kTypeFieldNumber = 1;
-  inline ::ABT_CommunicationProtocol_MessageType type() const;
-  inline void set_type(::ABT_CommunicationProtocol_MessageType value);
+  inline ::protocols::ABT::CP_MessageType type() const;
+  inline void set_type(::protocols::ABT::CP_MessageType value);
 
-  // optional .ABT_CommunicationProtocol.AgentIdentity identity = 2;
+  // optional int32 id = 2;
+  inline bool has_id() const;
+  inline void clear_id();
+  static const int kIdFieldNumber = 2;
+  inline ::google::protobuf::int32 id() const;
+  inline void set_id(::google::protobuf::int32 value);
+
+  // optional .protocols.ABT.P_EndPoint identity = 3;
   inline bool has_identity() const;
   inline void clear_identity();
-  static const int kIdentityFieldNumber = 2;
-  inline const ::ABT_CommunicationProtocol_AgentIdentity& identity() const;
-  inline ::ABT_CommunicationProtocol_AgentIdentity* mutable_identity();
-  inline ::ABT_CommunicationProtocol_AgentIdentity* release_identity();
-  inline void set_allocated_identity(::ABT_CommunicationProtocol_AgentIdentity* identity);
+  static const int kIdentityFieldNumber = 3;
+  inline const ::protocols::ABT::P_EndPoint& identity() const;
+  inline ::protocols::ABT::P_EndPoint* mutable_identity();
+  inline ::protocols::ABT::P_EndPoint* release_identity();
+  inline void set_allocated_identity(::protocols::ABT::P_EndPoint* identity);
 
-  // repeated .ABT_CommunicationProtocol.AgentIdentity others = 3;
+  // repeated .protocols.ABT.P_EndPoint others = 4;
   inline int others_size() const;
   inline void clear_others();
-  static const int kOthersFieldNumber = 3;
-  inline const ::ABT_CommunicationProtocol_AgentIdentity& others(int index) const;
-  inline ::ABT_CommunicationProtocol_AgentIdentity* mutable_others(int index);
-  inline ::ABT_CommunicationProtocol_AgentIdentity* add_others();
-  inline const ::google::protobuf::RepeatedPtrField< ::ABT_CommunicationProtocol_AgentIdentity >&
+  static const int kOthersFieldNumber = 4;
+  inline const ::protocols::ABT::P_EndPoint& others(int index) const;
+  inline ::protocols::ABT::P_EndPoint* mutable_others(int index);
+  inline ::protocols::ABT::P_EndPoint* add_others();
+  inline const ::google::protobuf::RepeatedPtrField< ::protocols::ABT::P_EndPoint >&
       others() const;
-  inline ::google::protobuf::RepeatedPtrField< ::ABT_CommunicationProtocol_AgentIdentity >*
+  inline ::google::protobuf::RepeatedPtrField< ::protocols::ABT::P_EndPoint >*
       mutable_others();
 
-  // @@protoc_insertion_point(class_scope:ABT_CommunicationProtocol)
+  // @@protoc_insertion_point(class_scope:protocols.ABT.P_CommunicationProtocol)
  private:
   inline void set_has_type();
   inline void clear_has_type();
+  inline void set_has_id();
+  inline void clear_has_id();
   inline void set_has_identity();
   inline void clear_has_identity();
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
-  ::ABT_CommunicationProtocol_AgentIdentity* identity_;
-  ::google::protobuf::RepeatedPtrField< ::ABT_CommunicationProtocol_AgentIdentity > others_;
   int type_;
+  ::google::protobuf::int32 id_;
+  ::protocols::ABT::P_EndPoint* identity_;
+  ::google::protobuf::RepeatedPtrField< ::protocols::ABT::P_EndPoint > others_;
 
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(4 + 31) / 32];
 
   friend void  protobuf_AddDesc_protocols_2eproto();
   friend void protobuf_AssignDesc_protocols_2eproto();
   friend void protobuf_ShutdownFile_protocols_2eproto();
 
   void InitAsDefaultInstance();
-  static ABT_CommunicationProtocol* default_instance_;
+  static P_CommunicationProtocol* default_instance_;
 };
 // -------------------------------------------------------------------
 
-class ABT_Assignment : public ::google::protobuf::Message {
+class P_Assignment : public ::google::protobuf::Message {
  public:
-  ABT_Assignment();
-  virtual ~ABT_Assignment();
+  P_Assignment();
+  virtual ~P_Assignment();
 
-  ABT_Assignment(const ABT_Assignment& from);
+  P_Assignment(const P_Assignment& from);
 
-  inline ABT_Assignment& operator=(const ABT_Assignment& from) {
+  inline P_Assignment& operator=(const P_Assignment& from) {
     CopyFrom(from);
     return *this;
   }
@@ -347,17 +336,17 @@ class ABT_Assignment : public ::google::protobuf::Message {
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
-  static const ABT_Assignment& default_instance();
+  static const P_Assignment& default_instance();
 
-  void Swap(ABT_Assignment* other);
+  void Swap(P_Assignment* other);
 
   // implements Message ----------------------------------------------
 
-  ABT_Assignment* New() const;
+  P_Assignment* New() const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const ABT_Assignment& from);
-  void MergeFrom(const ABT_Assignment& from);
+  void CopyFrom(const P_Assignment& from);
+  void MergeFrom(const P_Assignment& from);
   void Clear();
   bool IsInitialized() const;
 
@@ -394,7 +383,7 @@ class ABT_Assignment : public ::google::protobuf::Message {
   inline ::google::protobuf::int32 value() const;
   inline void set_value(::google::protobuf::int32 value);
 
-  // @@protoc_insertion_point(class_scope:ABT_Assignment)
+  // @@protoc_insertion_point(class_scope:protocols.ABT.P_Assignment)
  private:
   inline void set_has_id();
   inline void clear_has_id();
@@ -414,18 +403,18 @@ class ABT_Assignment : public ::google::protobuf::Message {
   friend void protobuf_ShutdownFile_protocols_2eproto();
 
   void InitAsDefaultInstance();
-  static ABT_Assignment* default_instance_;
+  static P_Assignment* default_instance_;
 };
 // -------------------------------------------------------------------
 
-class ABT_CompoundAssignment : public ::google::protobuf::Message {
+class P_CompoundAssignment : public ::google::protobuf::Message {
  public:
-  ABT_CompoundAssignment();
-  virtual ~ABT_CompoundAssignment();
+  P_CompoundAssignment();
+  virtual ~P_CompoundAssignment();
 
-  ABT_CompoundAssignment(const ABT_CompoundAssignment& from);
+  P_CompoundAssignment(const P_CompoundAssignment& from);
 
-  inline ABT_CompoundAssignment& operator=(const ABT_CompoundAssignment& from) {
+  inline P_CompoundAssignment& operator=(const P_CompoundAssignment& from) {
     CopyFrom(from);
     return *this;
   }
@@ -439,17 +428,17 @@ class ABT_CompoundAssignment : public ::google::protobuf::Message {
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
-  static const ABT_CompoundAssignment& default_instance();
+  static const P_CompoundAssignment& default_instance();
 
-  void Swap(ABT_CompoundAssignment* other);
+  void Swap(P_CompoundAssignment* other);
 
   // implements Message ----------------------------------------------
 
-  ABT_CompoundAssignment* New() const;
+  P_CompoundAssignment* New() const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const ABT_CompoundAssignment& from);
-  void MergeFrom(const ABT_CompoundAssignment& from);
+  void CopyFrom(const P_CompoundAssignment& from);
+  void MergeFrom(const P_CompoundAssignment& from);
   void Clear();
   bool IsInitialized() const;
 
@@ -472,24 +461,24 @@ class ABT_CompoundAssignment : public ::google::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // repeated .ABT_Assignment assignments = 1;
+  // repeated .protocols.ABT.P_Assignment assignments = 1;
   inline int assignments_size() const;
   inline void clear_assignments();
   static const int kAssignmentsFieldNumber = 1;
-  inline const ::ABT_Assignment& assignments(int index) const;
-  inline ::ABT_Assignment* mutable_assignments(int index);
-  inline ::ABT_Assignment* add_assignments();
-  inline const ::google::protobuf::RepeatedPtrField< ::ABT_Assignment >&
+  inline const ::protocols::ABT::P_Assignment& assignments(int index) const;
+  inline ::protocols::ABT::P_Assignment* mutable_assignments(int index);
+  inline ::protocols::ABT::P_Assignment* add_assignments();
+  inline const ::google::protobuf::RepeatedPtrField< ::protocols::ABT::P_Assignment >&
       assignments() const;
-  inline ::google::protobuf::RepeatedPtrField< ::ABT_Assignment >*
+  inline ::google::protobuf::RepeatedPtrField< ::protocols::ABT::P_Assignment >*
       mutable_assignments();
 
-  // @@protoc_insertion_point(class_scope:ABT_CompoundAssignment)
+  // @@protoc_insertion_point(class_scope:protocols.ABT.P_CompoundAssignment)
  private:
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
-  ::google::protobuf::RepeatedPtrField< ::ABT_Assignment > assignments_;
+  ::google::protobuf::RepeatedPtrField< ::protocols::ABT::P_Assignment > assignments_;
 
   mutable int _cached_size_;
   ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
@@ -499,18 +488,18 @@ class ABT_CompoundAssignment : public ::google::protobuf::Message {
   friend void protobuf_ShutdownFile_protocols_2eproto();
 
   void InitAsDefaultInstance();
-  static ABT_CompoundAssignment* default_instance_;
+  static P_CompoundAssignment* default_instance_;
 };
 // -------------------------------------------------------------------
 
-class ABT_Message_OK : public ::google::protobuf::Message {
+class P_Message_OK : public ::google::protobuf::Message {
  public:
-  ABT_Message_OK();
-  virtual ~ABT_Message_OK();
+  P_Message_OK();
+  virtual ~P_Message_OK();
 
-  ABT_Message_OK(const ABT_Message_OK& from);
+  P_Message_OK(const P_Message_OK& from);
 
-  inline ABT_Message_OK& operator=(const ABT_Message_OK& from) {
+  inline P_Message_OK& operator=(const P_Message_OK& from) {
     CopyFrom(from);
     return *this;
   }
@@ -524,17 +513,17 @@ class ABT_Message_OK : public ::google::protobuf::Message {
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
-  static const ABT_Message_OK& default_instance();
+  static const P_Message_OK& default_instance();
 
-  void Swap(ABT_Message_OK* other);
+  void Swap(P_Message_OK* other);
 
   // implements Message ----------------------------------------------
 
-  ABT_Message_OK* New() const;
+  P_Message_OK* New() const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const ABT_Message_OK& from);
-  void MergeFrom(const ABT_Message_OK& from);
+  void CopyFrom(const P_Message_OK& from);
+  void MergeFrom(const P_Message_OK& from);
   void Clear();
   bool IsInitialized() const;
 
@@ -557,23 +546,23 @@ class ABT_Message_OK : public ::google::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // required .ABT_Assignment assignment = 1;
+  // required .protocols.ABT.P_Assignment assignment = 1;
   inline bool has_assignment() const;
   inline void clear_assignment();
   static const int kAssignmentFieldNumber = 1;
-  inline const ::ABT_Assignment& assignment() const;
-  inline ::ABT_Assignment* mutable_assignment();
-  inline ::ABT_Assignment* release_assignment();
-  inline void set_allocated_assignment(::ABT_Assignment* assignment);
+  inline const ::protocols::ABT::P_Assignment& assignment() const;
+  inline ::protocols::ABT::P_Assignment* mutable_assignment();
+  inline ::protocols::ABT::P_Assignment* release_assignment();
+  inline void set_allocated_assignment(::protocols::ABT::P_Assignment* assignment);
 
-  // @@protoc_insertion_point(class_scope:ABT_Message.OK)
+  // @@protoc_insertion_point(class_scope:protocols.ABT.P_Message.OK)
  private:
   inline void set_has_assignment();
   inline void clear_has_assignment();
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
-  ::ABT_Assignment* assignment_;
+  ::protocols::ABT::P_Assignment* assignment_;
 
   mutable int _cached_size_;
   ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
@@ -583,18 +572,18 @@ class ABT_Message_OK : public ::google::protobuf::Message {
   friend void protobuf_ShutdownFile_protocols_2eproto();
 
   void InitAsDefaultInstance();
-  static ABT_Message_OK* default_instance_;
+  static P_Message_OK* default_instance_;
 };
 // -------------------------------------------------------------------
 
-class ABT_Message_NOGOOD : public ::google::protobuf::Message {
+class P_Message_NOGOOD : public ::google::protobuf::Message {
  public:
-  ABT_Message_NOGOOD();
-  virtual ~ABT_Message_NOGOOD();
+  P_Message_NOGOOD();
+  virtual ~P_Message_NOGOOD();
 
-  ABT_Message_NOGOOD(const ABT_Message_NOGOOD& from);
+  P_Message_NOGOOD(const P_Message_NOGOOD& from);
 
-  inline ABT_Message_NOGOOD& operator=(const ABT_Message_NOGOOD& from) {
+  inline P_Message_NOGOOD& operator=(const P_Message_NOGOOD& from) {
     CopyFrom(from);
     return *this;
   }
@@ -608,17 +597,17 @@ class ABT_Message_NOGOOD : public ::google::protobuf::Message {
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
-  static const ABT_Message_NOGOOD& default_instance();
+  static const P_Message_NOGOOD& default_instance();
 
-  void Swap(ABT_Message_NOGOOD* other);
+  void Swap(P_Message_NOGOOD* other);
 
   // implements Message ----------------------------------------------
 
-  ABT_Message_NOGOOD* New() const;
+  P_Message_NOGOOD* New() const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const ABT_Message_NOGOOD& from);
-  void MergeFrom(const ABT_Message_NOGOOD& from);
+  void CopyFrom(const P_Message_NOGOOD& from);
+  void MergeFrom(const P_Message_NOGOOD& from);
   void Clear();
   bool IsInitialized() const;
 
@@ -641,23 +630,23 @@ class ABT_Message_NOGOOD : public ::google::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // required .ABT_CompoundAssignment nogood = 1;
+  // required .protocols.ABT.P_CompoundAssignment nogood = 1;
   inline bool has_nogood() const;
   inline void clear_nogood();
   static const int kNogoodFieldNumber = 1;
-  inline const ::ABT_CompoundAssignment& nogood() const;
-  inline ::ABT_CompoundAssignment* mutable_nogood();
-  inline ::ABT_CompoundAssignment* release_nogood();
-  inline void set_allocated_nogood(::ABT_CompoundAssignment* nogood);
+  inline const ::protocols::ABT::P_CompoundAssignment& nogood() const;
+  inline ::protocols::ABT::P_CompoundAssignment* mutable_nogood();
+  inline ::protocols::ABT::P_CompoundAssignment* release_nogood();
+  inline void set_allocated_nogood(::protocols::ABT::P_CompoundAssignment* nogood);
 
-  // @@protoc_insertion_point(class_scope:ABT_Message.NOGOOD)
+  // @@protoc_insertion_point(class_scope:protocols.ABT.P_Message.NOGOOD)
  private:
   inline void set_has_nogood();
   inline void clear_has_nogood();
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
-  ::ABT_CompoundAssignment* nogood_;
+  ::protocols::ABT::P_CompoundAssignment* nogood_;
 
   mutable int _cached_size_;
   ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
@@ -667,18 +656,18 @@ class ABT_Message_NOGOOD : public ::google::protobuf::Message {
   friend void protobuf_ShutdownFile_protocols_2eproto();
 
   void InitAsDefaultInstance();
-  static ABT_Message_NOGOOD* default_instance_;
+  static P_Message_NOGOOD* default_instance_;
 };
 // -------------------------------------------------------------------
 
-class ABT_Message : public ::google::protobuf::Message {
+class P_Message : public ::google::protobuf::Message {
  public:
-  ABT_Message();
-  virtual ~ABT_Message();
+  P_Message();
+  virtual ~P_Message();
 
-  ABT_Message(const ABT_Message& from);
+  P_Message(const P_Message& from);
 
-  inline ABT_Message& operator=(const ABT_Message& from) {
+  inline P_Message& operator=(const P_Message& from) {
     CopyFrom(from);
     return *this;
   }
@@ -692,17 +681,17 @@ class ABT_Message : public ::google::protobuf::Message {
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
-  static const ABT_Message& default_instance();
+  static const P_Message& default_instance();
 
-  void Swap(ABT_Message* other);
+  void Swap(P_Message* other);
 
   // implements Message ----------------------------------------------
 
-  ABT_Message* New() const;
+  P_Message* New() const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const ABT_Message& from);
-  void MergeFrom(const ABT_Message& from);
+  void CopyFrom(const P_Message& from);
+  void MergeFrom(const P_Message& from);
   void Clear();
   bool IsInitialized() const;
 
@@ -723,43 +712,17 @@ class ABT_Message : public ::google::protobuf::Message {
 
   // nested types ----------------------------------------------------
 
-  typedef ABT_Message_OK OK;
-  typedef ABT_Message_NOGOOD NOGOOD;
-
-  typedef ABT_Message_MessageType MessageType;
-  static const MessageType T_OK = ABT_Message_MessageType_T_OK;
-  static const MessageType T_NOGOOD = ABT_Message_MessageType_T_NOGOOD;
-  static const MessageType T_ADDLINK = ABT_Message_MessageType_T_ADDLINK;
-  static const MessageType T_STOP = ABT_Message_MessageType_T_STOP;
-  static inline bool MessageType_IsValid(int value) {
-    return ABT_Message_MessageType_IsValid(value);
-  }
-  static const MessageType MessageType_MIN =
-    ABT_Message_MessageType_MessageType_MIN;
-  static const MessageType MessageType_MAX =
-    ABT_Message_MessageType_MessageType_MAX;
-  static const int MessageType_ARRAYSIZE =
-    ABT_Message_MessageType_MessageType_ARRAYSIZE;
-  static inline const ::google::protobuf::EnumDescriptor*
-  MessageType_descriptor() {
-    return ABT_Message_MessageType_descriptor();
-  }
-  static inline const ::std::string& MessageType_Name(MessageType value) {
-    return ABT_Message_MessageType_Name(value);
-  }
-  static inline bool MessageType_Parse(const ::std::string& name,
-      MessageType* value) {
-    return ABT_Message_MessageType_Parse(name, value);
-  }
+  typedef P_Message_OK OK;
+  typedef P_Message_NOGOOD NOGOOD;
 
   // accessors -------------------------------------------------------
 
-  // required .ABT_Message.MessageType type = 1;
+  // required .protocols.ABT.ABT_MessageType type = 1;
   inline bool has_type() const;
   inline void clear_type();
   static const int kTypeFieldNumber = 1;
-  inline ::ABT_Message_MessageType type() const;
-  inline void set_type(::ABT_Message_MessageType value);
+  inline ::protocols::ABT::ABT_MessageType type() const;
+  inline void set_type(::protocols::ABT::ABT_MessageType value);
 
   // required int32 id = 2;
   inline bool has_id() const;
@@ -768,25 +731,25 @@ class ABT_Message : public ::google::protobuf::Message {
   inline ::google::protobuf::int32 id() const;
   inline void set_id(::google::protobuf::int32 value);
 
-  // optional .ABT_Message.OK ok_data = 3;
+  // optional .protocols.ABT.P_Message.OK ok_data = 3;
   inline bool has_ok_data() const;
   inline void clear_ok_data();
   static const int kOkDataFieldNumber = 3;
-  inline const ::ABT_Message_OK& ok_data() const;
-  inline ::ABT_Message_OK* mutable_ok_data();
-  inline ::ABT_Message_OK* release_ok_data();
-  inline void set_allocated_ok_data(::ABT_Message_OK* ok_data);
+  inline const ::protocols::ABT::P_Message_OK& ok_data() const;
+  inline ::protocols::ABT::P_Message_OK* mutable_ok_data();
+  inline ::protocols::ABT::P_Message_OK* release_ok_data();
+  inline void set_allocated_ok_data(::protocols::ABT::P_Message_OK* ok_data);
 
-  // optional .ABT_Message.NOGOOD nogood_data = 4;
+  // optional .protocols.ABT.P_Message.NOGOOD nogood_data = 4;
   inline bool has_nogood_data() const;
   inline void clear_nogood_data();
   static const int kNogoodDataFieldNumber = 4;
-  inline const ::ABT_Message_NOGOOD& nogood_data() const;
-  inline ::ABT_Message_NOGOOD* mutable_nogood_data();
-  inline ::ABT_Message_NOGOOD* release_nogood_data();
-  inline void set_allocated_nogood_data(::ABT_Message_NOGOOD* nogood_data);
+  inline const ::protocols::ABT::P_Message_NOGOOD& nogood_data() const;
+  inline ::protocols::ABT::P_Message_NOGOOD* mutable_nogood_data();
+  inline ::protocols::ABT::P_Message_NOGOOD* release_nogood_data();
+  inline void set_allocated_nogood_data(::protocols::ABT::P_Message_NOGOOD* nogood_data);
 
-  // @@protoc_insertion_point(class_scope:ABT_Message)
+  // @@protoc_insertion_point(class_scope:protocols.ABT.P_Message)
  private:
   inline void set_has_type();
   inline void clear_has_type();
@@ -801,8 +764,8 @@ class ABT_Message : public ::google::protobuf::Message {
 
   int type_;
   ::google::protobuf::int32 id_;
-  ::ABT_Message_OK* ok_data_;
-  ::ABT_Message_NOGOOD* nogood_data_;
+  ::protocols::ABT::P_Message_OK* ok_data_;
+  ::protocols::ABT::P_Message_NOGOOD* nogood_data_;
 
   mutable int _cached_size_;
   ::google::protobuf::uint32 _has_bits_[(4 + 31) / 32];
@@ -812,85 +775,85 @@ class ABT_Message : public ::google::protobuf::Message {
   friend void protobuf_ShutdownFile_protocols_2eproto();
 
   void InitAsDefaultInstance();
-  static ABT_Message* default_instance_;
+  static P_Message* default_instance_;
 };
 // ===================================================================
 
 
 // ===================================================================
 
-// ABT_CommunicationProtocol_AgentIdentity
+// P_EndPoint
 
 // required int32 id = 1;
-inline bool ABT_CommunicationProtocol_AgentIdentity::has_id() const {
+inline bool P_EndPoint::has_id() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void ABT_CommunicationProtocol_AgentIdentity::set_has_id() {
+inline void P_EndPoint::set_has_id() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void ABT_CommunicationProtocol_AgentIdentity::clear_has_id() {
+inline void P_EndPoint::clear_has_id() {
   _has_bits_[0] &= ~0x00000001u;
 }
-inline void ABT_CommunicationProtocol_AgentIdentity::clear_id() {
+inline void P_EndPoint::clear_id() {
   id_ = 0;
   clear_has_id();
 }
-inline ::google::protobuf::int32 ABT_CommunicationProtocol_AgentIdentity::id() const {
+inline ::google::protobuf::int32 P_EndPoint::id() const {
   return id_;
 }
-inline void ABT_CommunicationProtocol_AgentIdentity::set_id(::google::protobuf::int32 value) {
+inline void P_EndPoint::set_id(::google::protobuf::int32 value) {
   set_has_id();
   id_ = value;
 }
 
 // required string host = 2;
-inline bool ABT_CommunicationProtocol_AgentIdentity::has_host() const {
+inline bool P_EndPoint::has_host() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
-inline void ABT_CommunicationProtocol_AgentIdentity::set_has_host() {
+inline void P_EndPoint::set_has_host() {
   _has_bits_[0] |= 0x00000002u;
 }
-inline void ABT_CommunicationProtocol_AgentIdentity::clear_has_host() {
+inline void P_EndPoint::clear_has_host() {
   _has_bits_[0] &= ~0x00000002u;
 }
-inline void ABT_CommunicationProtocol_AgentIdentity::clear_host() {
+inline void P_EndPoint::clear_host() {
   if (host_ != &::google::protobuf::internal::kEmptyString) {
     host_->clear();
   }
   clear_has_host();
 }
-inline const ::std::string& ABT_CommunicationProtocol_AgentIdentity::host() const {
+inline const ::std::string& P_EndPoint::host() const {
   return *host_;
 }
-inline void ABT_CommunicationProtocol_AgentIdentity::set_host(const ::std::string& value) {
+inline void P_EndPoint::set_host(const ::std::string& value) {
   set_has_host();
   if (host_ == &::google::protobuf::internal::kEmptyString) {
     host_ = new ::std::string;
   }
   host_->assign(value);
 }
-inline void ABT_CommunicationProtocol_AgentIdentity::set_host(const char* value) {
+inline void P_EndPoint::set_host(const char* value) {
   set_has_host();
   if (host_ == &::google::protobuf::internal::kEmptyString) {
     host_ = new ::std::string;
   }
   host_->assign(value);
 }
-inline void ABT_CommunicationProtocol_AgentIdentity::set_host(const char* value, size_t size) {
+inline void P_EndPoint::set_host(const char* value, size_t size) {
   set_has_host();
   if (host_ == &::google::protobuf::internal::kEmptyString) {
     host_ = new ::std::string;
   }
   host_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* ABT_CommunicationProtocol_AgentIdentity::mutable_host() {
+inline ::std::string* P_EndPoint::mutable_host() {
   set_has_host();
   if (host_ == &::google::protobuf::internal::kEmptyString) {
     host_ = new ::std::string;
   }
   return host_;
 }
-inline ::std::string* ABT_CommunicationProtocol_AgentIdentity::release_host() {
+inline ::std::string* P_EndPoint::release_host() {
   clear_has_host();
   if (host_ == &::google::protobuf::internal::kEmptyString) {
     return NULL;
@@ -900,7 +863,7 @@ inline ::std::string* ABT_CommunicationProtocol_AgentIdentity::release_host() {
     return temp;
   }
 }
-inline void ABT_CommunicationProtocol_AgentIdentity::set_allocated_host(::std::string* host) {
+inline void P_EndPoint::set_allocated_host(::std::string* host) {
   if (host_ != &::google::protobuf::internal::kEmptyString) {
     delete host_;
   }
@@ -914,83 +877,105 @@ inline void ABT_CommunicationProtocol_AgentIdentity::set_allocated_host(::std::s
 }
 
 // required int32 port = 3;
-inline bool ABT_CommunicationProtocol_AgentIdentity::has_port() const {
+inline bool P_EndPoint::has_port() const {
   return (_has_bits_[0] & 0x00000004u) != 0;
 }
-inline void ABT_CommunicationProtocol_AgentIdentity::set_has_port() {
+inline void P_EndPoint::set_has_port() {
   _has_bits_[0] |= 0x00000004u;
 }
-inline void ABT_CommunicationProtocol_AgentIdentity::clear_has_port() {
+inline void P_EndPoint::clear_has_port() {
   _has_bits_[0] &= ~0x00000004u;
 }
-inline void ABT_CommunicationProtocol_AgentIdentity::clear_port() {
+inline void P_EndPoint::clear_port() {
   port_ = 0;
   clear_has_port();
 }
-inline ::google::protobuf::int32 ABT_CommunicationProtocol_AgentIdentity::port() const {
+inline ::google::protobuf::int32 P_EndPoint::port() const {
   return port_;
 }
-inline void ABT_CommunicationProtocol_AgentIdentity::set_port(::google::protobuf::int32 value) {
+inline void P_EndPoint::set_port(::google::protobuf::int32 value) {
   set_has_port();
   port_ = value;
 }
 
 // -------------------------------------------------------------------
 
-// ABT_CommunicationProtocol
+// P_CommunicationProtocol
 
-// required .ABT_CommunicationProtocol.MessageType type = 1;
-inline bool ABT_CommunicationProtocol::has_type() const {
+// required .protocols.ABT.CP_MessageType type = 1;
+inline bool P_CommunicationProtocol::has_type() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void ABT_CommunicationProtocol::set_has_type() {
+inline void P_CommunicationProtocol::set_has_type() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void ABT_CommunicationProtocol::clear_has_type() {
+inline void P_CommunicationProtocol::clear_has_type() {
   _has_bits_[0] &= ~0x00000001u;
 }
-inline void ABT_CommunicationProtocol::clear_type() {
+inline void P_CommunicationProtocol::clear_type() {
   type_ = 1;
   clear_has_type();
 }
-inline ::ABT_CommunicationProtocol_MessageType ABT_CommunicationProtocol::type() const {
-  return static_cast< ::ABT_CommunicationProtocol_MessageType >(type_);
+inline ::protocols::ABT::CP_MessageType P_CommunicationProtocol::type() const {
+  return static_cast< ::protocols::ABT::CP_MessageType >(type_);
 }
-inline void ABT_CommunicationProtocol::set_type(::ABT_CommunicationProtocol_MessageType value) {
-  assert(::ABT_CommunicationProtocol_MessageType_IsValid(value));
+inline void P_CommunicationProtocol::set_type(::protocols::ABT::CP_MessageType value) {
+  assert(::protocols::ABT::CP_MessageType_IsValid(value));
   set_has_type();
   type_ = value;
 }
 
-// optional .ABT_CommunicationProtocol.AgentIdentity identity = 2;
-inline bool ABT_CommunicationProtocol::has_identity() const {
+// optional int32 id = 2;
+inline bool P_CommunicationProtocol::has_id() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
-inline void ABT_CommunicationProtocol::set_has_identity() {
+inline void P_CommunicationProtocol::set_has_id() {
   _has_bits_[0] |= 0x00000002u;
 }
-inline void ABT_CommunicationProtocol::clear_has_identity() {
+inline void P_CommunicationProtocol::clear_has_id() {
   _has_bits_[0] &= ~0x00000002u;
 }
-inline void ABT_CommunicationProtocol::clear_identity() {
-  if (identity_ != NULL) identity_->::ABT_CommunicationProtocol_AgentIdentity::Clear();
+inline void P_CommunicationProtocol::clear_id() {
+  id_ = 0;
+  clear_has_id();
+}
+inline ::google::protobuf::int32 P_CommunicationProtocol::id() const {
+  return id_;
+}
+inline void P_CommunicationProtocol::set_id(::google::protobuf::int32 value) {
+  set_has_id();
+  id_ = value;
+}
+
+// optional .protocols.ABT.P_EndPoint identity = 3;
+inline bool P_CommunicationProtocol::has_identity() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void P_CommunicationProtocol::set_has_identity() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void P_CommunicationProtocol::clear_has_identity() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void P_CommunicationProtocol::clear_identity() {
+  if (identity_ != NULL) identity_->::protocols::ABT::P_EndPoint::Clear();
   clear_has_identity();
 }
-inline const ::ABT_CommunicationProtocol_AgentIdentity& ABT_CommunicationProtocol::identity() const {
+inline const ::protocols::ABT::P_EndPoint& P_CommunicationProtocol::identity() const {
   return identity_ != NULL ? *identity_ : *default_instance_->identity_;
 }
-inline ::ABT_CommunicationProtocol_AgentIdentity* ABT_CommunicationProtocol::mutable_identity() {
+inline ::protocols::ABT::P_EndPoint* P_CommunicationProtocol::mutable_identity() {
   set_has_identity();
-  if (identity_ == NULL) identity_ = new ::ABT_CommunicationProtocol_AgentIdentity;
+  if (identity_ == NULL) identity_ = new ::protocols::ABT::P_EndPoint;
   return identity_;
 }
-inline ::ABT_CommunicationProtocol_AgentIdentity* ABT_CommunicationProtocol::release_identity() {
+inline ::protocols::ABT::P_EndPoint* P_CommunicationProtocol::release_identity() {
   clear_has_identity();
-  ::ABT_CommunicationProtocol_AgentIdentity* temp = identity_;
+  ::protocols::ABT::P_EndPoint* temp = identity_;
   identity_ = NULL;
   return temp;
 }
-inline void ABT_CommunicationProtocol::set_allocated_identity(::ABT_CommunicationProtocol_AgentIdentity* identity) {
+inline void P_CommunicationProtocol::set_allocated_identity(::protocols::ABT::P_EndPoint* identity) {
   delete identity_;
   identity_ = identity;
   if (identity) {
@@ -1000,141 +985,141 @@ inline void ABT_CommunicationProtocol::set_allocated_identity(::ABT_Communicatio
   }
 }
 
-// repeated .ABT_CommunicationProtocol.AgentIdentity others = 3;
-inline int ABT_CommunicationProtocol::others_size() const {
+// repeated .protocols.ABT.P_EndPoint others = 4;
+inline int P_CommunicationProtocol::others_size() const {
   return others_.size();
 }
-inline void ABT_CommunicationProtocol::clear_others() {
+inline void P_CommunicationProtocol::clear_others() {
   others_.Clear();
 }
-inline const ::ABT_CommunicationProtocol_AgentIdentity& ABT_CommunicationProtocol::others(int index) const {
+inline const ::protocols::ABT::P_EndPoint& P_CommunicationProtocol::others(int index) const {
   return others_.Get(index);
 }
-inline ::ABT_CommunicationProtocol_AgentIdentity* ABT_CommunicationProtocol::mutable_others(int index) {
+inline ::protocols::ABT::P_EndPoint* P_CommunicationProtocol::mutable_others(int index) {
   return others_.Mutable(index);
 }
-inline ::ABT_CommunicationProtocol_AgentIdentity* ABT_CommunicationProtocol::add_others() {
+inline ::protocols::ABT::P_EndPoint* P_CommunicationProtocol::add_others() {
   return others_.Add();
 }
-inline const ::google::protobuf::RepeatedPtrField< ::ABT_CommunicationProtocol_AgentIdentity >&
-ABT_CommunicationProtocol::others() const {
+inline const ::google::protobuf::RepeatedPtrField< ::protocols::ABT::P_EndPoint >&
+P_CommunicationProtocol::others() const {
   return others_;
 }
-inline ::google::protobuf::RepeatedPtrField< ::ABT_CommunicationProtocol_AgentIdentity >*
-ABT_CommunicationProtocol::mutable_others() {
+inline ::google::protobuf::RepeatedPtrField< ::protocols::ABT::P_EndPoint >*
+P_CommunicationProtocol::mutable_others() {
   return &others_;
 }
 
 // -------------------------------------------------------------------
 
-// ABT_Assignment
+// P_Assignment
 
 // required int32 id = 1;
-inline bool ABT_Assignment::has_id() const {
+inline bool P_Assignment::has_id() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void ABT_Assignment::set_has_id() {
+inline void P_Assignment::set_has_id() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void ABT_Assignment::clear_has_id() {
+inline void P_Assignment::clear_has_id() {
   _has_bits_[0] &= ~0x00000001u;
 }
-inline void ABT_Assignment::clear_id() {
+inline void P_Assignment::clear_id() {
   id_ = 0;
   clear_has_id();
 }
-inline ::google::protobuf::int32 ABT_Assignment::id() const {
+inline ::google::protobuf::int32 P_Assignment::id() const {
   return id_;
 }
-inline void ABT_Assignment::set_id(::google::protobuf::int32 value) {
+inline void P_Assignment::set_id(::google::protobuf::int32 value) {
   set_has_id();
   id_ = value;
 }
 
 // required int32 value = 2;
-inline bool ABT_Assignment::has_value() const {
+inline bool P_Assignment::has_value() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
-inline void ABT_Assignment::set_has_value() {
+inline void P_Assignment::set_has_value() {
   _has_bits_[0] |= 0x00000002u;
 }
-inline void ABT_Assignment::clear_has_value() {
+inline void P_Assignment::clear_has_value() {
   _has_bits_[0] &= ~0x00000002u;
 }
-inline void ABT_Assignment::clear_value() {
+inline void P_Assignment::clear_value() {
   value_ = 0;
   clear_has_value();
 }
-inline ::google::protobuf::int32 ABT_Assignment::value() const {
+inline ::google::protobuf::int32 P_Assignment::value() const {
   return value_;
 }
-inline void ABT_Assignment::set_value(::google::protobuf::int32 value) {
+inline void P_Assignment::set_value(::google::protobuf::int32 value) {
   set_has_value();
   value_ = value;
 }
 
 // -------------------------------------------------------------------
 
-// ABT_CompoundAssignment
+// P_CompoundAssignment
 
-// repeated .ABT_Assignment assignments = 1;
-inline int ABT_CompoundAssignment::assignments_size() const {
+// repeated .protocols.ABT.P_Assignment assignments = 1;
+inline int P_CompoundAssignment::assignments_size() const {
   return assignments_.size();
 }
-inline void ABT_CompoundAssignment::clear_assignments() {
+inline void P_CompoundAssignment::clear_assignments() {
   assignments_.Clear();
 }
-inline const ::ABT_Assignment& ABT_CompoundAssignment::assignments(int index) const {
+inline const ::protocols::ABT::P_Assignment& P_CompoundAssignment::assignments(int index) const {
   return assignments_.Get(index);
 }
-inline ::ABT_Assignment* ABT_CompoundAssignment::mutable_assignments(int index) {
+inline ::protocols::ABT::P_Assignment* P_CompoundAssignment::mutable_assignments(int index) {
   return assignments_.Mutable(index);
 }
-inline ::ABT_Assignment* ABT_CompoundAssignment::add_assignments() {
+inline ::protocols::ABT::P_Assignment* P_CompoundAssignment::add_assignments() {
   return assignments_.Add();
 }
-inline const ::google::protobuf::RepeatedPtrField< ::ABT_Assignment >&
-ABT_CompoundAssignment::assignments() const {
+inline const ::google::protobuf::RepeatedPtrField< ::protocols::ABT::P_Assignment >&
+P_CompoundAssignment::assignments() const {
   return assignments_;
 }
-inline ::google::protobuf::RepeatedPtrField< ::ABT_Assignment >*
-ABT_CompoundAssignment::mutable_assignments() {
+inline ::google::protobuf::RepeatedPtrField< ::protocols::ABT::P_Assignment >*
+P_CompoundAssignment::mutable_assignments() {
   return &assignments_;
 }
 
 // -------------------------------------------------------------------
 
-// ABT_Message_OK
+// P_Message_OK
 
-// required .ABT_Assignment assignment = 1;
-inline bool ABT_Message_OK::has_assignment() const {
+// required .protocols.ABT.P_Assignment assignment = 1;
+inline bool P_Message_OK::has_assignment() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void ABT_Message_OK::set_has_assignment() {
+inline void P_Message_OK::set_has_assignment() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void ABT_Message_OK::clear_has_assignment() {
+inline void P_Message_OK::clear_has_assignment() {
   _has_bits_[0] &= ~0x00000001u;
 }
-inline void ABT_Message_OK::clear_assignment() {
-  if (assignment_ != NULL) assignment_->::ABT_Assignment::Clear();
+inline void P_Message_OK::clear_assignment() {
+  if (assignment_ != NULL) assignment_->::protocols::ABT::P_Assignment::Clear();
   clear_has_assignment();
 }
-inline const ::ABT_Assignment& ABT_Message_OK::assignment() const {
+inline const ::protocols::ABT::P_Assignment& P_Message_OK::assignment() const {
   return assignment_ != NULL ? *assignment_ : *default_instance_->assignment_;
 }
-inline ::ABT_Assignment* ABT_Message_OK::mutable_assignment() {
+inline ::protocols::ABT::P_Assignment* P_Message_OK::mutable_assignment() {
   set_has_assignment();
-  if (assignment_ == NULL) assignment_ = new ::ABT_Assignment;
+  if (assignment_ == NULL) assignment_ = new ::protocols::ABT::P_Assignment;
   return assignment_;
 }
-inline ::ABT_Assignment* ABT_Message_OK::release_assignment() {
+inline ::protocols::ABT::P_Assignment* P_Message_OK::release_assignment() {
   clear_has_assignment();
-  ::ABT_Assignment* temp = assignment_;
+  ::protocols::ABT::P_Assignment* temp = assignment_;
   assignment_ = NULL;
   return temp;
 }
-inline void ABT_Message_OK::set_allocated_assignment(::ABT_Assignment* assignment) {
+inline void P_Message_OK::set_allocated_assignment(::protocols::ABT::P_Assignment* assignment) {
   delete assignment_;
   assignment_ = assignment;
   if (assignment) {
@@ -1146,37 +1131,37 @@ inline void ABT_Message_OK::set_allocated_assignment(::ABT_Assignment* assignmen
 
 // -------------------------------------------------------------------
 
-// ABT_Message_NOGOOD
+// P_Message_NOGOOD
 
-// required .ABT_CompoundAssignment nogood = 1;
-inline bool ABT_Message_NOGOOD::has_nogood() const {
+// required .protocols.ABT.P_CompoundAssignment nogood = 1;
+inline bool P_Message_NOGOOD::has_nogood() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void ABT_Message_NOGOOD::set_has_nogood() {
+inline void P_Message_NOGOOD::set_has_nogood() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void ABT_Message_NOGOOD::clear_has_nogood() {
+inline void P_Message_NOGOOD::clear_has_nogood() {
   _has_bits_[0] &= ~0x00000001u;
 }
-inline void ABT_Message_NOGOOD::clear_nogood() {
-  if (nogood_ != NULL) nogood_->::ABT_CompoundAssignment::Clear();
+inline void P_Message_NOGOOD::clear_nogood() {
+  if (nogood_ != NULL) nogood_->::protocols::ABT::P_CompoundAssignment::Clear();
   clear_has_nogood();
 }
-inline const ::ABT_CompoundAssignment& ABT_Message_NOGOOD::nogood() const {
+inline const ::protocols::ABT::P_CompoundAssignment& P_Message_NOGOOD::nogood() const {
   return nogood_ != NULL ? *nogood_ : *default_instance_->nogood_;
 }
-inline ::ABT_CompoundAssignment* ABT_Message_NOGOOD::mutable_nogood() {
+inline ::protocols::ABT::P_CompoundAssignment* P_Message_NOGOOD::mutable_nogood() {
   set_has_nogood();
-  if (nogood_ == NULL) nogood_ = new ::ABT_CompoundAssignment;
+  if (nogood_ == NULL) nogood_ = new ::protocols::ABT::P_CompoundAssignment;
   return nogood_;
 }
-inline ::ABT_CompoundAssignment* ABT_Message_NOGOOD::release_nogood() {
+inline ::protocols::ABT::P_CompoundAssignment* P_Message_NOGOOD::release_nogood() {
   clear_has_nogood();
-  ::ABT_CompoundAssignment* temp = nogood_;
+  ::protocols::ABT::P_CompoundAssignment* temp = nogood_;
   nogood_ = NULL;
   return temp;
 }
-inline void ABT_Message_NOGOOD::set_allocated_nogood(::ABT_CompoundAssignment* nogood) {
+inline void P_Message_NOGOOD::set_allocated_nogood(::protocols::ABT::P_CompoundAssignment* nogood) {
   delete nogood_;
   nogood_ = nogood;
   if (nogood) {
@@ -1188,82 +1173,82 @@ inline void ABT_Message_NOGOOD::set_allocated_nogood(::ABT_CompoundAssignment* n
 
 // -------------------------------------------------------------------
 
-// ABT_Message
+// P_Message
 
-// required .ABT_Message.MessageType type = 1;
-inline bool ABT_Message::has_type() const {
+// required .protocols.ABT.ABT_MessageType type = 1;
+inline bool P_Message::has_type() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void ABT_Message::set_has_type() {
+inline void P_Message::set_has_type() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void ABT_Message::clear_has_type() {
+inline void P_Message::clear_has_type() {
   _has_bits_[0] &= ~0x00000001u;
 }
-inline void ABT_Message::clear_type() {
+inline void P_Message::clear_type() {
   type_ = 1;
   clear_has_type();
 }
-inline ::ABT_Message_MessageType ABT_Message::type() const {
-  return static_cast< ::ABT_Message_MessageType >(type_);
+inline ::protocols::ABT::ABT_MessageType P_Message::type() const {
+  return static_cast< ::protocols::ABT::ABT_MessageType >(type_);
 }
-inline void ABT_Message::set_type(::ABT_Message_MessageType value) {
-  assert(::ABT_Message_MessageType_IsValid(value));
+inline void P_Message::set_type(::protocols::ABT::ABT_MessageType value) {
+  assert(::protocols::ABT::ABT_MessageType_IsValid(value));
   set_has_type();
   type_ = value;
 }
 
 // required int32 id = 2;
-inline bool ABT_Message::has_id() const {
+inline bool P_Message::has_id() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
-inline void ABT_Message::set_has_id() {
+inline void P_Message::set_has_id() {
   _has_bits_[0] |= 0x00000002u;
 }
-inline void ABT_Message::clear_has_id() {
+inline void P_Message::clear_has_id() {
   _has_bits_[0] &= ~0x00000002u;
 }
-inline void ABT_Message::clear_id() {
+inline void P_Message::clear_id() {
   id_ = 0;
   clear_has_id();
 }
-inline ::google::protobuf::int32 ABT_Message::id() const {
+inline ::google::protobuf::int32 P_Message::id() const {
   return id_;
 }
-inline void ABT_Message::set_id(::google::protobuf::int32 value) {
+inline void P_Message::set_id(::google::protobuf::int32 value) {
   set_has_id();
   id_ = value;
 }
 
-// optional .ABT_Message.OK ok_data = 3;
-inline bool ABT_Message::has_ok_data() const {
+// optional .protocols.ABT.P_Message.OK ok_data = 3;
+inline bool P_Message::has_ok_data() const {
   return (_has_bits_[0] & 0x00000004u) != 0;
 }
-inline void ABT_Message::set_has_ok_data() {
+inline void P_Message::set_has_ok_data() {
   _has_bits_[0] |= 0x00000004u;
 }
-inline void ABT_Message::clear_has_ok_data() {
+inline void P_Message::clear_has_ok_data() {
   _has_bits_[0] &= ~0x00000004u;
 }
-inline void ABT_Message::clear_ok_data() {
-  if (ok_data_ != NULL) ok_data_->::ABT_Message_OK::Clear();
+inline void P_Message::clear_ok_data() {
+  if (ok_data_ != NULL) ok_data_->::protocols::ABT::P_Message_OK::Clear();
   clear_has_ok_data();
 }
-inline const ::ABT_Message_OK& ABT_Message::ok_data() const {
+inline const ::protocols::ABT::P_Message_OK& P_Message::ok_data() const {
   return ok_data_ != NULL ? *ok_data_ : *default_instance_->ok_data_;
 }
-inline ::ABT_Message_OK* ABT_Message::mutable_ok_data() {
+inline ::protocols::ABT::P_Message_OK* P_Message::mutable_ok_data() {
   set_has_ok_data();
-  if (ok_data_ == NULL) ok_data_ = new ::ABT_Message_OK;
+  if (ok_data_ == NULL) ok_data_ = new ::protocols::ABT::P_Message_OK;
   return ok_data_;
 }
-inline ::ABT_Message_OK* ABT_Message::release_ok_data() {
+inline ::protocols::ABT::P_Message_OK* P_Message::release_ok_data() {
   clear_has_ok_data();
-  ::ABT_Message_OK* temp = ok_data_;
+  ::protocols::ABT::P_Message_OK* temp = ok_data_;
   ok_data_ = NULL;
   return temp;
 }
-inline void ABT_Message::set_allocated_ok_data(::ABT_Message_OK* ok_data) {
+inline void P_Message::set_allocated_ok_data(::protocols::ABT::P_Message_OK* ok_data) {
   delete ok_data_;
   ok_data_ = ok_data;
   if (ok_data) {
@@ -1273,35 +1258,35 @@ inline void ABT_Message::set_allocated_ok_data(::ABT_Message_OK* ok_data) {
   }
 }
 
-// optional .ABT_Message.NOGOOD nogood_data = 4;
-inline bool ABT_Message::has_nogood_data() const {
+// optional .protocols.ABT.P_Message.NOGOOD nogood_data = 4;
+inline bool P_Message::has_nogood_data() const {
   return (_has_bits_[0] & 0x00000008u) != 0;
 }
-inline void ABT_Message::set_has_nogood_data() {
+inline void P_Message::set_has_nogood_data() {
   _has_bits_[0] |= 0x00000008u;
 }
-inline void ABT_Message::clear_has_nogood_data() {
+inline void P_Message::clear_has_nogood_data() {
   _has_bits_[0] &= ~0x00000008u;
 }
-inline void ABT_Message::clear_nogood_data() {
-  if (nogood_data_ != NULL) nogood_data_->::ABT_Message_NOGOOD::Clear();
+inline void P_Message::clear_nogood_data() {
+  if (nogood_data_ != NULL) nogood_data_->::protocols::ABT::P_Message_NOGOOD::Clear();
   clear_has_nogood_data();
 }
-inline const ::ABT_Message_NOGOOD& ABT_Message::nogood_data() const {
+inline const ::protocols::ABT::P_Message_NOGOOD& P_Message::nogood_data() const {
   return nogood_data_ != NULL ? *nogood_data_ : *default_instance_->nogood_data_;
 }
-inline ::ABT_Message_NOGOOD* ABT_Message::mutable_nogood_data() {
+inline ::protocols::ABT::P_Message_NOGOOD* P_Message::mutable_nogood_data() {
   set_has_nogood_data();
-  if (nogood_data_ == NULL) nogood_data_ = new ::ABT_Message_NOGOOD;
+  if (nogood_data_ == NULL) nogood_data_ = new ::protocols::ABT::P_Message_NOGOOD;
   return nogood_data_;
 }
-inline ::ABT_Message_NOGOOD* ABT_Message::release_nogood_data() {
+inline ::protocols::ABT::P_Message_NOGOOD* P_Message::release_nogood_data() {
   clear_has_nogood_data();
-  ::ABT_Message_NOGOOD* temp = nogood_data_;
+  ::protocols::ABT::P_Message_NOGOOD* temp = nogood_data_;
   nogood_data_ = NULL;
   return temp;
 }
-inline void ABT_Message::set_allocated_nogood_data(::ABT_Message_NOGOOD* nogood_data) {
+inline void P_Message::set_allocated_nogood_data(::protocols::ABT::P_Message_NOGOOD* nogood_data) {
   delete nogood_data_;
   nogood_data_ = nogood_data;
   if (nogood_data) {
@@ -1314,17 +1299,20 @@ inline void ABT_Message::set_allocated_nogood_data(::ABT_Message_NOGOOD* nogood_
 
 // @@protoc_insertion_point(namespace_scope)
 
+}  // namespace ABT
+}  // namespace protocols
+
 #ifndef SWIG
 namespace google {
 namespace protobuf {
 
 template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::ABT_CommunicationProtocol_MessageType>() {
-  return ::ABT_CommunicationProtocol_MessageType_descriptor();
+inline const EnumDescriptor* GetEnumDescriptor< ::protocols::ABT::CP_MessageType>() {
+  return ::protocols::ABT::CP_MessageType_descriptor();
 }
 template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::ABT_Message_MessageType>() {
-  return ::ABT_Message_MessageType_descriptor();
+inline const EnumDescriptor* GetEnumDescriptor< ::protocols::ABT::ABT_MessageType>() {
+  return ::protocols::ABT::ABT_MessageType_descriptor();
 }
 
 }  // namespace google

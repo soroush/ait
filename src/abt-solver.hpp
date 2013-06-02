@@ -30,10 +30,10 @@ namespace AIT {
 template<typename V, typename T>
 class ABT_Solver {
 
-	class CommunicationPacket: public ABT_CommunicationProtocol {
+	class CommunicationPacket: public protocols::ABT::P_CommunicationProtocol {
 	};
 
-	class Message: public ABT_Message {
+	class Message: public protocols::ABT::P_Message {
 	};
 
 public:
@@ -48,7 +48,7 @@ public:
 	void chooseValue(V*);
 	void backtrack();
 	void processInfo(const Message&); // OK
-	void updateAgentView(const ABT_Assignment&);
+	void updateAgentView(const protocols::ABT::P_Assignment&);
 	bool coherent(const CompoundAssignment<V, T>& nogood,
 			const Assignment<V, T>& assign);
 	void resolveConflict(const Message&);
@@ -62,8 +62,9 @@ private:
 	T* myValue;
 	void getAgentList();
 	AgentID id;
-	std::list<AgentID> preceding; // Γ+
-	std::list<AgentID> succeeding; // Γ-
+	std::list<protocols::ABT::P_EndPoint*> preceding; // Γ+
+	std::list<protocols::ABT::P_EndPoint*> succeeding; // Γ-
+	std::vector<protocols::ABT::P_EndPoint> everybody;
 	CompoundAssignment<V, T> myAgentView;
 
 	std::string address;
@@ -73,9 +74,9 @@ private:
 	unsigned short serverPublisherPort;
 
 	zmq::context_t context;
-	ABT_Socket listener;
-	ABT_Socket serverRquest;
-	ABT_Socket serverBroadcast;
+	Socket listener;
+	Socket serverRquest;
+	Socket serverBroadcast;
 };
 
 }
@@ -93,7 +94,7 @@ inline AIT::ABT_Solver<V, T>::ABT_Solver(const std::string& host_,
 
 template<typename V, typename T>
 inline AIT::ABT_Solver<V, T>::~ABT_Solver() {
-	delete this->myValue;
+	// delete this->myValue;
 	serverBroadcast.close();
 	serverRquest.close();
 	listener.close();
@@ -102,6 +103,7 @@ inline AIT::ABT_Solver<V, T>::~ABT_Solver() {
 
 template<typename V, typename T>
 inline void AIT::ABT_Solver<V, T>::solve() {
+	using namespace protocols::ABT;
 	myValue = nullptr;
 	bool end = false;
 	getAgentList();
@@ -109,16 +111,16 @@ inline void AIT::ABT_Solver<V, T>::solve() {
 	while (!end) {
 		Message m = getMessage();
 		switch (m.type()) {
-		case ABT_Message_MessageType_T_OK:
+		case ABT_MessageType::T_OK:
 			processInfo(m);
 			break;
-		case ABT_Message_MessageType_T_NOGOOD:
+		case ABT_MessageType::T_NOGOOD:
 			resolveConflict(m);
 			break;
-		case ABT_Message_MessageType_T_ADDLINK:
+		case ABT_MessageType::T_ADDLINK:
 			setLink(m);
 			break;
-		case ABT_Message_MessageType_T_STOP:
+		case ABT_MessageType::T_STOP:
 			end = true;
 			break;
 		default:
@@ -132,9 +134,10 @@ template<typename V, typename T>
 inline void AIT::ABT_Solver<V, T>::connect() {
 	using namespace std;
 	using namespace zmq;
+	using namespace protocols::ABT;
 	// Let's listen to other agents:
 	stringstream addressName;
-	this->address = ABT_Socket::getIP();
+	this->address = Socket::getIP();
 	addressName << "tcp://" << this->address << ":*";
 	try {
 		listener.bind(addressName.str().data());
@@ -162,18 +165,19 @@ inline void AIT::ABT_Solver<V, T>::connect() {
 	} catch (zmq::error_t e) {
 		_ERROR("Unable to connect to monitor.\n"
 		"\t\tTerminating process\n"
-		"\t\tSee below details for more information:")
+		"\t\tSee below details for more information:\n")
 		cerr << e.what() << endl;
 		return;
 	}
 	_INFO("Successfully connected to monitor agent at %s:%d",
 			this->serverAddress.data(), this->serverResponderPort);
-	// Now connect to broadcast
+	// Now connect to broadcast port of monitor
 	addressName.str(string());
 	addressName << "tcp://" << this->serverAddress << ':'
 			<< this->serverPublisherPort;
 	try {
 		serverBroadcast.connect(addressName.str().data());
+		serverBroadcast.setsockopt(ZMQ_SUBSCRIBE,"",0);
 	} catch (zmq::error_t e) {
 		_ERROR("Unable to connect to broadcast channel of monitor agent.\n"
 		"\t\tTerminating process\n"
@@ -182,24 +186,22 @@ inline void AIT::ABT_Solver<V, T>::connect() {
 		return;
 	}
 	_INFO( "Successfully connected to broadcasting channel of "
-	"monitor agent at %s:%d",
-			this->serverAddress.data(), this->serverResponderPort);
+	"monitor agent at %s:%d, (%s)",
+			this->serverAddress.data(), this->serverPublisherPort, addressName.str().data());
 	// Send agent information to server
-	ABT_CommunicationProtocol introPacket;
-	introPacket.set_type(ABT_CommunicationProtocol_MessageType_T_INTRODUCE);
-	introPacket.set_allocated_identity(
-			new ABT_CommunicationProtocol_AgentIdentity());
+	P_CommunicationProtocol introPacket;
+	introPacket.set_type(CP_MessageType::T_INTRODUCE);
+	introPacket.set_allocated_identity(new P_EndPoint());
 	introPacket.mutable_identity()->set_host(this->address);
 	introPacket.mutable_identity()->set_id(this->id);
 	introPacket.mutable_identity()->set_port(this->port);
 	if (this->serverRquest.sendMessage(introPacket)) {
 		_INFO(
 				"Introduction message sent to monitor agent. Waiting for reply...");
-		ABT_CommunicationProtocol ackPacket;
-		if (this->serverRquest.recvMessage(ackPacket)) {
+		P_CommunicationProtocol introAckPacket;
+		if (this->serverRquest.recvMessage(introAckPacket)) {
 			_INFO("Message received from monitor");
-			if (ackPacket.type()
-					== ABT_CommunicationProtocol_MessageType_T_ACK) {
+			if (introAckPacket.type() == CP_MessageType::T_INTRODUCE_ACK) {
 				_INFO( "Monitor agent accepted connection.");
 			}
 		} else {
@@ -215,8 +217,8 @@ inline void AIT::ABT_Solver<V, T>::checkAgentView() {
 	if (!consistent(*myValue)) {
 		chooseValue(myValue);
 		if (myValue != nullptr) {
-			for (const auto& agentID : succeeding) {
-				sendMessage(agentID, Message());
+			for (const auto& agent : succeeding) {
+				sendMessage(agent->id(), Message());
 			}
 		} else {
 			backtrack();
@@ -240,7 +242,7 @@ inline void AIT::ABT_Solver<V, T>::backtrack() {
 
 template<typename V, typename T>
 inline void AIT::ABT_Solver<V, T>::updateAgentView(
-		const ABT_Assignment& assignment) {
+		const protocols::ABT::P_Assignment& assignment) {
 }
 
 template<typename V, typename T>
@@ -272,13 +274,37 @@ inline void AIT::ABT_Solver<V, T>::setLink(const Message& m) {
 
 template<typename V, typename T>
 inline void AIT::ABT_Solver<V, T>::getAgentList() {
+	using namespace protocols::ABT;
 	CommunicationPacket packet;
+	_INFO( "Sending Request List to monitor agent ...");
+	CommunicationPacket requestList;
+	requestList.set_type(CP_MessageType::T_REQUEST_LIST);
+	requestList.set_id(this->id);
+	this->serverRquest.sendMessage(requestList);
+	CommunicationPacket requestListAck;
+	this->serverRquest.recvMessage(requestListAck);
+	if (requestListAck.type() == CP_MessageType::T_REQUEST_ACK) {
+		_INFO( "Monitor has accepted to send list of agents.");
+	} else {
+		_ERROR(
+				"Unable to get agent list from monitor.\nTerminating silently. Goodbye.");
+	}
 	_INFO( "Waiting for all agents to came online...");
 	this->serverBroadcast.recvMessage(packet);
-	if (packet.type() == ABT_CommunicationProtocol_MessageType_T_GET_LIST) {
-		// TODO process received addresses. Compute T+ and T-
-	}
+	_INFO( "I'm done.");
+//	if (packet.type() == CP_MessageType::T_LIST) {
+//		for (int i = 0; i < packet.others_size(); ++i) {
+//			this->everybody.push_back(packet.others(i));
+//		}
+//		for (auto& agent : everybody) {
+//			if (agent.id() < this->id)
+//				preceding.push_back(&agent);
+//			else if (agent.id() > this->id)
+//				succeeding.push_back(&agent);
+//			else
+//				_ERROR("Somebody has same ID with me! ()\n")
+//		}
+//	}
 }
 
-/* namespace AIT */
 #endif /* ABT_SOLVER_H_ */

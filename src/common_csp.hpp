@@ -39,7 +39,7 @@ public:
 	void add(const Assignment<V, T>&);
 private:
 	std::vector<Assignment<V, T>> assignments;
-	ABT_Assignment assignmentData;
+	protocols::ABT::P_Assignment assignmentData;
 };
 
 }

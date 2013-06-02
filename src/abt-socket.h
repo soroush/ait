@@ -5,8 +5,8 @@
  *      Author: soroush
  */
 
-#ifndef ABT_SOCKET_H_
-#define ABT_SOCKET_H_
+#ifndef SOCKET_H_
+#define SOCKET_H_
 
 #include <zmq.hpp>
 #include <string>
@@ -14,17 +14,17 @@
 
 namespace AIT {
 
-class ABT_Socket: public zmq::socket_t {
+class Socket: public zmq::socket_t {
 public:
-	ABT_Socket(zmq::context_t &context_, int type_);
-	ABT_Socket(zmq::socket_t&& rhs);
-	virtual ~ABT_Socket();
-	size_t sendMessage(const ABT_CommunicationProtocol&);
-	size_t sendMessage(const ABT_Message&);
-	size_t recvMessage(ABT_CommunicationProtocol&);
-	size_t recvMessage(ABT_Message&);
+	Socket(zmq::context_t &context_, int type_);
+	Socket(zmq::socket_t&& rhs);
+	virtual ~Socket();
+	size_t sendMessage(const protocols::ABT::P_CommunicationProtocol&);
+	size_t sendMessage(const protocols::ABT::P_Message&);
+	size_t recvMessage(protocols::ABT::P_CommunicationProtocol&);
+	size_t recvMessage(protocols::ABT::P_Message&);
 	static std::string getIP();
 };
 
 } /* namespace AIT */
-#endif /* ABT_SOCKET_H_ */
+#endif /* SOCKET_H_ */

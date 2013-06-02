@@ -16,31 +16,34 @@
 #include <google/protobuf/wire_format.h>
 // @@protoc_insertion_point(includes)
 
+namespace protocols {
+namespace ABT {
+
 namespace {
 
-const ::google::protobuf::Descriptor* ABT_CommunicationProtocol_descriptor_ = NULL;
+const ::google::protobuf::Descriptor* P_EndPoint_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
-  ABT_CommunicationProtocol_reflection_ = NULL;
-const ::google::protobuf::Descriptor* ABT_CommunicationProtocol_AgentIdentity_descriptor_ = NULL;
+  P_EndPoint_reflection_ = NULL;
+const ::google::protobuf::Descriptor* P_CommunicationProtocol_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
-  ABT_CommunicationProtocol_AgentIdentity_reflection_ = NULL;
-const ::google::protobuf::EnumDescriptor* ABT_CommunicationProtocol_MessageType_descriptor_ = NULL;
-const ::google::protobuf::Descriptor* ABT_Assignment_descriptor_ = NULL;
+  P_CommunicationProtocol_reflection_ = NULL;
+const ::google::protobuf::Descriptor* P_Assignment_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
-  ABT_Assignment_reflection_ = NULL;
-const ::google::protobuf::Descriptor* ABT_CompoundAssignment_descriptor_ = NULL;
+  P_Assignment_reflection_ = NULL;
+const ::google::protobuf::Descriptor* P_CompoundAssignment_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
-  ABT_CompoundAssignment_reflection_ = NULL;
-const ::google::protobuf::Descriptor* ABT_Message_descriptor_ = NULL;
+  P_CompoundAssignment_reflection_ = NULL;
+const ::google::protobuf::Descriptor* P_Message_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
-  ABT_Message_reflection_ = NULL;
-const ::google::protobuf::Descriptor* ABT_Message_OK_descriptor_ = NULL;
+  P_Message_reflection_ = NULL;
+const ::google::protobuf::Descriptor* P_Message_OK_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
-  ABT_Message_OK_reflection_ = NULL;
-const ::google::protobuf::Descriptor* ABT_Message_NOGOOD_descriptor_ = NULL;
+  P_Message_OK_reflection_ = NULL;
+const ::google::protobuf::Descriptor* P_Message_NOGOOD_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
-  ABT_Message_NOGOOD_reflection_ = NULL;
-const ::google::protobuf::EnumDescriptor* ABT_Message_MessageType_descriptor_ = NULL;
+  P_Message_NOGOOD_reflection_ = NULL;
+const ::google::protobuf::EnumDescriptor* CP_MessageType_descriptor_ = NULL;
+const ::google::protobuf::EnumDescriptor* ABT_MessageType_descriptor_ = NULL;
 
 }  // namespace
 
@@ -51,121 +54,122 @@ void protobuf_AssignDesc_protocols_2eproto() {
     ::google::protobuf::DescriptorPool::generated_pool()->FindFileByName(
       "protocols.proto");
   GOOGLE_CHECK(file != NULL);
-  ABT_CommunicationProtocol_descriptor_ = file->message_type(0);
-  static const int ABT_CommunicationProtocol_offsets_[3] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ABT_CommunicationProtocol, type_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ABT_CommunicationProtocol, identity_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ABT_CommunicationProtocol, others_),
+  P_EndPoint_descriptor_ = file->message_type(0);
+  static const int P_EndPoint_offsets_[3] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(P_EndPoint, id_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(P_EndPoint, host_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(P_EndPoint, port_),
   };
-  ABT_CommunicationProtocol_reflection_ =
+  P_EndPoint_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
-      ABT_CommunicationProtocol_descriptor_,
-      ABT_CommunicationProtocol::default_instance_,
-      ABT_CommunicationProtocol_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ABT_CommunicationProtocol, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ABT_CommunicationProtocol, _unknown_fields_),
+      P_EndPoint_descriptor_,
+      P_EndPoint::default_instance_,
+      P_EndPoint_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(P_EndPoint, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(P_EndPoint, _unknown_fields_),
       -1,
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(ABT_CommunicationProtocol));
-  ABT_CommunicationProtocol_AgentIdentity_descriptor_ = ABT_CommunicationProtocol_descriptor_->nested_type(0);
-  static const int ABT_CommunicationProtocol_AgentIdentity_offsets_[3] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ABT_CommunicationProtocol_AgentIdentity, id_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ABT_CommunicationProtocol_AgentIdentity, host_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ABT_CommunicationProtocol_AgentIdentity, port_),
+      sizeof(P_EndPoint));
+  P_CommunicationProtocol_descriptor_ = file->message_type(1);
+  static const int P_CommunicationProtocol_offsets_[4] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(P_CommunicationProtocol, type_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(P_CommunicationProtocol, id_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(P_CommunicationProtocol, identity_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(P_CommunicationProtocol, others_),
   };
-  ABT_CommunicationProtocol_AgentIdentity_reflection_ =
+  P_CommunicationProtocol_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
-      ABT_CommunicationProtocol_AgentIdentity_descriptor_,
-      ABT_CommunicationProtocol_AgentIdentity::default_instance_,
-      ABT_CommunicationProtocol_AgentIdentity_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ABT_CommunicationProtocol_AgentIdentity, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ABT_CommunicationProtocol_AgentIdentity, _unknown_fields_),
+      P_CommunicationProtocol_descriptor_,
+      P_CommunicationProtocol::default_instance_,
+      P_CommunicationProtocol_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(P_CommunicationProtocol, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(P_CommunicationProtocol, _unknown_fields_),
       -1,
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(ABT_CommunicationProtocol_AgentIdentity));
-  ABT_CommunicationProtocol_MessageType_descriptor_ = ABT_CommunicationProtocol_descriptor_->enum_type(0);
-  ABT_Assignment_descriptor_ = file->message_type(1);
-  static const int ABT_Assignment_offsets_[2] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ABT_Assignment, id_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ABT_Assignment, value_),
+      sizeof(P_CommunicationProtocol));
+  P_Assignment_descriptor_ = file->message_type(2);
+  static const int P_Assignment_offsets_[2] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(P_Assignment, id_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(P_Assignment, value_),
   };
-  ABT_Assignment_reflection_ =
+  P_Assignment_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
-      ABT_Assignment_descriptor_,
-      ABT_Assignment::default_instance_,
-      ABT_Assignment_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ABT_Assignment, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ABT_Assignment, _unknown_fields_),
+      P_Assignment_descriptor_,
+      P_Assignment::default_instance_,
+      P_Assignment_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(P_Assignment, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(P_Assignment, _unknown_fields_),
       -1,
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(ABT_Assignment));
-  ABT_CompoundAssignment_descriptor_ = file->message_type(2);
-  static const int ABT_CompoundAssignment_offsets_[1] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ABT_CompoundAssignment, assignments_),
+      sizeof(P_Assignment));
+  P_CompoundAssignment_descriptor_ = file->message_type(3);
+  static const int P_CompoundAssignment_offsets_[1] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(P_CompoundAssignment, assignments_),
   };
-  ABT_CompoundAssignment_reflection_ =
+  P_CompoundAssignment_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
-      ABT_CompoundAssignment_descriptor_,
-      ABT_CompoundAssignment::default_instance_,
-      ABT_CompoundAssignment_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ABT_CompoundAssignment, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ABT_CompoundAssignment, _unknown_fields_),
+      P_CompoundAssignment_descriptor_,
+      P_CompoundAssignment::default_instance_,
+      P_CompoundAssignment_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(P_CompoundAssignment, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(P_CompoundAssignment, _unknown_fields_),
       -1,
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(ABT_CompoundAssignment));
-  ABT_Message_descriptor_ = file->message_type(3);
-  static const int ABT_Message_offsets_[4] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ABT_Message, type_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ABT_Message, id_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ABT_Message, ok_data_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ABT_Message, nogood_data_),
+      sizeof(P_CompoundAssignment));
+  P_Message_descriptor_ = file->message_type(4);
+  static const int P_Message_offsets_[4] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(P_Message, type_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(P_Message, id_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(P_Message, ok_data_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(P_Message, nogood_data_),
   };
-  ABT_Message_reflection_ =
+  P_Message_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
-      ABT_Message_descriptor_,
-      ABT_Message::default_instance_,
-      ABT_Message_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ABT_Message, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ABT_Message, _unknown_fields_),
+      P_Message_descriptor_,
+      P_Message::default_instance_,
+      P_Message_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(P_Message, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(P_Message, _unknown_fields_),
       -1,
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(ABT_Message));
-  ABT_Message_OK_descriptor_ = ABT_Message_descriptor_->nested_type(0);
-  static const int ABT_Message_OK_offsets_[1] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ABT_Message_OK, assignment_),
+      sizeof(P_Message));
+  P_Message_OK_descriptor_ = P_Message_descriptor_->nested_type(0);
+  static const int P_Message_OK_offsets_[1] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(P_Message_OK, assignment_),
   };
-  ABT_Message_OK_reflection_ =
+  P_Message_OK_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
-      ABT_Message_OK_descriptor_,
-      ABT_Message_OK::default_instance_,
-      ABT_Message_OK_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ABT_Message_OK, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ABT_Message_OK, _unknown_fields_),
+      P_Message_OK_descriptor_,
+      P_Message_OK::default_instance_,
+      P_Message_OK_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(P_Message_OK, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(P_Message_OK, _unknown_fields_),
       -1,
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(ABT_Message_OK));
-  ABT_Message_NOGOOD_descriptor_ = ABT_Message_descriptor_->nested_type(1);
-  static const int ABT_Message_NOGOOD_offsets_[1] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ABT_Message_NOGOOD, nogood_),
+      sizeof(P_Message_OK));
+  P_Message_NOGOOD_descriptor_ = P_Message_descriptor_->nested_type(1);
+  static const int P_Message_NOGOOD_offsets_[1] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(P_Message_NOGOOD, nogood_),
   };
-  ABT_Message_NOGOOD_reflection_ =
+  P_Message_NOGOOD_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
-      ABT_Message_NOGOOD_descriptor_,
-      ABT_Message_NOGOOD::default_instance_,
-      ABT_Message_NOGOOD_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ABT_Message_NOGOOD, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ABT_Message_NOGOOD, _unknown_fields_),
+      P_Message_NOGOOD_descriptor_,
+      P_Message_NOGOOD::default_instance_,
+      P_Message_NOGOOD_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(P_Message_NOGOOD, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(P_Message_NOGOOD, _unknown_fields_),
       -1,
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(ABT_Message_NOGOOD));
-  ABT_Message_MessageType_descriptor_ = ABT_Message_descriptor_->enum_type(0);
+      sizeof(P_Message_NOGOOD));
+  CP_MessageType_descriptor_ = file->enum_type(0);
+  ABT_MessageType_descriptor_ = file->enum_type(1);
 }
 
 namespace {
@@ -179,38 +183,38 @@ inline void protobuf_AssignDescriptorsOnce() {
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    ABT_CommunicationProtocol_descriptor_, &ABT_CommunicationProtocol::default_instance());
+    P_EndPoint_descriptor_, &P_EndPoint::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    ABT_CommunicationProtocol_AgentIdentity_descriptor_, &ABT_CommunicationProtocol_AgentIdentity::default_instance());
+    P_CommunicationProtocol_descriptor_, &P_CommunicationProtocol::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    ABT_Assignment_descriptor_, &ABT_Assignment::default_instance());
+    P_Assignment_descriptor_, &P_Assignment::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    ABT_CompoundAssignment_descriptor_, &ABT_CompoundAssignment::default_instance());
+    P_CompoundAssignment_descriptor_, &P_CompoundAssignment::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    ABT_Message_descriptor_, &ABT_Message::default_instance());
+    P_Message_descriptor_, &P_Message::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    ABT_Message_OK_descriptor_, &ABT_Message_OK::default_instance());
+    P_Message_OK_descriptor_, &P_Message_OK::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    ABT_Message_NOGOOD_descriptor_, &ABT_Message_NOGOOD::default_instance());
+    P_Message_NOGOOD_descriptor_, &P_Message_NOGOOD::default_instance());
 }
 
 }  // namespace
 
 void protobuf_ShutdownFile_protocols_2eproto() {
-  delete ABT_CommunicationProtocol::default_instance_;
-  delete ABT_CommunicationProtocol_reflection_;
-  delete ABT_CommunicationProtocol_AgentIdentity::default_instance_;
-  delete ABT_CommunicationProtocol_AgentIdentity_reflection_;
-  delete ABT_Assignment::default_instance_;
-  delete ABT_Assignment_reflection_;
-  delete ABT_CompoundAssignment::default_instance_;
-  delete ABT_CompoundAssignment_reflection_;
-  delete ABT_Message::default_instance_;
-  delete ABT_Message_reflection_;
-  delete ABT_Message_OK::default_instance_;
-  delete ABT_Message_OK_reflection_;
-  delete ABT_Message_NOGOOD::default_instance_;
-  delete ABT_Message_NOGOOD_reflection_;
+  delete P_EndPoint::default_instance_;
+  delete P_EndPoint_reflection_;
+  delete P_CommunicationProtocol::default_instance_;
+  delete P_CommunicationProtocol_reflection_;
+  delete P_Assignment::default_instance_;
+  delete P_Assignment_reflection_;
+  delete P_CompoundAssignment::default_instance_;
+  delete P_CompoundAssignment_reflection_;
+  delete P_Message::default_instance_;
+  delete P_Message_reflection_;
+  delete P_Message_OK::default_instance_;
+  delete P_Message_OK_reflection_;
+  delete P_Message_NOGOOD::default_instance_;
+  delete P_Message_NOGOOD_reflection_;
 }
 
 void protobuf_AddDesc_protocols_2eproto() {
@@ -220,41 +224,45 @@ void protobuf_AddDesc_protocols_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-    "\n\017protocols.proto\"\306\002\n\031ABT_CommunicationP"
-    "rotocol\0224\n\004type\030\001 \002(\0162&.ABT_Communicatio"
-    "nProtocol.MessageType\022:\n\010identity\030\002 \001(\0132"
-    "(.ABT_CommunicationProtocol.AgentIdentit"
-    "y\0228\n\006others\030\003 \003(\0132(.ABT_CommunicationPro"
-    "tocol.AgentIdentity\0327\n\rAgentIdentity\022\n\n\002"
-    "id\030\001 \002(\005\022\014\n\004host\030\002 \002(\t\022\014\n\004port\030\003 \002(\005\"D\n\013"
-    "MessageType\022\017\n\013T_INTRODUCE\020\001\022\016\n\nT_GET_LI"
-    "ST\020\002\022\t\n\005T_BYE\020\003\022\t\n\005T_ACK\020\004\"+\n\016ABT_Assign"
-    "ment\022\n\n\002id\030\001 \002(\005\022\r\n\005value\030\002 \002(\005\">\n\026ABT_C"
-    "ompoundAssignment\022$\n\013assignments\030\001 \003(\0132\017"
-    ".ABT_Assignment\"\255\002\n\013ABT_Message\022&\n\004type\030"
-    "\001 \002(\0162\030.ABT_Message.MessageType\022\n\n\002id\030\002 "
-    "\002(\005\022 \n\007ok_data\030\003 \001(\0132\017.ABT_Message.OK\022(\n"
-    "\013nogood_data\030\004 \001(\0132\023.ABT_Message.NOGOOD\032"
-    ")\n\002OK\022#\n\nassignment\030\001 \002(\0132\017.ABT_Assignme"
-    "nt\0321\n\006NOGOOD\022\'\n\006nogood\030\001 \002(\0132\027.ABT_Compo"
-    "undAssignment\"@\n\013MessageType\022\010\n\004T_OK\020\001\022\014"
-    "\n\010T_NOGOOD\020\002\022\r\n\tT_ADDLINK\020\003\022\n\n\006T_STOP\020\004", 759);
+    "\n\017protocols.proto\022\rprotocols.ABT\"4\n\nP_En"
+    "dPoint\022\n\n\002id\030\001 \002(\005\022\014\n\004host\030\002 \002(\t\022\014\n\004port"
+    "\030\003 \002(\005\"\252\001\n\027P_CommunicationProtocol\022+\n\004ty"
+    "pe\030\001 \002(\0162\035.protocols.ABT.CP_MessageType\022"
+    "\n\n\002id\030\002 \001(\005\022+\n\010identity\030\003 \001(\0132\031.protocol"
+    "s.ABT.P_EndPoint\022)\n\006others\030\004 \003(\0132\031.proto"
+    "cols.ABT.P_EndPoint\")\n\014P_Assignment\022\n\n\002i"
+    "d\030\001 \002(\005\022\r\n\005value\030\002 \002(\005\"H\n\024P_CompoundAssi"
+    "gnment\0220\n\013assignments\030\001 \003(\0132\033.protocols."
+    "ABT.P_Assignment\"\237\002\n\tP_Message\022,\n\004type\030\001"
+    " \002(\0162\036.protocols.ABT.ABT_MessageType\022\n\n\002"
+    "id\030\002 \002(\005\022,\n\007ok_data\030\003 \001(\0132\033.protocols.AB"
+    "T.P_Message.OK\0224\n\013nogood_data\030\004 \001(\0132\037.pr"
+    "otocols.ABT.P_Message.NOGOOD\0325\n\002OK\022/\n\nas"
+    "signment\030\001 \002(\0132\033.protocols.ABT.P_Assignm"
+    "ent\032=\n\006NOGOOD\0223\n\006nogood\030\001 \002(\0132#.protocol"
+    "s.ABT.P_CompoundAssignment*\247\001\n\016CP_Messag"
+    "eType\022\017\n\013T_INTRODUCE\020\001\022\023\n\017T_INTRODUCE_AC"
+    "K\020\002\022\022\n\016T_REQUEST_LIST\020\003\022\021\n\rT_REQUEST_ACK"
+    "\020\004\022\n\n\006T_LIST\020\005\022\026\n\022ERR_NO_MORE_AGENTS\020\006\022\023"
+    "\n\017ERR_REPEATED_ID\020\007\022\017\n\013ERR_UNKNOWN\020\010*D\n\017"
+    "ABT_MessageType\022\010\n\004T_OK\020\001\022\014\n\010T_NOGOOD\020\002\022"
+    "\r\n\tT_ADDLINK\020\003\022\n\n\006T_STOP\020\004", 906);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "protocols.proto", &protobuf_RegisterTypes);
-  ABT_CommunicationProtocol::default_instance_ = new ABT_CommunicationProtocol();
-  ABT_CommunicationProtocol_AgentIdentity::default_instance_ = new ABT_CommunicationProtocol_AgentIdentity();
-  ABT_Assignment::default_instance_ = new ABT_Assignment();
-  ABT_CompoundAssignment::default_instance_ = new ABT_CompoundAssignment();
-  ABT_Message::default_instance_ = new ABT_Message();
-  ABT_Message_OK::default_instance_ = new ABT_Message_OK();
-  ABT_Message_NOGOOD::default_instance_ = new ABT_Message_NOGOOD();
-  ABT_CommunicationProtocol::default_instance_->InitAsDefaultInstance();
-  ABT_CommunicationProtocol_AgentIdentity::default_instance_->InitAsDefaultInstance();
-  ABT_Assignment::default_instance_->InitAsDefaultInstance();
-  ABT_CompoundAssignment::default_instance_->InitAsDefaultInstance();
-  ABT_Message::default_instance_->InitAsDefaultInstance();
-  ABT_Message_OK::default_instance_->InitAsDefaultInstance();
-  ABT_Message_NOGOOD::default_instance_->InitAsDefaultInstance();
+  P_EndPoint::default_instance_ = new P_EndPoint();
+  P_CommunicationProtocol::default_instance_ = new P_CommunicationProtocol();
+  P_Assignment::default_instance_ = new P_Assignment();
+  P_CompoundAssignment::default_instance_ = new P_CompoundAssignment();
+  P_Message::default_instance_ = new P_Message();
+  P_Message_OK::default_instance_ = new P_Message_OK();
+  P_Message_NOGOOD::default_instance_ = new P_Message_NOGOOD();
+  P_EndPoint::default_instance_->InitAsDefaultInstance();
+  P_CommunicationProtocol::default_instance_->InitAsDefaultInstance();
+  P_Assignment::default_instance_->InitAsDefaultInstance();
+  P_CompoundAssignment::default_instance_->InitAsDefaultInstance();
+  P_Message::default_instance_->InitAsDefaultInstance();
+  P_Message_OK::default_instance_->InitAsDefaultInstance();
+  P_Message_NOGOOD::default_instance_->InitAsDefaultInstance();
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_protocols_2eproto);
 }
 
@@ -264,14 +272,31 @@ struct StaticDescriptorInitializer_protocols_2eproto {
     protobuf_AddDesc_protocols_2eproto();
   }
 } static_descriptor_initializer_protocols_2eproto_;
-
-// ===================================================================
-
-const ::google::protobuf::EnumDescriptor* ABT_CommunicationProtocol_MessageType_descriptor() {
+const ::google::protobuf::EnumDescriptor* CP_MessageType_descriptor() {
   protobuf_AssignDescriptorsOnce();
-  return ABT_CommunicationProtocol_MessageType_descriptor_;
+  return CP_MessageType_descriptor_;
 }
-bool ABT_CommunicationProtocol_MessageType_IsValid(int value) {
+bool CP_MessageType_IsValid(int value) {
+  switch(value) {
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+    case 5:
+    case 6:
+    case 7:
+    case 8:
+      return true;
+    default:
+      return false;
+  }
+}
+
+const ::google::protobuf::EnumDescriptor* ABT_MessageType_descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return ABT_MessageType_descriptor_;
+}
+bool ABT_MessageType_IsValid(int value) {
   switch(value) {
     case 1:
     case 2:
@@ -283,36 +308,30 @@ bool ABT_CommunicationProtocol_MessageType_IsValid(int value) {
   }
 }
 
+
+// ===================================================================
+
 #ifndef _MSC_VER
-const ABT_CommunicationProtocol_MessageType ABT_CommunicationProtocol::T_INTRODUCE;
-const ABT_CommunicationProtocol_MessageType ABT_CommunicationProtocol::T_GET_LIST;
-const ABT_CommunicationProtocol_MessageType ABT_CommunicationProtocol::T_BYE;
-const ABT_CommunicationProtocol_MessageType ABT_CommunicationProtocol::T_ACK;
-const ABT_CommunicationProtocol_MessageType ABT_CommunicationProtocol::MessageType_MIN;
-const ABT_CommunicationProtocol_MessageType ABT_CommunicationProtocol::MessageType_MAX;
-const int ABT_CommunicationProtocol::MessageType_ARRAYSIZE;
-#endif  // _MSC_VER
-#ifndef _MSC_VER
-const int ABT_CommunicationProtocol_AgentIdentity::kIdFieldNumber;
-const int ABT_CommunicationProtocol_AgentIdentity::kHostFieldNumber;
-const int ABT_CommunicationProtocol_AgentIdentity::kPortFieldNumber;
+const int P_EndPoint::kIdFieldNumber;
+const int P_EndPoint::kHostFieldNumber;
+const int P_EndPoint::kPortFieldNumber;
 #endif  // !_MSC_VER
 
-ABT_CommunicationProtocol_AgentIdentity::ABT_CommunicationProtocol_AgentIdentity()
+P_EndPoint::P_EndPoint()
   : ::google::protobuf::Message() {
   SharedCtor();
 }
 
-void ABT_CommunicationProtocol_AgentIdentity::InitAsDefaultInstance() {
+void P_EndPoint::InitAsDefaultInstance() {
 }
 
-ABT_CommunicationProtocol_AgentIdentity::ABT_CommunicationProtocol_AgentIdentity(const ABT_CommunicationProtocol_AgentIdentity& from)
+P_EndPoint::P_EndPoint(const P_EndPoint& from)
   : ::google::protobuf::Message() {
   SharedCtor();
   MergeFrom(from);
 }
 
-void ABT_CommunicationProtocol_AgentIdentity::SharedCtor() {
+void P_EndPoint::SharedCtor() {
   _cached_size_ = 0;
   id_ = 0;
   host_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
@@ -320,11 +339,11 @@ void ABT_CommunicationProtocol_AgentIdentity::SharedCtor() {
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
-ABT_CommunicationProtocol_AgentIdentity::~ABT_CommunicationProtocol_AgentIdentity() {
+P_EndPoint::~P_EndPoint() {
   SharedDtor();
 }
 
-void ABT_CommunicationProtocol_AgentIdentity::SharedDtor() {
+void P_EndPoint::SharedDtor() {
   if (host_ != &::google::protobuf::internal::kEmptyString) {
     delete host_;
   }
@@ -332,28 +351,28 @@ void ABT_CommunicationProtocol_AgentIdentity::SharedDtor() {
   }
 }
 
-void ABT_CommunicationProtocol_AgentIdentity::SetCachedSize(int size) const {
+void P_EndPoint::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const ::google::protobuf::Descriptor* ABT_CommunicationProtocol_AgentIdentity::descriptor() {
+const ::google::protobuf::Descriptor* P_EndPoint::descriptor() {
   protobuf_AssignDescriptorsOnce();
-  return ABT_CommunicationProtocol_AgentIdentity_descriptor_;
+  return P_EndPoint_descriptor_;
 }
 
-const ABT_CommunicationProtocol_AgentIdentity& ABT_CommunicationProtocol_AgentIdentity::default_instance() {
+const P_EndPoint& P_EndPoint::default_instance() {
   if (default_instance_ == NULL) protobuf_AddDesc_protocols_2eproto();
   return *default_instance_;
 }
 
-ABT_CommunicationProtocol_AgentIdentity* ABT_CommunicationProtocol_AgentIdentity::default_instance_ = NULL;
+P_EndPoint* P_EndPoint::default_instance_ = NULL;
 
-ABT_CommunicationProtocol_AgentIdentity* ABT_CommunicationProtocol_AgentIdentity::New() const {
-  return new ABT_CommunicationProtocol_AgentIdentity;
+P_EndPoint* P_EndPoint::New() const {
+  return new P_EndPoint;
 }
 
-void ABT_CommunicationProtocol_AgentIdentity::Clear() {
+void P_EndPoint::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     id_ = 0;
     if (has_host()) {
@@ -367,7 +386,7 @@ void ABT_CommunicationProtocol_AgentIdentity::Clear() {
   mutable_unknown_fields()->Clear();
 }
 
-bool ABT_CommunicationProtocol_AgentIdentity::MergePartialFromCodedStream(
+bool P_EndPoint::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!(EXPRESSION)) return false
   ::google::protobuf::uint32 tag;
@@ -437,7 +456,7 @@ bool ABT_CommunicationProtocol_AgentIdentity::MergePartialFromCodedStream(
 #undef DO_
 }
 
-void ABT_CommunicationProtocol_AgentIdentity::SerializeWithCachedSizes(
+void P_EndPoint::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // required int32 id = 1;
   if (has_id()) {
@@ -464,7 +483,7 @@ void ABT_CommunicationProtocol_AgentIdentity::SerializeWithCachedSizes(
   }
 }
 
-::google::protobuf::uint8* ABT_CommunicationProtocol_AgentIdentity::SerializeWithCachedSizesToArray(
+::google::protobuf::uint8* P_EndPoint::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // required int32 id = 1;
   if (has_id()) {
@@ -493,7 +512,7 @@ void ABT_CommunicationProtocol_AgentIdentity::SerializeWithCachedSizes(
   return target;
 }
 
-int ABT_CommunicationProtocol_AgentIdentity::ByteSize() const {
+int P_EndPoint::ByteSize() const {
   int total_size = 0;
 
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
@@ -530,10 +549,10 @@ int ABT_CommunicationProtocol_AgentIdentity::ByteSize() const {
   return total_size;
 }
 
-void ABT_CommunicationProtocol_AgentIdentity::MergeFrom(const ::google::protobuf::Message& from) {
+void P_EndPoint::MergeFrom(const ::google::protobuf::Message& from) {
   GOOGLE_CHECK_NE(&from, this);
-  const ABT_CommunicationProtocol_AgentIdentity* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const ABT_CommunicationProtocol_AgentIdentity*>(
+  const P_EndPoint* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const P_EndPoint*>(
       &from);
   if (source == NULL) {
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
@@ -542,7 +561,7 @@ void ABT_CommunicationProtocol_AgentIdentity::MergeFrom(const ::google::protobuf
   }
 }
 
-void ABT_CommunicationProtocol_AgentIdentity::MergeFrom(const ABT_CommunicationProtocol_AgentIdentity& from) {
+void P_EndPoint::MergeFrom(const P_EndPoint& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from.has_id()) {
@@ -558,25 +577,25 @@ void ABT_CommunicationProtocol_AgentIdentity::MergeFrom(const ABT_CommunicationP
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
-void ABT_CommunicationProtocol_AgentIdentity::CopyFrom(const ::google::protobuf::Message& from) {
+void P_EndPoint::CopyFrom(const ::google::protobuf::Message& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void ABT_CommunicationProtocol_AgentIdentity::CopyFrom(const ABT_CommunicationProtocol_AgentIdentity& from) {
+void P_EndPoint::CopyFrom(const P_EndPoint& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool ABT_CommunicationProtocol_AgentIdentity::IsInitialized() const {
+bool P_EndPoint::IsInitialized() const {
   if ((_has_bits_[0] & 0x00000007) != 0x00000007) return false;
 
   return true;
 }
 
-void ABT_CommunicationProtocol_AgentIdentity::Swap(ABT_CommunicationProtocol_AgentIdentity* other) {
+void P_EndPoint::Swap(P_EndPoint* other) {
   if (other != this) {
     std::swap(id_, other->id_);
     std::swap(host_, other->host_);
@@ -587,81 +606,84 @@ void ABT_CommunicationProtocol_AgentIdentity::Swap(ABT_CommunicationProtocol_Age
   }
 }
 
-::google::protobuf::Metadata ABT_CommunicationProtocol_AgentIdentity::GetMetadata() const {
+::google::protobuf::Metadata P_EndPoint::GetMetadata() const {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::Metadata metadata;
-  metadata.descriptor = ABT_CommunicationProtocol_AgentIdentity_descriptor_;
-  metadata.reflection = ABT_CommunicationProtocol_AgentIdentity_reflection_;
+  metadata.descriptor = P_EndPoint_descriptor_;
+  metadata.reflection = P_EndPoint_reflection_;
   return metadata;
 }
 
 
-// -------------------------------------------------------------------
+// ===================================================================
 
 #ifndef _MSC_VER
-const int ABT_CommunicationProtocol::kTypeFieldNumber;
-const int ABT_CommunicationProtocol::kIdentityFieldNumber;
-const int ABT_CommunicationProtocol::kOthersFieldNumber;
+const int P_CommunicationProtocol::kTypeFieldNumber;
+const int P_CommunicationProtocol::kIdFieldNumber;
+const int P_CommunicationProtocol::kIdentityFieldNumber;
+const int P_CommunicationProtocol::kOthersFieldNumber;
 #endif  // !_MSC_VER
 
-ABT_CommunicationProtocol::ABT_CommunicationProtocol()
+P_CommunicationProtocol::P_CommunicationProtocol()
   : ::google::protobuf::Message() {
   SharedCtor();
 }
 
-void ABT_CommunicationProtocol::InitAsDefaultInstance() {
-  identity_ = const_cast< ::ABT_CommunicationProtocol_AgentIdentity*>(&::ABT_CommunicationProtocol_AgentIdentity::default_instance());
+void P_CommunicationProtocol::InitAsDefaultInstance() {
+  identity_ = const_cast< ::protocols::ABT::P_EndPoint*>(&::protocols::ABT::P_EndPoint::default_instance());
 }
 
-ABT_CommunicationProtocol::ABT_CommunicationProtocol(const ABT_CommunicationProtocol& from)
+P_CommunicationProtocol::P_CommunicationProtocol(const P_CommunicationProtocol& from)
   : ::google::protobuf::Message() {
   SharedCtor();
   MergeFrom(from);
 }
 
-void ABT_CommunicationProtocol::SharedCtor() {
+void P_CommunicationProtocol::SharedCtor() {
   _cached_size_ = 0;
   type_ = 1;
+  id_ = 0;
   identity_ = NULL;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
-ABT_CommunicationProtocol::~ABT_CommunicationProtocol() {
+P_CommunicationProtocol::~P_CommunicationProtocol() {
   SharedDtor();
 }
 
-void ABT_CommunicationProtocol::SharedDtor() {
+void P_CommunicationProtocol::SharedDtor() {
   if (this != default_instance_) {
     delete identity_;
   }
 }
 
-void ABT_CommunicationProtocol::SetCachedSize(int size) const {
+void P_CommunicationProtocol::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const ::google::protobuf::Descriptor* ABT_CommunicationProtocol::descriptor() {
+const ::google::protobuf::Descriptor* P_CommunicationProtocol::descriptor() {
   protobuf_AssignDescriptorsOnce();
-  return ABT_CommunicationProtocol_descriptor_;
+  return P_CommunicationProtocol_descriptor_;
 }
 
-const ABT_CommunicationProtocol& ABT_CommunicationProtocol::default_instance() {
+const P_CommunicationProtocol& P_CommunicationProtocol::default_instance() {
   if (default_instance_ == NULL) protobuf_AddDesc_protocols_2eproto();
   return *default_instance_;
 }
 
-ABT_CommunicationProtocol* ABT_CommunicationProtocol::default_instance_ = NULL;
+P_CommunicationProtocol* P_CommunicationProtocol::default_instance_ = NULL;
 
-ABT_CommunicationProtocol* ABT_CommunicationProtocol::New() const {
-  return new ABT_CommunicationProtocol;
+P_CommunicationProtocol* P_CommunicationProtocol::New() const {
+  return new P_CommunicationProtocol;
 }
 
-void ABT_CommunicationProtocol::Clear() {
+void P_CommunicationProtocol::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     type_ = 1;
+    id_ = 0;
     if (has_identity()) {
-      if (identity_ != NULL) identity_->::ABT_CommunicationProtocol_AgentIdentity::Clear();
+      if (identity_ != NULL) identity_->::protocols::ABT::P_EndPoint::Clear();
     }
   }
   others_.Clear();
@@ -669,13 +691,13 @@ void ABT_CommunicationProtocol::Clear() {
   mutable_unknown_fields()->Clear();
 }
 
-bool ABT_CommunicationProtocol::MergePartialFromCodedStream(
+bool P_CommunicationProtocol::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!(EXPRESSION)) return false
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // required .ABT_CommunicationProtocol.MessageType type = 1;
+      // required .protocols.ABT.CP_MessageType type = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
@@ -683,20 +705,36 @@ bool ABT_CommunicationProtocol::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
                  input, &value)));
-          if (::ABT_CommunicationProtocol_MessageType_IsValid(value)) {
-            set_type(static_cast< ::ABT_CommunicationProtocol_MessageType >(value));
+          if (::protocols::ABT::CP_MessageType_IsValid(value)) {
+            set_type(static_cast< ::protocols::ABT::CP_MessageType >(value));
           } else {
             mutable_unknown_fields()->AddVarint(1, value);
           }
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(18)) goto parse_identity;
+        if (input->ExpectTag(16)) goto parse_id;
         break;
       }
 
-      // optional .ABT_CommunicationProtocol.AgentIdentity identity = 2;
+      // optional int32 id = 2;
       case 2: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_id:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &id_)));
+          set_has_id();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(26)) goto parse_identity;
+        break;
+      }
+
+      // optional .protocols.ABT.P_EndPoint identity = 3;
+      case 3: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_identity:
@@ -705,12 +743,12 @@ bool ABT_CommunicationProtocol::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(26)) goto parse_others;
+        if (input->ExpectTag(34)) goto parse_others;
         break;
       }
 
-      // repeated .ABT_CommunicationProtocol.AgentIdentity others = 3;
-      case 3: {
+      // repeated .protocols.ABT.P_EndPoint others = 4;
+      case 4: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_others:
@@ -719,7 +757,7 @@ bool ABT_CommunicationProtocol::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(26)) goto parse_others;
+        if (input->ExpectTag(34)) goto parse_others;
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -740,24 +778,29 @@ bool ABT_CommunicationProtocol::MergePartialFromCodedStream(
 #undef DO_
 }
 
-void ABT_CommunicationProtocol::SerializeWithCachedSizes(
+void P_CommunicationProtocol::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // required .ABT_CommunicationProtocol.MessageType type = 1;
+  // required .protocols.ABT.CP_MessageType type = 1;
   if (has_type()) {
     ::google::protobuf::internal::WireFormatLite::WriteEnum(
       1, this->type(), output);
   }
 
-  // optional .ABT_CommunicationProtocol.AgentIdentity identity = 2;
-  if (has_identity()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      2, this->identity(), output);
+  // optional int32 id = 2;
+  if (has_id()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(2, this->id(), output);
   }
 
-  // repeated .ABT_CommunicationProtocol.AgentIdentity others = 3;
+  // optional .protocols.ABT.P_EndPoint identity = 3;
+  if (has_identity()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      3, this->identity(), output);
+  }
+
+  // repeated .protocols.ABT.P_EndPoint others = 4;
   for (int i = 0; i < this->others_size(); i++) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      3, this->others(i), output);
+      4, this->others(i), output);
   }
 
   if (!unknown_fields().empty()) {
@@ -766,26 +809,31 @@ void ABT_CommunicationProtocol::SerializeWithCachedSizes(
   }
 }
 
-::google::protobuf::uint8* ABT_CommunicationProtocol::SerializeWithCachedSizesToArray(
+::google::protobuf::uint8* P_CommunicationProtocol::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // required .ABT_CommunicationProtocol.MessageType type = 1;
+  // required .protocols.ABT.CP_MessageType type = 1;
   if (has_type()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
       1, this->type(), target);
   }
 
-  // optional .ABT_CommunicationProtocol.AgentIdentity identity = 2;
+  // optional int32 id = 2;
+  if (has_id()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(2, this->id(), target);
+  }
+
+  // optional .protocols.ABT.P_EndPoint identity = 3;
   if (has_identity()) {
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
-        2, this->identity(), target);
+        3, this->identity(), target);
   }
 
-  // repeated .ABT_CommunicationProtocol.AgentIdentity others = 3;
+  // repeated .protocols.ABT.P_EndPoint others = 4;
   for (int i = 0; i < this->others_size(); i++) {
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
-        3, this->others(i), target);
+        4, this->others(i), target);
   }
 
   if (!unknown_fields().empty()) {
@@ -795,17 +843,24 @@ void ABT_CommunicationProtocol::SerializeWithCachedSizes(
   return target;
 }
 
-int ABT_CommunicationProtocol::ByteSize() const {
+int P_CommunicationProtocol::ByteSize() const {
   int total_size = 0;
 
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // required .ABT_CommunicationProtocol.MessageType type = 1;
+    // required .protocols.ABT.CP_MessageType type = 1;
     if (has_type()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::EnumSize(this->type());
     }
 
-    // optional .ABT_CommunicationProtocol.AgentIdentity identity = 2;
+    // optional int32 id = 2;
+    if (has_id()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->id());
+    }
+
+    // optional .protocols.ABT.P_EndPoint identity = 3;
     if (has_identity()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
@@ -813,7 +868,7 @@ int ABT_CommunicationProtocol::ByteSize() const {
     }
 
   }
-  // repeated .ABT_CommunicationProtocol.AgentIdentity others = 3;
+  // repeated .protocols.ABT.P_EndPoint others = 4;
   total_size += 1 * this->others_size();
   for (int i = 0; i < this->others_size(); i++) {
     total_size +=
@@ -832,10 +887,10 @@ int ABT_CommunicationProtocol::ByteSize() const {
   return total_size;
 }
 
-void ABT_CommunicationProtocol::MergeFrom(const ::google::protobuf::Message& from) {
+void P_CommunicationProtocol::MergeFrom(const ::google::protobuf::Message& from) {
   GOOGLE_CHECK_NE(&from, this);
-  const ABT_CommunicationProtocol* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const ABT_CommunicationProtocol*>(
+  const P_CommunicationProtocol* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const P_CommunicationProtocol*>(
       &from);
   if (source == NULL) {
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
@@ -844,33 +899,36 @@ void ABT_CommunicationProtocol::MergeFrom(const ::google::protobuf::Message& fro
   }
 }
 
-void ABT_CommunicationProtocol::MergeFrom(const ABT_CommunicationProtocol& from) {
+void P_CommunicationProtocol::MergeFrom(const P_CommunicationProtocol& from) {
   GOOGLE_CHECK_NE(&from, this);
   others_.MergeFrom(from.others_);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from.has_type()) {
       set_type(from.type());
     }
+    if (from.has_id()) {
+      set_id(from.id());
+    }
     if (from.has_identity()) {
-      mutable_identity()->::ABT_CommunicationProtocol_AgentIdentity::MergeFrom(from.identity());
+      mutable_identity()->::protocols::ABT::P_EndPoint::MergeFrom(from.identity());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
-void ABT_CommunicationProtocol::CopyFrom(const ::google::protobuf::Message& from) {
+void P_CommunicationProtocol::CopyFrom(const ::google::protobuf::Message& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void ABT_CommunicationProtocol::CopyFrom(const ABT_CommunicationProtocol& from) {
+void P_CommunicationProtocol::CopyFrom(const P_CommunicationProtocol& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool ABT_CommunicationProtocol::IsInitialized() const {
+bool P_CommunicationProtocol::IsInitialized() const {
   if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
 
   if (has_identity()) {
@@ -882,9 +940,10 @@ bool ABT_CommunicationProtocol::IsInitialized() const {
   return true;
 }
 
-void ABT_CommunicationProtocol::Swap(ABT_CommunicationProtocol* other) {
+void P_CommunicationProtocol::Swap(P_CommunicationProtocol* other) {
   if (other != this) {
     std::swap(type_, other->type_);
+    std::swap(id_, other->id_);
     std::swap(identity_, other->identity_);
     others_.Swap(&other->others_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
@@ -893,11 +952,11 @@ void ABT_CommunicationProtocol::Swap(ABT_CommunicationProtocol* other) {
   }
 }
 
-::google::protobuf::Metadata ABT_CommunicationProtocol::GetMetadata() const {
+::google::protobuf::Metadata P_CommunicationProtocol::GetMetadata() const {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::Metadata metadata;
-  metadata.descriptor = ABT_CommunicationProtocol_descriptor_;
-  metadata.reflection = ABT_CommunicationProtocol_reflection_;
+  metadata.descriptor = P_CommunicationProtocol_descriptor_;
+  metadata.reflection = P_CommunicationProtocol_reflection_;
   return metadata;
 }
 
@@ -905,62 +964,62 @@ void ABT_CommunicationProtocol::Swap(ABT_CommunicationProtocol* other) {
 // ===================================================================
 
 #ifndef _MSC_VER
-const int ABT_Assignment::kIdFieldNumber;
-const int ABT_Assignment::kValueFieldNumber;
+const int P_Assignment::kIdFieldNumber;
+const int P_Assignment::kValueFieldNumber;
 #endif  // !_MSC_VER
 
-ABT_Assignment::ABT_Assignment()
+P_Assignment::P_Assignment()
   : ::google::protobuf::Message() {
   SharedCtor();
 }
 
-void ABT_Assignment::InitAsDefaultInstance() {
+void P_Assignment::InitAsDefaultInstance() {
 }
 
-ABT_Assignment::ABT_Assignment(const ABT_Assignment& from)
+P_Assignment::P_Assignment(const P_Assignment& from)
   : ::google::protobuf::Message() {
   SharedCtor();
   MergeFrom(from);
 }
 
-void ABT_Assignment::SharedCtor() {
+void P_Assignment::SharedCtor() {
   _cached_size_ = 0;
   id_ = 0;
   value_ = 0;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
-ABT_Assignment::~ABT_Assignment() {
+P_Assignment::~P_Assignment() {
   SharedDtor();
 }
 
-void ABT_Assignment::SharedDtor() {
+void P_Assignment::SharedDtor() {
   if (this != default_instance_) {
   }
 }
 
-void ABT_Assignment::SetCachedSize(int size) const {
+void P_Assignment::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const ::google::protobuf::Descriptor* ABT_Assignment::descriptor() {
+const ::google::protobuf::Descriptor* P_Assignment::descriptor() {
   protobuf_AssignDescriptorsOnce();
-  return ABT_Assignment_descriptor_;
+  return P_Assignment_descriptor_;
 }
 
-const ABT_Assignment& ABT_Assignment::default_instance() {
+const P_Assignment& P_Assignment::default_instance() {
   if (default_instance_ == NULL) protobuf_AddDesc_protocols_2eproto();
   return *default_instance_;
 }
 
-ABT_Assignment* ABT_Assignment::default_instance_ = NULL;
+P_Assignment* P_Assignment::default_instance_ = NULL;
 
-ABT_Assignment* ABT_Assignment::New() const {
-  return new ABT_Assignment;
+P_Assignment* P_Assignment::New() const {
+  return new P_Assignment;
 }
 
-void ABT_Assignment::Clear() {
+void P_Assignment::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     id_ = 0;
     value_ = 0;
@@ -969,7 +1028,7 @@ void ABT_Assignment::Clear() {
   mutable_unknown_fields()->Clear();
 }
 
-bool ABT_Assignment::MergePartialFromCodedStream(
+bool P_Assignment::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!(EXPRESSION)) return false
   ::google::protobuf::uint32 tag;
@@ -1022,7 +1081,7 @@ bool ABT_Assignment::MergePartialFromCodedStream(
 #undef DO_
 }
 
-void ABT_Assignment::SerializeWithCachedSizes(
+void P_Assignment::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // required int32 id = 1;
   if (has_id()) {
@@ -1040,7 +1099,7 @@ void ABT_Assignment::SerializeWithCachedSizes(
   }
 }
 
-::google::protobuf::uint8* ABT_Assignment::SerializeWithCachedSizesToArray(
+::google::protobuf::uint8* P_Assignment::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // required int32 id = 1;
   if (has_id()) {
@@ -1059,7 +1118,7 @@ void ABT_Assignment::SerializeWithCachedSizes(
   return target;
 }
 
-int ABT_Assignment::ByteSize() const {
+int P_Assignment::ByteSize() const {
   int total_size = 0;
 
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
@@ -1089,10 +1148,10 @@ int ABT_Assignment::ByteSize() const {
   return total_size;
 }
 
-void ABT_Assignment::MergeFrom(const ::google::protobuf::Message& from) {
+void P_Assignment::MergeFrom(const ::google::protobuf::Message& from) {
   GOOGLE_CHECK_NE(&from, this);
-  const ABT_Assignment* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const ABT_Assignment*>(
+  const P_Assignment* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const P_Assignment*>(
       &from);
   if (source == NULL) {
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
@@ -1101,7 +1160,7 @@ void ABT_Assignment::MergeFrom(const ::google::protobuf::Message& from) {
   }
 }
 
-void ABT_Assignment::MergeFrom(const ABT_Assignment& from) {
+void P_Assignment::MergeFrom(const P_Assignment& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from.has_id()) {
@@ -1114,25 +1173,25 @@ void ABT_Assignment::MergeFrom(const ABT_Assignment& from) {
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
-void ABT_Assignment::CopyFrom(const ::google::protobuf::Message& from) {
+void P_Assignment::CopyFrom(const ::google::protobuf::Message& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void ABT_Assignment::CopyFrom(const ABT_Assignment& from) {
+void P_Assignment::CopyFrom(const P_Assignment& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool ABT_Assignment::IsInitialized() const {
+bool P_Assignment::IsInitialized() const {
   if ((_has_bits_[0] & 0x00000003) != 0x00000003) return false;
 
   return true;
 }
 
-void ABT_Assignment::Swap(ABT_Assignment* other) {
+void P_Assignment::Swap(P_Assignment* other) {
   if (other != this) {
     std::swap(id_, other->id_);
     std::swap(value_, other->value_);
@@ -1142,11 +1201,11 @@ void ABT_Assignment::Swap(ABT_Assignment* other) {
   }
 }
 
-::google::protobuf::Metadata ABT_Assignment::GetMetadata() const {
+::google::protobuf::Metadata P_Assignment::GetMetadata() const {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::Metadata metadata;
-  metadata.descriptor = ABT_Assignment_descriptor_;
-  metadata.reflection = ABT_Assignment_reflection_;
+  metadata.descriptor = P_Assignment_descriptor_;
+  metadata.reflection = P_Assignment_reflection_;
   return metadata;
 }
 
@@ -1154,71 +1213,71 @@ void ABT_Assignment::Swap(ABT_Assignment* other) {
 // ===================================================================
 
 #ifndef _MSC_VER
-const int ABT_CompoundAssignment::kAssignmentsFieldNumber;
+const int P_CompoundAssignment::kAssignmentsFieldNumber;
 #endif  // !_MSC_VER
 
-ABT_CompoundAssignment::ABT_CompoundAssignment()
+P_CompoundAssignment::P_CompoundAssignment()
   : ::google::protobuf::Message() {
   SharedCtor();
 }
 
-void ABT_CompoundAssignment::InitAsDefaultInstance() {
+void P_CompoundAssignment::InitAsDefaultInstance() {
 }
 
-ABT_CompoundAssignment::ABT_CompoundAssignment(const ABT_CompoundAssignment& from)
+P_CompoundAssignment::P_CompoundAssignment(const P_CompoundAssignment& from)
   : ::google::protobuf::Message() {
   SharedCtor();
   MergeFrom(from);
 }
 
-void ABT_CompoundAssignment::SharedCtor() {
+void P_CompoundAssignment::SharedCtor() {
   _cached_size_ = 0;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
-ABT_CompoundAssignment::~ABT_CompoundAssignment() {
+P_CompoundAssignment::~P_CompoundAssignment() {
   SharedDtor();
 }
 
-void ABT_CompoundAssignment::SharedDtor() {
+void P_CompoundAssignment::SharedDtor() {
   if (this != default_instance_) {
   }
 }
 
-void ABT_CompoundAssignment::SetCachedSize(int size) const {
+void P_CompoundAssignment::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const ::google::protobuf::Descriptor* ABT_CompoundAssignment::descriptor() {
+const ::google::protobuf::Descriptor* P_CompoundAssignment::descriptor() {
   protobuf_AssignDescriptorsOnce();
-  return ABT_CompoundAssignment_descriptor_;
+  return P_CompoundAssignment_descriptor_;
 }
 
-const ABT_CompoundAssignment& ABT_CompoundAssignment::default_instance() {
+const P_CompoundAssignment& P_CompoundAssignment::default_instance() {
   if (default_instance_ == NULL) protobuf_AddDesc_protocols_2eproto();
   return *default_instance_;
 }
 
-ABT_CompoundAssignment* ABT_CompoundAssignment::default_instance_ = NULL;
+P_CompoundAssignment* P_CompoundAssignment::default_instance_ = NULL;
 
-ABT_CompoundAssignment* ABT_CompoundAssignment::New() const {
-  return new ABT_CompoundAssignment;
+P_CompoundAssignment* P_CompoundAssignment::New() const {
+  return new P_CompoundAssignment;
 }
 
-void ABT_CompoundAssignment::Clear() {
+void P_CompoundAssignment::Clear() {
   assignments_.Clear();
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
 }
 
-bool ABT_CompoundAssignment::MergePartialFromCodedStream(
+bool P_CompoundAssignment::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!(EXPRESSION)) return false
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // repeated .ABT_Assignment assignments = 1;
+      // repeated .protocols.ABT.P_Assignment assignments = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
@@ -1249,9 +1308,9 @@ bool ABT_CompoundAssignment::MergePartialFromCodedStream(
 #undef DO_
 }
 
-void ABT_CompoundAssignment::SerializeWithCachedSizes(
+void P_CompoundAssignment::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // repeated .ABT_Assignment assignments = 1;
+  // repeated .protocols.ABT.P_Assignment assignments = 1;
   for (int i = 0; i < this->assignments_size(); i++) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
       1, this->assignments(i), output);
@@ -1263,9 +1322,9 @@ void ABT_CompoundAssignment::SerializeWithCachedSizes(
   }
 }
 
-::google::protobuf::uint8* ABT_CompoundAssignment::SerializeWithCachedSizesToArray(
+::google::protobuf::uint8* P_CompoundAssignment::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // repeated .ABT_Assignment assignments = 1;
+  // repeated .protocols.ABT.P_Assignment assignments = 1;
   for (int i = 0; i < this->assignments_size(); i++) {
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
@@ -1279,10 +1338,10 @@ void ABT_CompoundAssignment::SerializeWithCachedSizes(
   return target;
 }
 
-int ABT_CompoundAssignment::ByteSize() const {
+int P_CompoundAssignment::ByteSize() const {
   int total_size = 0;
 
-  // repeated .ABT_Assignment assignments = 1;
+  // repeated .protocols.ABT.P_Assignment assignments = 1;
   total_size += 1 * this->assignments_size();
   for (int i = 0; i < this->assignments_size(); i++) {
     total_size +=
@@ -1301,10 +1360,10 @@ int ABT_CompoundAssignment::ByteSize() const {
   return total_size;
 }
 
-void ABT_CompoundAssignment::MergeFrom(const ::google::protobuf::Message& from) {
+void P_CompoundAssignment::MergeFrom(const ::google::protobuf::Message& from) {
   GOOGLE_CHECK_NE(&from, this);
-  const ABT_CompoundAssignment* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const ABT_CompoundAssignment*>(
+  const P_CompoundAssignment* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const P_CompoundAssignment*>(
       &from);
   if (source == NULL) {
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
@@ -1313,25 +1372,25 @@ void ABT_CompoundAssignment::MergeFrom(const ::google::protobuf::Message& from) 
   }
 }
 
-void ABT_CompoundAssignment::MergeFrom(const ABT_CompoundAssignment& from) {
+void P_CompoundAssignment::MergeFrom(const P_CompoundAssignment& from) {
   GOOGLE_CHECK_NE(&from, this);
   assignments_.MergeFrom(from.assignments_);
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
-void ABT_CompoundAssignment::CopyFrom(const ::google::protobuf::Message& from) {
+void P_CompoundAssignment::CopyFrom(const ::google::protobuf::Message& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void ABT_CompoundAssignment::CopyFrom(const ABT_CompoundAssignment& from) {
+void P_CompoundAssignment::CopyFrom(const P_CompoundAssignment& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool ABT_CompoundAssignment::IsInitialized() const {
+bool P_CompoundAssignment::IsInitialized() const {
 
   for (int i = 0; i < assignments_size(); i++) {
     if (!this->assignments(i).IsInitialized()) return false;
@@ -1339,7 +1398,7 @@ bool ABT_CompoundAssignment::IsInitialized() const {
   return true;
 }
 
-void ABT_CompoundAssignment::Swap(ABT_CompoundAssignment* other) {
+void P_CompoundAssignment::Swap(P_CompoundAssignment* other) {
   if (other != this) {
     assignments_.Swap(&other->assignments_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
@@ -1348,115 +1407,90 @@ void ABT_CompoundAssignment::Swap(ABT_CompoundAssignment* other) {
   }
 }
 
-::google::protobuf::Metadata ABT_CompoundAssignment::GetMetadata() const {
+::google::protobuf::Metadata P_CompoundAssignment::GetMetadata() const {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::Metadata metadata;
-  metadata.descriptor = ABT_CompoundAssignment_descriptor_;
-  metadata.reflection = ABT_CompoundAssignment_reflection_;
+  metadata.descriptor = P_CompoundAssignment_descriptor_;
+  metadata.reflection = P_CompoundAssignment_reflection_;
   return metadata;
 }
 
 
 // ===================================================================
 
-const ::google::protobuf::EnumDescriptor* ABT_Message_MessageType_descriptor() {
-  protobuf_AssignDescriptorsOnce();
-  return ABT_Message_MessageType_descriptor_;
-}
-bool ABT_Message_MessageType_IsValid(int value) {
-  switch(value) {
-    case 1:
-    case 2:
-    case 3:
-    case 4:
-      return true;
-    default:
-      return false;
-  }
-}
-
 #ifndef _MSC_VER
-const ABT_Message_MessageType ABT_Message::T_OK;
-const ABT_Message_MessageType ABT_Message::T_NOGOOD;
-const ABT_Message_MessageType ABT_Message::T_ADDLINK;
-const ABT_Message_MessageType ABT_Message::T_STOP;
-const ABT_Message_MessageType ABT_Message::MessageType_MIN;
-const ABT_Message_MessageType ABT_Message::MessageType_MAX;
-const int ABT_Message::MessageType_ARRAYSIZE;
-#endif  // _MSC_VER
-#ifndef _MSC_VER
-const int ABT_Message_OK::kAssignmentFieldNumber;
+const int P_Message_OK::kAssignmentFieldNumber;
 #endif  // !_MSC_VER
 
-ABT_Message_OK::ABT_Message_OK()
+P_Message_OK::P_Message_OK()
   : ::google::protobuf::Message() {
   SharedCtor();
 }
 
-void ABT_Message_OK::InitAsDefaultInstance() {
-  assignment_ = const_cast< ::ABT_Assignment*>(&::ABT_Assignment::default_instance());
+void P_Message_OK::InitAsDefaultInstance() {
+  assignment_ = const_cast< ::protocols::ABT::P_Assignment*>(&::protocols::ABT::P_Assignment::default_instance());
 }
 
-ABT_Message_OK::ABT_Message_OK(const ABT_Message_OK& from)
+P_Message_OK::P_Message_OK(const P_Message_OK& from)
   : ::google::protobuf::Message() {
   SharedCtor();
   MergeFrom(from);
 }
 
-void ABT_Message_OK::SharedCtor() {
+void P_Message_OK::SharedCtor() {
   _cached_size_ = 0;
   assignment_ = NULL;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
-ABT_Message_OK::~ABT_Message_OK() {
+P_Message_OK::~P_Message_OK() {
   SharedDtor();
 }
 
-void ABT_Message_OK::SharedDtor() {
+void P_Message_OK::SharedDtor() {
   if (this != default_instance_) {
     delete assignment_;
   }
 }
 
-void ABT_Message_OK::SetCachedSize(int size) const {
+void P_Message_OK::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const ::google::protobuf::Descriptor* ABT_Message_OK::descriptor() {
+const ::google::protobuf::Descriptor* P_Message_OK::descriptor() {
   protobuf_AssignDescriptorsOnce();
-  return ABT_Message_OK_descriptor_;
+  return P_Message_OK_descriptor_;
 }
 
-const ABT_Message_OK& ABT_Message_OK::default_instance() {
+const P_Message_OK& P_Message_OK::default_instance() {
   if (default_instance_ == NULL) protobuf_AddDesc_protocols_2eproto();
   return *default_instance_;
 }
 
-ABT_Message_OK* ABT_Message_OK::default_instance_ = NULL;
+P_Message_OK* P_Message_OK::default_instance_ = NULL;
 
-ABT_Message_OK* ABT_Message_OK::New() const {
-  return new ABT_Message_OK;
+P_Message_OK* P_Message_OK::New() const {
+  return new P_Message_OK;
 }
 
-void ABT_Message_OK::Clear() {
+void P_Message_OK::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (has_assignment()) {
-      if (assignment_ != NULL) assignment_->::ABT_Assignment::Clear();
+      if (assignment_ != NULL) assignment_->::protocols::ABT::P_Assignment::Clear();
     }
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
 }
 
-bool ABT_Message_OK::MergePartialFromCodedStream(
+bool P_Message_OK::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!(EXPRESSION)) return false
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // required .ABT_Assignment assignment = 1;
+      // required .protocols.ABT.P_Assignment assignment = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
@@ -1485,9 +1519,9 @@ bool ABT_Message_OK::MergePartialFromCodedStream(
 #undef DO_
 }
 
-void ABT_Message_OK::SerializeWithCachedSizes(
+void P_Message_OK::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // required .ABT_Assignment assignment = 1;
+  // required .protocols.ABT.P_Assignment assignment = 1;
   if (has_assignment()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
       1, this->assignment(), output);
@@ -1499,9 +1533,9 @@ void ABT_Message_OK::SerializeWithCachedSizes(
   }
 }
 
-::google::protobuf::uint8* ABT_Message_OK::SerializeWithCachedSizesToArray(
+::google::protobuf::uint8* P_Message_OK::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // required .ABT_Assignment assignment = 1;
+  // required .protocols.ABT.P_Assignment assignment = 1;
   if (has_assignment()) {
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
@@ -1515,11 +1549,11 @@ void ABT_Message_OK::SerializeWithCachedSizes(
   return target;
 }
 
-int ABT_Message_OK::ByteSize() const {
+int P_Message_OK::ByteSize() const {
   int total_size = 0;
 
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // required .ABT_Assignment assignment = 1;
+    // required .protocols.ABT.P_Assignment assignment = 1;
     if (has_assignment()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
@@ -1538,10 +1572,10 @@ int ABT_Message_OK::ByteSize() const {
   return total_size;
 }
 
-void ABT_Message_OK::MergeFrom(const ::google::protobuf::Message& from) {
+void P_Message_OK::MergeFrom(const ::google::protobuf::Message& from) {
   GOOGLE_CHECK_NE(&from, this);
-  const ABT_Message_OK* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const ABT_Message_OK*>(
+  const P_Message_OK* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const P_Message_OK*>(
       &from);
   if (source == NULL) {
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
@@ -1550,29 +1584,29 @@ void ABT_Message_OK::MergeFrom(const ::google::protobuf::Message& from) {
   }
 }
 
-void ABT_Message_OK::MergeFrom(const ABT_Message_OK& from) {
+void P_Message_OK::MergeFrom(const P_Message_OK& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from.has_assignment()) {
-      mutable_assignment()->::ABT_Assignment::MergeFrom(from.assignment());
+      mutable_assignment()->::protocols::ABT::P_Assignment::MergeFrom(from.assignment());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
-void ABT_Message_OK::CopyFrom(const ::google::protobuf::Message& from) {
+void P_Message_OK::CopyFrom(const ::google::protobuf::Message& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void ABT_Message_OK::CopyFrom(const ABT_Message_OK& from) {
+void P_Message_OK::CopyFrom(const P_Message_OK& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool ABT_Message_OK::IsInitialized() const {
+bool P_Message_OK::IsInitialized() const {
   if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
 
   if (has_assignment()) {
@@ -1581,7 +1615,7 @@ bool ABT_Message_OK::IsInitialized() const {
   return true;
 }
 
-void ABT_Message_OK::Swap(ABT_Message_OK* other) {
+void P_Message_OK::Swap(P_Message_OK* other) {
   if (other != this) {
     std::swap(assignment_, other->assignment_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
@@ -1590,11 +1624,11 @@ void ABT_Message_OK::Swap(ABT_Message_OK* other) {
   }
 }
 
-::google::protobuf::Metadata ABT_Message_OK::GetMetadata() const {
+::google::protobuf::Metadata P_Message_OK::GetMetadata() const {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::Metadata metadata;
-  metadata.descriptor = ABT_Message_OK_descriptor_;
-  metadata.reflection = ABT_Message_OK_reflection_;
+  metadata.descriptor = P_Message_OK_descriptor_;
+  metadata.reflection = P_Message_OK_reflection_;
   return metadata;
 }
 
@@ -1602,78 +1636,78 @@ void ABT_Message_OK::Swap(ABT_Message_OK* other) {
 // -------------------------------------------------------------------
 
 #ifndef _MSC_VER
-const int ABT_Message_NOGOOD::kNogoodFieldNumber;
+const int P_Message_NOGOOD::kNogoodFieldNumber;
 #endif  // !_MSC_VER
 
-ABT_Message_NOGOOD::ABT_Message_NOGOOD()
+P_Message_NOGOOD::P_Message_NOGOOD()
   : ::google::protobuf::Message() {
   SharedCtor();
 }
 
-void ABT_Message_NOGOOD::InitAsDefaultInstance() {
-  nogood_ = const_cast< ::ABT_CompoundAssignment*>(&::ABT_CompoundAssignment::default_instance());
+void P_Message_NOGOOD::InitAsDefaultInstance() {
+  nogood_ = const_cast< ::protocols::ABT::P_CompoundAssignment*>(&::protocols::ABT::P_CompoundAssignment::default_instance());
 }
 
-ABT_Message_NOGOOD::ABT_Message_NOGOOD(const ABT_Message_NOGOOD& from)
+P_Message_NOGOOD::P_Message_NOGOOD(const P_Message_NOGOOD& from)
   : ::google::protobuf::Message() {
   SharedCtor();
   MergeFrom(from);
 }
 
-void ABT_Message_NOGOOD::SharedCtor() {
+void P_Message_NOGOOD::SharedCtor() {
   _cached_size_ = 0;
   nogood_ = NULL;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
-ABT_Message_NOGOOD::~ABT_Message_NOGOOD() {
+P_Message_NOGOOD::~P_Message_NOGOOD() {
   SharedDtor();
 }
 
-void ABT_Message_NOGOOD::SharedDtor() {
+void P_Message_NOGOOD::SharedDtor() {
   if (this != default_instance_) {
     delete nogood_;
   }
 }
 
-void ABT_Message_NOGOOD::SetCachedSize(int size) const {
+void P_Message_NOGOOD::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const ::google::protobuf::Descriptor* ABT_Message_NOGOOD::descriptor() {
+const ::google::protobuf::Descriptor* P_Message_NOGOOD::descriptor() {
   protobuf_AssignDescriptorsOnce();
-  return ABT_Message_NOGOOD_descriptor_;
+  return P_Message_NOGOOD_descriptor_;
 }
 
-const ABT_Message_NOGOOD& ABT_Message_NOGOOD::default_instance() {
+const P_Message_NOGOOD& P_Message_NOGOOD::default_instance() {
   if (default_instance_ == NULL) protobuf_AddDesc_protocols_2eproto();
   return *default_instance_;
 }
 
-ABT_Message_NOGOOD* ABT_Message_NOGOOD::default_instance_ = NULL;
+P_Message_NOGOOD* P_Message_NOGOOD::default_instance_ = NULL;
 
-ABT_Message_NOGOOD* ABT_Message_NOGOOD::New() const {
-  return new ABT_Message_NOGOOD;
+P_Message_NOGOOD* P_Message_NOGOOD::New() const {
+  return new P_Message_NOGOOD;
 }
 
-void ABT_Message_NOGOOD::Clear() {
+void P_Message_NOGOOD::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (has_nogood()) {
-      if (nogood_ != NULL) nogood_->::ABT_CompoundAssignment::Clear();
+      if (nogood_ != NULL) nogood_->::protocols::ABT::P_CompoundAssignment::Clear();
     }
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
 }
 
-bool ABT_Message_NOGOOD::MergePartialFromCodedStream(
+bool P_Message_NOGOOD::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!(EXPRESSION)) return false
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // required .ABT_CompoundAssignment nogood = 1;
+      // required .protocols.ABT.P_CompoundAssignment nogood = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
@@ -1702,9 +1736,9 @@ bool ABT_Message_NOGOOD::MergePartialFromCodedStream(
 #undef DO_
 }
 
-void ABT_Message_NOGOOD::SerializeWithCachedSizes(
+void P_Message_NOGOOD::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // required .ABT_CompoundAssignment nogood = 1;
+  // required .protocols.ABT.P_CompoundAssignment nogood = 1;
   if (has_nogood()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
       1, this->nogood(), output);
@@ -1716,9 +1750,9 @@ void ABT_Message_NOGOOD::SerializeWithCachedSizes(
   }
 }
 
-::google::protobuf::uint8* ABT_Message_NOGOOD::SerializeWithCachedSizesToArray(
+::google::protobuf::uint8* P_Message_NOGOOD::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // required .ABT_CompoundAssignment nogood = 1;
+  // required .protocols.ABT.P_CompoundAssignment nogood = 1;
   if (has_nogood()) {
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
@@ -1732,11 +1766,11 @@ void ABT_Message_NOGOOD::SerializeWithCachedSizes(
   return target;
 }
 
-int ABT_Message_NOGOOD::ByteSize() const {
+int P_Message_NOGOOD::ByteSize() const {
   int total_size = 0;
 
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // required .ABT_CompoundAssignment nogood = 1;
+    // required .protocols.ABT.P_CompoundAssignment nogood = 1;
     if (has_nogood()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
@@ -1755,10 +1789,10 @@ int ABT_Message_NOGOOD::ByteSize() const {
   return total_size;
 }
 
-void ABT_Message_NOGOOD::MergeFrom(const ::google::protobuf::Message& from) {
+void P_Message_NOGOOD::MergeFrom(const ::google::protobuf::Message& from) {
   GOOGLE_CHECK_NE(&from, this);
-  const ABT_Message_NOGOOD* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const ABT_Message_NOGOOD*>(
+  const P_Message_NOGOOD* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const P_Message_NOGOOD*>(
       &from);
   if (source == NULL) {
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
@@ -1767,29 +1801,29 @@ void ABT_Message_NOGOOD::MergeFrom(const ::google::protobuf::Message& from) {
   }
 }
 
-void ABT_Message_NOGOOD::MergeFrom(const ABT_Message_NOGOOD& from) {
+void P_Message_NOGOOD::MergeFrom(const P_Message_NOGOOD& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from.has_nogood()) {
-      mutable_nogood()->::ABT_CompoundAssignment::MergeFrom(from.nogood());
+      mutable_nogood()->::protocols::ABT::P_CompoundAssignment::MergeFrom(from.nogood());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
-void ABT_Message_NOGOOD::CopyFrom(const ::google::protobuf::Message& from) {
+void P_Message_NOGOOD::CopyFrom(const ::google::protobuf::Message& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void ABT_Message_NOGOOD::CopyFrom(const ABT_Message_NOGOOD& from) {
+void P_Message_NOGOOD::CopyFrom(const P_Message_NOGOOD& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool ABT_Message_NOGOOD::IsInitialized() const {
+bool P_Message_NOGOOD::IsInitialized() const {
   if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
 
   if (has_nogood()) {
@@ -1798,7 +1832,7 @@ bool ABT_Message_NOGOOD::IsInitialized() const {
   return true;
 }
 
-void ABT_Message_NOGOOD::Swap(ABT_Message_NOGOOD* other) {
+void P_Message_NOGOOD::Swap(P_Message_NOGOOD* other) {
   if (other != this) {
     std::swap(nogood_, other->nogood_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
@@ -1807,11 +1841,11 @@ void ABT_Message_NOGOOD::Swap(ABT_Message_NOGOOD* other) {
   }
 }
 
-::google::protobuf::Metadata ABT_Message_NOGOOD::GetMetadata() const {
+::google::protobuf::Metadata P_Message_NOGOOD::GetMetadata() const {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::Metadata metadata;
-  metadata.descriptor = ABT_Message_NOGOOD_descriptor_;
-  metadata.reflection = ABT_Message_NOGOOD_reflection_;
+  metadata.descriptor = P_Message_NOGOOD_descriptor_;
+  metadata.reflection = P_Message_NOGOOD_reflection_;
   return metadata;
 }
 
@@ -1819,29 +1853,29 @@ void ABT_Message_NOGOOD::Swap(ABT_Message_NOGOOD* other) {
 // -------------------------------------------------------------------
 
 #ifndef _MSC_VER
-const int ABT_Message::kTypeFieldNumber;
-const int ABT_Message::kIdFieldNumber;
-const int ABT_Message::kOkDataFieldNumber;
-const int ABT_Message::kNogoodDataFieldNumber;
+const int P_Message::kTypeFieldNumber;
+const int P_Message::kIdFieldNumber;
+const int P_Message::kOkDataFieldNumber;
+const int P_Message::kNogoodDataFieldNumber;
 #endif  // !_MSC_VER
 
-ABT_Message::ABT_Message()
+P_Message::P_Message()
   : ::google::protobuf::Message() {
   SharedCtor();
 }
 
-void ABT_Message::InitAsDefaultInstance() {
-  ok_data_ = const_cast< ::ABT_Message_OK*>(&::ABT_Message_OK::default_instance());
-  nogood_data_ = const_cast< ::ABT_Message_NOGOOD*>(&::ABT_Message_NOGOOD::default_instance());
+void P_Message::InitAsDefaultInstance() {
+  ok_data_ = const_cast< ::protocols::ABT::P_Message_OK*>(&::protocols::ABT::P_Message_OK::default_instance());
+  nogood_data_ = const_cast< ::protocols::ABT::P_Message_NOGOOD*>(&::protocols::ABT::P_Message_NOGOOD::default_instance());
 }
 
-ABT_Message::ABT_Message(const ABT_Message& from)
+P_Message::P_Message(const P_Message& from)
   : ::google::protobuf::Message() {
   SharedCtor();
   MergeFrom(from);
 }
 
-void ABT_Message::SharedCtor() {
+void P_Message::SharedCtor() {
   _cached_size_ = 0;
   type_ = 1;
   id_ = 0;
@@ -1850,60 +1884,60 @@ void ABT_Message::SharedCtor() {
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
-ABT_Message::~ABT_Message() {
+P_Message::~P_Message() {
   SharedDtor();
 }
 
-void ABT_Message::SharedDtor() {
+void P_Message::SharedDtor() {
   if (this != default_instance_) {
     delete ok_data_;
     delete nogood_data_;
   }
 }
 
-void ABT_Message::SetCachedSize(int size) const {
+void P_Message::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const ::google::protobuf::Descriptor* ABT_Message::descriptor() {
+const ::google::protobuf::Descriptor* P_Message::descriptor() {
   protobuf_AssignDescriptorsOnce();
-  return ABT_Message_descriptor_;
+  return P_Message_descriptor_;
 }
 
-const ABT_Message& ABT_Message::default_instance() {
+const P_Message& P_Message::default_instance() {
   if (default_instance_ == NULL) protobuf_AddDesc_protocols_2eproto();
   return *default_instance_;
 }
 
-ABT_Message* ABT_Message::default_instance_ = NULL;
+P_Message* P_Message::default_instance_ = NULL;
 
-ABT_Message* ABT_Message::New() const {
-  return new ABT_Message;
+P_Message* P_Message::New() const {
+  return new P_Message;
 }
 
-void ABT_Message::Clear() {
+void P_Message::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     type_ = 1;
     id_ = 0;
     if (has_ok_data()) {
-      if (ok_data_ != NULL) ok_data_->::ABT_Message_OK::Clear();
+      if (ok_data_ != NULL) ok_data_->::protocols::ABT::P_Message_OK::Clear();
     }
     if (has_nogood_data()) {
-      if (nogood_data_ != NULL) nogood_data_->::ABT_Message_NOGOOD::Clear();
+      if (nogood_data_ != NULL) nogood_data_->::protocols::ABT::P_Message_NOGOOD::Clear();
     }
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
 }
 
-bool ABT_Message::MergePartialFromCodedStream(
+bool P_Message::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!(EXPRESSION)) return false
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // required .ABT_Message.MessageType type = 1;
+      // required .protocols.ABT.ABT_MessageType type = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
@@ -1911,8 +1945,8 @@ bool ABT_Message::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
                  input, &value)));
-          if (::ABT_Message_MessageType_IsValid(value)) {
-            set_type(static_cast< ::ABT_Message_MessageType >(value));
+          if (::protocols::ABT::ABT_MessageType_IsValid(value)) {
+            set_type(static_cast< ::protocols::ABT::ABT_MessageType >(value));
           } else {
             mutable_unknown_fields()->AddVarint(1, value);
           }
@@ -1939,7 +1973,7 @@ bool ABT_Message::MergePartialFromCodedStream(
         break;
       }
 
-      // optional .ABT_Message.OK ok_data = 3;
+      // optional .protocols.ABT.P_Message.OK ok_data = 3;
       case 3: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
@@ -1953,7 +1987,7 @@ bool ABT_Message::MergePartialFromCodedStream(
         break;
       }
 
-      // optional .ABT_Message.NOGOOD nogood_data = 4;
+      // optional .protocols.ABT.P_Message.NOGOOD nogood_data = 4;
       case 4: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
@@ -1983,9 +2017,9 @@ bool ABT_Message::MergePartialFromCodedStream(
 #undef DO_
 }
 
-void ABT_Message::SerializeWithCachedSizes(
+void P_Message::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // required .ABT_Message.MessageType type = 1;
+  // required .protocols.ABT.ABT_MessageType type = 1;
   if (has_type()) {
     ::google::protobuf::internal::WireFormatLite::WriteEnum(
       1, this->type(), output);
@@ -1996,13 +2030,13 @@ void ABT_Message::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt32(2, this->id(), output);
   }
 
-  // optional .ABT_Message.OK ok_data = 3;
+  // optional .protocols.ABT.P_Message.OK ok_data = 3;
   if (has_ok_data()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
       3, this->ok_data(), output);
   }
 
-  // optional .ABT_Message.NOGOOD nogood_data = 4;
+  // optional .protocols.ABT.P_Message.NOGOOD nogood_data = 4;
   if (has_nogood_data()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
       4, this->nogood_data(), output);
@@ -2014,9 +2048,9 @@ void ABT_Message::SerializeWithCachedSizes(
   }
 }
 
-::google::protobuf::uint8* ABT_Message::SerializeWithCachedSizesToArray(
+::google::protobuf::uint8* P_Message::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // required .ABT_Message.MessageType type = 1;
+  // required .protocols.ABT.ABT_MessageType type = 1;
   if (has_type()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
       1, this->type(), target);
@@ -2027,14 +2061,14 @@ void ABT_Message::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(2, this->id(), target);
   }
 
-  // optional .ABT_Message.OK ok_data = 3;
+  // optional .protocols.ABT.P_Message.OK ok_data = 3;
   if (has_ok_data()) {
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
         3, this->ok_data(), target);
   }
 
-  // optional .ABT_Message.NOGOOD nogood_data = 4;
+  // optional .protocols.ABT.P_Message.NOGOOD nogood_data = 4;
   if (has_nogood_data()) {
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
@@ -2048,11 +2082,11 @@ void ABT_Message::SerializeWithCachedSizes(
   return target;
 }
 
-int ABT_Message::ByteSize() const {
+int P_Message::ByteSize() const {
   int total_size = 0;
 
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // required .ABT_Message.MessageType type = 1;
+    // required .protocols.ABT.ABT_MessageType type = 1;
     if (has_type()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::EnumSize(this->type());
@@ -2065,14 +2099,14 @@ int ABT_Message::ByteSize() const {
           this->id());
     }
 
-    // optional .ABT_Message.OK ok_data = 3;
+    // optional .protocols.ABT.P_Message.OK ok_data = 3;
     if (has_ok_data()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
           this->ok_data());
     }
 
-    // optional .ABT_Message.NOGOOD nogood_data = 4;
+    // optional .protocols.ABT.P_Message.NOGOOD nogood_data = 4;
     if (has_nogood_data()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
@@ -2091,10 +2125,10 @@ int ABT_Message::ByteSize() const {
   return total_size;
 }
 
-void ABT_Message::MergeFrom(const ::google::protobuf::Message& from) {
+void P_Message::MergeFrom(const ::google::protobuf::Message& from) {
   GOOGLE_CHECK_NE(&from, this);
-  const ABT_Message* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const ABT_Message*>(
+  const P_Message* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const P_Message*>(
       &from);
   if (source == NULL) {
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
@@ -2103,7 +2137,7 @@ void ABT_Message::MergeFrom(const ::google::protobuf::Message& from) {
   }
 }
 
-void ABT_Message::MergeFrom(const ABT_Message& from) {
+void P_Message::MergeFrom(const P_Message& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from.has_type()) {
@@ -2113,28 +2147,28 @@ void ABT_Message::MergeFrom(const ABT_Message& from) {
       set_id(from.id());
     }
     if (from.has_ok_data()) {
-      mutable_ok_data()->::ABT_Message_OK::MergeFrom(from.ok_data());
+      mutable_ok_data()->::protocols::ABT::P_Message_OK::MergeFrom(from.ok_data());
     }
     if (from.has_nogood_data()) {
-      mutable_nogood_data()->::ABT_Message_NOGOOD::MergeFrom(from.nogood_data());
+      mutable_nogood_data()->::protocols::ABT::P_Message_NOGOOD::MergeFrom(from.nogood_data());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
-void ABT_Message::CopyFrom(const ::google::protobuf::Message& from) {
+void P_Message::CopyFrom(const ::google::protobuf::Message& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void ABT_Message::CopyFrom(const ABT_Message& from) {
+void P_Message::CopyFrom(const P_Message& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool ABT_Message::IsInitialized() const {
+bool P_Message::IsInitialized() const {
   if ((_has_bits_[0] & 0x00000003) != 0x00000003) return false;
 
   if (has_ok_data()) {
@@ -2146,7 +2180,7 @@ bool ABT_Message::IsInitialized() const {
   return true;
 }
 
-void ABT_Message::Swap(ABT_Message* other) {
+void P_Message::Swap(P_Message* other) {
   if (other != this) {
     std::swap(type_, other->type_);
     std::swap(id_, other->id_);
@@ -2158,15 +2192,18 @@ void ABT_Message::Swap(ABT_Message* other) {
   }
 }
 
-::google::protobuf::Metadata ABT_Message::GetMetadata() const {
+::google::protobuf::Metadata P_Message::GetMetadata() const {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::Metadata metadata;
-  metadata.descriptor = ABT_Message_descriptor_;
-  metadata.reflection = ABT_Message_reflection_;
+  metadata.descriptor = P_Message_descriptor_;
+  metadata.reflection = P_Message_reflection_;
   return metadata;
 }
 
 
 // @@protoc_insertion_point(namespace_scope)
+
+}  // namespace ABT
+}  // namespace protocols
 
 // @@protoc_insertion_point(global_scope)

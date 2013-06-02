@@ -13,6 +13,7 @@
 #include <zmq.hpp>
 #include "common_async.hpp"
 #include "abt-solver.hpp"
+#include "abt-socket.h"
 
 namespace AIT {
 
@@ -27,10 +28,12 @@ private:
 	unsigned short portNumberResponser, portNumberPublisher;
 	std::string host_;
 	zmq::context_t context;
-	zmq::socket_t publisher;
-	zmq::socket_t responser;
+	Socket publisher;
+	Socket responser;
 	size_t agentCount_;
-	std::vector<ABT_CommunicationProtocol_AgentIdentity> agents;
+	std::vector<protocols::ABT::P_EndPoint> agents;
+
+	void run();
 };
 
 } /* namespace AIT */

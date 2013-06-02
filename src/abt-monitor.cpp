@@ -34,6 +34,8 @@ ABT_Monitor::~ABT_Monitor() {
 }
 
 void ABT_Monitor::start() {
+	using namespace protocols::ABT;
+	// Listen for incoming requests
 	stringstream address;
 	address << "tcp://*:" << this->portNumberResponser;
 	try {
@@ -41,33 +43,53 @@ void ABT_Monitor::start() {
 	} catch (zmq::error_t* e) {
 		cerr << e->what() << endl;
 	}
-	while (this->agents.size() < this->agentCount_) {
-		message_t message;
-		this->responser.recv(&message);
-		_INFO("Receive a new message");
-		ABT_CommunicationProtocol packet;
-		packet.ParseFromArray(message.data(), message.size());
-		if (packet.type()
-				== ABT_CommunicationProtocol_MessageType_T_INTRODUCE) {
+	// Open broadcast channel
+	address.str("");
+	address << "tcp://*:" << this->portNumberPublisher;
+	try {
+		_INFO("Binding to %s:%d broadcast end point.",
+				"*", this->portNumberPublisher)
+		this->publisher.bind(address.str().data());
+	} catch (zmq::error_t e) {
+		_ERROR("Unable to bind to broadcast channel at %s:%d",
+				"*", this->portNumberPublisher)
+		cerr << e.what() << endl;
+	}
+	_INFO("Successfully bound to broadcast channel.");
+
+	size_t counter = 0;
+	while (counter != 2 * this->agentCount_) {
+		P_CommunicationProtocol requestPacket;
+		this->responser.recvMessage(requestPacket);
+		if (requestPacket.type() == CP_MessageType::T_INTRODUCE) {
 			_INFO(
 					"New agent subscribed. This information is introduced by new agent"
 					"\n\tHost          : %s"
 					"\n\tListener Port : %d"
 					"\n\tAgent ID      : %d",
-					packet.identity().host().data(), packet.identity().port(), packet.identity().id());
-			agents.push_back(packet.identity());
+					requestPacket.identity().host().data(), requestPacket.identity().port(), requestPacket.identity().id());
+			agents.push_back(requestPacket.identity());
+			P_CommunicationProtocol ackPacket;
+			ackPacket.set_type(CP_MessageType::T_INTRODUCE_ACK);
+			this->responser.sendMessage(ackPacket);
+		} else if (requestPacket.type() == CP_MessageType::T_REQUEST_LIST) {
+			// TODO Check if an agent with this ID is already connected or not
+			P_CommunicationProtocol requestListAck;
+			requestListAck.set_type(CP_MessageType::T_REQUEST_ACK);
+			this->responser.sendMessage(requestListAck);
 		}
-		ABT_CommunicationProtocol ackPacket;
-		ackPacket.set_type(ABT_CommunicationProtocol_MessageType_T_ACK);
-		size_t dataLenght = ackPacket.ByteSize();
-		message_t ackMessage(dataLenght);
-		ackPacket.SerializeToArray(ackMessage.data(), dataLenght);
-		this->responser.send(ackMessage);
+		++counter;
+	} // end of while
+	  // TODO: Encode `agents' into a message and send it to everybody
+	P_CommunicationProtocol listPacket;
+	listPacket.set_type(CP_MessageType::T_LIST);
+	for (auto endPoint : this->agents) {
+		auto item = listPacket.add_others();
+		item->CopyFrom(endPoint);
 	}
-	address.str("");
-	address << "tcp://*:" << this->portNumberPublisher;
-	this->publisher.bind(address.str().data());
-	message_t message;
-	// TODO: Encode `agents' into a message and send it to everybody
-	this->publisher.send(message);
+	cout << this->publisher.sendMessage(listPacket);
 }
+
+void AIT::ABT_Monitor::run() {
+}
+
