@@ -1,4 +1,6 @@
-package protocols.ABT;
+package AIT.protocols.csp.abt;
+
+import "common-protocols.proto";
 
 message P_EndPoint {
   required int32 id = 1;
@@ -22,17 +24,6 @@ message P_CommunicationProtocol {
   optional int32 id = 2;
   optional P_EndPoint identity = 3;
   repeated P_EndPoint others = 4;
-}
-
-message P_Assignment
-{
-  required int32 id = 1;
-  required int32 value = 2;
-}
-
-message P_CompoundAssignment
-{
-  repeated P_Assignment assignments = 1;
 }
 
 enum ABT_MessageType {

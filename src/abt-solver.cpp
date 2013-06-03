@@ -1,88 +1,18 @@
 /*
- * abt-solver.h
+ * abt-solver.cpp
  *
- *  Created on: Apr 30, 2013
+ *  Created on: Jun 3, 2013
  *      Author: soroush
  */
 
-#ifndef ABT_SOLVER_H_
-#define ABT_SOLVER_H_
+#include "abt-solver.h"
 
-#include <iostream>
-#include <list>
-#include <map>
-#include <string>
-#include <sstream>
-#include <queue>
-#include <pthread.h>
-#include <stdlib.h>
-#include <zmq.hpp>
+using namespace AIT;
+using namespace std;
+using namespace zmq;
+using namespace protocols::csp::abt;
 
-#include "global.h"
-#include "common_csp.hpp"
-#include "common_async.hpp"
-#include "abt-socket.h"
-#include "protocols.pb.h"
-#include "abt-socket.h"
-
-namespace AIT {
-
-template<typename V, typename T>
-class ABT_Solver {
-
-	class CommunicationPacket: public protocols::ABT::P_CommunicationProtocol {
-	};
-
-	class Message: public protocols::ABT::P_Message {
-	};
-
-public:
-
-	ABT_Solver(const std::string&, const unsigned short&, const std::string&,
-			const unsigned short&, const unsigned short&);
-	virtual ~ABT_Solver();
-
-	void connect();
-	void solve();
-	void checkAgentView();
-	void chooseValue(V*);
-	void backtrack();
-	void processInfo(const Message&); // OK
-	void updateAgentView(const protocols::ABT::P_Assignment&);
-	bool coherent(const CompoundAssignment<V, T>& nogood,
-			const Assignment<V, T>& assign);
-	void resolveConflict(const Message&);
-	void checkAddLink(const Message&);
-	void setLink(const Message&);
-	bool consistent(const V&);
-	void sendMessage(const AgentID&, const Message&);
-	Message getMessage();
-
-private:
-	T* myValue;
-	void getAgentList();
-	AgentID id;
-	std::list<protocols::ABT::P_EndPoint*> preceding; // Γ+
-	std::list<protocols::ABT::P_EndPoint*> succeeding; // Γ-
-	std::vector<protocols::ABT::P_EndPoint> everybody;
-	CompoundAssignment<V, T> myAgentView;
-
-	std::string address;
-	unsigned short port;
-	std::string serverAddress;
-	unsigned short serverResponderPort;
-	unsigned short serverPublisherPort;
-
-	zmq::context_t context;
-	Socket listener;
-	Socket serverRquest;
-	Socket serverBroadcast;
-};
-
-}
-
-template<typename V, typename T>
-inline AIT::ABT_Solver<V, T>::ABT_Solver(const std::string& host_,
+inline ABT_Solver::ABT_Solver(const std::string& host_,
 		const unsigned short& port_, const std::string& serverHost_,
 		const unsigned short& serverResponderPort_,
 		const unsigned short& serverPublisherPort_) :
@@ -92,8 +22,7 @@ inline AIT::ABT_Solver<V, T>::ABT_Solver(const std::string& host_,
 				context, ZMQ_REQ), serverBroadcast(context, ZMQ_SUB) {
 }
 
-template<typename V, typename T>
-inline AIT::ABT_Solver<V, T>::~ABT_Solver() {
+inline ABT_Solver::~ABT_Solver() {
 	// delete this->myValue;
 	serverBroadcast.close();
 	serverRquest.close();
@@ -101,10 +30,8 @@ inline AIT::ABT_Solver<V, T>::~ABT_Solver() {
 	context.close();
 }
 
-template<typename V, typename T>
-inline void AIT::ABT_Solver<V, T>::solve() {
-	using namespace protocols::ABT;
-	myValue = nullptr;
+inline void ABT_Solver::solve() {
+	myValue = 0; // FIXME fix this
 	bool end = false;
 	getAgentList();
 	checkAgentView();
@@ -130,11 +57,7 @@ inline void AIT::ABT_Solver<V, T>::solve() {
 	}
 }
 
-template<typename V, typename T>
-inline void AIT::ABT_Solver<V, T>::connect() {
-	using namespace std;
-	using namespace zmq;
-	using namespace protocols::ABT;
+inline void ABT_Solver::connect() {
 	// Let's listen to other agents:
 	stringstream addressName;
 	this->address = Socket::getIP();
@@ -177,7 +100,7 @@ inline void AIT::ABT_Solver<V, T>::connect() {
 			<< this->serverPublisherPort;
 	try {
 		serverBroadcast.connect(addressName.str().data());
-		serverBroadcast.setsockopt(ZMQ_SUBSCRIBE,"",0);
+		serverBroadcast.setsockopt(ZMQ_SUBSCRIBE, "", 0);
 	} catch (zmq::error_t e) {
 		_ERROR("Unable to connect to broadcast channel of monitor agent.\n"
 		"\t\tTerminating process\n"
@@ -212,11 +135,10 @@ inline void AIT::ABT_Solver<V, T>::connect() {
 	}
 }
 
-template<typename V, typename T>
-inline void AIT::ABT_Solver<V, T>::checkAgentView() {
-	if (!consistent(*myValue)) {
+inline void ABT_Solver::checkAgentView() {
+	if (!consistent(myValue)) {
 		chooseValue(myValue);
-		if (myValue != nullptr) {
+		if (myValue != 0) { // FIXME
 			for (const auto& agent : succeeding) {
 				sendMessage(agent->id(), Message());
 			}
@@ -226,55 +148,42 @@ inline void AIT::ABT_Solver<V, T>::checkAgentView() {
 	} // end if !consistent
 }
 
-template<typename V, typename T>
-inline void AIT::ABT_Solver<V, T>::processInfo(const Message& m) {
+inline void ABT_Solver::processInfo(const Message& m) {
 	updateAgentView(m.ok_data().assignment());
 	checkAgentView();
 }
 
-template<typename V, typename T>
-inline void AIT::ABT_Solver<V, T>::chooseValue(V* value) {
+inline void ABT_Solver::chooseValue(const int& value) {
 }
 
-template<typename V, typename T>
-inline void AIT::ABT_Solver<V, T>::backtrack() {
+inline void ABT_Solver::backtrack() {
 }
 
-template<typename V, typename T>
-inline void AIT::ABT_Solver<V, T>::updateAgentView(
-		const protocols::ABT::P_Assignment& assignment) {
+inline void ABT_Solver::updateAgentView(
+		const P_Assignment& assignment) {
 }
 
-template<typename V, typename T>
-inline void AIT::ABT_Solver<V, T>::resolveConflict(const Message& m) {
+inline void ABT_Solver::resolveConflict(const Message& m) {
 }
 
-template<typename V, typename T>
-inline bool AIT::ABT_Solver<V, T>::consistent(const V& value) {
+inline bool ABT_Solver::consistent(const int& value) {
 }
 
-template<typename V, typename T>
-inline void AIT::ABT_Solver<V, T>::sendMessage(const AgentID& i,
-		const Message& m) {
+inline void ABT_Solver::sendMessage(const AgentID& i, const Message& m) {
 }
 
-template<typename V, typename T>
-typename AIT::ABT_Solver<V, T>::Message AIT::ABT_Solver<V, T>::getMessage() {
-	using namespace std;
-	zmq::message_t message;
+ABT_Solver::Message ABT_Solver::getMessage() {
+	message_t message;
 	listener.recv(&message);
 	Message x;
 	x.ParseFromArray(message.data(), message.size());
 	return x;
 }
 
-template<typename V, typename T>
-inline void AIT::ABT_Solver<V, T>::setLink(const Message& m) {
+inline void ABT_Solver::setLink(const Message& m) {
 }
 
-template<typename V, typename T>
-inline void AIT::ABT_Solver<V, T>::getAgentList() {
-	using namespace protocols::ABT;
+inline void ABT_Solver::getAgentList() {
 	CommunicationPacket packet;
 	_INFO( "Sending Request List to monitor agent ...");
 	CommunicationPacket requestList;
@@ -307,4 +216,3 @@ inline void AIT::ABT_Solver<V, T>::getAgentList() {
 //	}
 }
 
-#endif /* ABT_SOLVER_H_ */

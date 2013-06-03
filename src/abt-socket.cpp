@@ -23,28 +23,28 @@ Socket::~Socket() {
 	// TODO Auto-generated destructor stub
 }
 
-size_t Socket::sendMessage(const protocols::ABT::P_CommunicationProtocol& packet) {
+size_t Socket::sendMessage(const protocols::csp::abt::P_CommunicationProtocol& packet) {
 	size_t length = packet.ByteSize();
 	message_t message(length);
 	packet.SerializeToArray(message.data(), length);
 	return socket_t::send(message);
 }
 
-size_t Socket::sendMessage(const protocols::ABT::P_Message& packet) {
+size_t Socket::sendMessage(const protocols::csp::abt::P_Message& packet) {
 	size_t length = packet.ByteSize();
 	message_t message(length);
 	packet.SerializeToArray(message.data(), length);
 	return socket_t::send(message);
 }
 
-size_t AIT::Socket::recvMessage(protocols::ABT::P_CommunicationProtocol& packet) {
+size_t AIT::Socket::recvMessage(protocols::csp::abt::P_CommunicationProtocol& packet) {
 	message_t message;
 	bool returnValue = recv(&message);
 	packet.ParseFromArray(message.data(), message.size());
 	return returnValue;
 }
 
-size_t AIT::Socket::recvMessage(protocols::ABT::P_Message& packet) {
+size_t AIT::Socket::recvMessage(protocols::csp::abt::P_Message& packet) {
 }
 
 std::string AIT::Socket::getIP() {

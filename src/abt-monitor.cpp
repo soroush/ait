@@ -9,8 +9,6 @@
 #include "abt-monitor.h"
 #include <sstream>
 
-/* namespace AIT */
-
 using namespace AIT;
 using namespace zmq;
 using namespace std;
@@ -34,7 +32,7 @@ ABT_Monitor::~ABT_Monitor() {
 }
 
 void ABT_Monitor::start() {
-	using namespace protocols::ABT;
+	using namespace protocols::csp::abt;
 	// Listen for incoming requests
 	stringstream address;
 	address << "tcp://*:" << this->portNumberResponser;
@@ -90,6 +88,6 @@ void ABT_Monitor::start() {
 	cout << this->publisher.sendMessage(listPacket);
 }
 
-void AIT::ABT_Monitor::run() {
+void ABT_Monitor::run() {
 }
 

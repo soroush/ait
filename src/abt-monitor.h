@@ -11,8 +11,8 @@
 #include <string>
 #include <vector>
 #include <zmq.hpp>
-#include "common_async.hpp"
-#include "abt-solver.hpp"
+#include "common_async.h"
+#include "abt-solver.h"
 #include "abt-socket.h"
 
 namespace AIT {
@@ -31,7 +31,7 @@ private:
 	Socket publisher;
 	Socket responser;
 	size_t agentCount_;
-	std::vector<protocols::ABT::P_EndPoint> agents;
+	std::vector<protocols::csp::abt::P_EndPoint> agents;
 
 	void run();
 };

@@ -1,0 +1,12 @@
+package AIT.protocols.csp;
+
+message P_Assignment
+{
+  required int32 id = 1;
+  required int32 value = 2;
+}
+
+message P_CompoundAssignment
+{
+  repeated P_Assignment assignments = 1;
+}

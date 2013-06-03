@@ -10,7 +10,7 @@
 
 #include <zmq.hpp>
 #include <string>
-#include "protocols.pb.h"
+#include "abt.pb.h"
 
 namespace AIT {
 
@@ -19,10 +19,10 @@ public:
 	Socket(zmq::context_t &context_, int type_);
 	Socket(zmq::socket_t&& rhs);
 	virtual ~Socket();
-	size_t sendMessage(const protocols::ABT::P_CommunicationProtocol&);
-	size_t sendMessage(const protocols::ABT::P_Message&);
-	size_t recvMessage(protocols::ABT::P_CommunicationProtocol&);
-	size_t recvMessage(protocols::ABT::P_Message&);
+	size_t sendMessage(const protocols::csp::abt::P_CommunicationProtocol&);
+	size_t sendMessage(const protocols::csp::abt::P_Message&);
+	size_t recvMessage(protocols::csp::abt::P_CommunicationProtocol&);
+	size_t recvMessage(protocols::csp::abt::P_Message&);
 	static std::string getIP();
 };
 
