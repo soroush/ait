@@ -12,7 +12,7 @@
 
 namespace AIT {
 
-typedef unsigned long AgentID;
+typedef unsigned AgentID;
 
 //template<typename valueType>
 //struct Assignment {

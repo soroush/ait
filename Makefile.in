@@ -90,8 +90,8 @@ LTLIBRARIES = $(lib_LTLIBRARIES)
 am__DEPENDENCIES_1 =
 libait_la_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am__dirstamp = $(am__leading_dot)dirstamp
-am_libait_la_OBJECTS = src/abt-monitor.lo src/abt-socket.lo \
-	src/abt-solver.lo src/abt.pb.lo src/common-protocols.pb.lo
+am_libait_la_OBJECTS = src/abt.pb.lo src/abt-monitor.lo \
+	src/abt-socket.lo src/abt-solver.lo src/common-protocols.pb.lo
 libait_la_OBJECTS = $(am_libait_la_OBJECTS)
 libait_la_LINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CXXLD) $(AM_CXXFLAGS) \
@@ -264,23 +264,23 @@ lib_LTLIBRARIES = libait.la
 AM_CPPFLAGS = -pipe
 libait_la_LIBADD = $(ZMQ_LIBS) $(PROTOCOL_BUFFERS_LIBS)
 libait_la_SOURCES = \
+			src/abt.pb.cc \
 			src/abt-monitor.cpp \
 			src/abt-socket.cpp \
 			src/abt-solver.cpp \
-			src/abt.pb.cc \
 			src/common-protocols.pb.cc 
 
 libait_la_LDFLAGS = -version-info $(AIT_SO_VERSION)
 ait_includedir = $(includedir)/ait
 ait_include_HEADERS = \
-			src/global.h \
+			src/abt.pb.h \
 			src/abt-monitor.h \
 			src/abt-socket.h \
 			src/abt-solver.h \
-			src/common_csp.h \
 			src/common_async.h \
-			src/abt.pb.h \
-			src/common-protocols.pb.h
+			src/common-protocols.pb.h \
+			src/common_csp.h \
+			src/global.h
 
 ait_libincludedir = $(libdir)/ait/include
 pkgconfigdir = $(libdir)/pkgconfig
@@ -379,10 +379,10 @@ src/$(am__dirstamp):
 src/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) src/$(DEPDIR)
 	@: > src/$(DEPDIR)/$(am__dirstamp)
+src/abt.pb.lo: src/$(am__dirstamp) src/$(DEPDIR)/$(am__dirstamp)
 src/abt-monitor.lo: src/$(am__dirstamp) src/$(DEPDIR)/$(am__dirstamp)
 src/abt-socket.lo: src/$(am__dirstamp) src/$(DEPDIR)/$(am__dirstamp)
 src/abt-solver.lo: src/$(am__dirstamp) src/$(DEPDIR)/$(am__dirstamp)
-src/abt.pb.lo: src/$(am__dirstamp) src/$(DEPDIR)/$(am__dirstamp)
 src/common-protocols.pb.lo: src/$(am__dirstamp) \
 	src/$(DEPDIR)/$(am__dirstamp)
 libait.la: $(libait_la_OBJECTS) $(libait_la_DEPENDENCIES) $(EXTRA_libait_la_DEPENDENCIES) 

@@ -35,14 +35,12 @@ enum ABT_MessageType {
 
 message P_Message {
     required ABT_MessageType type = 1;
-    required int32 id = 2;
-
-    message OK {
-      required P_Assignment assignment = 1;
-    }
-    message NOGOOD {
-      required P_CompoundAssignment nogood = 1;
-    }
-    optional OK ok_data = 3;
-    optional NOGOOD nogood_data = 4;
+    required int32 sender = 2;
+    optional P_Assignment assignment = 3;
+    optional P_ABT_Nogood nogood = 4;
 } 
+
+message P_ABT_Nogood {
+    required P_CompoundAssignment lhs = 1;
+    required P_Assignment rhs = 2;
+}

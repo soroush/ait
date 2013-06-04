@@ -6,23 +6,24 @@
  */
 
 #include "abt-solver.h"
+#include <algorithm>
 
 using namespace AIT;
 using namespace std;
 using namespace zmq;
 using namespace protocols::csp::abt;
 
-inline ABT_Solver::ABT_Solver(const std::string& host_,
-		const unsigned short& port_, const std::string& serverHost_,
+ABT_Solver::ABT_Solver(const std::string& host_, const unsigned short& port_,
+		const std::string& serverHost_,
 		const unsigned short& serverResponderPort_,
-		const unsigned short& serverPublisherPort_) :
-		address(host_), port(port_), serverAddress(serverHost_), serverResponderPort(
+		const unsigned short& serverPublisherPort_, const AgentID& id_) :
+		id(id_), address(host_), port(port_), serverAddress(serverHost_), serverResponderPort(
 				serverResponderPort_), serverPublisherPort(
 				serverPublisherPort_), context(2), listener(context, ZMQ_PULL), serverRquest(
 				context, ZMQ_REQ), serverBroadcast(context, ZMQ_SUB) {
 }
 
-inline ABT_Solver::~ABT_Solver() {
+ABT_Solver::~ABT_Solver() {
 	// delete this->myValue;
 	serverBroadcast.close();
 	serverRquest.close();
@@ -30,8 +31,8 @@ inline ABT_Solver::~ABT_Solver() {
 	context.close();
 }
 
-inline void ABT_Solver::solve() {
-	myValue = 0; // FIXME fix this
+void ABT_Solver::ABT() {
+	value = 0; // FIXME fix this
 	bool end = false;
 	getAgentList();
 	checkAgentView();
@@ -57,7 +58,7 @@ inline void ABT_Solver::solve() {
 	}
 }
 
-inline void ABT_Solver::connect() {
+void ABT_Solver::connect() {
 	// Let's listen to other agents:
 	stringstream addressName;
 	this->address = Socket::getIP();
@@ -126,6 +127,12 @@ inline void ABT_Solver::connect() {
 			_INFO("Message received from monitor");
 			if (introAckPacket.type() == CP_MessageType::T_INTRODUCE_ACK) {
 				_INFO( "Monitor agent accepted connection.");
+			} else if (introAckPacket.type()
+					== CP_MessageType::ERR_REPEATED_ID) {
+				_ERROR( "An agent with ID number `%d'is already registered.\n"
+				"\t\tMonitor agent has ignored this request.\n"
+				"\t\tExiting silently.", this->id);
+				return;
 			}
 		} else {
 			_ERROR("Server didn't reply.");
@@ -135,12 +142,19 @@ inline void ABT_Solver::connect() {
 	}
 }
 
-inline void ABT_Solver::checkAgentView() {
-	if (!consistent(myValue)) {
-		chooseValue(myValue);
-		if (myValue != 0) { // FIXME
+void ABT_Solver::checkAgentView() {
+	if (!consistent(value)) {
+		chooseValue();
+		if (value != 0) {
 			for (const auto& agent : succeeding) {
-				sendMessage(agent->id(), Message());
+				Message message;
+				message.set_sender(this->id);
+				message.set_type(ABT_MessageType::T_OK);
+				P_Assignment assign;
+				assign.set_id(this->id);
+				assign.set_value(this->value);
+				message.set_allocated_assignment(&assign);
+				sendMessage(agent->id(), message); // FIXME
 			}
 		} else {
 			backtrack();
@@ -148,28 +162,30 @@ inline void ABT_Solver::checkAgentView() {
 	} // end if !consistent
 }
 
-inline void ABT_Solver::processInfo(const Message& m) {
-	updateAgentView(m.ok_data().assignment());
+void ABT_Solver::processInfo(const Message& m) {
+	updateAgentView(m.assignment());
 	checkAgentView();
 }
 
-inline void ABT_Solver::chooseValue(const int& value) {
+void ABT_Solver::chooseValue() {
 }
 
-inline void ABT_Solver::backtrack() {
+void ABT_Solver::backtrack() {
 }
 
-inline void ABT_Solver::updateAgentView(
-		const P_Assignment& assignment) {
+void ABT_Solver::updateAgentView(const P_Assignment& assignment) {
+	myAgentView.add(assignment);
+	remove_if(NoGoodStore.begin(), NoGoodStore.end(),
+			[&](P_ABT_Nogood ngd)->bool {return !this->coherent(ngd.lhs(),myAgentView);});
 }
 
-inline void ABT_Solver::resolveConflict(const Message& m) {
+void ABT_Solver::resolveConflict(const Message& m) {
 }
 
-inline bool ABT_Solver::consistent(const int& value) {
+bool ABT_Solver::consistent(const int& value) {
 }
 
-inline void ABT_Solver::sendMessage(const AgentID& i, const Message& m) {
+void ABT_Solver::sendMessage(const AgentID& id, const Message& message) {
 }
 
 ABT_Solver::Message ABT_Solver::getMessage() {
@@ -180,39 +196,85 @@ ABT_Solver::Message ABT_Solver::getMessage() {
 	return x;
 }
 
-inline void ABT_Solver::setLink(const Message& m) {
+void ABT_Solver::setLink(const Message& message) {
+	bool repeated = any_of(succeeding.begin(), succeeding.end(),
+			[&](const P_EndPoint* i)->bool
+			{	return i->id() == message.sender();});
+	if (!repeated) {
+		auto index = find_if(everybody.begin(), everybody.end(),
+				[&](const P_EndPoint& agent)->bool
+				{	return agent.id()==message.sender();});
+		succeeding.push_back(&(*index));
+		_INFO("Agent `%d' added to succeeding list.", index->id());
+		//FIXME
+	}
 }
 
-inline void ABT_Solver::getAgentList() {
-	CommunicationPacket packet;
+void ABT_Solver::checkAddLink(const Message& message) {
+	for (int i = 0; i < message.nogood().lhs().assignments_size(); ++i) {
+		int id = message.nogood().lhs().assignments(i).id();
+		int value = message.nogood().lhs().assignments(i).value();
+		if (!any_of(succeeding.begin(), succeeding.end(),
+				[&](const P_EndPoint* i)->bool {return i->id()==id;})) {
+			Message adl;
+			adl.set_type(ABT_MessageType::T_ADDLINK);
+			adl.set_sender(this->id);
+			sendMessage(id, adl);
+			Assignment assign;
+			assign.set_id(id);
+			assign.set_value(value);
+			updateAgentView(assign);
+		}
+	}
+}
+
+void ABT_Solver::getAgentList() {
 	_INFO( "Sending Request List to monitor agent ...");
 	CommunicationPacket requestList;
 	requestList.set_type(CP_MessageType::T_REQUEST_LIST);
 	requestList.set_id(this->id);
 	this->serverRquest.sendMessage(requestList);
+
 	CommunicationPacket requestListAck;
 	this->serverRquest.recvMessage(requestListAck);
 	if (requestListAck.type() == CP_MessageType::T_REQUEST_ACK) {
 		_INFO( "Monitor has accepted to send list of agents.");
 	} else {
-		_ERROR(
-				"Unable to get agent list from monitor.\nTerminating silently. Goodbye.");
+		_ERROR( "Unable to get agent list from monitor.\n"
+		"\tTerminating silently. Goodbye.");
 	}
+
 	_INFO( "Waiting for all agents to came online...");
-	this->serverBroadcast.recvMessage(packet);
+	CommunicationPacket listPacket;
+	this->serverBroadcast.recvMessage(listPacket);
 	_INFO( "I'm done.");
-//	if (packet.type() == CP_MessageType::T_LIST) {
-//		for (int i = 0; i < packet.others_size(); ++i) {
-//			this->everybody.push_back(packet.others(i));
-//		}
-//		for (auto& agent : everybody) {
-//			if (agent.id() < this->id)
-//				preceding.push_back(&agent);
-//			else if (agent.id() > this->id)
-//				succeeding.push_back(&agent);
-//			else
-//				_ERROR("Somebody has same ID with me! ()\n")
-//		}
-//	}
+	if (listPacket.type() == CP_MessageType::T_LIST) {
+		for (int i = 0; i < listPacket.others_size(); ++i) {
+			this->everybody.push_back(listPacket.others(i));
+			_INFO("New agent introduced by server:\n"
+			"\tID:     %d\n"
+			"\tHost:   %s\n"
+			"\tPort:   %d",
+					listPacket.others(i).id(), listPacket.others(i).host().c_str(), listPacket.others(i).port());
+		}
+		for (auto agent : everybody) {
+			if (agent.id() < this->id)
+				preceding.push_back(&agent);
+			else if (agent.id() > this->id)
+				succeeding.push_back(&agent);
+		}
+	}
+}
+
+ABT_Solver::AgentIdentifier::AgentIdentifier(const AgentID& agent_,
+		const std::string& host_, const unsigned short & port_,
+		zmq::context_t& context_) :
+		id(agent_), host(host_), port(port_), socket(Socket(context_, ZMQ_PUSH)) {
+}
+
+ABT_EndPoint::ABT_EndPoint(const protocols::csp::abt::P_EndPoint& ep,
+		zmq::context_t& context) :
+		Socket(context, ZMQ_PUSH) {
+	this->CopyFrom(ep);
 }
 

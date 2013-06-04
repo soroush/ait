@@ -24,14 +24,6 @@ public:
 typedef CompoundAssignment Nogood;
 typedef CompoundAssignment PartialSolution;
 
-class ABT_Nogood {
-public:
-	void fromNogood(const Nogood& item);
-private:
-	CompoundAssignment lhs;
-	Assignment rhs;
-};
-
 }
 
 // end of namespace
