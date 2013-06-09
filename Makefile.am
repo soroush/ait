@@ -8,6 +8,7 @@ libait_la_SOURCES = \
 			src/abt-monitor.cpp \
 			src/abt-socket.cpp \
 			src/abt-solver.cpp \
+			src/common_csp.cpp \
 			src/common-protocols.pb.cc 
 libait_la_LDFLAGS = -version-info $(AIT_SO_VERSION)
 ait_includedir = $(includedir)/ait

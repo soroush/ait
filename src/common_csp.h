@@ -12,20 +12,13 @@
 
 namespace AIT {
 
-using namespace AIT::protocols::csp;
-
-typedef P_Assignment Assignment;
-
-class CompoundAssignment: public P_CompoundAssignment {
+class CompoundAssignment: public protocols::csp::P_CompoundAssignment {
 public:
-	void add(const Assignment& item);
+	void add(const protocols::csp::P_Assignment& item);
+	void add(const protocols::csp::P_CompoundAssignment& item);
+	void add(const CompoundAssignment& item);
+	void add(const int& id, const int& value);
 };
-
-typedef CompoundAssignment Nogood;
-typedef CompoundAssignment PartialSolution;
-
-}
-
-// end of namespace
+} // end of namespace
 
 #endif /* COMMON_CSP_HPP_ */

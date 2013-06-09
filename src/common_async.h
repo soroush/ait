@@ -14,18 +14,6 @@ namespace AIT {
 
 typedef unsigned AgentID;
 
-//template<typename valueType>
-//struct Assignment {
-//	AgentID id;
-//	valueType value;
-//};
-//
-//template<typename valueType>
-//class NoGood {
-//	Assignment lhs;
-//	Assignment rhs;
-//};
-
 } // namespace AIT
 
 #endif /* COMMON_ASYNC_HPP_ */

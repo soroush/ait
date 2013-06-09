@@ -21,23 +21,21 @@
 #include "common_csp.h"
 #include "common_async.h"
 #include "abt-socket.h"
-#include "abt.pb.h"
 
 namespace AIT {
 
-class ABT_EndPoint: public protocols::csp::abt::P_EndPoint, public Socket {
+class ABT_EndPoint: public protocols::csp::abt::P_EndPoint{
 public:
 	ABT_EndPoint(const protocols::csp::abt::P_EndPoint& ep,
 			zmq::context_t& context);
+	Socket* socket() const;
+private:
+	Socket* socket_;
 };
 
 class ABT_Solver {
 
 public:
-
-	typedef protocols::csp::abt::P_CommunicationProtocol CommunicationPacket;
-	typedef protocols::csp::abt::P_Message Message;
-
 	ABT_Solver(const std::string&, const unsigned short&, const std::string&,
 			const unsigned short&, const unsigned short&, const AgentID&);
 	virtual ~ABT_Solver();
@@ -45,39 +43,38 @@ public:
 	void connect();
 	void ABT();
 	void checkAgentView();
-	void chooseValue();
+	int chooseValue();
 	void backtrack();
-	void processInfo(const Message&); // OK
-	void updateAgentView(const Assignment&);
-	bool coherent(const protocols::csp::P_CompoundAssignment& nogood,
+	void processInfo(const protocols::csp::abt::P_Message&); // OK
+	void updateAgentView(const protocols::csp::P_Assignment&);
+	bool coherent(const protocols::csp::abt::P_Nogood& nogood,
 			const protocols::csp::P_CompoundAssignment& assign);
-	void resolveConflict(const Message&);
-	void checkAddLink(const Message&);
-	void setLink(const Message&);
+	void resolveConflict(const protocols::csp::abt::P_Message&);
+	void checkAddLink(const protocols::csp::abt::P_Message&);
+	void setLink(const protocols::csp::abt::P_Message&);
 	bool consistent(const int&);
-	void sendMessage(const AgentID&, const Message&);
-	Message getMessage();
+	void sendMessageOK(const AgentID&);
+	void sendMessageNGD(const AgentID&, protocols::csp::abt::P_Message&);
+	void sendMessageSTP();
+	void sendMessageADL(const AgentID&);
+	protocols::csp::abt::P_Message getMessage();
 
 private:
-	struct AgentIdentifier {
-		AgentIdentifier(const AgentID&, const std::string&,
-				const unsigned short&, zmq::context_t&);
-		AgentID id;
-		std::string host;
-		unsigned short port;
-		Socket socket;
-	};
 	int value;
 	void getAgentList();
+	int findCulprit(const int& v);
+	int findCulpritsValue(const int& culpirtsID);
+	protocols::csp::abt::P_Nogood solve();
+	void sendMessage(const AgentID&, const protocols::csp::abt::P_Message&);
+	void initializeDomain();
+
 	AgentID id;
-	std::list<protocols::csp::abt::P_EndPoint*> preceding; // Γ+
-	std::list<protocols::csp::abt::P_EndPoint*> succeeding; // Γ-
-	std::vector<protocols::csp::abt::P_EndPoint> everybody;
-//	std::list<std::vector<AgentIdentifier>::iterator> preceding; // Γ+
-//	std::list<std::vector<AgentIdentifier>::iterator> succeeding; // Γ-
-//	std::vector<AgentIdentifier> everybody;
-	CompoundAssignment myAgentView;
-	std::list<protocols::csp::abt::P_ABT_Nogood> NoGoodStore;
+	std::list<std::vector<ABT_EndPoint>::iterator> preceding; // Γ+
+	std::list<std::vector<ABT_EndPoint>::iterator> succeeding; // Γ-
+	std::vector<ABT_EndPoint> everybody;
+	CompoundAssignment agentView;
+	std::list<protocols::csp::abt::P_Nogood> noGoodStore;
+	std::vector<int> domain;
 
 	std::string address;
 	unsigned short port;
@@ -85,10 +82,18 @@ private:
 	unsigned short serverResponderPort;
 	unsigned short serverPublisherPort;
 
+	std::queue<protocols::csp::abt::P_Message> messageQueue;
+	pthread_mutex_t messageRW;
+	pthread_mutex_t messageE;
+	pthread_t messageReader;
+	pthread_t messageReader;
+
 	zmq::context_t context;
 	Socket listener;
 	Socket serverRquest;
 	Socket serverBroadcast;
+
+	bool end;
 };
 
 }

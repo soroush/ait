@@ -105,7 +105,7 @@ void protobuf_AddDesc_common_2dprotocols_2eproto() {
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n\026common-protocols.proto\022\021AIT.protocols."
     "csp\")\n\014P_Assignment\022\n\n\002id\030\001 \002(\005\022\r\n\005value"
-    "\030\002 \002(\005\"L\n\024P_CompoundAssignment\0224\n\013assign"
+    "\030\002 \001(\005\"L\n\024P_CompoundAssignment\0224\n\013assign"
     "ments\030\001 \003(\0132\037.AIT.protocols.csp.P_Assign"
     "ment", 164);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
@@ -212,7 +212,7 @@ bool P_Assignment::MergePartialFromCodedStream(
         break;
       }
 
-      // required int32 value = 2;
+      // optional int32 value = 2;
       case 2: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
@@ -251,7 +251,7 @@ void P_Assignment::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->id(), output);
   }
 
-  // required int32 value = 2;
+  // optional int32 value = 2;
   if (has_value()) {
     ::google::protobuf::internal::WireFormatLite::WriteInt32(2, this->value(), output);
   }
@@ -269,7 +269,7 @@ void P_Assignment::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->id(), target);
   }
 
-  // required int32 value = 2;
+  // optional int32 value = 2;
   if (has_value()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(2, this->value(), target);
   }
@@ -292,7 +292,7 @@ int P_Assignment::ByteSize() const {
           this->id());
     }
 
-    // required int32 value = 2;
+    // optional int32 value = 2;
     if (has_value()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
@@ -349,7 +349,7 @@ void P_Assignment::CopyFrom(const P_Assignment& from) {
 }
 
 bool P_Assignment::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000003) != 0x00000003) return false;
+  if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
 
   return true;
 }

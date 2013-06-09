@@ -16,11 +16,9 @@ using namespace zmq;
 
 Socket::Socket(context_t &context_, int type_) :
 		socket_t(context_, type_) {
-	// TODO Auto-generated constructor stub
 }
 
 Socket::~Socket() {
-	// TODO Auto-generated destructor stub
 }
 
 size_t Socket::sendMessage(const protocols::csp::abt::P_CommunicationProtocol& packet) {

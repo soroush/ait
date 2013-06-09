@@ -32,11 +32,11 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* P_Message_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   P_Message_reflection_ = NULL;
-const ::google::protobuf::Descriptor* P_ABT_Nogood_descriptor_ = NULL;
+const ::google::protobuf::Descriptor* P_Nogood_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
-  P_ABT_Nogood_reflection_ = NULL;
+  P_Nogood_reflection_ = NULL;
 const ::google::protobuf::EnumDescriptor* CP_MessageType_descriptor_ = NULL;
-const ::google::protobuf::EnumDescriptor* ABT_MessageType_descriptor_ = NULL;
+const ::google::protobuf::EnumDescriptor* P_MessageType_descriptor_ = NULL;
 
 }  // namespace
 
@@ -100,24 +100,24 @@ void protobuf_AssignDesc_abt_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(P_Message));
-  P_ABT_Nogood_descriptor_ = file->message_type(3);
-  static const int P_ABT_Nogood_offsets_[2] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(P_ABT_Nogood, lhs_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(P_ABT_Nogood, rhs_),
+  P_Nogood_descriptor_ = file->message_type(3);
+  static const int P_Nogood_offsets_[2] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(P_Nogood, lhs_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(P_Nogood, rhs_),
   };
-  P_ABT_Nogood_reflection_ =
+  P_Nogood_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
-      P_ABT_Nogood_descriptor_,
-      P_ABT_Nogood::default_instance_,
-      P_ABT_Nogood_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(P_ABT_Nogood, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(P_ABT_Nogood, _unknown_fields_),
+      P_Nogood_descriptor_,
+      P_Nogood::default_instance_,
+      P_Nogood_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(P_Nogood, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(P_Nogood, _unknown_fields_),
       -1,
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(P_ABT_Nogood));
+      sizeof(P_Nogood));
   CP_MessageType_descriptor_ = file->enum_type(0);
-  ABT_MessageType_descriptor_ = file->enum_type(1);
+  P_MessageType_descriptor_ = file->enum_type(1);
 }
 
 namespace {
@@ -137,7 +137,7 @@ void protobuf_RegisterTypes(const ::std::string&) {
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     P_Message_descriptor_, &P_Message::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    P_ABT_Nogood_descriptor_, &P_ABT_Nogood::default_instance());
+    P_Nogood_descriptor_, &P_Nogood::default_instance());
 }
 
 }  // namespace
@@ -149,8 +149,8 @@ void protobuf_ShutdownFile_abt_2eproto() {
   delete P_CommunicationProtocol_reflection_;
   delete P_Message::default_instance_;
   delete P_Message_reflection_;
-  delete P_ABT_Nogood::default_instance_;
-  delete P_ABT_Nogood_reflection_;
+  delete P_Nogood::default_instance_;
+  delete P_Nogood_reflection_;
 }
 
 void protobuf_AddDesc_abt_2eproto() {
@@ -168,31 +168,31 @@ void protobuf_AddDesc_abt_2eproto() {
     ".protocols.csp.abt.CP_MessageType\022\n\n\002id\030"
     "\002 \001(\005\0223\n\010identity\030\003 \001(\0132!.AIT.protocols."
     "csp.abt.P_EndPoint\0221\n\006others\030\004 \003(\0132!.AIT"
-    ".protocols.csp.abt.P_EndPoint\"\273\001\n\tP_Mess"
-    "age\0224\n\004type\030\001 \002(\0162&.AIT.protocols.csp.ab"
-    "t.ABT_MessageType\022\016\n\006sender\030\002 \002(\005\0223\n\nass"
-    "ignment\030\003 \001(\0132\037.AIT.protocols.csp.P_Assi"
-    "gnment\0223\n\006nogood\030\004 \001(\0132#.AIT.protocols.c"
-    "sp.abt.P_ABT_Nogood\"r\n\014P_ABT_Nogood\0224\n\003l"
-    "hs\030\001 \002(\0132\'.AIT.protocols.csp.P_CompoundA"
-    "ssignment\022,\n\003rhs\030\002 \002(\0132\037.AIT.protocols.c"
-    "sp.P_Assignment*\247\001\n\016CP_MessageType\022\017\n\013T_"
-    "INTRODUCE\020\001\022\023\n\017T_INTRODUCE_ACK\020\002\022\022\n\016T_RE"
-    "QUEST_LIST\020\003\022\021\n\rT_REQUEST_ACK\020\004\022\n\n\006T_LIS"
-    "T\020\005\022\026\n\022ERR_NO_MORE_AGENTS\020\006\022\023\n\017ERR_REPEA"
-    "TED_ID\020\007\022\017\n\013ERR_UNKNOWN\020\010*D\n\017ABT_Message"
-    "Type\022\010\n\004T_OK\020\001\022\014\n\010T_NOGOOD\020\002\022\r\n\tT_ADDLIN"
-    "K\020\003\022\n\n\006T_STOP\020\004", 855);
+    ".protocols.csp.abt.P_EndPoint\"\265\001\n\tP_Mess"
+    "age\0222\n\004type\030\001 \002(\0162$.AIT.protocols.csp.ab"
+    "t.P_MessageType\022\016\n\006sender\030\002 \002(\005\0223\n\nassig"
+    "nment\030\003 \001(\0132\037.AIT.protocols.csp.P_Assign"
+    "ment\022/\n\006nogood\030\004 \001(\0132\037.AIT.protocols.csp"
+    ".abt.P_Nogood\"n\n\010P_Nogood\0224\n\003lhs\030\001 \002(\0132\'"
+    ".AIT.protocols.csp.P_CompoundAssignment\022"
+    ",\n\003rhs\030\002 \002(\0132\037.AIT.protocols.csp.P_Assig"
+    "nment*\247\001\n\016CP_MessageType\022\017\n\013T_INTRODUCE\020"
+    "\001\022\023\n\017T_INTRODUCE_ACK\020\002\022\022\n\016T_REQUEST_LIST"
+    "\020\003\022\021\n\rT_REQUEST_ACK\020\004\022\n\n\006T_LIST\020\005\022\026\n\022ERR"
+    "_NO_MORE_AGENTS\020\006\022\023\n\017ERR_REPEATED_ID\020\007\022\017"
+    "\n\013ERR_UNKNOWN\020\010*B\n\rP_MessageType\022\010\n\004T_OK"
+    "\020\001\022\014\n\010T_NOGOOD\020\002\022\r\n\tT_ADDLINK\020\003\022\n\n\006T_STO"
+    "P\020\004", 843);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "abt.proto", &protobuf_RegisterTypes);
   P_EndPoint::default_instance_ = new P_EndPoint();
   P_CommunicationProtocol::default_instance_ = new P_CommunicationProtocol();
   P_Message::default_instance_ = new P_Message();
-  P_ABT_Nogood::default_instance_ = new P_ABT_Nogood();
+  P_Nogood::default_instance_ = new P_Nogood();
   P_EndPoint::default_instance_->InitAsDefaultInstance();
   P_CommunicationProtocol::default_instance_->InitAsDefaultInstance();
   P_Message::default_instance_->InitAsDefaultInstance();
-  P_ABT_Nogood::default_instance_->InitAsDefaultInstance();
+  P_Nogood::default_instance_->InitAsDefaultInstance();
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_abt_2eproto);
 }
 
@@ -222,11 +222,11 @@ bool CP_MessageType_IsValid(int value) {
   }
 }
 
-const ::google::protobuf::EnumDescriptor* ABT_MessageType_descriptor() {
+const ::google::protobuf::EnumDescriptor* P_MessageType_descriptor() {
   protobuf_AssignDescriptorsOnce();
-  return ABT_MessageType_descriptor_;
+  return P_MessageType_descriptor_;
 }
-bool ABT_MessageType_IsValid(int value) {
+bool P_MessageType_IsValid(int value) {
   switch(value) {
     case 1:
     case 2:
@@ -907,7 +907,7 @@ P_Message::P_Message()
 
 void P_Message::InitAsDefaultInstance() {
   assignment_ = const_cast< ::AIT::protocols::csp::P_Assignment*>(&::AIT::protocols::csp::P_Assignment::default_instance());
-  nogood_ = const_cast< ::AIT::protocols::csp::abt::P_ABT_Nogood*>(&::AIT::protocols::csp::abt::P_ABT_Nogood::default_instance());
+  nogood_ = const_cast< ::AIT::protocols::csp::abt::P_Nogood*>(&::AIT::protocols::csp::abt::P_Nogood::default_instance());
 }
 
 P_Message::P_Message(const P_Message& from)
@@ -965,7 +965,7 @@ void P_Message::Clear() {
       if (assignment_ != NULL) assignment_->::AIT::protocols::csp::P_Assignment::Clear();
     }
     if (has_nogood()) {
-      if (nogood_ != NULL) nogood_->::AIT::protocols::csp::abt::P_ABT_Nogood::Clear();
+      if (nogood_ != NULL) nogood_->::AIT::protocols::csp::abt::P_Nogood::Clear();
     }
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
@@ -978,7 +978,7 @@ bool P_Message::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // required .AIT.protocols.csp.abt.ABT_MessageType type = 1;
+      // required .AIT.protocols.csp.abt.P_MessageType type = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
@@ -986,8 +986,8 @@ bool P_Message::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
                  input, &value)));
-          if (::AIT::protocols::csp::abt::ABT_MessageType_IsValid(value)) {
-            set_type(static_cast< ::AIT::protocols::csp::abt::ABT_MessageType >(value));
+          if (::AIT::protocols::csp::abt::P_MessageType_IsValid(value)) {
+            set_type(static_cast< ::AIT::protocols::csp::abt::P_MessageType >(value));
           } else {
             mutable_unknown_fields()->AddVarint(1, value);
           }
@@ -1028,7 +1028,7 @@ bool P_Message::MergePartialFromCodedStream(
         break;
       }
 
-      // optional .AIT.protocols.csp.abt.P_ABT_Nogood nogood = 4;
+      // optional .AIT.protocols.csp.abt.P_Nogood nogood = 4;
       case 4: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
@@ -1060,7 +1060,7 @@ bool P_Message::MergePartialFromCodedStream(
 
 void P_Message::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // required .AIT.protocols.csp.abt.ABT_MessageType type = 1;
+  // required .AIT.protocols.csp.abt.P_MessageType type = 1;
   if (has_type()) {
     ::google::protobuf::internal::WireFormatLite::WriteEnum(
       1, this->type(), output);
@@ -1077,7 +1077,7 @@ void P_Message::SerializeWithCachedSizes(
       3, this->assignment(), output);
   }
 
-  // optional .AIT.protocols.csp.abt.P_ABT_Nogood nogood = 4;
+  // optional .AIT.protocols.csp.abt.P_Nogood nogood = 4;
   if (has_nogood()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
       4, this->nogood(), output);
@@ -1091,7 +1091,7 @@ void P_Message::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* P_Message::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // required .AIT.protocols.csp.abt.ABT_MessageType type = 1;
+  // required .AIT.protocols.csp.abt.P_MessageType type = 1;
   if (has_type()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
       1, this->type(), target);
@@ -1109,7 +1109,7 @@ void P_Message::SerializeWithCachedSizes(
         3, this->assignment(), target);
   }
 
-  // optional .AIT.protocols.csp.abt.P_ABT_Nogood nogood = 4;
+  // optional .AIT.protocols.csp.abt.P_Nogood nogood = 4;
   if (has_nogood()) {
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
@@ -1127,7 +1127,7 @@ int P_Message::ByteSize() const {
   int total_size = 0;
 
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // required .AIT.protocols.csp.abt.ABT_MessageType type = 1;
+    // required .AIT.protocols.csp.abt.P_MessageType type = 1;
     if (has_type()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::EnumSize(this->type());
@@ -1147,7 +1147,7 @@ int P_Message::ByteSize() const {
           this->assignment());
     }
 
-    // optional .AIT.protocols.csp.abt.P_ABT_Nogood nogood = 4;
+    // optional .AIT.protocols.csp.abt.P_Nogood nogood = 4;
     if (has_nogood()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
@@ -1191,7 +1191,7 @@ void P_Message::MergeFrom(const P_Message& from) {
       mutable_assignment()->::AIT::protocols::csp::P_Assignment::MergeFrom(from.assignment());
     }
     if (from.has_nogood()) {
-      mutable_nogood()->::AIT::protocols::csp::abt::P_ABT_Nogood::MergeFrom(from.nogood());
+      mutable_nogood()->::AIT::protocols::csp::abt::P_Nogood::MergeFrom(from.nogood());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -1245,66 +1245,66 @@ void P_Message::Swap(P_Message* other) {
 // ===================================================================
 
 #ifndef _MSC_VER
-const int P_ABT_Nogood::kLhsFieldNumber;
-const int P_ABT_Nogood::kRhsFieldNumber;
+const int P_Nogood::kLhsFieldNumber;
+const int P_Nogood::kRhsFieldNumber;
 #endif  // !_MSC_VER
 
-P_ABT_Nogood::P_ABT_Nogood()
+P_Nogood::P_Nogood()
   : ::google::protobuf::Message() {
   SharedCtor();
 }
 
-void P_ABT_Nogood::InitAsDefaultInstance() {
+void P_Nogood::InitAsDefaultInstance() {
   lhs_ = const_cast< ::AIT::protocols::csp::P_CompoundAssignment*>(&::AIT::protocols::csp::P_CompoundAssignment::default_instance());
   rhs_ = const_cast< ::AIT::protocols::csp::P_Assignment*>(&::AIT::protocols::csp::P_Assignment::default_instance());
 }
 
-P_ABT_Nogood::P_ABT_Nogood(const P_ABT_Nogood& from)
+P_Nogood::P_Nogood(const P_Nogood& from)
   : ::google::protobuf::Message() {
   SharedCtor();
   MergeFrom(from);
 }
 
-void P_ABT_Nogood::SharedCtor() {
+void P_Nogood::SharedCtor() {
   _cached_size_ = 0;
   lhs_ = NULL;
   rhs_ = NULL;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
-P_ABT_Nogood::~P_ABT_Nogood() {
+P_Nogood::~P_Nogood() {
   SharedDtor();
 }
 
-void P_ABT_Nogood::SharedDtor() {
+void P_Nogood::SharedDtor() {
   if (this != default_instance_) {
     delete lhs_;
     delete rhs_;
   }
 }
 
-void P_ABT_Nogood::SetCachedSize(int size) const {
+void P_Nogood::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const ::google::protobuf::Descriptor* P_ABT_Nogood::descriptor() {
+const ::google::protobuf::Descriptor* P_Nogood::descriptor() {
   protobuf_AssignDescriptorsOnce();
-  return P_ABT_Nogood_descriptor_;
+  return P_Nogood_descriptor_;
 }
 
-const P_ABT_Nogood& P_ABT_Nogood::default_instance() {
+const P_Nogood& P_Nogood::default_instance() {
   if (default_instance_ == NULL) protobuf_AddDesc_abt_2eproto();
   return *default_instance_;
 }
 
-P_ABT_Nogood* P_ABT_Nogood::default_instance_ = NULL;
+P_Nogood* P_Nogood::default_instance_ = NULL;
 
-P_ABT_Nogood* P_ABT_Nogood::New() const {
-  return new P_ABT_Nogood;
+P_Nogood* P_Nogood::New() const {
+  return new P_Nogood;
 }
 
-void P_ABT_Nogood::Clear() {
+void P_Nogood::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (has_lhs()) {
       if (lhs_ != NULL) lhs_->::AIT::protocols::csp::P_CompoundAssignment::Clear();
@@ -1317,7 +1317,7 @@ void P_ABT_Nogood::Clear() {
   mutable_unknown_fields()->Clear();
 }
 
-bool P_ABT_Nogood::MergePartialFromCodedStream(
+bool P_Nogood::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!(EXPRESSION)) return false
   ::google::protobuf::uint32 tag;
@@ -1366,7 +1366,7 @@ bool P_ABT_Nogood::MergePartialFromCodedStream(
 #undef DO_
 }
 
-void P_ABT_Nogood::SerializeWithCachedSizes(
+void P_Nogood::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // required .AIT.protocols.csp.P_CompoundAssignment lhs = 1;
   if (has_lhs()) {
@@ -1386,7 +1386,7 @@ void P_ABT_Nogood::SerializeWithCachedSizes(
   }
 }
 
-::google::protobuf::uint8* P_ABT_Nogood::SerializeWithCachedSizesToArray(
+::google::protobuf::uint8* P_Nogood::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // required .AIT.protocols.csp.P_CompoundAssignment lhs = 1;
   if (has_lhs()) {
@@ -1409,7 +1409,7 @@ void P_ABT_Nogood::SerializeWithCachedSizes(
   return target;
 }
 
-int P_ABT_Nogood::ByteSize() const {
+int P_Nogood::ByteSize() const {
   int total_size = 0;
 
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
@@ -1439,10 +1439,10 @@ int P_ABT_Nogood::ByteSize() const {
   return total_size;
 }
 
-void P_ABT_Nogood::MergeFrom(const ::google::protobuf::Message& from) {
+void P_Nogood::MergeFrom(const ::google::protobuf::Message& from) {
   GOOGLE_CHECK_NE(&from, this);
-  const P_ABT_Nogood* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const P_ABT_Nogood*>(
+  const P_Nogood* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const P_Nogood*>(
       &from);
   if (source == NULL) {
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
@@ -1451,7 +1451,7 @@ void P_ABT_Nogood::MergeFrom(const ::google::protobuf::Message& from) {
   }
 }
 
-void P_ABT_Nogood::MergeFrom(const P_ABT_Nogood& from) {
+void P_Nogood::MergeFrom(const P_Nogood& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from.has_lhs()) {
@@ -1464,19 +1464,19 @@ void P_ABT_Nogood::MergeFrom(const P_ABT_Nogood& from) {
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
-void P_ABT_Nogood::CopyFrom(const ::google::protobuf::Message& from) {
+void P_Nogood::CopyFrom(const ::google::protobuf::Message& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void P_ABT_Nogood::CopyFrom(const P_ABT_Nogood& from) {
+void P_Nogood::CopyFrom(const P_Nogood& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool P_ABT_Nogood::IsInitialized() const {
+bool P_Nogood::IsInitialized() const {
   if ((_has_bits_[0] & 0x00000003) != 0x00000003) return false;
 
   if (has_lhs()) {
@@ -1488,7 +1488,7 @@ bool P_ABT_Nogood::IsInitialized() const {
   return true;
 }
 
-void P_ABT_Nogood::Swap(P_ABT_Nogood* other) {
+void P_Nogood::Swap(P_Nogood* other) {
   if (other != this) {
     std::swap(lhs_, other->lhs_);
     std::swap(rhs_, other->rhs_);
@@ -1498,11 +1498,11 @@ void P_ABT_Nogood::Swap(P_ABT_Nogood* other) {
   }
 }
 
-::google::protobuf::Metadata P_ABT_Nogood::GetMetadata() const {
+::google::protobuf::Metadata P_Nogood::GetMetadata() const {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::Metadata metadata;
-  metadata.descriptor = P_ABT_Nogood_descriptor_;
-  metadata.reflection = P_ABT_Nogood_reflection_;
+  metadata.descriptor = P_Nogood_descriptor_;
+  metadata.reflection = P_Nogood_reflection_;
   return metadata;
 }
 

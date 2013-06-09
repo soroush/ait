@@ -26,7 +26,7 @@ message P_CommunicationProtocol {
   repeated P_EndPoint others = 4;
 }
 
-enum ABT_MessageType {
+enum P_MessageType {
   T_OK = 1;
   T_NOGOOD = 2;
   T_ADDLINK = 3;
@@ -34,13 +34,13 @@ enum ABT_MessageType {
 }
 
 message P_Message {
-    required ABT_MessageType type = 1;
+    required P_MessageType type = 1;
     required int32 sender = 2;
     optional P_Assignment assignment = 3;
-    optional P_ABT_Nogood nogood = 4;
-} 
+    optional P_Nogood nogood = 4;
+}
 
-message P_ABT_Nogood {
+message P_Nogood {
     required P_CompoundAssignment lhs = 1;
     required P_Assignment rhs = 2;
 }

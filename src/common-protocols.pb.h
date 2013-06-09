@@ -101,7 +101,7 @@ class P_Assignment : public ::google::protobuf::Message {
   inline ::google::protobuf::int32 id() const;
   inline void set_id(::google::protobuf::int32 value);
 
-  // required int32 value = 2;
+  // optional int32 value = 2;
   inline bool has_value() const;
   inline void clear_value();
   static const int kValueFieldNumber = 2;
@@ -244,7 +244,7 @@ inline void P_Assignment::set_id(::google::protobuf::int32 value) {
   id_ = value;
 }
 
-// required int32 value = 2;
+// optional int32 value = 2;
 inline bool P_Assignment::has_value() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
