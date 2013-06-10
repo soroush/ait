@@ -37,7 +37,7 @@ message P_Message {
     required P_MessageType type = 1;
     required int32 sender = 2;
     optional P_Assignment assignment = 3;
-    optional P_Nogood nogood = 4;
+    optional P_CompoundAssignment nogood = 4;
 }
 
 message P_Nogood {

@@ -392,14 +392,14 @@ class P_Message : public ::google::protobuf::Message {
   inline ::AIT::protocols::csp::P_Assignment* release_assignment();
   inline void set_allocated_assignment(::AIT::protocols::csp::P_Assignment* assignment);
 
-  // optional .AIT.protocols.csp.abt.P_Nogood nogood = 4;
+  // optional .AIT.protocols.csp.P_CompoundAssignment nogood = 4;
   inline bool has_nogood() const;
   inline void clear_nogood();
   static const int kNogoodFieldNumber = 4;
-  inline const ::AIT::protocols::csp::abt::P_Nogood& nogood() const;
-  inline ::AIT::protocols::csp::abt::P_Nogood* mutable_nogood();
-  inline ::AIT::protocols::csp::abt::P_Nogood* release_nogood();
-  inline void set_allocated_nogood(::AIT::protocols::csp::abt::P_Nogood* nogood);
+  inline const ::AIT::protocols::csp::P_CompoundAssignment& nogood() const;
+  inline ::AIT::protocols::csp::P_CompoundAssignment* mutable_nogood();
+  inline ::AIT::protocols::csp::P_CompoundAssignment* release_nogood();
+  inline void set_allocated_nogood(::AIT::protocols::csp::P_CompoundAssignment* nogood);
 
   // @@protoc_insertion_point(class_scope:AIT.protocols.csp.abt.P_Message)
  private:
@@ -417,7 +417,7 @@ class P_Message : public ::google::protobuf::Message {
   int type_;
   ::google::protobuf::int32 sender_;
   ::AIT::protocols::csp::P_Assignment* assignment_;
-  ::AIT::protocols::csp::abt::P_Nogood* nogood_;
+  ::AIT::protocols::csp::P_CompoundAssignment* nogood_;
 
   mutable int _cached_size_;
   ::google::protobuf::uint32 _has_bits_[(4 + 31) / 32];
@@ -845,7 +845,7 @@ inline void P_Message::set_allocated_assignment(::AIT::protocols::csp::P_Assignm
   }
 }
 
-// optional .AIT.protocols.csp.abt.P_Nogood nogood = 4;
+// optional .AIT.protocols.csp.P_CompoundAssignment nogood = 4;
 inline bool P_Message::has_nogood() const {
   return (_has_bits_[0] & 0x00000008u) != 0;
 }
@@ -856,24 +856,24 @@ inline void P_Message::clear_has_nogood() {
   _has_bits_[0] &= ~0x00000008u;
 }
 inline void P_Message::clear_nogood() {
-  if (nogood_ != NULL) nogood_->::AIT::protocols::csp::abt::P_Nogood::Clear();
+  if (nogood_ != NULL) nogood_->::AIT::protocols::csp::P_CompoundAssignment::Clear();
   clear_has_nogood();
 }
-inline const ::AIT::protocols::csp::abt::P_Nogood& P_Message::nogood() const {
+inline const ::AIT::protocols::csp::P_CompoundAssignment& P_Message::nogood() const {
   return nogood_ != NULL ? *nogood_ : *default_instance_->nogood_;
 }
-inline ::AIT::protocols::csp::abt::P_Nogood* P_Message::mutable_nogood() {
+inline ::AIT::protocols::csp::P_CompoundAssignment* P_Message::mutable_nogood() {
   set_has_nogood();
-  if (nogood_ == NULL) nogood_ = new ::AIT::protocols::csp::abt::P_Nogood;
+  if (nogood_ == NULL) nogood_ = new ::AIT::protocols::csp::P_CompoundAssignment;
   return nogood_;
 }
-inline ::AIT::protocols::csp::abt::P_Nogood* P_Message::release_nogood() {
+inline ::AIT::protocols::csp::P_CompoundAssignment* P_Message::release_nogood() {
   clear_has_nogood();
-  ::AIT::protocols::csp::abt::P_Nogood* temp = nogood_;
+  ::AIT::protocols::csp::P_CompoundAssignment* temp = nogood_;
   nogood_ = NULL;
   return temp;
 }
-inline void P_Message::set_allocated_nogood(::AIT::protocols::csp::abt::P_Nogood* nogood) {
+inline void P_Message::set_allocated_nogood(::AIT::protocols::csp::P_CompoundAssignment* nogood) {
   delete nogood_;
   nogood_ = nogood;
   if (nogood) {

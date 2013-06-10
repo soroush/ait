@@ -43,6 +43,10 @@ size_t AIT::Socket::recvMessage(protocols::csp::abt::P_CommunicationProtocol& pa
 }
 
 size_t AIT::Socket::recvMessage(protocols::csp::abt::P_Message& packet) {
+	message_t message;
+	bool returnValue = recv(&message);
+	packet.ParseFromArray(message.data(), message.size());
+	return returnValue;
 }
 
 std::string AIT::Socket::getIP() {

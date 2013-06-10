@@ -168,21 +168,21 @@ void protobuf_AddDesc_abt_2eproto() {
     ".protocols.csp.abt.CP_MessageType\022\n\n\002id\030"
     "\002 \001(\005\0223\n\010identity\030\003 \001(\0132!.AIT.protocols."
     "csp.abt.P_EndPoint\0221\n\006others\030\004 \003(\0132!.AIT"
-    ".protocols.csp.abt.P_EndPoint\"\265\001\n\tP_Mess"
+    ".protocols.csp.abt.P_EndPoint\"\275\001\n\tP_Mess"
     "age\0222\n\004type\030\001 \002(\0162$.AIT.protocols.csp.ab"
     "t.P_MessageType\022\016\n\006sender\030\002 \002(\005\0223\n\nassig"
     "nment\030\003 \001(\0132\037.AIT.protocols.csp.P_Assign"
-    "ment\022/\n\006nogood\030\004 \001(\0132\037.AIT.protocols.csp"
-    ".abt.P_Nogood\"n\n\010P_Nogood\0224\n\003lhs\030\001 \002(\0132\'"
-    ".AIT.protocols.csp.P_CompoundAssignment\022"
-    ",\n\003rhs\030\002 \002(\0132\037.AIT.protocols.csp.P_Assig"
-    "nment*\247\001\n\016CP_MessageType\022\017\n\013T_INTRODUCE\020"
-    "\001\022\023\n\017T_INTRODUCE_ACK\020\002\022\022\n\016T_REQUEST_LIST"
-    "\020\003\022\021\n\rT_REQUEST_ACK\020\004\022\n\n\006T_LIST\020\005\022\026\n\022ERR"
-    "_NO_MORE_AGENTS\020\006\022\023\n\017ERR_REPEATED_ID\020\007\022\017"
-    "\n\013ERR_UNKNOWN\020\010*B\n\rP_MessageType\022\010\n\004T_OK"
-    "\020\001\022\014\n\010T_NOGOOD\020\002\022\r\n\tT_ADDLINK\020\003\022\n\n\006T_STO"
-    "P\020\004", 843);
+    "ment\0227\n\006nogood\030\004 \001(\0132\'.AIT.protocols.csp"
+    ".P_CompoundAssignment\"n\n\010P_Nogood\0224\n\003lhs"
+    "\030\001 \002(\0132\'.AIT.protocols.csp.P_CompoundAss"
+    "ignment\022,\n\003rhs\030\002 \002(\0132\037.AIT.protocols.csp"
+    ".P_Assignment*\247\001\n\016CP_MessageType\022\017\n\013T_IN"
+    "TRODUCE\020\001\022\023\n\017T_INTRODUCE_ACK\020\002\022\022\n\016T_REQU"
+    "EST_LIST\020\003\022\021\n\rT_REQUEST_ACK\020\004\022\n\n\006T_LIST\020"
+    "\005\022\026\n\022ERR_NO_MORE_AGENTS\020\006\022\023\n\017ERR_REPEATE"
+    "D_ID\020\007\022\017\n\013ERR_UNKNOWN\020\010*B\n\rP_MessageType"
+    "\022\010\n\004T_OK\020\001\022\014\n\010T_NOGOOD\020\002\022\r\n\tT_ADDLINK\020\003\022"
+    "\n\n\006T_STOP\020\004", 851);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "abt.proto", &protobuf_RegisterTypes);
   P_EndPoint::default_instance_ = new P_EndPoint();
@@ -907,7 +907,7 @@ P_Message::P_Message()
 
 void P_Message::InitAsDefaultInstance() {
   assignment_ = const_cast< ::AIT::protocols::csp::P_Assignment*>(&::AIT::protocols::csp::P_Assignment::default_instance());
-  nogood_ = const_cast< ::AIT::protocols::csp::abt::P_Nogood*>(&::AIT::protocols::csp::abt::P_Nogood::default_instance());
+  nogood_ = const_cast< ::AIT::protocols::csp::P_CompoundAssignment*>(&::AIT::protocols::csp::P_CompoundAssignment::default_instance());
 }
 
 P_Message::P_Message(const P_Message& from)
@@ -965,7 +965,7 @@ void P_Message::Clear() {
       if (assignment_ != NULL) assignment_->::AIT::protocols::csp::P_Assignment::Clear();
     }
     if (has_nogood()) {
-      if (nogood_ != NULL) nogood_->::AIT::protocols::csp::abt::P_Nogood::Clear();
+      if (nogood_ != NULL) nogood_->::AIT::protocols::csp::P_CompoundAssignment::Clear();
     }
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
@@ -1028,7 +1028,7 @@ bool P_Message::MergePartialFromCodedStream(
         break;
       }
 
-      // optional .AIT.protocols.csp.abt.P_Nogood nogood = 4;
+      // optional .AIT.protocols.csp.P_CompoundAssignment nogood = 4;
       case 4: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
@@ -1077,7 +1077,7 @@ void P_Message::SerializeWithCachedSizes(
       3, this->assignment(), output);
   }
 
-  // optional .AIT.protocols.csp.abt.P_Nogood nogood = 4;
+  // optional .AIT.protocols.csp.P_CompoundAssignment nogood = 4;
   if (has_nogood()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
       4, this->nogood(), output);
@@ -1109,7 +1109,7 @@ void P_Message::SerializeWithCachedSizes(
         3, this->assignment(), target);
   }
 
-  // optional .AIT.protocols.csp.abt.P_Nogood nogood = 4;
+  // optional .AIT.protocols.csp.P_CompoundAssignment nogood = 4;
   if (has_nogood()) {
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
@@ -1147,7 +1147,7 @@ int P_Message::ByteSize() const {
           this->assignment());
     }
 
-    // optional .AIT.protocols.csp.abt.P_Nogood nogood = 4;
+    // optional .AIT.protocols.csp.P_CompoundAssignment nogood = 4;
     if (has_nogood()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
@@ -1191,7 +1191,7 @@ void P_Message::MergeFrom(const P_Message& from) {
       mutable_assignment()->::AIT::protocols::csp::P_Assignment::MergeFrom(from.assignment());
     }
     if (from.has_nogood()) {
-      mutable_nogood()->::AIT::protocols::csp::abt::P_Nogood::MergeFrom(from.nogood());
+      mutable_nogood()->::AIT::protocols::csp::P_CompoundAssignment::MergeFrom(from.nogood());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());

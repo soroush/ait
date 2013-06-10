@@ -22,15 +22,18 @@ ABT_Solver::ABT_Solver(const std::string& host_, const unsigned short& port_,
 		const unsigned short& serverPublisherPort_, const AgentID& id_) :
 		id(id_), address(host_), port(port_), serverAddress(serverHost_), serverResponderPort(
 				serverResponderPort_), serverPublisherPort(
-				serverPublisherPort_), context(2), listener(context, ZMQ_PULL), serverRquest(
-				context, ZMQ_REQ), serverBroadcast(context, ZMQ_SUB), end(false) {
+				serverPublisherPort_), context(2), serverRquest(context,
+				ZMQ_REQ), serverBroadcast(context, ZMQ_SUB), end(false) {
 	initializeDomain();
+	sem_init(&agentReadyLock, 0, 1);
+	sem_init(&messageCount, 0, 0);
+	pthread_mutex_init(&this->messageRW, NULL);
 }
 
 ABT_Solver::~ABT_Solver() {
 	serverBroadcast.close();
 	serverRquest.close();
-	listener.close();
+	listener->close();
 	context.close();
 }
 
@@ -42,15 +45,20 @@ void ABT_Solver::ABT() {
 		P_Message m = getMessage();
 		switch (m.type()) {
 		case P_MessageType::T_OK:
+			_INFO("OK message received from %d : (%d,%d).",
+					m.sender(), m.assignment().id(), m.assignment().value());
 			processInfo(m);
 			break;
 		case P_MessageType::T_NOGOOD:
+			_INFO("NGD message received from %d.", m.sender());
 			resolveConflict(m);
 			break;
 		case P_MessageType::T_ADDLINK:
+			_INFO("ADL message received from %d.", m.sender());
 			setLink(m);
 			break;
 		case P_MessageType::T_STOP:
+			_INFO("STP message received from %d.", m.sender());
 			end = true;
 			break;
 		default:
@@ -61,28 +69,11 @@ void ABT_Solver::ABT() {
 }
 
 void ABT_Solver::connect() {
-	// Let's listen to other agents:
-	stringstream addressName;
-	this->address = "127.0.0.1"; //Socket::getIP();
-	addressName << "udp://" << this->address << ":*";
-	try {
-		listener.bind(addressName.str().data());
-	} catch (zmq::error_t &e) {
-		cerr << e.what() << endl;
-	}
-	size_t len = 255;
-	char endpoint[len];
-	listener.getsockopt(ZMQ_LAST_ENDPOINT, &endpoint, &len);
-	char * token, *last;
-	token = strtok(endpoint, ":");
-	while (token != NULL) {
-		last = token;
-		token = strtok(NULL, ":");
-	}
-	this->port = static_cast<unsigned int>(atoi(last));
-	_INFO("Socket successfully created. Now listening on %s:%d",
-			this->address.data(), this->port);
+	pthread_create(&this->messageReader, NULL, &ABT_Solver::_messageReader,
+			static_cast<void*>(this));
+	sem_wait(&this->agentReadyLock);
 	// Now we'll connect to server (monitor agent)
+	stringstream addressName;
 	addressName.str(string());
 	addressName << "tcp://" << this->serverAddress << ':'
 			<< this->serverResponderPort;
@@ -97,6 +88,7 @@ void ABT_Solver::connect() {
 	}
 	_INFO("Successfully connected to monitor agent at %s:%d",
 			this->serverAddress.data(), this->serverResponderPort);
+
 	// Now connect to broadcast port of monitor
 	addressName.str(string());
 	addressName << "tcp://" << this->serverAddress << ':'
@@ -121,6 +113,7 @@ void ABT_Solver::connect() {
 	introPacket.mutable_identity()->set_host(this->address);
 	introPacket.mutable_identity()->set_id(this->id);
 	introPacket.mutable_identity()->set_port(this->port);
+	_INFO("Sending introduction message to monitor...");
 	if (this->serverRquest.sendMessage(introPacket)) {
 		_INFO(
 				"Introduction message sent to monitor agent. Waiting for reply...");
@@ -170,6 +163,7 @@ void ABT_Solver::processInfo(const P_Message& m) {
 int ABT_Solver::chooseValue() {
 	for (auto &v : domain) {
 		_INFO("Trying to find a consistent value...");
+		/* */
 		bool eliminated = false;
 		eliminated = any_of(noGoodStore.begin(), noGoodStore.end(),
 				[&](P_Nogood &ngd) {
@@ -182,8 +176,10 @@ int ABT_Solver::chooseValue() {
 			} else {
 				int culpritID = findCulprit(v);
 				int culpirtValue = findCulpritsValue(culpritID);
+				/* TEST FIXME Erase this*/
+				cout << "CULPIRT" << culpritID << ':' << culpirtValue << endl;
+				/* EOT */
 				P_Nogood ngd;
-				P_CompoundAssignment lhs;
 				P_Assignment *lhs_value = ngd.mutable_lhs()->add_assignments();
 				lhs_value->set_id(culpritID);
 				lhs_value->set_value(culpirtValue);
@@ -191,6 +187,7 @@ int ABT_Solver::chooseValue() {
 				ngd.mutable_rhs()->set_id(this->id);
 				ngd.mutable_rhs()->set_value(v);
 
+				// Add to nogoodStore only of not exists
 				noGoodStore.push_back(ngd);
 			}
 		}
@@ -199,25 +196,46 @@ int ABT_Solver::chooseValue() {
 }
 
 void ABT_Solver::backtrack() {
-	P_Nogood newNogood = solve();
-	if (newNogood.lhs().assignments_size() == 0) {
+	P_CompoundAssignment newNogood = solve();
+	/* TEST CODE ==== FIXME Erase this */
+	for (const auto& a : newNogood.assignments()) {
+		cout << "NGD: (" << a.id() << ',' << a.value() << ')' << endl;
+	}
+	for (const auto& a : noGoodStore) {
+		for (const auto& ngd : a.lhs().assignments())
+			cout << "NGDS: (" << ngd.id() << ',' << ngd.value() << ')' << ",";
+		cout << endl;
+	}
+	/* END OF TEST CODE */
+	if (newNogood.assignments_size() == 0) {
 		end = true;
 		sendMessageSTP();
 	} else {
 		P_Message nogoodMessage;
 		nogoodMessage.set_allocated_nogood(&newNogood);
-		sendMessageNGD(newNogood.rhs().id(), nogoodMessage);
-		newNogood.mutable_rhs()->clear_value();
-		updateAgentView(newNogood.rhs());
+		AgentID lastCulpirt;
+		sendMessageNGD(lastCulpirt, nogoodMessage);
+		P_Assignment clearCulpirt;
+		clearCulpirt.set_id(lastCulpirt);
+		updateAgentView(clearCulpirt);
 		checkAgentView();
 	}
 }
 
 void ABT_Solver::updateAgentView(const P_Assignment& assignment) {
 	if (assignment.has_value()) {
-		agentView.add(assignment);
+		_INFO("updateAgentView(%d,%d):%d",
+				assignment.id(), assignment.value(), assignment.has_value());
+		// remove old value of given assignment
+		remove_if(agentView.mutable_assignments()->begin(),
+				agentView.mutable_assignments()->end(),
+				[&](P_Assignment a)->bool {return a.id()==assignment.id();});
+		// add new value
+		P_Assignment* newAssign = agentView.mutable_assignments()->Add();
+		newAssign->CopyFrom(assignment);
+		// remove invalid nogoods
 		remove_if(noGoodStore.begin(), noGoodStore.end(),
-				[&](P_Nogood ngd)->bool {return !this->coherent(ngd,agentView);});
+				[&](P_Nogood ngd)->bool {return !this->coherent(ngd.lhs(),agentView);});
 	} else {
 		// Clear item from agentView with specified ID
 		remove_if(agentView.mutable_assignments()->begin(),
@@ -227,16 +245,20 @@ void ABT_Solver::updateAgentView(const P_Assignment& assignment) {
 }
 
 void ABT_Solver::resolveConflict(const P_Message& msg) {
-	CompoundAssignment myselfAssignment;
-	myselfAssignment.add(this->id, this->value);
+	P_CompoundAssignment myselfAssignment;
+	P_Assignment* assign = myselfAssignment.mutable_assignments()->Add();
+	assign->set_id(this->id);
+	assign->set_value(this->value);
 
-	CompoundAssignment totalView;
-	totalView.add(this->agentView);
-	totalView.add(this->id, this->value);
+	P_CompoundAssignment totalView;
+	totalView.CopyFrom(agentView);
+	P_Assignment* a2 = totalView.mutable_assignments()->Add();
+	a2->set_id(this->id);
+	a2->set_value(this->value);
 
 	if (coherent(msg.nogood(), totalView)) {
 		checkAddLink(msg);
-		noGoodStore.push_back(msg.nogood());
+		add(msg.nogood());
 		this->value = 0; // FIXME
 		checkAgentView();
 	} else if (coherent(msg.nogood(), myselfAssignment)) {
@@ -245,27 +267,34 @@ void ABT_Solver::resolveConflict(const P_Message& msg) {
 }
 
 bool ABT_Solver::consistent(const int& v) {
-	_INFO("Checking consistency of (%d,%d)...", this->id, v);
+	_INFO("Checking consistency of (%d,%d)", this->id, v);
 	if (v == 0)
 		return false;
-	for (int i = 0; i < agentView.assignments_size(); ++i) {
-		AgentID x_j = agentView.assignments(i).id();
-		int v_j = agentView.assignments(i).value();
-		if (v_j == v or (abs(x_j - id) == abs(v_j - v))) {
+	for (const auto& a : agentView.assignments()) {
+		/* WARNING : VERY STUPID CODE AHEAD! */
+		int delta_a = a.id() - this->id;
+		int delta_v = a.value() - v;
+		if (delta_a < 0)
+			delta_a *= -1;
+		if (delta_v < 0)
+			delta_v *= -1;
+		/* END OF VERY SRUPID CODE */
+		if (a.value() == v or delta_a == delta_v) {
+			_INFO("(%d,%d) <=> (%d,%d)=>vertical",
+					this->id, v, a.id(), a.value());
 			return false;
 		}
 	}
-	_INFO("Consistency check successful");
 	return true;
 }
 
 P_Message ABT_Solver::getMessage() {
-	_INFO("Waiting for message from an agent...");
-	message_t message;
-	listener.recv(&message);
-	P_Message x;
-	x.ParseFromArray(message.data(), message.size());
-	_INFO("New message has been received from %d.", x.sender());
+	_INFO("Waiting for message queue ...");
+	sem_wait(&messageCount);
+	pthread_mutex_lock(&this->messageRW);
+	P_Message x = this->messageQueue.front();
+	this->messageQueue.pop();
+	pthread_mutex_unlock(&this->messageRW);
 	return x;
 }
 
@@ -283,15 +312,12 @@ void ABT_Solver::setLink(const P_Message& message) {
 }
 
 void ABT_Solver::checkAddLink(const P_Message& message) {
-	for (int i = 0; i < message.nogood().lhs().assignments_size(); ++i) {
-		int id = message.nogood().lhs().assignments(i).id();
-		int value = message.nogood().lhs().assignments(i).value();
+	for (const auto& assignment : message.nogood().assignments()) {
 		if (!any_of(succeeding.begin(), succeeding.end(),
 				[&](const std::vector<ABT_EndPoint>::iterator i)->bool
-				{	return i->id()==id;})) {
+				{	return i->id()==assignment.id();})) {
 			P_Message adl;
 			adl.set_type(P_MessageType::T_ADDLINK);
-			adl.set_sender(this->id);
 			sendMessageADL(id);
 			P_Assignment assign;
 			assign.set_id(id);
@@ -301,27 +327,13 @@ void ABT_Solver::checkAddLink(const P_Message& message) {
 	}
 }
 
-bool AIT::ABT_Solver::coherent(const P_Nogood& nogood,
+bool AIT::ABT_Solver::coherent(const P_CompoundAssignment& nogood,
 		const P_CompoundAssignment& assign) {
-//	for (int j = 0; j < assign.assignments_size(); ++j) {
-//		for (int i = 0; i < nogood.lhs().assignments_size(); ++i) {
-//			if (nogood.lhs().assignments(i).id()
-//					== assign.assignments(j).id()) {
-//				if (nogood.lhs().assignments(i).value()
-//						!= assign.assignments(j).value())
-//					return false;
-//			}
-//			if (nogood.rhs().id() != assign.assignments(j).id()
-//					or nogood.rhs().value() != assign.assignments(j).value())
-//				return false;
-//		}
-//	}
-//	return true;
-
 	for (const auto &a : assign.assignments()) {
-		for (const auto &n : nogood.lhs().assignments()) {
+		for (const auto &n : nogood.assignments()) {
 			if (a.id() == n.id() and a.value() != n.value())
 				return false;
+			// TODO Implement a correct coherent
 		}
 	}
 	return true;
@@ -363,6 +375,12 @@ void ABT_Solver::getAgentList() {
 			else if (i->id() > this->id)
 				succeeding.push_back(i);
 		}
+		for (auto &child : everybody) {
+			stringstream address;
+			address << "tcp://";
+			address << child.host() << ":" << child.port();
+			child.socket()->connect(address.str().c_str());
+		}
 	}
 }
 
@@ -374,22 +392,28 @@ ABT_EndPoint::ABT_EndPoint(const protocols::csp::abt::P_EndPoint& ep,
 
 int ABT_Solver::findCulprit(const int& v) {
 	AgentID lastCulpirt = 0;
-	for (int i = 0; i < agentView.assignments_size(); ++i) {
-		if (agentView.assignments(i).id() < this->id) { // Always true
-			AgentID x_j = agentView.assignments(i).id();
-			int v_j = agentView.assignments(i).value();
-			if (v_j == this->value or (abs(x_j - id) == abs(v_j - value))) { // culprit
-				lastCulpirt = (x_j > lastCulpirt) ? x_j : lastCulpirt; // and last
-			}
+	for (const auto& a : agentView.assignments()) {
+		int delta_a = (a.id() - id); // FIXME Think about :|
+		int delta_v = (a.value() - v);
+		if (delta_a < 0)
+			delta_a *= -1;
+		if (delta_v < 0)
+			delta_v *= -1;
+		cout << "CULPIRT CHECK" << '(' << a.id() << ',' << a.value() << ')'
+				<< endl;
+		cout << "CULPIRT VALS" << '(' << delta_a << ',' << delta_v << ')'
+				<< endl;
+		if (a.value() == v or delta_a == delta_v) { // culprit
+			lastCulpirt = (a.id() > lastCulpirt) ? a.id() : lastCulpirt; // and last
 		}
 	}
 	return lastCulpirt;
 }
 
 int AIT::ABT_Solver::findCulpritsValue(const int& culpirtsID) {
-	for (int i = 0; i < agentView.assignments_size(); ++i) {
-		if (agentView.assignments(i).id() == culpirtsID)
-			return agentView.assignments(i).value();
+	for (const auto& a : agentView.assignments()) {
+		if (a.id() == culpirtsID)
+			return a.value();
 	}
 	return 0;
 }
@@ -400,14 +424,14 @@ void AIT::ABT_Solver::sendMessageOK(const AgentID& agent) {
 	ok.set_type(P_MessageType::T_OK);
 	ok.mutable_assignment()->set_id(this->id);
 	ok.mutable_assignment()->set_value(this->value);
-	_INFO("Sending OK message...");
+	_INFO("Sending OK message to %d", agent);
 	sendMessage(agent, ok);
 }
 
 void AIT::ABT_Solver::sendMessageNGD(const AgentID& agent, P_Message& ngd) {
 	ngd.set_sender(this->id);
 	ngd.set_type(P_MessageType::T_NOGOOD);
-	_INFO("Sending NGD message...");
+	_INFO("Sending NGD message to %d", agent);
 	sendMessage(agent, ngd);
 }
 
@@ -415,7 +439,7 @@ void AIT::ABT_Solver::sendMessageSTP() {
 	P_Message stop;
 	stop.set_type(P_MessageType::T_STOP);
 	stop.set_sender(this->id);
-	_INFO("Sending STP message...");
+	_INFO("Sending STP message.");
 	sendMessage(0, stop);
 }
 
@@ -423,31 +447,15 @@ void ABT_Solver::sendMessageADL(const AgentID& agent) {
 	P_Message adl;
 	adl.set_sender(this->id);
 	adl.set_type(P_MessageType::T_ADDLINK);
-	_INFO("Sending ADL message...");
+	_INFO("Sending ADL message to %d", agent);
 	sendMessage(agent, adl);
 }
 
-//void ABT_Solver::updateAgentView(const P_CompoundAssignment& assignments) {
-//	agentView.add(assignments);
-//	remove_if(NoGoodStore.begin(), NoGoodStore.end(),
-//			[&](P_Nogood ngd)->bool {return !this->coherent(ngd,agentView);});
-//}
-//
-//void ABT_Solver::updateAgentView(const protocols::csp::abt::P_Nogood& ngd) {
-//	updateAgentView(ngd.lhs());
-//	for (int i = 0; i < agentView.assignments_size(); ++i) {
-//		if (agentView.assignments(i).id() == ngd.rhs().id()) {
-//			agentView.mutable_assignments()->DeleteSubrange(i, 1);
-//		}
-//	}
-//}
-
-P_Nogood ABT_Solver::solve() {
-	P_Nogood newNogood;
+P_CompoundAssignment ABT_Solver::solve() {
+	P_CompoundAssignment newNogood;
 	for (const auto& ngd : this->noGoodStore) {
 		for (const auto& assign : ngd.lhs().assignments()) {
-			P_Assignment* newAssignment =
-					newNogood.mutable_lhs()->add_assignments();
+			P_Assignment* newAssignment = newNogood.add_assignments();
 			newAssignment->CopyFrom(assign);
 		}
 	}
@@ -456,7 +464,6 @@ P_Nogood ABT_Solver::solve() {
 
 void ABT_Solver::sendMessage(const AgentID& agent, const P_Message& message) {
 	if (agent == 0) {
-		_INFO("Sending message to everybody");
 		for (const auto &ep : this->everybody) {
 			if (ep.id() == agent) {
 				ep.socket()->sendMessage(message);
@@ -464,7 +471,6 @@ void ABT_Solver::sendMessage(const AgentID& agent, const P_Message& message) {
 			}
 		}
 	} else {
-		_INFO("Sending message to %d", agent);
 		for (const auto &ep : this->everybody) {
 			if (ep.id() == agent)
 				ep.socket()->sendMessage(message);
@@ -479,6 +485,70 @@ Socket* AIT::ABT_EndPoint::socket() const {
 void AIT::ABT_Solver::initializeDomain() {
 	for (int i = 0; i < agentCount; ++i) {
 		this->domain.push_back(i + 1);
+	}
+}
+
+void ABT_Solver::add(const P_CompoundAssignment& ca) {
+	P_Nogood ngd;
+	AgentID last = 0;
+	for (int i = 0; i < ca.assignments_size(); ++i) {
+		last = ca.assignments(i).id() > last ? ca.assignments(i).id() : last;
+	}
+	for (int i = 0; i < ca.assignments_size(); ++i) {
+		if (i != last) {
+			P_Assignment* assign = ngd.mutable_lhs()->add_assignments();
+			assign->CopyFrom(ca.assignments(i));
+		} else {
+			ngd.mutable_rhs()->set_id(this->id);
+			ngd.mutable_rhs()->set_id(this->value);
+		}
+	}
+	noGoodStore.push_back(ngd);
+}
+
+void ABT_Solver::add(const P_Nogood& ngd) {
+	auto i = find_if(noGoodStore.begin(), noGoodStore.end(),
+			[&](P_Nogood n)->bool {return ngd.rhs().id() == n.rhs().id() and
+				ngd.rhs().value()==n.rhs().value();});
+	if (i == noGoodStore.end()) {
+		noGoodStore.push_back(ngd);
+	} else {
+		i->mutable_lhs()->MergeFrom(ngd.lhs());
+	}
+}
+
+void* ABT_Solver::_messageReader(void* param) {
+// Let's listen to other agents:
+	ABT_Solver* solver = (reinterpret_cast<ABT_Solver*>(param));
+	solver->listener = new Socket(solver->context, ZMQ_PULL);
+	stringstream addressName;
+	solver->address = "127.0.0.1"; //Socket::getIP();
+	addressName << "tcp://" << solver->address << ":*";
+	try {
+		solver->listener->bind(addressName.str().data());
+	} catch (zmq::error_t &e) {
+		cerr << e.what() << endl;
+	}
+	size_t len = 255;
+	char endpoint[len];
+	solver->listener->getsockopt(ZMQ_LAST_ENDPOINT, &endpoint, &len);
+	char * token, *last;
+	token = strtok(endpoint, ":");
+	while (token != NULL) {
+		last = token;
+		token = strtok(NULL, ":");
+	}
+	solver->port = static_cast<unsigned int>(atoi(last));
+	_INFO("Socket successfully created. Now listening on %s:%d",
+			solver->address.data(), solver->port);
+//sem_post(&solver->agentReadyLock);
+	while (true) {
+		P_Message message;
+		solver->listener->recvMessage(message);
+		pthread_mutex_lock(&(solver->messageRW));
+		solver->messageQueue.push(message);
+		pthread_mutex_unlock(&(solver->messageRW));
+		sem_post(&solver->messageCount);
 	}
 }
 
