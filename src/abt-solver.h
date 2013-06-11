@@ -19,7 +19,6 @@
 #include <stdlib.h>
 
 #include "global.h"
-#include "common_csp.h"
 #include "common_async.h"
 #include "abt-socket.h"
 

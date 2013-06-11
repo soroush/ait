@@ -90,8 +90,9 @@ LTLIBRARIES = $(lib_LTLIBRARIES)
 am__DEPENDENCIES_1 =
 libait_la_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am__dirstamp = $(am__leading_dot)dirstamp
-am_libait_la_OBJECTS = src/abt.pb.lo src/abt-monitor.lo \
-	src/abt-socket.lo src/abt-solver.lo src/common_csp.lo \
+am_libait_la_OBJECTS = src/abt.pb.lo src/assignment.lo \
+	src/compound-assignment.lo src/abt-monitor.lo \
+	src/abt-socket.lo src/abt-nogood.lo src/abt-solver.lo \
 	src/common-protocols.pb.lo
 libait_la_OBJECTS = $(am_libait_la_OBJECTS)
 libait_la_LINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) \
@@ -266,22 +267,26 @@ AM_CPPFLAGS = -pipe
 libait_la_LIBADD = $(ZMQ_LIBS) $(PROTOCOL_BUFFERS_LIBS)
 libait_la_SOURCES = \
 			src/abt.pb.cc \
+			src/assignment.cpp \
+			src/compound-assignment.cpp \
 			src/abt-monitor.cpp \
 			src/abt-socket.cpp \
+			src/abt-nogood.cpp \
 			src/abt-solver.cpp \
-			src/common_csp.cpp \
 			src/common-protocols.pb.cc 
 
 libait_la_LDFLAGS = -version-info $(AIT_SO_VERSION)
 ait_includedir = $(includedir)/ait
 ait_include_HEADERS = \
 			src/abt.pb.h \
+			src/assignment.h \
+			src/compound-assignment.h \
 			src/abt-monitor.h \
 			src/abt-socket.h \
 			src/abt-solver.h \
+			src/abt-nogood.h \
 			src/common_async.h \
 			src/common-protocols.pb.h \
-			src/common_csp.h \
 			src/global.h
 
 ait_libincludedir = $(libdir)/ait/include
@@ -382,10 +387,13 @@ src/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) src/$(DEPDIR)
 	@: > src/$(DEPDIR)/$(am__dirstamp)
 src/abt.pb.lo: src/$(am__dirstamp) src/$(DEPDIR)/$(am__dirstamp)
+src/assignment.lo: src/$(am__dirstamp) src/$(DEPDIR)/$(am__dirstamp)
+src/compound-assignment.lo: src/$(am__dirstamp) \
+	src/$(DEPDIR)/$(am__dirstamp)
 src/abt-monitor.lo: src/$(am__dirstamp) src/$(DEPDIR)/$(am__dirstamp)
 src/abt-socket.lo: src/$(am__dirstamp) src/$(DEPDIR)/$(am__dirstamp)
+src/abt-nogood.lo: src/$(am__dirstamp) src/$(DEPDIR)/$(am__dirstamp)
 src/abt-solver.lo: src/$(am__dirstamp) src/$(DEPDIR)/$(am__dirstamp)
-src/common_csp.lo: src/$(am__dirstamp) src/$(DEPDIR)/$(am__dirstamp)
 src/common-protocols.pb.lo: src/$(am__dirstamp) \
 	src/$(DEPDIR)/$(am__dirstamp)
 libait.la: $(libait_la_OBJECTS) $(libait_la_DEPENDENCIES) $(EXTRA_libait_la_DEPENDENCIES) 
@@ -395,26 +403,32 @@ mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
 	-rm -f src/abt-monitor.$(OBJEXT)
 	-rm -f src/abt-monitor.lo
+	-rm -f src/abt-nogood.$(OBJEXT)
+	-rm -f src/abt-nogood.lo
 	-rm -f src/abt-socket.$(OBJEXT)
 	-rm -f src/abt-socket.lo
 	-rm -f src/abt-solver.$(OBJEXT)
 	-rm -f src/abt-solver.lo
 	-rm -f src/abt.pb.$(OBJEXT)
 	-rm -f src/abt.pb.lo
+	-rm -f src/assignment.$(OBJEXT)
+	-rm -f src/assignment.lo
 	-rm -f src/common-protocols.pb.$(OBJEXT)
 	-rm -f src/common-protocols.pb.lo
-	-rm -f src/common_csp.$(OBJEXT)
-	-rm -f src/common_csp.lo
+	-rm -f src/compound-assignment.$(OBJEXT)
+	-rm -f src/compound-assignment.lo
 
 distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/abt-monitor.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/abt-nogood.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/abt-socket.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/abt-solver.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/abt.pb.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/assignment.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/common-protocols.pb.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/common_csp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/compound-assignment.Plo@am__quote@
 
 .cc.o:
 @am__fastdepCXX_TRUE@	depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.o$$||'`;\
