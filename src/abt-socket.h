@@ -19,8 +19,8 @@ public:
 	Socket(zmq::context_t &context_, int type_);
 	Socket(zmq::socket_t&& rhs);
 	virtual ~Socket();
-	size_t sendMessage(const protocols::csp::abt::P_CommunicationProtocol&);
-	size_t sendMessage(const protocols::csp::abt::P_Message&);
+	size_t sendMessage(const protocols::csp::abt::P_CommunicationProtocol);
+	size_t sendMessage(const protocols::csp::abt::P_Message);
 	size_t recvMessage(protocols::csp::abt::P_CommunicationProtocol&);
 	size_t recvMessage(protocols::csp::abt::P_Message&);
 	static std::string getIP();

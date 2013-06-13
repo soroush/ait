@@ -3,6 +3,13 @@ ACLOCAL_AMFLAGS = ${ACLOCAL_FLAGS} -I m4
 lib_LTLIBRARIES = libait.la
 AM_CPPFLAGS = -pipe
 libait_la_LIBADD = $(ZMQ_LIBS) $(PROTOCOL_BUFFERS_LIBS)
+if DEBUG
+AM_CFLAGS = -g3 -O0
+AM_CXXFLAGS = -g3 -O0
+else
+AM_CFLAGS = -O3
+AM_CXXFLAGS = -O3
+endif
 libait_la_SOURCES = \
 			src/abt.pb.cc \
 			src/assignment.cpp \

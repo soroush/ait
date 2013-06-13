@@ -18,24 +18,29 @@ Socket::Socket(context_t &context_, int type_) :
 		socket_t(context_, type_) {
 }
 
+Socket::Socket(zmq::socket_t&& rhs) :socket_t(std::move(rhs)) {
+}
+
 Socket::~Socket() {
 }
 
-size_t Socket::sendMessage(const protocols::csp::abt::P_CommunicationProtocol& packet) {
+size_t Socket::sendMessage(
+		const protocols::csp::abt::P_CommunicationProtocol packet) {
 	size_t length = packet.ByteSize();
 	message_t message(length);
 	packet.SerializeToArray(message.data(), length);
 	return socket_t::send(message);
 }
 
-size_t Socket::sendMessage(const protocols::csp::abt::P_Message& packet) {
+size_t Socket::sendMessage(const protocols::csp::abt::P_Message packet) {
 	size_t length = packet.ByteSize();
 	message_t message(length);
 	packet.SerializeToArray(message.data(), length);
 	return socket_t::send(message);
 }
 
-size_t AIT::Socket::recvMessage(protocols::csp::abt::P_CommunicationProtocol& packet) {
+size_t AIT::Socket::recvMessage(
+		protocols::csp::abt::P_CommunicationProtocol& packet) {
 	message_t message;
 	bool returnValue = recv(&message);
 	packet.ParseFromArray(message.data(), message.size());

@@ -9,8 +9,18 @@
 #define ABT_NOGOOD_H_
 
 #include "abt.pb.h"
+#include "compound-assignment.h"
 
 namespace AIT {
+
+//struct ABT_Nogood{
+//	CompoundAssignment lhs;
+//	Assignment rhs;
+//	bool operator ==(const ABT_Nogood& other) const;
+//	bool operator !=(const ABT_Nogood& other) const;
+//	ABT_Nogood& operator =(const ABT_Nogood& other);
+//	operator protocols::csp::abt::P_Nogood();
+//};
 
 class ABT_Nogood: public AIT::protocols::csp::abt::P_Nogood {
 public:

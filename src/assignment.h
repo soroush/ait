@@ -12,11 +12,18 @@
 
 namespace AIT {
 
-class Assignment: public AIT::protocols::csp::P_Assignment {
-public:
+struct Assignment {
 	Assignment();
-	virtual ~Assignment();
-	bool operator ==(const protocols::csp::P_Assignment& other);
+	Assignment(const Assignment& other);
+	~Assignment();
+	int id;
+	int value;
+	bool operator ==(const Assignment& other) const;
+	bool operator !=(const Assignment& other) const;
+	bool operator >(const Assignment& other) const;
+	bool operator <(const Assignment& other) const;// for std::set
+	Assignment& operator =(const Assignment& other);
+	operator protocols::csp::P_Assignment();
 };
 
 } /* namespace AIT */

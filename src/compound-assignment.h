@@ -10,8 +10,11 @@
 
 #include "common-protocols.pb.h"
 #include "assignment.h"
+#include <set>
 
 namespace AIT {
+
+//typedef std::set<Assignment> CompoundAssignment;
 
 class CompoundAssignment: public AIT::protocols::csp::P_CompoundAssignment {
 public:

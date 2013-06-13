@@ -27,6 +27,18 @@ AC_COMPILE_IFELSE([AC_LANG_SOURCE(
     check_type&& cr = static_cast<check_type&&>(c);]])],,
   AC_MSG_FAILURE(['$CXX $CXXFLAGS' does not accept ISO C++11]))
 
+AC_ARG_ENABLE(debug,
+AS_HELP_STRING([--enable-debug],
+               [enable debugging, default: no]),
+[case "${enableval}" in
+             yes) debug=true ;;
+             no)  debug=false ;;
+             *)   AC_MSG_ERROR([bad value ${enableval} for --enable-debug]) ;;
+esac],
+[debug=false])
+
+AM_CONDITIONAL(DEBUG, test x"$debug" = x"true")
+
 PKG_CHECK_MODULES([ZMQ], [libzmq >= 3.2.3])
 PKG_CHECK_MODULES([PROTOCOL_BUFFERS], [protobuf >= 2.5.0])
 AC_PROG_CXX
