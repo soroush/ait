@@ -17,10 +17,14 @@ namespace AIT {
 #include "common-protocols.pb.h"
 #include "abt.pb.h"
 
-class ABT_Message {
-public:
+struct ABT_Message {
 	ABT_Message();
-	virtual ~ABT_Message();
+	ABT_Message(const ABT_Message& other);
+	~ABT_Message();
+	ABT_Message& operator =(const ABT_Message& other);
+	operator protocols::csp::abt::P_Message() const;
+	void readFromProtocol(const protocols::csp::abt::P_Message&);
+
 	protocols::csp::abt::P_MessageType type;
 	AgentID sender;
 	Assignment assignment;

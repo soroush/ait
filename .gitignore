@@ -1,3 +1,6 @@
 .*
 /doc
 *.cache
+*.o
+*.lo
+*.so

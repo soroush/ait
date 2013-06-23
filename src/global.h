@@ -23,7 +23,7 @@
             now->tm_hour, now->tm_min, now->tm_sec); \
     fprintf(stderr, format , ## args);\
     printf("\n");\
-    fflush(stdout);\
+    fflush(stderr);\
 	}
 
 #define _INFO(format, args...)  \
@@ -35,7 +35,7 @@
             now->tm_hour, now->tm_min, now->tm_sec); \
     fprintf(stdout, format , ## args);\
     printf("\n"); \
-    fflush(stderr);\
+    fflush(stdout);\
 	}
 
 #endif /* GLOBAL_HPP_ */

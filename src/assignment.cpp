@@ -20,19 +20,19 @@ Assignment::Assignment(const Assignment& other) :
 Assignment::~Assignment() {
 }
 
-inline bool Assignment::operator ==(const Assignment& other) const {
+bool Assignment::operator ==(const Assignment& other) const {
 	return this->id == other.id and this->value == other.value;
 }
 
-inline bool Assignment::operator !=(const Assignment& other) const {
+bool Assignment::operator !=(const Assignment& other) const {
 	return !(*this == other);
 }
 
-inline bool Assignment::operator >(const Assignment& other) const {
+bool Assignment::operator >(const Assignment& other) const {
 	return this->id > other.id;
 }
 
-inline bool Assignment::operator <(const Assignment& other) const {
+bool Assignment::operator <(const Assignment& other) const {
 	return this->id < other.id;
 }
 
@@ -48,3 +48,16 @@ Assignment& Assignment::operator =(const Assignment& other) {
 	this->value = other.value;
 	return *this;
 }
+
+Assignment::Assignment(const AgentID& id_, const int& value_) :
+		id(id_), value(value_) {
+}
+
+void Assignment::readFromProtocol(const P_Assignment& message) {
+	this->id = message.id();
+	if (message.has_value())
+		this->value = message.value();
+	else
+		this->value = 0;
+}
+

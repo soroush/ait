@@ -13,23 +13,27 @@
 
 namespace AIT {
 
-//struct ABT_Nogood{
-//	CompoundAssignment lhs;
-//	Assignment rhs;
-//	bool operator ==(const ABT_Nogood& other) const;
-//	bool operator !=(const ABT_Nogood& other) const;
-//	ABT_Nogood& operator =(const ABT_Nogood& other);
-//	operator protocols::csp::abt::P_Nogood();
-//};
-
-class ABT_Nogood: public AIT::protocols::csp::abt::P_Nogood {
-public:
+struct ABT_Nogood {
 	ABT_Nogood();
-	virtual ~ABT_Nogood();
-	void addLHS(const protocols::csp::P_Assignment& item);
-	void addLHS(const protocols::csp::P_CompoundAssignment& item);
-	void addLHS(const int& id, const int& value);
+	ABT_Nogood(const ABT_Nogood& other);
+	ABT_Nogood(const CompoundAssignment& lhs, const Assignment& rhs);
+	~ABT_Nogood();
+	CompoundAssignment lhs;
+	Assignment rhs;
+	bool operator ==(const ABT_Nogood& other) const;
+	bool operator !=(const ABT_Nogood& other) const;
+	ABT_Nogood& operator =(const ABT_Nogood& other);
+	operator protocols::csp::abt::P_Nogood();
 };
+
+//class ABT_Nogood: public AIT::protocols::csp::abt::P_Nogood {
+//public:
+//	ABT_Nogood();
+//	virtual ~ABT_Nogood();
+//	void addLHS(const protocols::csp::P_Assignment& item);
+//	void addLHS(const protocols::csp::P_CompoundAssignment& item);
+//	void addLHS(const int& id, const int& value);
+//};
 
 } /* namespace AIT */
 #endif /* ABT_NOGOOD_H_ */

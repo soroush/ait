@@ -3,20 +3,15 @@ ACLOCAL_AMFLAGS = ${ACLOCAL_FLAGS} -I m4
 lib_LTLIBRARIES = libait.la
 AM_CPPFLAGS = -pipe
 libait_la_LIBADD = $(ZMQ_LIBS) $(PROTOCOL_BUFFERS_LIBS)
-if DEBUG
-AM_CFLAGS = -g3 -O0
-AM_CXXFLAGS = -g3 -O0
-else
-AM_CFLAGS = -O3
-AM_CXXFLAGS = -O3
-endif
 libait_la_SOURCES = \
 			src/abt.pb.cc \
 			src/assignment.cpp \
 			src/compound-assignment.cpp \
+			src/abt-message.cpp \
 			src/abt-monitor.cpp \
 			src/abt-socket.cpp \
 			src/abt-nogood.cpp \
+			src/abt-endpoint.cpp \
 			src/abt-solver.cpp \
 			src/common-protocols.pb.cc 
 libait_la_LDFLAGS = -version-info $(AIT_SO_VERSION)
@@ -25,10 +20,12 @@ ait_include_HEADERS =  \
 			src/abt.pb.h \
 			src/assignment.h \
 			src/compound-assignment.h \
+			src/abt-message.h \
 			src/abt-monitor.h \
 			src/abt-socket.h \
 			src/abt-solver.h \
 			src/abt-nogood.h \
+			src/abt-endpoint.h \
 			src/common_async.h \
 			src/common-protocols.pb.h \
 			src/global.h

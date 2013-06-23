@@ -651,8 +651,6 @@ ZMQ_CFLAGS
 PKG_CONFIG_LIBDIR
 PKG_CONFIG_PATH
 PKG_CONFIG
-DEBUG_FALSE
-DEBUG_TRUE
 EGREP
 GREP
 CXXCPP
@@ -745,7 +743,6 @@ ac_subst_files=''
 ac_user_opts='
 enable_option_checking
 enable_dependency_tracking
-enable_debug
 enable_shared
 enable_static
 with_pic
@@ -1396,7 +1393,6 @@ Optional Features:
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
   --disable-dependency-tracking  speeds up one-time build
   --enable-dependency-tracking   do not reject slow dependency extractors
-  --enable-debug          enable debugging, default: no
   --enable-shared[=PKGS]  build shared libraries [default=yes]
   --enable-static[=PKGS]  build static libraries [default=yes]
   --enable-fast-install[=PKGS]
@@ -4870,27 +4866,6 @@ as_fn_error $? "'$CXX $CXXFLAGS' does not accept ISO C++11
 See \`config.log' for more details" "$LINENO" 5; }
 fi
 rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
-
-# Check whether --enable-debug was given.
-if test "${enable_debug+set}" = set; then :
-  enableval=$enable_debug; case "${enableval}" in
-             yes) debug=true ;;
-             no)  debug=false ;;
-             *)   as_fn_error $? "bad value ${enableval} for --enable-debug" "$LINENO" 5 ;;
-esac
-else
-  debug=false
-fi
-
-
- if test x"$debug" = x"true"; then
-  DEBUG_TRUE=
-  DEBUG_FALSE='#'
-else
-  DEBUG_TRUE='#'
-  DEBUG_FALSE=
-fi
-
 
 
 
@@ -16126,10 +16101,6 @@ Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 if test -z "${am__fastdepCXX_TRUE}" && test -z "${am__fastdepCXX_FALSE}"; then
   as_fn_error $? "conditional \"am__fastdepCXX\" was never defined.
-Usually this means the macro was only invoked conditionally." "$LINENO" 5
-fi
-if test -z "${DEBUG_TRUE}" && test -z "${DEBUG_FALSE}"; then
-  as_fn_error $? "conditional \"DEBUG\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 if test -z "${am__fastdepCXX_TRUE}" && test -z "${am__fastdepCXX_FALSE}"; then
