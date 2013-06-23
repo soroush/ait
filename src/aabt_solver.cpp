@@ -44,7 +44,7 @@ void aabt_solver::Agile_ABT() {
 
 }
 
-void aabt_solver::ProcessInfo(message msg) {
+void aabt_solver::ProcessInfo(const message& msg) {
 	CheckOrder(my_order, msg.tvi);
 
 	UpdateAgentView(union_func(msg.vi, msg.ei.LHS));
@@ -53,7 +53,7 @@ void aabt_solver::ProcessInfo(message msg) {
 	CheckAgentView();
 }
 
-void aabt_solver::ProcessOrder(message msg) {
+void aabt_solver::ProcessOrder(const message&  msg) {
 	CheckOrder(msg.oi, msg.tvi);
 	CheckAgentView();
 }

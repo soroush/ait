@@ -9,6 +9,19 @@ public:
 		int id;
 		int time_stamp;
 		int value;
+		assignment() {
+			id = 0;
+			time_stamp = 0;
+			value = 0;
+		}
+		~assignment() {
+		}
+		assignment& operator=(const assignment& a) {
+			id = a.id;
+			time_stamp = a.time_stamp;
+			value = a.value;
+			return *this;
+		}
 	};
 
 	typedef std::vector<assignment> CompoundAssignment;
@@ -16,6 +29,18 @@ public:
 	struct nogood {
 		CompoundAssignment LHS;
 		assignment RHS;
+
+		nogood() :
+				RHS() {
+		}
+		~nogood() {
+		}
+		nogood& operator=(const nogood& ng) {
+			for (const auto& x : ng.LHS)
+				LHS.push_back(x);
+			RHS = ng.RHS;
+			return *this;
+		}
 	};
 
 	typedef std::vector<int> order;
@@ -26,6 +51,19 @@ public:
 		int id;
 		CompoundAssignment LHS;
 		int RHS;
+		explanation() {
+			id = 0;
+			RHS = 0;
+		}
+		~explanation() {
+		}
+		explanation& operator=(const explanation& e1) {
+			for (const auto& x : e1.LHS)
+				LHS.push_back(x);
+			RHS = e1.RHS;
+			id = e1.id;
+			return *this;
+		}
 	};
 
 	enum MessageType {
@@ -39,6 +77,27 @@ public:
 		order oi;
 		Termination_value tvi;
 		nogood ng;
+		message() :
+				vi(), ei(), ng() {
+
+			sender_id = 0;
+
+		}
+		~message() {
+		}
+		message& operator=(const message& m1) {
+			msg_type = m1.msg_type;
+			sender_id = m1.sender_id;
+			vi = m1.vi;
+			ei = m1.ei;
+			ng = m1.ng;
+			for (const auto& x : m1.oi)
+				oi.push_back(x);
+			for (const auto& x : m1.tvi)
+				tvi.push_back(x);
+			return *this;
+
+		}
 
 	};
 	struct CVOrderData {
@@ -46,9 +105,23 @@ public:
 		order o;
 		Termination_value tv;
 		std::vector<explanation> E;
+		CVOrderData():a() {}
+		~CVOrderData() {
+		}
+		CVOrderData& operator=(const CVOrderData& c1) {
+			a = c1.a;
+			for (const auto& x : c1.o)
+				o.push_back(x);
+			for (const auto& x : c1.E)
+				E.push_back(x);
+			for (const auto& x : c1.tv)
+				tv.push_back(x);
+
+		}
+
 	};
 
-private:
+public:
 
 	int ID;
 	vector<int> my_initial_domain;
@@ -64,8 +137,8 @@ private:
 	bool end;
 
 	void Agile_ABT();
-	void ProcessInfo(message msg);
-	void ProcessOrder(message msg);
+	void ProcessInfo(const message& msg);
+	void ProcessOrder(const message& msg);
 	void ResolveConflict(message msg);
 	void CheckOrder(order, Termination_value);
 	void CheckAgentView();
