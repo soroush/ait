@@ -93,7 +93,7 @@ am__dirstamp = $(am__leading_dot)dirstamp
 am_libait_la_OBJECTS = src/abt.pb.lo src/assignment.lo \
 	src/compound-assignment.lo src/abt-message.lo \
 	src/abt-monitor.lo src/abt-socket.lo src/abt-nogood.lo \
-	src/abt-endpoint.lo src/abt-solver.lo \
+	src/abt-endpoint.lo src/abt-solver.lo src/aabt_solver.lo \
 	src/common-protocols.pb.lo
 libait_la_OBJECTS = $(am_libait_la_OBJECTS)
 libait_la_LINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) \
@@ -276,6 +276,7 @@ libait_la_SOURCES = \
 			src/abt-nogood.cpp \
 			src/abt-endpoint.cpp \
 			src/abt-solver.cpp \
+			src/aabt_solver.cpp \
 			src/common-protocols.pb.cc 
 
 libait_la_LDFLAGS = -version-info $(AIT_SO_VERSION)
@@ -292,6 +293,7 @@ ait_include_HEADERS = \
 			src/abt-endpoint.h \
 			src/common_async.h \
 			src/common-protocols.pb.h \
+			src/aabt_solver.cpp \
 			src/global.h
 
 ait_libincludedir = $(libdir)/ait/include
@@ -401,6 +403,7 @@ src/abt-socket.lo: src/$(am__dirstamp) src/$(DEPDIR)/$(am__dirstamp)
 src/abt-nogood.lo: src/$(am__dirstamp) src/$(DEPDIR)/$(am__dirstamp)
 src/abt-endpoint.lo: src/$(am__dirstamp) src/$(DEPDIR)/$(am__dirstamp)
 src/abt-solver.lo: src/$(am__dirstamp) src/$(DEPDIR)/$(am__dirstamp)
+src/aabt_solver.lo: src/$(am__dirstamp) src/$(DEPDIR)/$(am__dirstamp)
 src/common-protocols.pb.lo: src/$(am__dirstamp) \
 	src/$(DEPDIR)/$(am__dirstamp)
 libait.la: $(libait_la_OBJECTS) $(libait_la_DEPENDENCIES) $(EXTRA_libait_la_DEPENDENCIES) 
@@ -408,6 +411,8 @@ libait.la: $(libait_la_OBJECTS) $(libait_la_DEPENDENCIES) $(EXTRA_libait_la_DEPE
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
+	-rm -f src/aabt_solver.$(OBJEXT)
+	-rm -f src/aabt_solver.lo
 	-rm -f src/abt-endpoint.$(OBJEXT)
 	-rm -f src/abt-endpoint.lo
 	-rm -f src/abt-message.$(OBJEXT)
@@ -432,6 +437,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/aabt_solver.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/abt-endpoint.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/abt-message.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/abt-monitor.Plo@am__quote@

@@ -13,6 +13,7 @@ libait_la_SOURCES = \
 			src/abt-nogood.cpp \
 			src/abt-endpoint.cpp \
 			src/abt-solver.cpp \
+			src/aabt_solver.cpp \
 			src/common-protocols.pb.cc 
 libait_la_LDFLAGS = -version-info $(AIT_SO_VERSION)
 ait_includedir = $(includedir)/ait
@@ -28,6 +29,7 @@ ait_include_HEADERS =  \
 			src/abt-endpoint.h \
 			src/common_async.h \
 			src/common-protocols.pb.h \
+			src/aabt_solver.cpp \
 			src/global.h
 ait_libincludedir = $(libdir)/ait/include
 pkgconfigdir = $(libdir)/pkgconfig
