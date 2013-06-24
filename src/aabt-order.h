@@ -18,6 +18,7 @@ struct CVOrderData {
 	std::vector<int> tv;
 	std::vector<AABT_Explanation> E;
 	CVOrderData();
+	CVOrderData(const CVOrderData& other);
 	~CVOrderData();
 	CVOrderData& operator=(const CVOrderData& c1);
 };

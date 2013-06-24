@@ -12,16 +12,20 @@ using namespace AIT;
 CVOrderData::CVOrderData() {
 }
 
+CVOrderData::CVOrderData(const CVOrderData& other) :
+		a(other.a), o(other.o), E(other.E), tv(other.tv) {
+}
+
 CVOrderData::~CVOrderData() {
 }
 
 CVOrderData& CVOrderData::operator =(const CVOrderData& other) {
 	a = other.a;
-	for (const auto& x : other.o)
-		o.push_back(x);
-	for (const auto& x : other.E)
-		E.push_back(x);
-	for (const auto& x : other.tv)
-		tv.push_back(x);
+	o.clear();
+	E.clear();
+	tv.clear();
+	copy(other.o.begin(),other.o.end(),this->o.begin());
+	copy(other.E.begin(),other.E.end(),this->E.begin());
+	copy(other.tv.begin(),other.tv.end(),this->tv.begin());
 	return *this;
 }

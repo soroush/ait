@@ -19,6 +19,7 @@ struct AABT_Explanation {
 		std::vector<AABT_Assignment> LHS;
 		int RHS;
 		AABT_Explanation();
+		AABT_Explanation(const AABT_Explanation& e1);
 		~AABT_Explanation();
 		AABT_Explanation& operator=(const AABT_Explanation& e1);
 	};

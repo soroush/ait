@@ -19,6 +19,12 @@ struct AABT_Assignment {
 		time_stamp = 0;
 		value = 0;
 	}
+
+	AABT_Assignment(const AABT_Assignment& a) {
+		id = a.id;
+		time_stamp = a.time_stamp;
+		value = a.value;
+	}
 	~AABT_Assignment() {
 	}
 	AABT_Assignment& operator=(const AABT_Assignment& a) {

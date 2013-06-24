@@ -28,6 +28,7 @@ struct AABT_Message {
 	std::vector<int> tvi;
 	AABT_Nogood ng;
 	AABT_Message();
+	AABT_Message(const AABT_Message& m1);
 	~AABT_Message();
 	AABT_Message& operator=(const AABT_Message& m1);
 };

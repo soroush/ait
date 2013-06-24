@@ -11,6 +11,11 @@
 using namespace AIT;
 using namespace std;
 
+AABT_Nogood::AABT_Nogood(const AABT_Nogood& other):RHS(other.RHS),LHS(other.LHS)
+{
+}
+
+
 AABT_Nogood& AABT_Nogood::operator =(const AABT_Nogood& other) {
 	LHS.clear();
 	copy(other.LHS.begin(),other.LHS.end(),this->LHS.begin());

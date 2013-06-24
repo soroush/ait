@@ -16,6 +16,7 @@ namespace AIT {
 struct AABT_Nogood {
 	AABT_Nogood();
 	~AABT_Nogood();
+	AABT_Nogood(const AABT_Nogood& other);
 	AABT_Nogood& operator=(const AABT_Nogood& other);
 
 	std::vector<AABT_Assignment> LHS;
