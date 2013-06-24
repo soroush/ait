@@ -7,14 +7,18 @@
 
 #include <iostream>
 #include <vector>
-#include  <algorithm>
+#include <algorithm>
+#include <sstream>
 #include "aabt-solver.h"
 #include "aabt-message.h"
 #include "aabt-order.h"
+#include "global.h"
+#include "abt.pb.h"
 
 using namespace std;
 using namespace AIT;
-
+using namespace protocols::csp::aabt;
+using namespace protocols::csp::abt;
 
 struct incoming {
 	int n;
@@ -55,7 +59,7 @@ void AABT_Solver::ProcessInfo(const AABT_Message& msg) {
 	CheckOrder(my_order, msg.tvi);
 
 	UpdateAgentView(union_func(msg.vi, msg.ei.LHS));
-	if (Coherent(msg.ei) && Compatible(msg.ei)) // TODO ask Roya
+	if (Coherent(msg.ei) && Compatible(msg.ei))
 		E.push_back(msg.ei);
 	CheckAgentView();
 }
@@ -76,12 +80,12 @@ void AABT_Solver::ResolveConflict(const AABT_Message& msg) {
 			my_assignment.value = 0;
 			CheckAgentView();
 		} else if (msg.ng.RHS.value == my_assignment.value) {
+			// TODO: Remove extra code, add sendMessage ok to msg.sender
 			AABT_Message m;
 			m.ei = my_exp;
 			m.vi = my_assignment;
 			m.oi = my_order;
 			m.tvi = my_temination_value;
-			//send msg ok to msg.sender
 		}
 	}
 }
@@ -123,12 +127,13 @@ void AABT_Solver::CheckAgentView() {
 			for (order::iterator i = my_order.begin();; i++) {
 				if (*i == my_assignment.id)
 					break;
-				//sendmsg ok to agent i
+				//TODO sendmsg ok to agent i
 			}
 
 		} else
 			BackTrack();
 	}
+	// TODO complete the code
 //	else //if my_order was modified
 	{
 		AABT_Message m;
@@ -140,7 +145,7 @@ void AABT_Solver::CheckAgentView() {
 		for (order::iterator i = my_order.begin();; i++) {
 			if (*i == my_assignment.id)
 				break;
-			//sendmsg ok to agent i
+			//TODO sendmsg ok to agent i
 		}
 	}
 }
@@ -168,7 +173,8 @@ void AABT_Solver::BackTrack() {
 	if (ng.LHS.empty()) {
 		end = true;
 		AABT_Message m;
-		m.msg_type = AABT_MessageType::STOP; //send message stop to system
+		m.msg_type = AABT_MessageType::STOP;
+		//TODO send message stop to system
 	}
 	CVOrderData cvo = ChooseVariableOrder(E, ng);
 	bool is_stronger = true;
@@ -187,15 +193,16 @@ void AABT_Solver::BackTrack() {
 		m1.ng = ng;
 		m1.oi = my_order;
 		m1.tvi = my_temination_value;
-		//send ngd message to cvo.assignment.id
-		for (vector<AABT_Explanation>::iterator i = E.begin(); i != E.end(); i++)
+		//TODO send ngd message to cvo.assignment.id
+		for (vector<AABT_Explanation>::iterator i = E.begin(); i != E.end();
+				i++)
 			if (i->id == cvo.a.id)
 				E.erase(i);
 		AABT_Message m;
 		m.msg_type = AABT_MessageType::ORDER;
 		m.oi = my_order;
 		m.tvi = my_temination_value;
-		//broadcast message order
+		//TODO broadcast message order
 	}
 
 	else {
@@ -204,7 +211,7 @@ void AABT_Solver::BackTrack() {
 		m.msg_type = AABT_MessageType::NOGOOD;
 		m.oi = my_order;
 		m.tvi = my_temination_value;
-		//sendmsg nogood to Ak;
+		//TODO sendmsg nogood to Ak;
 	}
 	cvo.a.value = 0;
 	CompoundAssignment c;
@@ -217,12 +224,12 @@ int AABT_Solver::chooseValue() {
 	for (vector<int>::iterator i = my_initial_domain.begin();
 			i != my_initial_domain.end(); i++) {
 		bool elaminated = false;
-		current_domains_size[ID] = initial_domains_size[ID];
+		current_domains_size[id] = initial_domains_size[id];
 		for (nogood_store::iterator j = my_nogood_store.begin();
 				j != my_nogood_store.end(); j++)
 			if (j->RHS.value == *i) {
 				elaminated = true;
-				current_domains_size[ID] -= 1;
+				current_domains_size[id] -= 1;
 				break;
 			}
 		if (!elaminated) {
@@ -239,7 +246,7 @@ int AABT_Solver::chooseValue() {
 					AABT_Nogood ng;
 					ng.LHS = ca;
 					ng.RHS = a;
-					current_domains_size[ID] -= 1;
+					current_domains_size[id] -= 1;
 					break;
 				} else {
 					//*	my_assignment.value=*i;
@@ -253,13 +260,15 @@ int AABT_Solver::chooseValue() {
 }
 
 vector<AABT_Explanation> AABT_Solver::UpdateExplanations(
-		const vector<AABT_Explanation>& Ei, AABT_Nogood& ng, const AABT_Assignment &a) {
+		const vector<AABT_Explanation>& Ei, AABT_Nogood& ng,
+		const AABT_Assignment &a) {
 	vector<AABT_Explanation> up_E = Ei;
 	setRhs(ng, a);
 	bool a_is_in_up_E;
 	AABT_Explanation e;
 	vector<AABT_Explanation>::iterator a_index;
-	for (vector<AABT_Explanation>::iterator i = up_E.begin(); i != up_E.end(); i++) {
+	for (vector<AABT_Explanation>::iterator i = up_E.begin(); i != up_E.end();
+			i++) {
 		for (CompoundAssignment::iterator j = i->LHS.begin();
 				j != i->LHS.begin(); j++)
 			if (j->id == a.id) {
@@ -287,7 +296,8 @@ vector<AABT_Explanation> AABT_Solver::UpdateExplanations(
 	return up_E;
 }
 
-AABT_Solver::order AABT_Solver::ComputeOrder(const vector<AABT_Explanation>& exp) {
+AABT_Solver::order AABT_Solver::ComputeOrder(
+		const vector<AABT_Explanation>& exp) {
 
 	vector<incoming> graph(n);
 	order o(n);
@@ -341,8 +351,8 @@ AABT_Solver::order AABT_Solver::ComputeOrder(const vector<AABT_Explanation>& exp
 	return o;
 }
 
-CVOrderData AABT_Solver::ChooseVariableOrder(
-		const vector<AABT_Explanation> &e, AABT_Nogood &ng) {
+CVOrderData AABT_Solver::ChooseVariableOrder(const vector<AABT_Explanation> &e,
+		AABT_Nogood &ng) {
 	CVOrderData cvo;
 	cvo.o = my_order;
 	cvo.tv = my_temination_value;
@@ -401,7 +411,8 @@ AABT_Nogood AABT_Solver::Solve(const nogood_store &ng) {
 	return s_ng;
 }
 
-bool AABT_Solver::Coherent(const AABT_Nogood &ng, const CompoundAssignment &ca) {
+bool AABT_Solver::Coherent(const AABT_Nogood &ng,
+		const CompoundAssignment &ca) {
 	for (const auto& i : ng.LHS)
 		for (const auto& j : ca)
 			if (i.id == j.id && i.value != j.value)
@@ -427,7 +438,7 @@ bool AABT_Solver::Coherent(const AABT_Explanation &exp) {
 
 bool AABT_Solver::Compatible(const AABT_Nogood &ng) {
 	vector<int>::iterator my_index;
-	my_index = std::find(my_order.begin(), my_order.end(), ID);
+	my_index = std::find(my_order.begin(), my_order.end(), id);
 	for (const auto& ci : ng.LHS)
 		if (std::find(my_index + 1, my_order.end(), ci.id) != my_order.end())
 			return false;
@@ -436,7 +447,7 @@ bool AABT_Solver::Compatible(const AABT_Nogood &ng) {
 
 bool AABT_Solver::Compatible(const AABT_Explanation &e) {
 	vector<int>::iterator my_index;
-	my_index = std::find(my_order.begin(), my_order.end(), ID);
+	my_index = std::find(my_order.begin(), my_order.end(), id);
 	for (const auto& ci : e.LHS)
 		if (std::find(my_index + 1, my_order.end(), ci.id) != my_order.end())
 			return false;
@@ -446,7 +457,7 @@ bool AABT_Solver::Compatible(const AABT_Explanation &e) {
 bool AABT_Solver::Compatible(const AABT_Nogood & ng,
 		const AABT_Solver::order &o) {
 	vector<int>::const_iterator my_index;
-	my_index = std::find(o.begin(), o.end(), ID);
+	my_index = std::find(o.begin(), o.end(), id);
 
 	for (const auto& ci : ng.LHS)
 		if (std::find(my_index + 1, o.end(), ci.id) != o.end())
@@ -454,8 +465,8 @@ bool AABT_Solver::Compatible(const AABT_Nogood & ng,
 	return true;
 }
 
-AABT_Solver::CompoundAssignment AABT_Solver::union_func(const AABT_Assignment &a1,
-		const CompoundAssignment &ca) {
+AABT_Solver::CompoundAssignment AABT_Solver::union_func(
+		const AABT_Assignment &a1, const CompoundAssignment &ca) {
 	CompoundAssignment up_ca = ca;
 	for (const auto& j : ca) {
 		if (j.id == a1.id)
@@ -500,7 +511,8 @@ bool AABT_Solver::Consistent(const AABT_Assignment &a,
 	return true;
 
 }
-bool AABT_Solver::Consistent(const AABT_Assignment &a, const AABT_Assignment &ca) {
+bool AABT_Solver::Consistent(const AABT_Assignment &a,
+		const AABT_Assignment &ca) {
 
 	if (a.value == ca.value || (ca.value - a.value == ca.value - a.id))
 		return false;
@@ -508,5 +520,97 @@ bool AABT_Solver::Consistent(const AABT_Assignment &a, const AABT_Assignment &ca
 
 }
 
-AABT_Message AABT_Solver::getMsg() {
+void AIT::AABT_Solver::getAgentList() {
+	//TODO integrate this one
+	_INFO( "Sending Request List to monitor agent ...");
+	P_CommunicationProtocol requestList;
+	requestList.set_type(CP_MessageType::T_REQUEST_LIST);
+	requestList.set_id(this->id);
+	this->serverRquest.sendMessage(requestList);
+
+	P_CommunicationProtocol requestListAck;
+	this->serverRquest.recvMessage(requestListAck);
+	if (requestListAck.type() == CP_MessageType::T_REQUEST_ACK) {
+		_INFO( "Monitor has accepted to send list of agents.");
+	} else {
+		_ERROR( "Unable to get agent list from monitor.\n"
+		"\tTerminating silently. Goodbye.");
+	}
+
+	_INFO( "Waiting for all agents to came online...");
+	P_CommunicationProtocol listPacket;
+	this->serverBroadcast.recvMessage(listPacket);
+	if (listPacket.type() == CP_MessageType::T_LIST) {
+		for (int i = 0; i < listPacket.others_size(); ++i) {
+			this->everybody.push_back(
+					ABT_EndPoint(listPacket.others(i), context));
+			_INFO("New agent introduced by server:\n"
+			"\tID:     %d\n"
+			"\tHost:   %s\n"
+			"\tPort:   %d",
+					listPacket.others(i).id(), listPacket.others(i).host().c_str(), listPacket.others(i).port());
+		}
+		for (auto i = everybody.begin(); i < everybody.end(); ++i) {
+			if (i->id() < this->id)
+				preceding.push_back(i);
+			else if (i->id() > this->id)
+				succeeding.push_back(i);
+		}
+		for (auto &agent : everybody) {
+			stringstream address;
+			address << "tcp://";
+			address << agent.host() << ":" << agent.port();
+			agent.socket()->connect(address.str().c_str());
+		}
+	}
 }
+
+void AABT_Solver::sendMessage(const AgentID& agent,
+		const AABT_Message& message) {
+}
+
+protocols::csp::aabt::P_Message AABT_Solver::getMessage() {
+	sem_wait(&messageCount);
+	pthread_mutex_lock(&this->messageRW);
+	protocols::csp::aabt::P_Message x = this->messageQueue.front();
+	this->messageQueue.pop();
+	pthread_mutex_unlock(&this->messageRW);
+	return x;
+}
+
+void* AABT_Solver::_messageReader(void* param) {
+	// Let's listen to other agents:
+	AABT_Solver* solver = (reinterpret_cast<AABT_Solver*>(param));
+	solver->listener = new Socket(solver->context, ZMQ_PULL);
+	stringstream addressName;
+	solver->address = "127.0.0.1";
+	addressName << "tcp://" << solver->address << ":*";
+	try {
+		solver->listener->bind(addressName.str().data());
+	} catch (zmq::error_t &e) {
+		cerr << e.what() << endl;
+	}
+	size_t len = 255;
+	char endpoint[len];
+	solver->listener->getsockopt(ZMQ_LAST_ENDPOINT, &endpoint, &len);
+	char * token, *last;
+	token = strtok(endpoint, ":");
+	while (token != NULL) {
+		last = token;
+		token = strtok(NULL, ":");
+	}
+	solver->port = static_cast<unsigned int>(atoi(last));
+	_INFO("Socket successfully created. Now listening on %s:%d",
+			solver->address.data(), solver->port);
+	sem_post(&solver->agentReadyLock);
+	while (true) {
+		protocols::csp::aabt::P_Message message;
+		solver->listener->recvMessage(message);
+		pthread_mutex_lock(&(solver->messageRW));
+		solver->messageQueue.push(message);
+		pthread_mutex_unlock(&(solver->messageRW));
+		sem_post(&solver->messageCount);
+	}
+	return 0;
+}
+

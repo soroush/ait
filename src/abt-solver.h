@@ -56,7 +56,6 @@ public:
 	void sendMessageNGD(const AgentID&, ABT_Message&);
 	void sendMessageSTP();
 	void sendMessageADL(const AgentID&);
-	protocols::csp::abt::P_Message getMessage();
 
 private:
 	int value;
@@ -67,6 +66,7 @@ private:
 	int findCulpritsValue(const int& culpirtsID);
 	CompoundAssignment solve();
 	void sendMessage(const AgentID&, const ABT_Message&);
+	protocols::csp::abt::P_Message getMessage();
 	void initializeDomain();
 	void add(const CompoundAssignment&);
 	void printNGS();

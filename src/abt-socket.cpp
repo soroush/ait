@@ -54,6 +54,14 @@ size_t AIT::Socket::recvMessage(protocols::csp::abt::P_Message& packet) {
 	return returnValue;
 }
 
+size_t Socket::sendMessage(const protocols::csp::aabt::P_Message message) {
+	// TODO implement
+}
+
+size_t Socket::recvMessage(protocols::csp::aabt::P_Message& message) {
+	// TODO implement
+}
+
 std::string AIT::Socket::getIP() {
 	std::string address = "";
 	FILE * fp = popen("ifconfig", "r");

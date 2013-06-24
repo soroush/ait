@@ -1,7 +1,14 @@
 #include <iostream>
 #include <vector>
+#include <queue>
+#include <pthread.h>
+#include <semaphore.h>
 #include "aabt-assignment.h"
 #include "aabt-explanation.h"
+#include "abt-socket.h"
+#include "abt-endpoint.h"
+#include "aabt.pb.h"
+#include "common_async.h"
 
 using namespace std;
 
@@ -23,7 +30,10 @@ public:
 
 public:
 
-	int ID;
+	int id;
+	std::vector<std::vector<ABT_EndPoint>::iterator> preceding; // Γ+
+	std::vector<std::vector<ABT_EndPoint>::iterator> succeeding; // Γ-
+	std::vector<ABT_EndPoint> everybody;
 	vector<int> my_initial_domain;
 	vector<int> current_domains_size;
 	vector<int> initial_domains_size;
@@ -64,6 +74,34 @@ public:
 	bool Consistent(const AABT_Assignment&, const CompoundAssignment&);
 	bool Consistent(const AABT_Assignment&, const AABT_Assignment&);
 	bool exp_is_valid(const AABT_Explanation&);
+
+private:
+	void sendMessageOK(const AgentID&);
+	void sendMessageNGD(const AgentID&, AABT_Message&);
+	void sendMessageORD(const AgentID&);
+	void sendMessageSTP();
+	void getAgentList();
+	void sendMessage(const AgentID&, const AABT_Message&);
+	protocols::csp::aabt::P_Message getMessage();
+
+	// Networking staff
+	std::string address;
+	unsigned short port;
+	std::string serverAddress;
+	unsigned short serverResponderPort;
+	unsigned short serverPublisherPort;
+
+	static void* _messageReader(void* param);
+	std::queue<protocols::csp::aabt::P_Message> messageQueue;
+	pthread_mutex_t messageRW;
+	sem_t messageCount;
+	sem_t agentReadyLock;
+	pthread_t messageReader;
+
+	zmq::context_t context;
+	Socket *listener;
+	Socket serverRquest;
+	Socket serverBroadcast;
 };
 
 } // namespace AIT

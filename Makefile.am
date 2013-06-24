@@ -14,7 +14,7 @@ libait_la_SOURCES = \
 			src/abt-endpoint.cpp \
 			src/abt-solver.cpp \
 			src/aabt-solver.cpp \
-			src/aabt.pb.cpp \
+			src/aabt.pb.cc \
 			src/aabt-assignment.cpp \
 			src/aabt-explanation.cpp \
 			src/aabt-message.cpp \
