@@ -1,0 +1,46 @@
+package AIT.protocols.csp.aabt;
+
+message P_Assignment{
+  required int32 id = 1;
+  optional int32 value = 2;
+  required int32 time_stamp = 3;
+}
+
+message P_CompoundAssignment{
+  repeated P_Assignment assignments = 1;
+}
+
+message P_NoGood{
+  required P_CompoundAssignment lhs = 1;
+  required P_Assignment rhs = 2;
+}
+
+message P_Explanation{
+  required int32 id = 1;
+  required P_CompoundAssignment lhs = 2;
+  required P_Assignment rhs = 3;
+}
+
+message P_CVOrderData{
+  required P_Assignment assignment = 1;
+  repeated int32 order = 2; 
+  repeated int32 tv = 3; 
+  repeated P_Explanation e = 4; 
+}
+
+enum P_MessageType{
+  T_OK = 1;
+  T_NOGOOD = 2;
+  T_ORDER = 3;
+  T_STOP = 4;
+}
+
+message P_Message{
+  required P_MessageType type = 1;
+  required int32 sender = 2;
+  optional P_Assignment vi = 3;
+  optional P_Explanation ei = 4;
+  repeated int32 oi = 5; 
+  repeated int32 tvi = 6; 
+  optional P_NoGood nogood = 7; 
+}
