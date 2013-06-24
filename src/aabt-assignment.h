@@ -8,6 +8,8 @@
 #ifndef AABT_ASSIGNMENT_H_
 #define AABT_ASSIGNMENT_H_
 
+#include "aabt.pb.h"
+
 namespace AIT {
 
 struct AABT_Assignment {

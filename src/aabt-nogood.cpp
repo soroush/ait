@@ -7,12 +7,10 @@
 
 #include <algorithm>
 #include "aabt-nogood.h"
+
 using namespace AIT;
 using namespace AIT::protocols::csp;
 using namespace AIT::protocols::csp::aabt;
-
-using namespace AIT;
-using namespace std;
 
 AABT_Nogood::AABT_Nogood() {
 }
@@ -30,9 +28,10 @@ AABT_Nogood& AABT_Nogood::operator =(const AABT_Nogood& other) {
 	return *this;
 }
 
-operator protocols::csp::aabt::P_NoGood() const {
-P_NoGood pngd;
+AABT_Nogood::operator protocols::csp::aabt::P_NoGood() const {
 }
-void readFromProtocol(const protocols::csp::aabt::P_NoGood&) {
 
+void AABT_Nogood::readFromProtocol(
+		const protocols::csp::aabt::P_NoGood& message) {
 }
+

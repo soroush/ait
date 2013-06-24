@@ -10,6 +10,7 @@
 
 using namespace AIT;
 using namespace std;
+using namespace protocols::csp::aabt;
 
 AABT_Message::AABT_Message() {
 
@@ -35,9 +36,10 @@ AABT_Message& AABT_Message::operator =(const AABT_Message& other) {
 	return *this;
 }
 
-void readFromProtocol(const protocols::csp::aabt::P_Message&) {
-
+void AABT_Message::readFromProtocol(
+		const protocols::csp::aabt::P_Message& message) {
 }
-operator protocols::csp::aabt::P_Message() const {
 
+AABT_Message::operator protocols::csp::aabt::P_Message() const {
 }
+

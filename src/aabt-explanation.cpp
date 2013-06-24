@@ -31,12 +31,12 @@ AABT_Explanation& AIT::AABT_Explanation::operator =(
 	return *this;
 }
 
-AABT_Explanation::operator protocols::csp::aabt::P_Explanation() const
-{
+AABT_Explanation::operator protocols::csp::aabt::P_Explanation() const {
 
 }
-void AABT_Explanation::::readFromProtocol(const protocols::csp::aabt::P_Explanation&)
-		{
 
-		}
+void AABT_Explanation::readFromProtocol(
+		const protocols::csp::aabt::P_Explanation&) {
+
+}
 

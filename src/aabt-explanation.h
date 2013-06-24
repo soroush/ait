@@ -11,11 +11,13 @@
 #include <vector>
 
 #include "aabt-assignment.h"
+#include "aabt.pb.h"
+#include "common-protocols.pb.h"
+#include "aabt.pb.h"
 
 namespace AIT {
 
-#include "common-protocols.pb.h"
-#include "aabt.pb.h"
+
 struct AABT_Explanation {
 	int id;
 	std::vector<AABT_Assignment> LHS;
