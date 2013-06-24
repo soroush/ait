@@ -21,6 +21,9 @@ struct AABT_Assignment {
 	AABT_Assignment(const AABT_Assignment& a);
 	~AABT_Assignment();
 	AABT_Assignment& operator=(const AABT_Assignment& a);
+
+	operator protocols::csp::aabt::P_Assignment() const;
+	void readFromProtocol(const protocols::csp::aabt::P_Assignment&);
 };
 } /* namespace AIT */
 #endif /* AABT_ASSIGNMENT_H_ */

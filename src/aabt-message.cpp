@@ -34,3 +34,10 @@ AABT_Message& AABT_Message::operator =(const AABT_Message& other) {
 	std::copy(other.tvi.begin(), other.tvi.end(), tvi.begin());
 	return *this;
 }
+
+void readFromProtocol(const protocols::csp::aabt::P_Message&) {
+
+}
+operator protocols::csp::aabt::P_Message() const {
+
+}
