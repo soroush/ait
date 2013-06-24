@@ -55,7 +55,11 @@ void AABT_Solver::ProcessInfo(const AABT_Message& msg) {
 	CheckOrder(my_order, msg.tvi);
 
 	UpdateAgentView(union_func(msg.vi, msg.ei.LHS));
+<<<<<<< Updated upstream:src/aabt-solver.cpp
 	if (Coherent(msg.ei) && Compatible(msg.ei)) // TODO ask Roya
+=======
+	if (Coherent(msg.ei) && Compatible(msg.ei))
+>>>>>>> Stashed changes:src/aabt_solver.cpp
 		E.push_back(msg.ei);
 	CheckAgentView();
 }
@@ -145,6 +149,7 @@ void AABT_Solver::CheckAgentView() {
 	}
 }
 
+<<<<<<< Updated upstream:src/aabt-solver.cpp
 void AABT_Solver::UpdateAgentView(const AABT_Solver::CompoundAssignment& a) {
 	for (const auto& i : a) {
 		for (auto& j : Agent_View) {
@@ -161,6 +166,25 @@ void AABT_Solver::UpdateAgentView(const AABT_Solver::CompoundAssignment& a) {
 	auto removedExplanation = std::find_if(E.begin(), E.end(),
 			[&](const AABT_Explanation& exp) {return !Coherent(exp);});
 	E.erase(removedExplanation, E.end());
+=======
+void aabt_solver::UpdateAgentView(aabt_solver::CompoundAssignment a) {
+
+	for (CompoundAssignment::iterator i = a.begin(); i != a.end(); i++)
+
+		for (CompoundAssignment::iterator j = Agent_View.begin();
+				j != Agent_View.end(); j++)
+			if (i->id == j->id)
+				if (i->time_stamp > j->time_stamp)
+					j=i;
+	for (nogood_store::iterator j = my_nogood_store.begin();
+			j != my_nogood_store.end(); j++)
+		if (!Coherent(*j, Agent_View))
+			my_nogood_store.erase(j);
+
+	for (vector<explanation>::iterator z = E.begin(); z != E.end(); z++)
+		if (!Coherent(*z))
+			E.erase(z);
+>>>>>>> Stashed changes:src/aabt_solver.cpp
 }
 
 void AABT_Solver::BackTrack() {

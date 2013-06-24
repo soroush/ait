@@ -14,8 +14,6 @@
 
 namespace AIT {
 
-#include "common-protocols.pb.h"
-#include "abt.pb.h"
 
 struct ABT_Message {
 	ABT_Message();

@@ -19,7 +19,7 @@ AABT_Explanation::~AABT_Explanation() {
 }
 
 AABT_Explanation::AABT_Explanation(const AABT_Explanation& other) :
-		id(other.id),LHS(other.LHS),RHS(other.id) {
+		id(other.id), LHS(other.LHS), RHS(other.id) {
 }
 
 AABT_Explanation& AIT::AABT_Explanation::operator =(
@@ -30,4 +30,13 @@ AABT_Explanation& AIT::AABT_Explanation::operator =(
 	id = other.id;
 	return *this;
 }
+
+AABT_Explanation::operator protocols::csp::aabt::P_Explanation() const
+{
+
+}
+void AABT_Explanation::::readFromProtocol(const protocols::csp::aabt::P_Explanation&)
+		{
+
+		}
 

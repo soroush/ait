@@ -31,6 +31,10 @@ struct AABT_Message {
 	AABT_Message(const AABT_Message& m1);
 	~AABT_Message();
 	AABT_Message& operator=(const AABT_Message& m1);
+	void readFromProtocol(const protocols::csp::aabt::P_Message&);
+	operator protocols::csp::aabt::P_Message() const;
+
+
 };
 } /* namespace AIT */
 #endif /* AABT_MESSAGE_H_ */

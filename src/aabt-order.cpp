@@ -13,7 +13,7 @@ CVOrderData::CVOrderData() {
 }
 
 CVOrderData::CVOrderData(const CVOrderData& other) :
-		a(other.a), o(other.o), E(other.E), tv(other.tv) {
+		a(other.a), o(other.o), tv(other.tv), E(other.E) {
 }
 
 CVOrderData::~CVOrderData() {
@@ -24,8 +24,8 @@ CVOrderData& CVOrderData::operator =(const CVOrderData& other) {
 	o.clear();
 	E.clear();
 	tv.clear();
-	copy(other.o.begin(),other.o.end(),this->o.begin());
-	copy(other.E.begin(),other.E.end(),this->E.begin());
-	copy(other.tv.begin(),other.tv.end(),this->tv.begin());
+	copy(other.o.begin(), other.o.end(), this->o.begin());
+	copy(other.E.begin(), other.E.end(), this->E.begin());
+	copy(other.tv.begin(), other.tv.end(), this->tv.begin());
 	return *this;
 }

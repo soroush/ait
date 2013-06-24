@@ -21,6 +21,8 @@ struct CVOrderData {
 	CVOrderData(const CVOrderData& other);
 	~CVOrderData();
 	CVOrderData& operator=(const CVOrderData& c1);
+	operator protocols::csp::aabt::P_CVOrderData() const;
+	void readFromProtocol(const protocols::csp::aabt::P_CVOrderData&);
 };
 } /* namespace AIT */
 #endif /* AABT_ORDER_H_ */
