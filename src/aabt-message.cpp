@@ -11,10 +11,15 @@
 using namespace AIT;
 using namespace std;
 
+AABT_Message::AABT_Message() {
+
+}
+AABT_Message::~AABT_Message() {
+}
+
 AABT_Message::AABT_Message(const AABT_Message& other) :
-		vi(other.vi), ei(other.ei), ng(other.ng), tvi(other.tvi), oi(other.oi) {
-	msg_type = other.msg_type;
-	sender_id = other.sender_id;
+		msg_type(other.msg_type), sender_id(other.sender_id), vi(other.vi), ei(
+				other.ei), oi(other.oi), tvi(other.tvi), ng(other.ng) {
 }
 
 AABT_Message& AABT_Message::operator =(const AABT_Message& other) {
