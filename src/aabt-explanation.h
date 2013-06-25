@@ -2,7 +2,7 @@
  * aabt-explanation.h
  *
  *  Created on: Jun 24, 2013
- *      Author: soroush
+ *      Author: roya
  */
 
 #ifndef AABT_EXPLANATION_H_
@@ -17,17 +17,17 @@
 
 namespace AIT {
 
-
 struct AABT_Explanation {
-	int id;
-	std::vector<AABT_Assignment> LHS;
-	int RHS;
 	AABT_Explanation();
-	AABT_Explanation(const AABT_Explanation& e1);
+	AABT_Explanation(const AABT_Explanation& other);
 	~AABT_Explanation();
 	AABT_Explanation& operator=(const AABT_Explanation& e1);
 	operator protocols::csp::aabt::P_Explanation() const;
 	void readFromProtocol(const protocols::csp::aabt::P_Explanation&);
+
+	int id;
+	std::vector<AABT_Assignment> LHS;
+	int RHS;
 };
 
 } /* namespace AIT */

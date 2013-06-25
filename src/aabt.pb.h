@@ -420,14 +420,12 @@ class P_Explanation : public ::google::protobuf::Message {
   inline ::AIT::protocols::csp::aabt::P_CompoundAssignment* release_lhs();
   inline void set_allocated_lhs(::AIT::protocols::csp::aabt::P_CompoundAssignment* lhs);
 
-  // required .AIT.protocols.csp.aabt.P_Assignment rhs = 3;
+  // required int32 rhs = 3;
   inline bool has_rhs() const;
   inline void clear_rhs();
   static const int kRhsFieldNumber = 3;
-  inline const ::AIT::protocols::csp::aabt::P_Assignment& rhs() const;
-  inline ::AIT::protocols::csp::aabt::P_Assignment* mutable_rhs();
-  inline ::AIT::protocols::csp::aabt::P_Assignment* release_rhs();
-  inline void set_allocated_rhs(::AIT::protocols::csp::aabt::P_Assignment* rhs);
+  inline ::google::protobuf::int32 rhs() const;
+  inline void set_rhs(::google::protobuf::int32 value);
 
   // @@protoc_insertion_point(class_scope:AIT.protocols.csp.aabt.P_Explanation)
  private:
@@ -441,8 +439,8 @@ class P_Explanation : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
   ::AIT::protocols::csp::aabt::P_CompoundAssignment* lhs_;
-  ::AIT::protocols::csp::aabt::P_Assignment* rhs_;
   ::google::protobuf::int32 id_;
+  ::google::protobuf::int32 rhs_;
 
   mutable int _cached_size_;
   ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
@@ -977,7 +975,7 @@ inline void P_Explanation::set_allocated_lhs(::AIT::protocols::csp::aabt::P_Comp
   }
 }
 
-// required .AIT.protocols.csp.aabt.P_Assignment rhs = 3;
+// required int32 rhs = 3;
 inline bool P_Explanation::has_rhs() const {
   return (_has_bits_[0] & 0x00000004u) != 0;
 }
@@ -988,31 +986,15 @@ inline void P_Explanation::clear_has_rhs() {
   _has_bits_[0] &= ~0x00000004u;
 }
 inline void P_Explanation::clear_rhs() {
-  if (rhs_ != NULL) rhs_->::AIT::protocols::csp::aabt::P_Assignment::Clear();
+  rhs_ = 0;
   clear_has_rhs();
 }
-inline const ::AIT::protocols::csp::aabt::P_Assignment& P_Explanation::rhs() const {
-  return rhs_ != NULL ? *rhs_ : *default_instance_->rhs_;
-}
-inline ::AIT::protocols::csp::aabt::P_Assignment* P_Explanation::mutable_rhs() {
-  set_has_rhs();
-  if (rhs_ == NULL) rhs_ = new ::AIT::protocols::csp::aabt::P_Assignment;
+inline ::google::protobuf::int32 P_Explanation::rhs() const {
   return rhs_;
 }
-inline ::AIT::protocols::csp::aabt::P_Assignment* P_Explanation::release_rhs() {
-  clear_has_rhs();
-  ::AIT::protocols::csp::aabt::P_Assignment* temp = rhs_;
-  rhs_ = NULL;
-  return temp;
-}
-inline void P_Explanation::set_allocated_rhs(::AIT::protocols::csp::aabt::P_Assignment* rhs) {
-  delete rhs_;
-  rhs_ = rhs;
-  if (rhs) {
-    set_has_rhs();
-  } else {
-    clear_has_rhs();
-  }
+inline void P_Explanation::set_rhs(::google::protobuf::int32 value) {
+  set_has_rhs();
+  rhs_ = value;
 }
 
 // -------------------------------------------------------------------

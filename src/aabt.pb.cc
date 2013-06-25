@@ -214,23 +214,22 @@ void protobuf_AddDesc_aabt_2eproto() {
     ".csp.aabt.P_Assignment\"x\n\010P_NoGood\0229\n\003lh"
     "s\030\001 \002(\0132,.AIT.protocols.csp.aabt.P_Compo"
     "undAssignment\0221\n\003rhs\030\002 \002(\0132$.AIT.protoco"
-    "ls.csp.aabt.P_Assignment\"\211\001\n\rP_Explanati"
-    "on\022\n\n\002id\030\001 \002(\005\0229\n\003lhs\030\002 \002(\0132,.AIT.protoc"
-    "ols.csp.aabt.P_CompoundAssignment\0221\n\003rhs"
-    "\030\003 \002(\0132$.AIT.protocols.csp.aabt.P_Assign"
-    "ment\"\226\001\n\rP_CVOrderData\0228\n\nassignment\030\001 \002"
-    "(\0132$.AIT.protocols.csp.aabt.P_Assignment"
-    "\022\r\n\005order\030\002 \003(\005\022\n\n\002tv\030\003 \003(\005\0220\n\001e\030\004 \003(\0132%"
-    ".AIT.protocols.csp.aabt.P_Explanation\"\200\002"
-    "\n\tP_Message\0223\n\004type\030\001 \002(\0162%.AIT.protocol"
-    "s.csp.aabt.P_MessageType\022\016\n\006sender\030\002 \002(\005"
-    "\0220\n\002vi\030\003 \001(\0132$.AIT.protocols.csp.aabt.P_"
-    "Assignment\0221\n\002ei\030\004 \001(\0132%.AIT.protocols.c"
-    "sp.aabt.P_Explanation\022\n\n\002oi\030\005 \003(\005\022\013\n\003tvi"
-    "\030\006 \003(\005\0220\n\006nogood\030\007 \001(\0132 .AIT.protocols.c"
-    "sp.aabt.P_NoGood*@\n\rP_MessageType\022\010\n\004T_O"
-    "K\020\001\022\014\n\010T_NOGOOD\020\002\022\013\n\007T_ORDER\020\003\022\n\n\006T_STOP"
-    "\020\004", 922);
+    "ls.csp.aabt.P_Assignment\"c\n\rP_Explanatio"
+    "n\022\n\n\002id\030\001 \002(\005\0229\n\003lhs\030\002 \002(\0132,.AIT.protoco"
+    "ls.csp.aabt.P_CompoundAssignment\022\013\n\003rhs\030"
+    "\003 \002(\005\"\226\001\n\rP_CVOrderData\0228\n\nassignment\030\001 "
+    "\002(\0132$.AIT.protocols.csp.aabt.P_Assignmen"
+    "t\022\r\n\005order\030\002 \003(\005\022\n\n\002tv\030\003 \003(\005\0220\n\001e\030\004 \003(\0132"
+    "%.AIT.protocols.csp.aabt.P_Explanation\"\200"
+    "\002\n\tP_Message\0223\n\004type\030\001 \002(\0162%.AIT.protoco"
+    "ls.csp.aabt.P_MessageType\022\016\n\006sender\030\002 \002("
+    "\005\0220\n\002vi\030\003 \001(\0132$.AIT.protocols.csp.aabt.P"
+    "_Assignment\0221\n\002ei\030\004 \001(\0132%.AIT.protocols."
+    "csp.aabt.P_Explanation\022\n\n\002oi\030\005 \003(\005\022\013\n\003tv"
+    "i\030\006 \003(\005\0220\n\006nogood\030\007 \001(\0132 .AIT.protocols."
+    "csp.aabt.P_NoGood*@\n\rP_MessageType\022\010\n\004T_"
+    "OK\020\001\022\014\n\010T_NOGOOD\020\002\022\013\n\007T_ORDER\020\003\022\n\n\006T_STO"
+    "P\020\004", 883);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "aabt.proto", &protobuf_RegisterTypes);
   P_Assignment::default_instance_ = new P_Assignment();
@@ -1046,7 +1045,6 @@ P_Explanation::P_Explanation()
 
 void P_Explanation::InitAsDefaultInstance() {
   lhs_ = const_cast< ::AIT::protocols::csp::aabt::P_CompoundAssignment*>(&::AIT::protocols::csp::aabt::P_CompoundAssignment::default_instance());
-  rhs_ = const_cast< ::AIT::protocols::csp::aabt::P_Assignment*>(&::AIT::protocols::csp::aabt::P_Assignment::default_instance());
 }
 
 P_Explanation::P_Explanation(const P_Explanation& from)
@@ -1059,7 +1057,7 @@ void P_Explanation::SharedCtor() {
   _cached_size_ = 0;
   id_ = 0;
   lhs_ = NULL;
-  rhs_ = NULL;
+  rhs_ = 0;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -1070,7 +1068,6 @@ P_Explanation::~P_Explanation() {
 void P_Explanation::SharedDtor() {
   if (this != default_instance_) {
     delete lhs_;
-    delete rhs_;
   }
 }
 
@@ -1101,9 +1098,7 @@ void P_Explanation::Clear() {
     if (has_lhs()) {
       if (lhs_ != NULL) lhs_->::AIT::protocols::csp::aabt::P_CompoundAssignment::Clear();
     }
-    if (has_rhs()) {
-      if (rhs_ != NULL) rhs_->::AIT::protocols::csp::aabt::P_Assignment::Clear();
-    }
+    rhs_ = 0;
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
@@ -1140,17 +1135,19 @@ bool P_Explanation::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(26)) goto parse_rhs;
+        if (input->ExpectTag(24)) goto parse_rhs;
         break;
       }
 
-      // required .AIT.protocols.csp.aabt.P_Assignment rhs = 3;
+      // required int32 rhs = 3;
       case 3: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
          parse_rhs:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
-               input, mutable_rhs()));
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &rhs_)));
+          set_has_rhs();
         } else {
           goto handle_uninterpreted;
         }
@@ -1187,10 +1184,9 @@ void P_Explanation::SerializeWithCachedSizes(
       2, this->lhs(), output);
   }
 
-  // required .AIT.protocols.csp.aabt.P_Assignment rhs = 3;
+  // required int32 rhs = 3;
   if (has_rhs()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      3, this->rhs(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(3, this->rhs(), output);
   }
 
   if (!unknown_fields().empty()) {
@@ -1213,11 +1209,9 @@ void P_Explanation::SerializeWithCachedSizes(
         2, this->lhs(), target);
   }
 
-  // required .AIT.protocols.csp.aabt.P_Assignment rhs = 3;
+  // required int32 rhs = 3;
   if (has_rhs()) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      WriteMessageNoVirtualToArray(
-        3, this->rhs(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(3, this->rhs(), target);
   }
 
   if (!unknown_fields().empty()) {
@@ -1245,10 +1239,10 @@ int P_Explanation::ByteSize() const {
           this->lhs());
     }
 
-    // required .AIT.protocols.csp.aabt.P_Assignment rhs = 3;
+    // required int32 rhs = 3;
     if (has_rhs()) {
       total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
           this->rhs());
     }
 
@@ -1286,7 +1280,7 @@ void P_Explanation::MergeFrom(const P_Explanation& from) {
       mutable_lhs()->::AIT::protocols::csp::aabt::P_CompoundAssignment::MergeFrom(from.lhs());
     }
     if (from.has_rhs()) {
-      mutable_rhs()->::AIT::protocols::csp::aabt::P_Assignment::MergeFrom(from.rhs());
+      set_rhs(from.rhs());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -1309,9 +1303,6 @@ bool P_Explanation::IsInitialized() const {
 
   if (has_lhs()) {
     if (!this->lhs().IsInitialized()) return false;
-  }
-  if (has_rhs()) {
-    if (!this->rhs().IsInitialized()) return false;
   }
   return true;
 }

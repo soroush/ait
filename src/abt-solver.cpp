@@ -227,7 +227,7 @@ void ABT_Solver::resolveConflict(const ABT_Message& msg) {
 	totalView.items.insert(Assignment(this->id, this->value));
 
 	if (coherent(msg.nogood, totalView)) {
-		//checkAddLink(msg);
+		checkAddLink(msg);
 		add(msg.nogood);
 		this->value = 0; // FIXME
 		checkAgentView();

@@ -18,7 +18,7 @@ message P_NoGood{
 message P_Explanation{
   required int32 id = 1;
   required P_CompoundAssignment lhs = 2;
-  required P_Assignment rhs = 3;
+  required int32 rhs = 3;
 }
 
 message P_CVOrderData{
