@@ -93,9 +93,9 @@ void AABT_Solver::ResolveConflict(const AABT_Message& msg) {
 void AABT_Solver::CheckOrder(const AABT_Solver::order& o,
 		const AABT_Solver::Termination_value& tv) {
 	bool is_stronger = true;
-	auto i = tv.begin();
-	auto j = my_temination_value.begin();
-	for (; i != tv.end() and j != my_temination_value.end(); i++, j++)
+	for (vector<int>::const_iterator i = tv.begin(), j =
+			my_temination_value.begin();
+			i != tv.end() && j != my_temination_value.end(); i++, j++)
 		if (*i >= *j)
 			is_stronger = false;
 	if (is_stronger) {
@@ -103,14 +103,24 @@ void AABT_Solver::CheckOrder(const AABT_Solver::order& o,
 		my_order = o;
 	}
 
-	for (nogood_store::iterator j = my_nogood_store.begin();
-			j != my_nogood_store.end(); j++)
-		if (!Coherent(*j, Agent_View))
-			my_nogood_store.erase(j);
+	my_nogood_store.erase(
+			std::remove_if(my_nogood_store.begin(), my_nogood_store.end(),
+					[&](const AABT_Nogood& ngd)->bool {return !Coherent(ngd,Agent_View);}),
+			my_nogood_store.end());
 
-	for (vector<AABT_Explanation>::iterator z = E.begin(); z != E.end(); z++)
-		if (!Coherent(*z))
-			E.erase(z);
+	E.erase(
+			std::remove_if(E.begin(), E.end(),
+					[&](const AABT_Explanation& exp)->bool {return !Compatible(exp);}),
+			E.end());
+
+	/*	for (nogood_store::iterator j = my_nogood_store.begin();
+	 j != my_nogood_store.end(); j++)
+	 if (!Coherent(*j, Agent_View))
+	 j=my_nogood_store.erase(j);*/
+	/*for (vector<AABT_Explanation>::iterator z = E.begin(); z != E.end();
+	 z++)
+	 if (!Coherent(*z))
+	 E.erase(z);*/
 }
 
 void AABT_Solver::CheckAgentView() {
@@ -173,8 +183,7 @@ void AABT_Solver::BackTrack() {
 	if (ng.LHS.empty()) {
 		end = true;
 		AABT_Message m;
-		m.msg_type = AABT_MessageType::STOP;
-		//TODO send message stop to system
+		m.msg_type = AABT_MessageType::STOP; //send message stop to system
 	}
 	CVOrderData cvo = ChooseVariableOrder(E, ng);
 	bool is_stronger = true;
@@ -193,11 +202,18 @@ void AABT_Solver::BackTrack() {
 		m1.ng = ng;
 		m1.oi = my_order;
 		m1.tvi = my_temination_value;
-		//TODO send ngd message to cvo.assignment.id
-		for (vector<AABT_Explanation>::iterator i = E.begin(); i != E.end();
-				i++)
-			if (i->id == cvo.a.id)
-				E.erase(i);
+
+		//send ngd message to cvo.assignment.id
+		/*for (vector<AABT_Explanation>::iterator i = E.begin();
+		 i != E.end(); i++)
+		 if (i->id == cvo.a.id)
+		 E.erase(i);*/
+
+		E.erase(
+				std::remove_if(E.begin(), E.end(),
+						[&](const AABT_Explanation& exp) {return (exp.id==cvo.a.id);}),
+				E.end());
+
 		AABT_Message m;
 		m.msg_type = AABT_MessageType::ORDER;
 		m.oi = my_order;
@@ -211,7 +227,7 @@ void AABT_Solver::BackTrack() {
 		m.msg_type = AABT_MessageType::NOGOOD;
 		m.oi = my_order;
 		m.tvi = my_temination_value;
-		//TODO sendmsg nogood to Ak;
+		//sendmsg nogood to Ak;
 	}
 	cvo.a.value = 0;
 	CompoundAssignment c;
@@ -333,17 +349,17 @@ AABT_Solver::order AABT_Solver::ComputeOrder(
 				d = z;
 			}
 		graph.erase(
-				find_if(graph.begin(), graph.end(),
+				remove_if(graph.begin(), graph.end(),
 						[&](const incoming& in) {return in.id==d;}),
 				graph.end());
 
 		vector<int>::iterator r;
-		for (const auto& u : graph) {
-//			auto r = std::find(u.effective.begin(), u.effective.end(), d);
-//			if (r != u.effective.end()) {
-//				u.effective.erase(r);
-//				u.n--;
-//			}
+		for (auto& u : graph) {
+			auto r = std::remove(u.effective.begin(), u.effective.end(), d);
+			if (r != u.effective.end()) {
+				u.effective.erase(r, u.effective.end());
+				u.n--;
+			}
 			// FIXME Check this
 		}
 		p++;
@@ -490,14 +506,11 @@ AABT_Solver::CompoundAssignment AABT_Solver::union_func(
 }
 
 void AABT_Solver::setRhs(AABT_Nogood &ng, const AABT_Assignment &a) {
-//	for (const auto& ni : ng.LHS)
-//		if (ni.id == a.id)
-//			ng = ng.LHS.erase(ni); // DONE: replace with lambda
+	ng.LHS.erase(
+			std::remove_if(ng.LHS.begin(), ng.LHS.end(),
+					[&](const AABT_Assignment& exp)->bool {return (exp.id==a.id);}),
+			ng.LHS.end());
 
-	// FIXME Find out what's wrong with this code
-	//	auto& x = std::remove_if(ng.LHS.begin(), ng.LHS.end(),
-	//			[&](const AABT_Assignment& aa){return (aa.id == a.id);});
-	//	ng.LHS.erase(x, ng.LHS.end());
 	ng.LHS.push_back(ng.RHS);
 	ng.RHS = a;
 }
