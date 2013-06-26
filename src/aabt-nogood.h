@@ -18,8 +18,8 @@ struct AABT_Nogood {
 	~AABT_Nogood();
 	AABT_Nogood(const AABT_Nogood& other);
 	AABT_Nogood& operator=(const AABT_Nogood& other);
-	operator protocols::csp::aabt::P_NoGood() const;
 	void readFromProtocol(const protocols::csp::aabt::P_NoGood&);
+	operator protocols::csp::aabt::P_NoGood() const;
 
 	std::vector<AABT_Assignment> LHS;
 	AABT_Assignment RHS;
