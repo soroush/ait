@@ -28,10 +28,10 @@ struct incoming {
 
 void AABT_Solver::Agile_ABT() {
 	for (int i = 0; i < n; ++i)
-		my_temination_value.push_back(1000);
+		teminationValue.push_back(1000);
 	end = false;
-	my_assignment.time_stamp = 0;
-	my_assignment.value = 0;
+	assignment.time_stamp = 0;
+	assignment.value = 0;
 
 	CheckAgentView();
 	while (!end) {
@@ -56,11 +56,11 @@ void AABT_Solver::Agile_ABT() {
 }
 
 void AABT_Solver::ProcessInfo(const AABT_Message& msg) {
-	CheckOrder(my_order, msg.tvi);
+	CheckOrder(order, msg.tvi);
 
 	UpdateAgentView(union_func(msg.vi, msg.ei.LHS));
 	if (Coherent(msg.ei) && Compatible(msg.ei))
-		E.push_back(msg.ei);
+		E.push_front(msg.ei);
 	CheckAgentView();
 }
 
@@ -73,45 +73,41 @@ void AABT_Solver::ResolveConflict(const AABT_Message& msg) {
 	CheckOrder(msg.oi, msg.tvi);
 	UpdateAgentView(union_func(msg.vi, msg.ng.LHS));
 
-	if (Coherent(msg.ng, union_func(my_assignment, Agent_View))) {
-		if (Compatible(msg.ng, my_order)) {
+	if (Coherent(msg.ng, union_func(assignment, agentView))) {
+		if (Compatible(msg.ng, order)) {
 
-			my_nogood_store.push_back(msg.ng);
-			my_assignment.value = 0;
+			nogoodStore.push_front(msg.ng);
+			assignment.value = 0;
 			CheckAgentView();
-		} else if (msg.ng.RHS.value == my_assignment.value) {
+		} else if (msg.ng.RHS.value == assignment.value) {
 			// TODO: Remove extra code, add sendMessage ok to msg.sender
 			AABT_Message m;
-			m.ei = my_exp;
-			m.vi = my_assignment;
-			m.oi = my_order;
-			m.tvi = my_temination_value;
+			m.ei = explanation;
+			m.vi = assignment;
+			m.oi = order;
+			m.tvi = teminationValue;
 		}
 	}
 }
 
-void AABT_Solver::CheckOrder(const AABT_Solver::order& o,
-		const AABT_Solver::Termination_value& tv) {
+void AABT_Solver::CheckOrder(const vector<int>& o, const vector<int>& tv) {
 	bool is_stronger = true;
+	// FIXME Replace code with lexicographical compare
 	for (vector<int>::const_iterator i = tv.begin(), j =
-			my_temination_value.begin();
-			i != tv.end() && j != my_temination_value.end(); i++, j++)
+			teminationValue.begin();
+			i != tv.end() && j != teminationValue.end(); i++, j++)
 		if (*i >= *j)
 			is_stronger = false;
 	if (is_stronger) {
-		my_temination_value = tv;
-		my_order = o;
+		teminationValue = tv;
+		order = o;
 	}
 
-	my_nogood_store.erase(
-			std::remove_if(my_nogood_store.begin(), my_nogood_store.end(),
-					[&](const AABT_Nogood& ngd)->bool {return !Coherent(ngd,Agent_View);}),
-			my_nogood_store.end());
+	nogoodStore.remove_if(
+			[&](const AABT_Nogood& ngd)->bool {return !Coherent(ngd,agentView);});
 
-	E.erase(
-			std::remove_if(E.begin(), E.end(),
-					[&](const AABT_Explanation& exp)->bool {return !Compatible(exp);}),
-			E.end());
+	E.remove_if(
+			[&](const AABT_Explanation& exp)->bool {return !Compatible(exp);});
 
 	/*	for (nogood_store::iterator j = my_nogood_store.begin();
 	 j != my_nogood_store.end(); j++)
@@ -124,21 +120,22 @@ void AABT_Solver::CheckOrder(const AABT_Solver::order& o,
 }
 
 void AABT_Solver::CheckAgentView() {
-	if (!Consistent(my_assignment, Agent_View)) {
-		my_assignment.value = chooseValue();
-		if (my_assignment.value > 0) {
+	if (!Consistent(assignment, agentView)) {
+		assignment.value = chooseValue();
+		if (assignment.value > 0) {
 
 			AABT_Message m;
 			m.msg_type = AABT_MessageType::OK;
-			m.vi = my_assignment;
-			m.ei = my_exp;
-			m.oi = my_order;
-			m.tvi = my_temination_value;
-			for (order::iterator i = my_order.begin();; i++) {
-				if (*i == my_assignment.id)
-					break;
-				//TODO sendmsg ok to agent i
-			}
+			m.vi = assignment;
+			m.ei = explanation;
+			m.oi = order;
+			m.tvi = teminationValue;
+			// FIXME: What do this code do?
+//			for (order::iterator i = order.begin();; i++) {
+//				if (*i == assignment.id)
+//					break;
+//				//TODO sendmsg ok to agent i
+//			}
 
 		} else
 			BackTrack();
@@ -148,38 +145,35 @@ void AABT_Solver::CheckAgentView() {
 	{
 		AABT_Message m;
 		m.msg_type = AABT_MessageType::OK;
-		m.vi = my_assignment;
-		m.ei = my_exp;
-		m.oi = my_order;
-		m.tvi = my_temination_value;
-		for (order::iterator i = my_order.begin();; i++) {
-			if (*i == my_assignment.id)
-				break;
-			//TODO sendmsg ok to agent i
-		}
+		m.vi = assignment;
+		m.ei = explanation;
+		m.oi = order;
+		m.tvi = teminationValue;
+		// FIXME Change the weird looking code
+//		for (order::iterator i = order.begin();; i++) {
+//			if (*i == assignment.id)
+//				break;
+//			//TODO sendmsg ok to agent i
+//		}
 	}
 }
 
 void AABT_Solver::UpdateAgentView(const AABT_Solver::CompoundAssignment& a) {
 	for (const auto& i : a) {
-		for (auto& j : Agent_View) {
+		for (auto& j : agentView) {
 			if (i.id == j.id) {
 				if (i.time_stamp > j.time_stamp)
 					j = i;
 			}
 		}
 	}
-	auto toBeRemoved =
-			std::remove_if(my_nogood_store.begin(), my_nogood_store.end(),
-					[&](const AABT_Nogood& ngd) {return !Coherent(ngd, this->Agent_View);});
-	my_nogood_store.erase(toBeRemoved, my_nogood_store.end());
-	auto removedExplanation = std::find_if(E.begin(), E.end(),
-			[&](const AABT_Explanation& exp) {return !Coherent(exp);});
-	E.erase(removedExplanation, E.end());
+	nogoodStore.remove_if(
+			[&](const AABT_Nogood& ngd) {return !Coherent(ngd, this->agentView);});
+	E.remove_if([&](const AABT_Explanation& exp) {return !Coherent(exp);});
 }
 
 void AABT_Solver::BackTrack() {
-	AABT_Nogood ng = Solve(my_nogood_store);
+	AABT_Nogood ng = Solve(nogoodStore);
 	if (ng.LHS.empty()) {
 		end = true;
 		AABT_Message m;
@@ -187,21 +181,21 @@ void AABT_Solver::BackTrack() {
 	}
 	CVOrderData cvo = ChooseVariableOrder(E, ng);
 	bool is_stronger = true;
-	for (Termination_value::iterator i = cvo.tv.begin(), j =
-			my_temination_value.begin();
-			i != cvo.tv.end(), j != my_temination_value.end(); i++, j++)
+	// FIXME: Replace this code with std::lexicographical_compare
+	for (vector<int>::iterator i = cvo.tv.begin(), j = teminationValue.begin();
+			i != cvo.tv.end() and j != teminationValue.end(); i++, j++)
 		if (i > j)
 			is_stronger = false;
 	if (is_stronger) {
-		my_temination_value = cvo.tv;
-		my_order = cvo.o;
+		teminationValue = cvo.tv;
+		order = cvo.o;
 		E = cvo.E;
 		setRhs(ng, cvo.a);
 		AABT_Message m1;
 		m1.msg_type = AABT_MessageType::NOGOOD;
 		m1.ng = ng;
-		m1.oi = my_order;
-		m1.tvi = my_temination_value;
+		m1.oi = order;
+		m1.tvi = teminationValue;
 
 		//send ngd message to cvo.assignment.id
 		/*for (vector<AABT_Explanation>::iterator i = E.begin();
@@ -209,15 +203,13 @@ void AABT_Solver::BackTrack() {
 		 if (i->id == cvo.a.id)
 		 E.erase(i);*/
 
-		E.erase(
-				std::remove_if(E.begin(), E.end(),
-						[&](const AABT_Explanation& exp) {return (exp.id==cvo.a.id);}),
-				E.end());
+		E.remove_if(
+				[&](const AABT_Explanation& exp) {return (exp.id==cvo.a.id);});
 
 		AABT_Message m;
 		m.msg_type = AABT_MessageType::ORDER;
-		m.oi = my_order;
-		m.tvi = my_temination_value;
+		m.oi = order;
+		m.tvi = teminationValue;
 		//TODO broadcast message order
 	}
 
@@ -225,8 +217,8 @@ void AABT_Solver::BackTrack() {
 		setRhs(ng, cvo.a);
 		AABT_Message m;
 		m.msg_type = AABT_MessageType::NOGOOD;
-		m.oi = my_order;
-		m.tvi = my_temination_value;
+		m.oi = order;
+		m.tvi = teminationValue;
 		//sendmsg nogood to Ak;
 	}
 	cvo.a.value = 0;
@@ -237,36 +229,36 @@ void AABT_Solver::BackTrack() {
 }
 
 int AABT_Solver::chooseValue() {
-	for (vector<int>::iterator i = my_initial_domain.begin();
-			i != my_initial_domain.end(); i++) {
+	for (vector<int>::iterator i = initialDomain.begin();
+			i != initialDomain.end(); i++) {
 		bool elaminated = false;
-		current_domains_size[id] = initial_domains_size[id];
-		for (nogood_store::iterator j = my_nogood_store.begin();
-				j != my_nogood_store.end(); j++)
+		currentDomainsSize[id] = initialDomainsSize[id];
+		for (nogood_store::iterator j = nogoodStore.begin();
+				j != nogoodStore.end(); j++)
 			if (j->RHS.value == *i) {
 				elaminated = true;
-				current_domains_size[id] -= 1;
+				currentDomainsSize[id] -= 1;
 				break;
 			}
 		if (!elaminated) {
 			AABT_Assignment a;
-			a.id = my_assignment.id;
-			a.time_stamp = my_assignment.time_stamp;
+			a.id = assignment.id;
+			a.time_stamp = assignment.time_stamp;
 			a.value = *i;
 
-			for (CompoundAssignment::iterator k = Agent_View.begin();
-					k != Agent_View.end(); k++)
+			for (CompoundAssignment::iterator k = agentView.begin();
+					k != agentView.end(); k++)
 				if (!Consistent(a, *k)) {
 					CompoundAssignment ca;
 					ca.push_back(*k);
 					AABT_Nogood ng;
 					ng.LHS = ca;
 					ng.RHS = a;
-					current_domains_size[id] -= 1;
+					currentDomainsSize[id] -= 1;
 					break;
 				} else {
 					//*	my_assignment.value=*i;
-					my_assignment.time_stamp += 1;
+					assignment.time_stamp += 1;
 					return *i;
 				}
 		}
@@ -275,20 +267,19 @@ int AABT_Solver::chooseValue() {
 	return 0;
 }
 
-vector<AABT_Explanation> AABT_Solver::UpdateExplanations(
-		const vector<AABT_Explanation>& Ei, AABT_Nogood& ng,
+forward_list<AABT_Explanation> AABT_Solver::UpdateExplanations(
+		const forward_list<AABT_Explanation>& Ei, AABT_Nogood& ng,
 		const AABT_Assignment &a) {
-	vector<AABT_Explanation> up_E = Ei;
+	forward_list<AABT_Explanation> up_E = Ei;
 	setRhs(ng, a);
 	bool a_is_in_up_E;
 	AABT_Explanation e;
-	vector<AABT_Explanation>::iterator a_index;
-	for (vector<AABT_Explanation>::iterator i = up_E.begin(); i != up_E.end();
-			i++) {
+	forward_list<AABT_Explanation>::iterator a_index;
+	for (auto i = up_E.begin(); i != up_E.end(); i++) {
 		for (CompoundAssignment::iterator j = i->LHS.begin();
 				j != i->LHS.begin(); j++)
 			if (j->id == a.id) {
-				up_E.erase(i);
+				// up_E.erase(i); FIXME replace code with more elegant C++
 				break;
 			}
 
@@ -298,27 +289,27 @@ vector<AABT_Explanation> AABT_Solver::UpdateExplanations(
 		}
 	}
 	if (!a_is_in_up_E) {
-		e.RHS = initial_domains_size[a.id];
-		up_E.push_back(e);
+		e.RHS = initialDomainsSize[a.id];
+		up_E.push_front(e);
 		a_index = up_E.end();
 	}
 
 	AABT_Explanation e2;
 	e2.LHS = union_func(e.LHS, ng.LHS);
 	e2.RHS = e.RHS - 1;
-	current_domains_size[e2.id] -= 1;
-	up_E.erase(a_index);
-	up_E.push_back(e2);
+	currentDomainsSize[e2.id] -= 1;
+	// FIXME Standardize...
+	//up_E.erase(a_index);
+	//up_E.push_back(e2);
 	return up_E;
 }
 
-AABT_Solver::order AABT_Solver::ComputeOrder(
-		const vector<AABT_Explanation>& exp) {
+vector<int> AABT_Solver::ComputeOrder(const forward_list<AABT_Explanation>& exp) {
 
 	vector<incoming> graph(n);
-	order o(n);
+	vector<int> o(n);
 	int max = 100;
-	order::iterator p = o.begin();
+	vector<int>::iterator p = o.begin();
 	int f = 1;
 	for (vector<incoming>::iterator t = graph.begin(); t != graph.end(); t++) {
 		t->id = f;
@@ -343,8 +334,8 @@ AABT_Solver::order AABT_Solver::ComputeOrder(
 				roots.push_back(s.id);
 
 		for (const auto& z : roots)
-			if (current_domains_size[z] < max) {
-				max = current_domains_size[z];
+			if (currentDomainsSize[z] < max) {
+				max = currentDomainsSize[z];
 				*p = z;
 				d = z;
 			}
@@ -367,23 +358,23 @@ AABT_Solver::order AABT_Solver::ComputeOrder(
 	return o;
 }
 
-CVOrderData AABT_Solver::ChooseVariableOrder(const vector<AABT_Explanation> &e,
-		AABT_Nogood &ng) {
+CVOrderData AABT_Solver::ChooseVariableOrder(
+		const forward_list<AABT_Explanation> &e, AABT_Nogood &ng) {
 	CVOrderData cvo;
-	cvo.o = my_order;
-	cvo.tv = my_temination_value;
+	cvo.o = order;
+	cvo.tv = teminationValue;
 //	cvo.a = my_assignment;
 //	cvo.E = ;
-	vector<AABT_Explanation> up_E;
-	order up_O;
-	Termination_value up_Tv;
+	forward_list<AABT_Explanation> up_E;
+	vector<int> up_O;
+	vector<int> up_Tv;
 	for (CompoundAssignment::iterator it = ng.LHS.begin(); it != ng.LHS.end();
 			it++) {
 		up_E = UpdateExplanations(e, ng, *it);
 		up_O = ComputeOrder(up_E);
-		Termination_value::iterator tvi = up_Tv.begin();
-		for (order::iterator oi = up_O.begin(); oi != up_O.end(); oi++)
-			for (vector<AABT_Explanation>::iterator vi = up_E.begin();
+		vector<int>::iterator tvi = up_Tv.begin();
+		for (vector<int>::iterator oi = up_O.begin(); oi != up_O.end(); oi++)
+			for (forward_list<AABT_Explanation>::iterator vi = up_E.begin();
 					vi != up_E.end(); vi++)
 				if (vi->id == *oi) {
 					*tvi = vi->RHS;
@@ -391,9 +382,9 @@ CVOrderData AABT_Solver::ChooseVariableOrder(const vector<AABT_Explanation> &e,
 					break;
 				}
 		bool is_smaller = true;
-		for (Termination_value::iterator i = up_Tv.begin(), j =
-				my_temination_value.begin();
-				i != up_Tv.end(), j != my_temination_value.end(); i++, j++)
+		for (vector<int>::iterator i = up_Tv.begin(), j =
+				teminationValue.begin();
+				i != up_Tv.end(), j != teminationValue.end(); i++, j++)
 			if (*i >= *j) {
 				is_smaller = false;
 				break;
@@ -438,7 +429,7 @@ bool AABT_Solver::Coherent(const AABT_Nogood &ng,
 
 bool AABT_Solver::Coherent(const AABT_Nogood &ng) {
 	for (const auto& i : ng.LHS)
-		for (const auto& j : Agent_View)
+		for (const auto& j : agentView)
 			if (i.id == j.id && i.value != j.value)
 				return false;
 	return true;
@@ -446,7 +437,7 @@ bool AABT_Solver::Coherent(const AABT_Nogood &ng) {
 
 bool AABT_Solver::Coherent(const AABT_Explanation &exp) {
 	for (const auto& i : exp.LHS)
-		for (const auto& j : Agent_View)
+		for (const auto& j : agentView)
 			if (i.id == j.id && i.value != j.value)
 				return false;
 	return true;
@@ -454,24 +445,23 @@ bool AABT_Solver::Coherent(const AABT_Explanation &exp) {
 
 bool AABT_Solver::Compatible(const AABT_Nogood &ng) {
 	vector<int>::iterator my_index;
-	my_index = std::find(my_order.begin(), my_order.end(), id);
+	my_index = std::find(order.begin(), order.end(), id);
 	for (const auto& ci : ng.LHS)
-		if (std::find(my_index + 1, my_order.end(), ci.id) != my_order.end())
+		if (std::find(my_index + 1, order.end(), ci.id) != order.end())
 			return false;
 	return true;
 }
 
 bool AABT_Solver::Compatible(const AABT_Explanation &e) {
 	vector<int>::iterator my_index;
-	my_index = std::find(my_order.begin(), my_order.end(), id);
+	my_index = std::find(order.begin(), order.end(), id);
 	for (const auto& ci : e.LHS)
-		if (std::find(my_index + 1, my_order.end(), ci.id) != my_order.end())
+		if (std::find(my_index + 1, order.end(), ci.id) != order.end())
 			return false;
 	return true;
 }
 
-bool AABT_Solver::Compatible(const AABT_Nogood & ng,
-		const AABT_Solver::order &o) {
+bool AABT_Solver::Compatible(const AABT_Nogood & ng, const vector<int> &o) {
 	vector<int>::const_iterator my_index;
 	my_index = std::find(o.begin(), o.end(), id);
 
@@ -517,8 +507,8 @@ void AABT_Solver::setRhs(AABT_Nogood &ng, const AABT_Assignment &a) {
 
 bool AABT_Solver::Consistent(const AABT_Assignment &a,
 		const CompoundAssignment &ca) {
-	for (CompoundAssignment::iterator it = Agent_View.begin();
-			it != Agent_View.end(); it++)
+	for (CompoundAssignment::iterator it = agentView.begin();
+			it != agentView.end(); it++)
 		if (a.value == it->value || (it->value - a.value == it->id - a.id))
 			return false;
 	return true;
@@ -555,7 +545,7 @@ void AIT::AABT_Solver::getAgentList() {
 	this->serverBroadcast.recvMessage(listPacket);
 	if (listPacket.type() == CP_MessageType::T_LIST) {
 		for (int i = 0; i < listPacket.others_size(); ++i) {
-			this->everybody.push_back(
+			this->everybody.push_front(
 					ABT_EndPoint(listPacket.others(i), context));
 			_INFO("New agent introduced by server:\n"
 			"\tID:     %d\n"
@@ -563,11 +553,11 @@ void AIT::AABT_Solver::getAgentList() {
 			"\tPort:   %d",
 					listPacket.others(i).id(), listPacket.others(i).host().c_str(), listPacket.others(i).port());
 		}
-		for (auto i = everybody.begin(); i < everybody.end(); ++i) {
+		for (auto i = everybody.begin(); i != everybody.end(); ++i) {
 			if (i->id() < this->id)
-				preceding.push_back(i);
+				preceding.push_front(i);
 			else if (i->id() > this->id)
-				succeeding.push_back(i);
+				succeeding.push_front(i);
 		}
 		for (auto &agent : everybody) {
 			stringstream address;

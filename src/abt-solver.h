@@ -31,14 +31,13 @@ struct ABT_Message;
 struct Assignment;
 
 class ABT_Solver {
-
 public:
 	ABT_Solver(const std::string&, const unsigned short&, const unsigned short&,
 			const AgentID&, const size_t&);
 	virtual ~ABT_Solver();
-
-	void connect();
 	void ABT();
+private:
+	void connect();
 	void checkAgentView();
 	int chooseValue();
 	void backtrack();
@@ -56,8 +55,6 @@ public:
 	void sendMessageNGD(const AgentID&, ABT_Message&);
 	void sendMessageSTP();
 	void sendMessageADL(const AgentID&);
-
-private:
 	int value;
 	// helper functions:
 	void getAgentList();

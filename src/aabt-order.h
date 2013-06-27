@@ -8,6 +8,7 @@
 #ifndef AABT_ORDER_H_
 #define AABT_ORDER_H_
 
+#include <forward_list>
 #include "aabt-explanation.h"
 
 namespace AIT {
@@ -23,7 +24,7 @@ struct CVOrderData {
 	AABT_Assignment a;
 	std::vector<int> o;
 	std::vector<int> tv;
-	std::vector<AABT_Explanation> E;
+	std::forward_list<AABT_Explanation> E;
 };
 } /* namespace AIT */
 #endif /* AABT_ORDER_H_ */

@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <queue>
+#include <forward_list>
 #include <pthread.h>
 #include <semaphore.h>
 #include "aabt-assignment.h"
@@ -9,8 +10,6 @@
 #include "abt-endpoint.h"
 #include "aabt.pb.h"
 #include "common_async.h"
-
-using namespace std;
 
 namespace AIT {
 
@@ -24,50 +23,51 @@ public:
 
 	typedef std::vector<AABT_Assignment> CompoundAssignment;
 
-	typedef std::vector<int> order;
-	typedef std::vector<int> Termination_value;
-	typedef std::vector<AABT_Nogood> nogood_store;
+	typedef std::forward_list<AABT_Nogood> nogood_store;
 
 public:
 
 	int id;
-	std::vector<std::vector<ABT_EndPoint>::iterator> preceding; // Γ+
-	std::vector<std::vector<ABT_EndPoint>::iterator> succeeding; // Γ-
-	std::vector<ABT_EndPoint> everybody;
-	vector<int> my_initial_domain;
-	vector<int> current_domains_size;
-	vector<int> initial_domains_size;
-	AABT_Assignment my_assignment;
-	CompoundAssignment Agent_View;
-	nogood_store my_nogood_store;
-	order my_order;
-	Termination_value my_temination_value; // = initial domain
-	AABT_Explanation my_exp;
-	std::vector<AABT_Explanation> E;
+	std::forward_list<std::forward_list<ABT_EndPoint>::iterator> preceding; // Γ+
+	std::forward_list<std::forward_list<ABT_EndPoint>::iterator> succeeding; // Γ-
+	std::forward_list<ABT_EndPoint> everybody;
+	std::vector<int> initialDomain;
+	std::vector<int> currentDomainsSize;
+	std::vector<int> initialDomainsSize;
+	AABT_Assignment assignment;
+	CompoundAssignment agentView;
+	nogood_store nogoodStore;
+	std::vector<int> order;
+	std::vector<int> teminationValue; // = initial domain
+	AABT_Explanation explanation;
+	std::forward_list<AABT_Explanation> E;
 	bool end;
 
 	void Agile_ABT();
 	void ProcessInfo(const AABT_Message& msg);
 	void ProcessOrder(const AABT_Message& msg);
 	void ResolveConflict(const AABT_Message& msg);
-	void CheckOrder(const order&, const Termination_value&);
+	void CheckOrder(const std::vector<int>&, const std::vector<int>&);
 	void CheckAgentView();
 	void UpdateAgentView(const CompoundAssignment&);
 	void BackTrack();
 	int chooseValue();
-	vector<AABT_Explanation> UpdateExplanations(const std::vector<AABT_Explanation>&,
-			AABT_Nogood&, const AABT_Assignment&);
-	order ComputeOrder(const std::vector<AABT_Explanation>&);
-	CVOrderData ChooseVariableOrder(const vector<AABT_Explanation>&, AABT_Nogood&);
+	std::forward_list<AABT_Explanation> UpdateExplanations(
+			const std::forward_list<AABT_Explanation>&, AABT_Nogood&,
+			const AABT_Assignment&);
+	std::vector<int> ComputeOrder(const std::forward_list<AABT_Explanation>&);
+	CVOrderData ChooseVariableOrder(const std::forward_list<AABT_Explanation>&,
+			AABT_Nogood&);
 	AABT_Nogood Solve(const nogood_store&);
 	bool Coherent(const AABT_Nogood&, const CompoundAssignment&);
 	bool Coherent(const AABT_Nogood&);
 	bool Coherent(const AABT_Explanation&);
 	bool Compatible(const AABT_Nogood&);
 	bool Compatible(const AABT_Explanation&);
-	bool Compatible(const AABT_Nogood&, const order&);
+	bool Compatible(const AABT_Nogood&, const std::vector<int>&);
 	AABT_Message getMsg();
-	CompoundAssignment union_func(const AABT_Assignment&, const CompoundAssignment&);
+	CompoundAssignment union_func(const AABT_Assignment&,
+			const CompoundAssignment&);
 	CompoundAssignment union_func(const CompoundAssignment&,
 			const CompoundAssignment&);
 	void setRhs(AABT_Nogood&, const AABT_Assignment&);

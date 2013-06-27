@@ -53,7 +53,7 @@ void CVOrderData::readFromProtocol(const P_CVOrderData& p_data) {
 	auto adder = [&](const P_Explanation& p_e) {
 		AABT_Explanation e;
 		e.readFromProtocol(p_e);
-		this->E.push_back(e);
+		this->E.push_front(e);
 	};
 	for_each(p_data.e().begin(),p_data.e().end(),adder);
 }
