@@ -29,6 +29,7 @@
 #include <set>
 
 namespace AIT {
+namespace CSP {
 
 struct CompoundAssignment{
 	CompoundAssignment();
@@ -43,5 +44,6 @@ struct CompoundAssignment{
 	void readFromProtocol(const protocols::csp::P_CompoundAssignment&);
 };
 
+} /* namespace CSP */
 } /* namespace AIT */
 #endif /* COMPOUND_ASSIGNMENT_H_ */

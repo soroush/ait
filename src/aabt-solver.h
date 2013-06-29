@@ -29,12 +29,12 @@
 #include <semaphore.h>
 #include "aabt-assignment.h"
 #include "aabt-explanation.h"
-#include "abt-socket.h"
 #include "abt-solver.h"
 #include "aabt.pb.h"
 #include "common_async.h"
 
 namespace AIT {
+namespace CSP {
 
 struct AABT_Message;
 struct AABT_Nogood;
@@ -127,4 +127,5 @@ private:
 	Socket serverBroadcast;
 };
 
+} // namespace CSP
 } // namespace AIT

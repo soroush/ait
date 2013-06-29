@@ -27,6 +27,7 @@
 #include "aabt.pb.h"
 
 namespace AIT {
+namespace CSP {
 
 struct AABT_Assignment {
 	// TODO implement a static `fromProtocol'
@@ -42,5 +43,6 @@ struct AABT_Assignment {
 	int time_stamp;
 	int value;
 };
+} /* namespace CSP */
 } /* namespace AIT */
 #endif /* AABT_ASSIGNMENT_H_ */

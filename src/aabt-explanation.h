@@ -32,6 +32,7 @@
 #include "aabt.pb.h"
 
 namespace AIT {
+namespace CSP {
 
 struct AABT_Explanation {
 	AABT_Explanation();
@@ -46,5 +47,6 @@ struct AABT_Explanation {
 	int RHS;
 };
 
+} /* namespace CSP */
 } /* namespace AIT */
 #endif /* AABT_EXPLANATION_H_ */

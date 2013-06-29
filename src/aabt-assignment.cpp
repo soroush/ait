@@ -23,8 +23,8 @@
 
 #include "aabt-assignment.h"
 
-using namespace AIT;
-using namespace protocols::csp::aabt;
+using namespace AIT::CSP;
+using namespace AIT::protocols::csp::aabt;
 
 AABT_Assignment::AABT_Assignment() {
 }
@@ -50,7 +50,7 @@ AABT_Assignment::operator P_Assignment() const {
 	return assignment;
 }
 
-void AIT::AABT_Assignment::readFromProtocol(const P_Assignment& p_assignment) {
+void AABT_Assignment::readFromProtocol(const P_Assignment& p_assignment) {
 	this->id = p_assignment.id();
 	this->time_stamp = p_assignment.time_stamp();
 	this->value = p_assignment.value();

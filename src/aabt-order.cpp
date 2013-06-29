@@ -24,9 +24,9 @@
 #include <algorithm>
 #include "aabt-order.h"
 
-using namespace AIT;
-using namespace protocols::csp::aabt;
 using namespace std;
+using namespace AIT::CSP;
+using namespace AIT::protocols::csp::aabt;
 
 CVOrderData::CVOrderData() {
 }

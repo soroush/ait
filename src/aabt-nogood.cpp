@@ -24,8 +24,8 @@
 #include <algorithm>
 #include "aabt-nogood.h"
 
-using namespace AIT;
 using namespace std;
+using namespace AIT::CSP;
 using namespace AIT::protocols::csp;
 using namespace AIT::protocols::csp::aabt;
 

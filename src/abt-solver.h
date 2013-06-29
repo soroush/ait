@@ -38,10 +38,12 @@
 #include "common_async.h"
 #include "compound-assignment.h"
 #include "abt-socket.h"
+#include "csp-solver.h"
 
 namespace AIT {
+namespace CSP {
 
-class ABT_Solver {
+class ABT_Solver : public CSP_Solver {
 	friend class AABT_Solver;
 public:
 	ABT_Solver(const std::string&, const unsigned short&, const unsigned short&,
@@ -152,5 +154,6 @@ private:
 	bool end;
 };
 
-}
+} /* namespace CSP */
+} /* namespace AIT */
 #endif /* ABT_SOLVER_H_ */

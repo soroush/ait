@@ -24,9 +24,9 @@
 #include <algorithm>
 #include "aabt-explanation.h"
 
-using namespace AIT;
 using namespace std;
-using namespace protocols::csp::aabt;
+using namespace AIT::CSP;
+using namespace AIT::protocols::csp::aabt;
 
 AABT_Explanation::AABT_Explanation() {
 
@@ -39,7 +39,7 @@ AABT_Explanation::AABT_Explanation(const AABT_Explanation& other) :
 		id(other.id), LHS(other.LHS), RHS(other.RHS) {
 }
 
-AABT_Explanation& AIT::AABT_Explanation::operator =(
+AABT_Explanation& AABT_Explanation::operator =(
 		const AABT_Explanation& other) {
 	LHS.clear();
 	copy(other.LHS.begin(), other.LHS.end(), this->LHS.begin());

@@ -5,6 +5,7 @@ libait_la_SOURCES = \
  			abt.pb.cc \
  			assignment.cpp \
  			compound-assignment.cpp \
+ 			csp-solver.cpp \
  			abt-message.cpp \
  			abt-monitor.cpp \
  			abt-socket.cpp \
@@ -26,6 +27,7 @@ ait_include_HEADERS =  \
 			abt.pb.h \
 			assignment.h \
 			compound-assignment.h \
+			csp-solver.h \
 			abt-monitor.h \
 			abt-solver.h \
 			common_async.h \

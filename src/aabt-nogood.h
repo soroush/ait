@@ -28,6 +28,7 @@
 #include "aabt-assignment.h"
 
 namespace AIT {
+namespace CSP {
 
 struct AABT_Nogood {
 	AABT_Nogood();
@@ -40,5 +41,6 @@ struct AABT_Nogood {
 	std::vector<AABT_Assignment> LHS;
 	AABT_Assignment RHS;
 };
+} /* namespace CSP */
 } /* namespace AIT */
 #endif /* AABT_NOGOOD_H_ */

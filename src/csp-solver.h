@@ -1,7 +1,7 @@
 /*
  AIT Library (Artificial Intelligence Toolkit), A C++ library of AI tools.
 
- Copyright (c) 2012,2013 Soroush Rabiei <soroush-r@users.sf.net>,
+ Copyright (c) 2013 Soroush Rabiei <soroush-r@users.sf.net>,
  Roya Ghasemzadeh <ghasemzadeh.roya1@gmail.com>
 
  AIT is free software; you can redistribute it and/or
@@ -21,21 +21,23 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "abt-solver.h"
-#include "abt-socket.h"
+#ifndef CSP_SOLVER_H_
+#define CSP_SOLVER_H_
 
-using namespace AIT; //FIXME remove incorrect using after moving Socket to a new namespace
-using namespace AIT::CSP;
-using namespace AIT::protocols::csp;
-using namespace AIT::protocols::csp::abt;
-using namespace zmq;
+#include <string>
+#include <fstream>
 
-Socket* ABT_Solver::EndPoint::socket() const {
-	return (this->socket_);
-}
+namespace AIT {
+namespace CSP {
 
-ABT_Solver::EndPoint::EndPoint(const protocols::csp::abt::P_EndPoint& ep,
-		zmq::context_t& context) :
-		socket_(new Socket(context, ZMQ_PUSH)) {
-	this->CopyFrom(ep);
-}
+class CSP_Solver {
+public:
+	virtual ~CSP_Solver();
+	virtual void parseFromFile(const std::string&) = 0;
+	virtual void parseFromStream(const std::ifstream&) = 0;
+	virtual void parseFromContent(const std::string&)= 0;
+};
+
+} /* namespace CSP */
+} /* namespace AIT */
+#endif /* CSP_SOLVER_H_ */

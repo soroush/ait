@@ -27,6 +27,7 @@
 #include "common-protocols.pb.h"
 
 namespace AIT {
+namespace CSP {
 
 struct Assignment {
 	Assignment();
@@ -44,5 +45,7 @@ struct Assignment {
 	void readFromProtocol(const protocols::csp::P_Assignment&);
 };
 
+} /* namespace CSP */
 } /* namespace AIT */
+
 #endif /* ASSIGNMENT_H_ */

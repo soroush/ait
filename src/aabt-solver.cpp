@@ -32,9 +32,8 @@
 #include "abt.pb.h"
 
 using namespace std;
-using namespace AIT;
-using namespace protocols::csp::aabt;
-using namespace protocols::csp::abt;
+using namespace AIT::CSP;
+using namespace AIT::protocols::csp;
 
 struct incoming {
 	int n;
@@ -540,17 +539,17 @@ bool AABT_Solver::Consistent(const AABT_Assignment &a,
 
 }
 
-void AIT::AABT_Solver::getAgentList() {
+void AABT_Solver::getAgentList() {
 	//TODO integrate this one
 	_INFO( "Sending Request List to monitor agent ...");
-	P_CommunicationProtocol requestList;
-	requestList.set_type(CP_MessageType::T_REQUEST_LIST);
+	abt::P_CommunicationProtocol requestList;
+	requestList.set_type(abt::CP_MessageType::T_REQUEST_LIST);
 	requestList.set_id(this->id);
 	this->serverRquest.sendMessage(requestList);
 
-	P_CommunicationProtocol requestListAck;
+	abt::P_CommunicationProtocol requestListAck;
 	this->serverRquest.recvMessage(requestListAck);
-	if (requestListAck.type() == CP_MessageType::T_REQUEST_ACK) {
+	if (requestListAck.type() == abt::CP_MessageType::T_REQUEST_ACK) {
 		_INFO( "Monitor has accepted to send list of agents.");
 	} else {
 		_ERROR( "Unable to get agent list from monitor.\n"
@@ -558,9 +557,9 @@ void AIT::AABT_Solver::getAgentList() {
 	}
 
 	_INFO( "Waiting for all agents to came online...");
-	P_CommunicationProtocol listPacket;
+	abt::P_CommunicationProtocol listPacket;
 	this->serverBroadcast.recvMessage(listPacket);
-	if (listPacket.type() == CP_MessageType::T_LIST) {
+	if (listPacket.type() == abt::CP_MessageType::T_LIST) {
 		for (int i = 0; i < listPacket.others_size(); ++i) {
 			this->everybody.push_front(
 					ABT_Solver::EndPoint(listPacket.others(i), context));
@@ -589,7 +588,7 @@ void AABT_Solver::sendMessage(const AgentID& agent,
 		const AABT_Message& message) {
 }
 
-protocols::csp::aabt::P_Message AABT_Solver::getMessage() {
+aabt::P_Message AABT_Solver::getMessage() {
 	sem_wait(&messageCount);
 	pthread_mutex_lock(&this->messageRW);
 	protocols::csp::aabt::P_Message x = this->messageQueue.front();

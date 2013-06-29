@@ -27,9 +27,11 @@
 #include <utility>
 
 namespace AIT {
+namespace CSP {
 
 typedef unsigned AgentID;
 
+} // namespace CSP
 } // namespace AIT
 
 #endif /* COMMON_ASYNC_HPP_ */

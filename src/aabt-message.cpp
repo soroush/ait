@@ -24,9 +24,9 @@
 #include <algorithm>
 #include "aabt-message.h"
 
-using namespace AIT;
+using namespace AIT::CSP;
+using namespace AIT::protocols::csp::aabt;
 using namespace std;
-using namespace protocols::csp::aabt;
 
 AABT_Message::AABT_Message() {
 }

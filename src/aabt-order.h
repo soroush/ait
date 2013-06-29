@@ -28,6 +28,7 @@
 #include "aabt-explanation.h"
 
 namespace AIT {
+namespace CSP {
 
 struct CVOrderData {
 	CVOrderData();
@@ -42,5 +43,7 @@ struct CVOrderData {
 	std::vector<int> tv;
 	std::forward_list<AABT_Explanation> E;
 };
+
+} /* namespace CSP */
 } /* namespace AIT */
 #endif /* AABT_ORDER_H_ */

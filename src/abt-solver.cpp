@@ -26,11 +26,11 @@
 #include "abt-solver.h"
 #include "assignment.h"
 
-using namespace AIT;
 using namespace std;
 using namespace zmq;
-using namespace protocols::csp;
-using namespace protocols::csp::abt;
+using namespace AIT::CSP;
+using namespace AIT::protocols::csp;
+using namespace AIT::protocols::csp::abt;
 
 ABT_Solver::ABT_Solver(const std::string& serverHost_,
 		const unsigned short& serverResponderPort_,
@@ -351,7 +351,7 @@ void ABT_Solver::getAgentList() {
 	}
 }
 
-void AIT::ABT_Solver::sendMessageOK(const AgentID& agent) {
+void ABT_Solver::sendMessageOK(const AgentID& agent) {
 	Message ok;
 	ok.sender = this->id;
 	ok.type = P_MessageType::T_OK;
@@ -359,13 +359,13 @@ void AIT::ABT_Solver::sendMessageOK(const AgentID& agent) {
 	sendMessage(agent, ok);
 }
 
-void AIT::ABT_Solver::sendMessageNGD(const AgentID& agent, Message& ngd) {
+void ABT_Solver::sendMessageNGD(const AgentID& agent, Message& ngd) {
 	ngd.sender = this->id;
 	ngd.type = P_MessageType::T_NOGOOD;
 	sendMessage(agent, ngd);
 }
 
-void AIT::ABT_Solver::sendMessageSTP() {
+void ABT_Solver::sendMessageSTP() {
 	Message stop;
 	stop.type = P_MessageType::T_STOP;
 	stop.sender = this->id;
@@ -421,7 +421,7 @@ void ABT_Solver::add(const CompoundAssignment& ca) {
 	noGoodStore.push_back(ngd);
 }
 
-void AIT::ABT_Solver::printNGS() {
+void ABT_Solver::printNGS() {
 	stringstream ss;
 	ss << "NogoodStore: ";
 	for (const auto& ngd : noGoodStore) {
@@ -433,7 +433,7 @@ void AIT::ABT_Solver::printNGS() {
 	_INFO("%s", ss.str().c_str());
 }
 
-void AIT::ABT_Solver::printAV() {
+void ABT_Solver::printAV() {
 	stringstream ss;
 	ss << "Agent View: ";
 	for (const auto& a : agentView.items) {

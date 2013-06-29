@@ -3,4 +3,5 @@
 *.cache
 *.o
 *.lo
+*.la
 *.so

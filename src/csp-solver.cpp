@@ -21,21 +21,11 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "abt-solver.h"
-#include "abt-socket.h"
+#include "csp-solver.h"
 
-using namespace AIT; //FIXME remove incorrect using after moving Socket to a new namespace
-using namespace AIT::CSP;
-using namespace AIT::protocols::csp;
-using namespace AIT::protocols::csp::abt;
-using namespace zmq;
+namespace AIT {
+namespace CSP {
 
-Socket* ABT_Solver::EndPoint::socket() const {
-	return (this->socket_);
-}
 
-ABT_Solver::EndPoint::EndPoint(const protocols::csp::abt::P_EndPoint& ep,
-		zmq::context_t& context) :
-		socket_(new Socket(context, ZMQ_PUSH)) {
-	this->CopyFrom(ep);
-}
+} /* namespace CSP */
+} /* namespace AIT */

@@ -23,9 +23,9 @@
 
 #include "abt-solver.h"
 
-using namespace AIT;
-using namespace protocols::csp;
-using namespace protocols::csp::abt;
+using namespace AIT::CSP;
+using namespace AIT::protocols::csp;
+using namespace AIT::protocols::csp::abt;
 
 ABT_Solver::Message::Message() {
 }
@@ -47,7 +47,7 @@ ABT_Solver::Message& ABT_Solver::Message::operator =(const Message& other) {
 	return *this;
 }
 
-ABT_Solver::Message::operator protocols::csp::abt::P_Message() const {
+ABT_Solver::Message::operator P_Message() const {
 	P_Message m;
 	m.set_type(type);
 	m.set_sender(sender);

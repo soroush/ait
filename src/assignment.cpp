@@ -22,8 +22,9 @@
  */
 
 #include "assignment.h"
-using namespace AIT;
-using namespace protocols::csp;
+
+using namespace AIT::CSP;
+using namespace AIT::protocols::csp;
 
 Assignment::Assignment() :
 		id(0), value(0) {
@@ -52,7 +53,7 @@ bool Assignment::operator <(const Assignment& other) const {
 	return this->id < other.id;
 }
 
-Assignment::operator protocols::csp::P_Assignment() {
+Assignment::operator P_Assignment() {
 	P_Assignment pa;
 	pa.set_id(this->id);
 	pa.set_value(this->value);

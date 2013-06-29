@@ -30,6 +30,7 @@
 #include <vector>
 
 namespace AIT {
+namespace CSP {
 
 enum class AABT_MessageType {
 	OK = 1, NOGOOD = 2, ORDER = 3, STOP = 4
@@ -52,5 +53,7 @@ struct AABT_Message {
 	std::vector<int> tvi;
 	AABT_Nogood ng;
 };
+
+} /* namespace CSP */
 } /* namespace AIT */
 #endif /* AABT_MESSAGE_H_ */
