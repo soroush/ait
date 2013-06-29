@@ -16,8 +16,6 @@
 @SET_MAKE@
 
 
-
-
 VPATH = @srcdir@
 pkgdatadir = $(datadir)/@PACKAGE@
 pkgincludedir = $(includedir)/@PACKAGE@
@@ -38,17 +36,17 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 subdir = .
-DIST_COMMON = README $(ait_include_HEADERS) $(am__configure_deps) \
-	$(dist_noinst_SCRIPTS) $(srcdir)/Makefile.am \
-	$(srcdir)/Makefile.in $(srcdir)/config.h.in \
-	$(srcdir)/libait.pc.in $(top_srcdir)/configure AUTHORS COPYING \
-	ChangeLog INSTALL NEWS TODO config.guess config.sub depcomp \
-	install-sh ltmain.sh missing
+DIST_COMMON = README $(am__configure_deps) $(dist_noinst_SCRIPTS) \
+	$(srcdir)/Makefile.am $(srcdir)/Makefile.in \
+	$(srcdir)/config.h.in $(srcdir)/libait.pc.in \
+	$(top_srcdir)/configure AUTHORS COPYING ChangeLog INSTALL NEWS \
+	TODO config.guess config.sub depcomp install-sh ltmain.sh \
+	missing
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/m4/libtool.m4 \
-	$(top_srcdir)/m4/ltoptions.m4 $(top_srcdir)/m4/ltsugar.m4 \
-	$(top_srcdir)/m4/ltversion.m4 $(top_srcdir)/m4/lt~obsolete.m4 \
-	$(top_srcdir)/configure.ac
+am__aclocal_m4_deps = $(top_srcdir)/m4/ax_cxx_compile_stdcxx_11.m4 \
+	$(top_srcdir)/m4/libtool.m4 $(top_srcdir)/m4/ltoptions.m4 \
+	$(top_srcdir)/m4/ltsugar.m4 $(top_srcdir)/m4/ltversion.m4 \
+	$(top_srcdir)/m4/lt~obsolete.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 am__CONFIG_DISTCLEAN_FILES = config.status config.cache config.log \
@@ -57,6 +55,16 @@ mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = config.h
 CONFIG_CLEAN_FILES = libait.pc
 CONFIG_CLEAN_VPATH_FILES =
+SCRIPTS = $(dist_noinst_SCRIPTS)
+SOURCES =
+DIST_SOURCES =
+RECURSIVE_TARGETS = all-recursive check-recursive dvi-recursive \
+	html-recursive info-recursive install-data-recursive \
+	install-dvi-recursive install-exec-recursive \
+	install-html-recursive install-info-recursive \
+	install-pdf-recursive install-ps-recursive install-recursive \
+	installcheck-recursive installdirs-recursive pdf-recursive \
+	ps-recursive uninstall-recursive
 am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
 am__vpath_adj = case $$p in \
     $(srcdir)/*) f=`echo "$$p" | sed "s|^$$srcdirstrip/||"`;; \
@@ -84,43 +92,16 @@ am__uninstall_files_from_dir = { \
     || { echo " ( cd '$$dir' && rm -f" $$files ")"; \
          $(am__cd) "$$dir" && rm -f $$files; }; \
   }
-am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(pkgconfigdir)" \
-	"$(DESTDIR)$(ait_includedir)"
-LTLIBRARIES = $(lib_LTLIBRARIES)
-am__DEPENDENCIES_1 =
-libait_la_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
-am__dirstamp = $(am__leading_dot)dirstamp
-am_libait_la_OBJECTS = src/abt.pb.lo src/assignment.lo \
-	src/compound-assignment.lo src/abt-message.lo \
-	src/abt-monitor.lo src/abt-socket.lo src/abt-nogood.lo \
-	src/abt-endpoint.lo src/abt-solver.lo src/aabt-solver.lo \
-	src/aabt.pb.lo src/aabt-assignment.lo src/aabt-explanation.lo \
-	src/aabt-message.lo src/aabt-nogood.lo src/aabt-order.lo \
-	src/common-protocols.pb.lo
-libait_la_OBJECTS = $(am_libait_la_OBJECTS)
-libait_la_LINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=link $(CXXLD) $(AM_CXXFLAGS) \
-	$(CXXFLAGS) $(libait_la_LDFLAGS) $(LDFLAGS) -o $@
-SCRIPTS = $(dist_noinst_SCRIPTS)
-DEFAULT_INCLUDES = -I.@am__isrc@
-depcomp = $(SHELL) $(top_srcdir)/depcomp
-am__depfiles_maybe = depfiles
-am__mv = mv -f
-CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
-	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
-LTCXXCOMPILE = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
-	--mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
-	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
-CXXLD = $(CXX)
-CXXLINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
-	--mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) \
-	$(LDFLAGS) -o $@
-SOURCES = $(libait_la_SOURCES)
-DIST_SOURCES = $(libait_la_SOURCES)
+am__installdirs = "$(DESTDIR)$(pkgconfigdir)"
 DATA = $(pkgconfig_DATA)
-HEADERS = $(ait_include_HEADERS)
+RECURSIVE_CLEAN_TARGETS = mostlyclean-recursive clean-recursive	\
+  distclean-recursive maintainer-clean-recursive
+AM_RECURSIVE_TARGETS = $(RECURSIVE_TARGETS:-recursive=) \
+	$(RECURSIVE_CLEAN_TARGETS:-recursive=) tags TAGS ctags CTAGS \
+	distdir dist dist-all distcheck
 ETAGS = etags
 CTAGS = ctags
+DIST_SUBDIRS = $(SUBDIRS)
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 distdir = $(PACKAGE)-$(VERSION)
 top_distdir = $(distdir)
@@ -130,6 +111,31 @@ am__remove_distdir = \
       && rm -rf "$(distdir)" \
       || { sleep 5 && rm -rf "$(distdir)"; }; \
   else :; fi
+am__relativize = \
+  dir0=`pwd`; \
+  sed_first='s,^\([^/]*\)/.*$$,\1,'; \
+  sed_rest='s,^[^/]*/*,,'; \
+  sed_last='s,^.*/\([^/]*\)$$,\1,'; \
+  sed_butlast='s,/*[^/]*$$,,'; \
+  while test -n "$$dir1"; do \
+    first=`echo "$$dir1" | sed -e "$$sed_first"`; \
+    if test "$$first" != "."; then \
+      if test "$$first" = ".."; then \
+        dir2=`echo "$$dir0" | sed -e "$$sed_last"`/"$$dir2"; \
+        dir0=`echo "$$dir0" | sed -e "$$sed_butlast"`; \
+      else \
+        first2=`echo "$$dir2" | sed -e "$$sed_first"`; \
+        if test "$$first2" = "$$first"; then \
+          dir2=`echo "$$dir2" | sed -e "$$sed_rest"`; \
+        else \
+          dir2="../$$dir2"; \
+        fi; \
+        dir0="$$dir0"/"$$first"; \
+      fi; \
+    fi; \
+    dir1=`echo "$$dir1" | sed -e "$$sed_rest"`; \
+  done; \
+  reldir="$$dir2"
 DIST_ARCHIVES = $(distdir).tar.gz
 GZIP_ENV = --best
 distuninstallcheck_listfiles = find . -type f -print
@@ -148,7 +154,6 @@ AWK = @AWK@
 CC = @CC@
 CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@
-CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
 CXX = @CXX@
 CXXCPP = @CXXCPP@
@@ -167,6 +172,7 @@ EGREP = @EGREP@
 EXEEXT = @EXEEXT@
 FGREP = @FGREP@
 GREP = @GREP@
+HAVE_CXX11 = @HAVE_CXX11@
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
@@ -263,62 +269,16 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
+SUBDIRS = src .
 AUTOMAKE_OPTIONS = subdir-objects
 ACLOCAL_AMFLAGS = ${ACLOCAL_FLAGS} -I m4
-lib_LTLIBRARIES = libait.la
-AM_CPPFLAGS = -pipe
-libait_la_LIBADD = $(ZMQ_LIBS) $(PROTOCOL_BUFFERS_LIBS)
-libait_la_SOURCES = \
-			src/abt.pb.cc \
-			src/assignment.cpp \
-			src/compound-assignment.cpp \
-			src/abt-message.cpp \
-			src/abt-monitor.cpp \
-			src/abt-socket.cpp \
-			src/abt-nogood.cpp \
-			src/abt-endpoint.cpp \
-			src/abt-solver.cpp \
-			src/aabt-solver.cpp \
-			src/aabt.pb.cc \
-			src/aabt-assignment.cpp \
-			src/aabt-explanation.cpp \
-			src/aabt-message.cpp \
-			src/aabt-nogood.cpp \
-			src/aabt-order.cpp \
-			src/common-protocols.pb.cc 
-
-libait_la_LDFLAGS = -version-info $(AIT_SO_VERSION)
-ait_includedir = $(includedir)/ait
-ait_include_HEADERS = \
-			src/abt.pb.h \
-			src/assignment.h \
-			src/compound-assignment.h \
-			src/abt-message.h \
-			src/abt-monitor.h \
-			src/abt-socket.h \
-			src/abt-solver.h \
-			src/abt-nogood.h \
-			src/abt-endpoint.h \
-			src/common_async.h \
-			src/common-protocols.pb.h \
-			src/aabt-solver.h \
-			src/aabt.pb.h \
-			src/aabt-assignment.h \
-			src/aabt-explanation.h \
-			src/aabt-message.h \
-			src/aabt-nogood.h \
-			src/aabt-order.h \
-			src/global.h
-
-ait_libincludedir = $(libdir)/ait/include
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libait.pc
 dist_noinst_SCRIPTS = autogen.sh
 all: config.h
-	$(MAKE) $(AM_MAKEFLAGS) all-am
+	$(MAKE) $(AM_MAKEFLAGS) all-recursive
 
 .SUFFIXES:
-.SUFFIXES: .cc .cpp .lo .o .obj
 am--refresh: Makefile
 	@:
 $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
@@ -370,179 +330,12 @@ distclean-hdr:
 	-rm -f config.h stamp-h1
 libait.pc: $(top_builddir)/config.status $(srcdir)/libait.pc.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@
-install-libLTLIBRARIES: $(lib_LTLIBRARIES)
-	@$(NORMAL_INSTALL)
-	test -z "$(libdir)" || $(MKDIR_P) "$(DESTDIR)$(libdir)"
-	@list='$(lib_LTLIBRARIES)'; test -n "$(libdir)" || list=; \
-	list2=; for p in $$list; do \
-	  if test -f $$p; then \
-	    list2="$$list2 $$p"; \
-	  else :; fi; \
-	done; \
-	test -z "$$list2" || { \
-	  echo " $(LIBTOOL) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=install $(INSTALL) $(INSTALL_STRIP_FLAG) $$list2 '$(DESTDIR)$(libdir)'"; \
-	  $(LIBTOOL) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=install $(INSTALL) $(INSTALL_STRIP_FLAG) $$list2 "$(DESTDIR)$(libdir)"; \
-	}
-
-uninstall-libLTLIBRARIES:
-	@$(NORMAL_UNINSTALL)
-	@list='$(lib_LTLIBRARIES)'; test -n "$(libdir)" || list=; \
-	for p in $$list; do \
-	  $(am__strip_dir) \
-	  echo " $(LIBTOOL) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=uninstall rm -f '$(DESTDIR)$(libdir)/$$f'"; \
-	  $(LIBTOOL) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=uninstall rm -f "$(DESTDIR)$(libdir)/$$f"; \
-	done
-
-clean-libLTLIBRARIES:
-	-test -z "$(lib_LTLIBRARIES)" || rm -f $(lib_LTLIBRARIES)
-	@list='$(lib_LTLIBRARIES)'; for p in $$list; do \
-	  dir="`echo $$p | sed -e 's|/[^/]*$$||'`"; \
-	  test "$$dir" != "$$p" || dir=.; \
-	  echo "rm -f \"$${dir}/so_locations\""; \
-	  rm -f "$${dir}/so_locations"; \
-	done
-src/$(am__dirstamp):
-	@$(MKDIR_P) src
-	@: > src/$(am__dirstamp)
-src/$(DEPDIR)/$(am__dirstamp):
-	@$(MKDIR_P) src/$(DEPDIR)
-	@: > src/$(DEPDIR)/$(am__dirstamp)
-src/abt.pb.lo: src/$(am__dirstamp) src/$(DEPDIR)/$(am__dirstamp)
-src/assignment.lo: src/$(am__dirstamp) src/$(DEPDIR)/$(am__dirstamp)
-src/compound-assignment.lo: src/$(am__dirstamp) \
-	src/$(DEPDIR)/$(am__dirstamp)
-src/abt-message.lo: src/$(am__dirstamp) src/$(DEPDIR)/$(am__dirstamp)
-src/abt-monitor.lo: src/$(am__dirstamp) src/$(DEPDIR)/$(am__dirstamp)
-src/abt-socket.lo: src/$(am__dirstamp) src/$(DEPDIR)/$(am__dirstamp)
-src/abt-nogood.lo: src/$(am__dirstamp) src/$(DEPDIR)/$(am__dirstamp)
-src/abt-endpoint.lo: src/$(am__dirstamp) src/$(DEPDIR)/$(am__dirstamp)
-src/abt-solver.lo: src/$(am__dirstamp) src/$(DEPDIR)/$(am__dirstamp)
-src/aabt-solver.lo: src/$(am__dirstamp) src/$(DEPDIR)/$(am__dirstamp)
-src/aabt.pb.lo: src/$(am__dirstamp) src/$(DEPDIR)/$(am__dirstamp)
-src/aabt-assignment.lo: src/$(am__dirstamp) \
-	src/$(DEPDIR)/$(am__dirstamp)
-src/aabt-explanation.lo: src/$(am__dirstamp) \
-	src/$(DEPDIR)/$(am__dirstamp)
-src/aabt-message.lo: src/$(am__dirstamp) src/$(DEPDIR)/$(am__dirstamp)
-src/aabt-nogood.lo: src/$(am__dirstamp) src/$(DEPDIR)/$(am__dirstamp)
-src/aabt-order.lo: src/$(am__dirstamp) src/$(DEPDIR)/$(am__dirstamp)
-src/common-protocols.pb.lo: src/$(am__dirstamp) \
-	src/$(DEPDIR)/$(am__dirstamp)
-libait.la: $(libait_la_OBJECTS) $(libait_la_DEPENDENCIES) $(EXTRA_libait_la_DEPENDENCIES) 
-	$(libait_la_LINK) -rpath $(libdir) $(libait_la_OBJECTS) $(libait_la_LIBADD) $(LIBS)
-
-mostlyclean-compile:
-	-rm -f *.$(OBJEXT)
-	-rm -f src/aabt-assignment.$(OBJEXT)
-	-rm -f src/aabt-assignment.lo
-	-rm -f src/aabt-explanation.$(OBJEXT)
-	-rm -f src/aabt-explanation.lo
-	-rm -f src/aabt-message.$(OBJEXT)
-	-rm -f src/aabt-message.lo
-	-rm -f src/aabt-nogood.$(OBJEXT)
-	-rm -f src/aabt-nogood.lo
-	-rm -f src/aabt-order.$(OBJEXT)
-	-rm -f src/aabt-order.lo
-	-rm -f src/aabt-solver.$(OBJEXT)
-	-rm -f src/aabt-solver.lo
-	-rm -f src/aabt.pb.$(OBJEXT)
-	-rm -f src/aabt.pb.lo
-	-rm -f src/abt-endpoint.$(OBJEXT)
-	-rm -f src/abt-endpoint.lo
-	-rm -f src/abt-message.$(OBJEXT)
-	-rm -f src/abt-message.lo
-	-rm -f src/abt-monitor.$(OBJEXT)
-	-rm -f src/abt-monitor.lo
-	-rm -f src/abt-nogood.$(OBJEXT)
-	-rm -f src/abt-nogood.lo
-	-rm -f src/abt-socket.$(OBJEXT)
-	-rm -f src/abt-socket.lo
-	-rm -f src/abt-solver.$(OBJEXT)
-	-rm -f src/abt-solver.lo
-	-rm -f src/abt.pb.$(OBJEXT)
-	-rm -f src/abt.pb.lo
-	-rm -f src/assignment.$(OBJEXT)
-	-rm -f src/assignment.lo
-	-rm -f src/common-protocols.pb.$(OBJEXT)
-	-rm -f src/common-protocols.pb.lo
-	-rm -f src/compound-assignment.$(OBJEXT)
-	-rm -f src/compound-assignment.lo
-
-distclean-compile:
-	-rm -f *.tab.c
-
-@AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/aabt-assignment.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/aabt-explanation.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/aabt-message.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/aabt-nogood.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/aabt-order.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/aabt-solver.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/aabt.pb.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/abt-endpoint.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/abt-message.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/abt-monitor.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/abt-nogood.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/abt-socket.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/abt-solver.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/abt.pb.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/assignment.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/common-protocols.pb.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/compound-assignment.Plo@am__quote@
-
-.cc.o:
-@am__fastdepCXX_TRUE@	depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.o$$||'`;\
-@am__fastdepCXX_TRUE@	$(CXXCOMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ $< &&\
-@am__fastdepCXX_TRUE@	$(am__mv) $$depbase.Tpo $$depbase.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXXCOMPILE) -c -o $@ $<
-
-.cc.obj:
-@am__fastdepCXX_TRUE@	depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.obj$$||'`;\
-@am__fastdepCXX_TRUE@	$(CXXCOMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ `$(CYGPATH_W) '$<'` &&\
-@am__fastdepCXX_TRUE@	$(am__mv) $$depbase.Tpo $$depbase.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXXCOMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
-
-.cc.lo:
-@am__fastdepCXX_TRUE@	depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.lo$$||'`;\
-@am__fastdepCXX_TRUE@	$(LTCXXCOMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ $< &&\
-@am__fastdepCXX_TRUE@	$(am__mv) $$depbase.Tpo $$depbase.Plo
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LTCXXCOMPILE) -c -o $@ $<
-
-.cpp.o:
-@am__fastdepCXX_TRUE@	depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.o$$||'`;\
-@am__fastdepCXX_TRUE@	$(CXXCOMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ $< &&\
-@am__fastdepCXX_TRUE@	$(am__mv) $$depbase.Tpo $$depbase.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXXCOMPILE) -c -o $@ $<
-
-.cpp.obj:
-@am__fastdepCXX_TRUE@	depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.obj$$||'`;\
-@am__fastdepCXX_TRUE@	$(CXXCOMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ `$(CYGPATH_W) '$<'` &&\
-@am__fastdepCXX_TRUE@	$(am__mv) $$depbase.Tpo $$depbase.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXXCOMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
-
-.cpp.lo:
-@am__fastdepCXX_TRUE@	depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.lo$$||'`;\
-@am__fastdepCXX_TRUE@	$(LTCXXCOMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ $< &&\
-@am__fastdepCXX_TRUE@	$(am__mv) $$depbase.Tpo $$depbase.Plo
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LTCXXCOMPILE) -c -o $@ $<
 
 mostlyclean-libtool:
 	-rm -f *.lo
 
 clean-libtool:
 	-rm -rf .libs _libs
-	-rm -rf src/.libs src/_libs
 
 distclean-libtool:
 	-rm -f libtool config.lt
@@ -564,24 +357,76 @@ uninstall-pkgconfigDATA:
 	@list='$(pkgconfig_DATA)'; test -n "$(pkgconfigdir)" || list=; \
 	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
 	dir='$(DESTDIR)$(pkgconfigdir)'; $(am__uninstall_files_from_dir)
-install-ait_includeHEADERS: $(ait_include_HEADERS)
-	@$(NORMAL_INSTALL)
-	test -z "$(ait_includedir)" || $(MKDIR_P) "$(DESTDIR)$(ait_includedir)"
-	@list='$(ait_include_HEADERS)'; test -n "$(ait_includedir)" || list=; \
-	for p in $$list; do \
-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-	  echo "$$d$$p"; \
-	done | $(am__base_list) | \
-	while read files; do \
-	  echo " $(INSTALL_HEADER) $$files '$(DESTDIR)$(ait_includedir)'"; \
-	  $(INSTALL_HEADER) $$files "$(DESTDIR)$(ait_includedir)" || exit $$?; \
-	done
 
-uninstall-ait_includeHEADERS:
-	@$(NORMAL_UNINSTALL)
-	@list='$(ait_include_HEADERS)'; test -n "$(ait_includedir)" || list=; \
-	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
-	dir='$(DESTDIR)$(ait_includedir)'; $(am__uninstall_files_from_dir)
+# This directory's subdirectories are mostly independent; you can cd
+# into them and run `make' without going through this Makefile.
+# To change the values of `make' variables: instead of editing Makefiles,
+# (1) if the variable is set in `config.status', edit `config.status'
+#     (which will cause the Makefiles to be regenerated when you run `make');
+# (2) otherwise, pass the desired values on the `make' command line.
+$(RECURSIVE_TARGETS):
+	@fail= failcom='exit 1'; \
+	for f in x $$MAKEFLAGS; do \
+	  case $$f in \
+	    *=* | --[!k]*);; \
+	    *k*) failcom='fail=yes';; \
+	  esac; \
+	done; \
+	dot_seen=no; \
+	target=`echo $@ | sed s/-recursive//`; \
+	list='$(SUBDIRS)'; for subdir in $$list; do \
+	  echo "Making $$target in $$subdir"; \
+	  if test "$$subdir" = "."; then \
+	    dot_seen=yes; \
+	    local_target="$$target-am"; \
+	  else \
+	    local_target="$$target"; \
+	  fi; \
+	  ($(am__cd) $$subdir && $(MAKE) $(AM_MAKEFLAGS) $$local_target) \
+	  || eval $$failcom; \
+	done; \
+	if test "$$dot_seen" = "no"; then \
+	  $(MAKE) $(AM_MAKEFLAGS) "$$target-am" || exit 1; \
+	fi; test -z "$$fail"
+
+$(RECURSIVE_CLEAN_TARGETS):
+	@fail= failcom='exit 1'; \
+	for f in x $$MAKEFLAGS; do \
+	  case $$f in \
+	    *=* | --[!k]*);; \
+	    *k*) failcom='fail=yes';; \
+	  esac; \
+	done; \
+	dot_seen=no; \
+	case "$@" in \
+	  distclean-* | maintainer-clean-*) list='$(DIST_SUBDIRS)' ;; \
+	  *) list='$(SUBDIRS)' ;; \
+	esac; \
+	rev=''; for subdir in $$list; do \
+	  if test "$$subdir" = "."; then :; else \
+	    rev="$$subdir $$rev"; \
+	  fi; \
+	done; \
+	rev="$$rev ."; \
+	target=`echo $@ | sed s/-recursive//`; \
+	for subdir in $$rev; do \
+	  echo "Making $$target in $$subdir"; \
+	  if test "$$subdir" = "."; then \
+	    local_target="$$target-am"; \
+	  else \
+	    local_target="$$target"; \
+	  fi; \
+	  ($(am__cd) $$subdir && $(MAKE) $(AM_MAKEFLAGS) $$local_target) \
+	  || eval $$failcom; \
+	done && test -z "$$fail"
+tags-recursive:
+	list='$(SUBDIRS)'; for subdir in $$list; do \
+	  test "$$subdir" = . || ($(am__cd) $$subdir && $(MAKE) $(AM_MAKEFLAGS) tags); \
+	done
+ctags-recursive:
+	list='$(SUBDIRS)'; for subdir in $$list; do \
+	  test "$$subdir" = . || ($(am__cd) $$subdir && $(MAKE) $(AM_MAKEFLAGS) ctags); \
+	done
 
 ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	list='$(SOURCES) $(HEADERS) $(LISP) $(TAGS_FILES)'; \
@@ -593,10 +438,23 @@ ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	mkid -fID $$unique
 tags: TAGS
 
-TAGS:  $(HEADERS) $(SOURCES) config.h.in $(TAGS_DEPENDENCIES) \
+TAGS: tags-recursive $(HEADERS) $(SOURCES) config.h.in $(TAGS_DEPENDENCIES) \
 		$(TAGS_FILES) $(LISP)
 	set x; \
 	here=`pwd`; \
+	if ($(ETAGS) --etags-include --version) >/dev/null 2>&1; then \
+	  include_option=--etags-include; \
+	  empty_fix=.; \
+	else \
+	  include_option=--include; \
+	  empty_fix=; \
+	fi; \
+	list='$(SUBDIRS)'; for subdir in $$list; do \
+	  if test "$$subdir" = .; then :; else \
+	    test ! -f $$subdir/TAGS || \
+	      set "$$@" "$$include_option=$$here/$$subdir/TAGS"; \
+	  fi; \
+	done; \
 	list='$(SOURCES) $(HEADERS) config.h.in $(LISP) $(TAGS_FILES)'; \
 	unique=`for i in $$list; do \
 	    if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
@@ -615,7 +473,7 @@ TAGS:  $(HEADERS) $(SOURCES) config.h.in $(TAGS_DEPENDENCIES) \
 	  fi; \
 	fi
 ctags: CTAGS
-CTAGS:  $(HEADERS) $(SOURCES) config.h.in $(TAGS_DEPENDENCIES) \
+CTAGS: ctags-recursive $(HEADERS) $(SOURCES) config.h.in $(TAGS_DEPENDENCIES) \
 		$(TAGS_FILES) $(LISP)
 	list='$(SOURCES) $(HEADERS) config.h.in $(LISP) $(TAGS_FILES)'; \
 	unique=`for i in $$list; do \
@@ -665,6 +523,34 @@ distdir: $(DISTFILES)
 	    test -f "$(distdir)/$$file" \
 	    || cp -p $$d/$$file "$(distdir)/$$file" \
 	    || exit 1; \
+	  fi; \
+	done
+	@list='$(DIST_SUBDIRS)'; for subdir in $$list; do \
+	  if test "$$subdir" = .; then :; else \
+	    test -d "$(distdir)/$$subdir" \
+	    || $(MKDIR_P) "$(distdir)/$$subdir" \
+	    || exit 1; \
+	  fi; \
+	done
+	@list='$(DIST_SUBDIRS)'; for subdir in $$list; do \
+	  if test "$$subdir" = .; then :; else \
+	    dir1=$$subdir; dir2="$(distdir)/$$subdir"; \
+	    $(am__relativize); \
+	    new_distdir=$$reldir; \
+	    dir1=$$subdir; dir2="$(top_distdir)"; \
+	    $(am__relativize); \
+	    new_top_distdir=$$reldir; \
+	    echo " (cd $$subdir && $(MAKE) $(AM_MAKEFLAGS) top_distdir="$$new_top_distdir" distdir="$$new_distdir" \\"; \
+	    echo "     am__remove_distdir=: am__skip_length_check=: am__skip_mode_fix=: distdir)"; \
+	    ($(am__cd) $$subdir && \
+	      $(MAKE) $(AM_MAKEFLAGS) \
+	        top_distdir="$$new_top_distdir" \
+	        distdir="$$new_distdir" \
+		am__remove_distdir=: \
+		am__skip_length_check=: \
+		am__skip_mode_fix=: \
+	        distdir) \
+	      || exit 1; \
 	  fi; \
 	done
 	-test -n "$(am__skip_mode_fix)" \
@@ -798,21 +684,22 @@ distcleancheck: distclean
 	       $(distcleancheck_listfiles) ; \
 	       exit 1; } >&2
 check-am: all-am
-check: check-am
-all-am: Makefile $(LTLIBRARIES) $(SCRIPTS) $(DATA) $(HEADERS) config.h
-installdirs:
-	for dir in "$(DESTDIR)$(libdir)" "$(DESTDIR)$(pkgconfigdir)" "$(DESTDIR)$(ait_includedir)"; do \
+check: check-recursive
+all-am: Makefile $(SCRIPTS) $(DATA) config.h
+installdirs: installdirs-recursive
+installdirs-am:
+	for dir in "$(DESTDIR)$(pkgconfigdir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
-install: install-am
-install-exec: install-exec-am
-install-data: install-data-am
-uninstall: uninstall-am
+install: install-recursive
+install-exec: install-exec-recursive
+install-data: install-data-recursive
+uninstall: uninstall-recursive
 
 install-am: all-am
 	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
 
-installcheck: installcheck-am
+installcheck: installcheck-recursive
 install-strip:
 	if test -z '$(STRIP)'; then \
 	  $(MAKE) $(AM_MAKEFLAGS) INSTALL_PROGRAM="$(INSTALL_STRIP_PROGRAM)" \
@@ -830,107 +717,99 @@ clean-generic:
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
 	-test . = "$(srcdir)" || test -z "$(CONFIG_CLEAN_VPATH_FILES)" || rm -f $(CONFIG_CLEAN_VPATH_FILES)
-	-rm -f src/$(DEPDIR)/$(am__dirstamp)
-	-rm -f src/$(am__dirstamp)
 
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
-clean: clean-am
+clean: clean-recursive
 
-clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
-	mostlyclean-am
+clean-am: clean-generic clean-libtool mostlyclean-am
 
-distclean: distclean-am
+distclean: distclean-recursive
 	-rm -f $(am__CONFIG_DISTCLEAN_FILES)
-	-rm -rf src/$(DEPDIR)
 	-rm -f Makefile
-distclean-am: clean-am distclean-compile distclean-generic \
-	distclean-hdr distclean-libtool distclean-tags
+distclean-am: clean-am distclean-generic distclean-hdr \
+	distclean-libtool distclean-tags
 
-dvi: dvi-am
+dvi: dvi-recursive
 
 dvi-am:
 
-html: html-am
+html: html-recursive
 
 html-am:
 
-info: info-am
+info: info-recursive
 
 info-am:
 
-install-data-am: install-ait_includeHEADERS install-pkgconfigDATA
+install-data-am: install-pkgconfigDATA
 
-install-dvi: install-dvi-am
+install-dvi: install-dvi-recursive
 
 install-dvi-am:
 
-install-exec-am: install-libLTLIBRARIES
+install-exec-am:
 
-install-html: install-html-am
+install-html: install-html-recursive
 
 install-html-am:
 
-install-info: install-info-am
+install-info: install-info-recursive
 
 install-info-am:
 
 install-man:
 
-install-pdf: install-pdf-am
+install-pdf: install-pdf-recursive
 
 install-pdf-am:
 
-install-ps: install-ps-am
+install-ps: install-ps-recursive
 
 install-ps-am:
 
 installcheck-am:
 
-maintainer-clean: maintainer-clean-am
+maintainer-clean: maintainer-clean-recursive
 	-rm -f $(am__CONFIG_DISTCLEAN_FILES)
 	-rm -rf $(top_srcdir)/autom4te.cache
-	-rm -rf src/$(DEPDIR)
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 
-mostlyclean: mostlyclean-am
+mostlyclean: mostlyclean-recursive
 
-mostlyclean-am: mostlyclean-compile mostlyclean-generic \
-	mostlyclean-libtool
+mostlyclean-am: mostlyclean-generic mostlyclean-libtool
 
-pdf: pdf-am
+pdf: pdf-recursive
 
 pdf-am:
 
-ps: ps-am
+ps: ps-recursive
 
 ps-am:
 
-uninstall-am: uninstall-ait_includeHEADERS uninstall-libLTLIBRARIES \
-	uninstall-pkgconfigDATA
+uninstall-am: uninstall-pkgconfigDATA
 
-.MAKE: all install-am install-strip
+.MAKE: $(RECURSIVE_CLEAN_TARGETS) $(RECURSIVE_TARGETS) all \
+	ctags-recursive install-am install-strip tags-recursive
 
-.PHONY: CTAGS GTAGS all all-am am--refresh check check-am clean \
-	clean-generic clean-libLTLIBRARIES clean-libtool ctags dist \
-	dist-all dist-bzip2 dist-gzip dist-lzip dist-lzma dist-shar \
-	dist-tarZ dist-xz dist-zip distcheck distclean \
-	distclean-compile distclean-generic distclean-hdr \
+.PHONY: $(RECURSIVE_CLEAN_TARGETS) $(RECURSIVE_TARGETS) CTAGS GTAGS \
+	all all-am am--refresh check check-am clean clean-generic \
+	clean-libtool ctags ctags-recursive dist dist-all dist-bzip2 \
+	dist-gzip dist-lzip dist-lzma dist-shar dist-tarZ dist-xz \
+	dist-zip distcheck distclean distclean-generic distclean-hdr \
 	distclean-libtool distclean-tags distcleancheck distdir \
 	distuninstallcheck dvi dvi-am html html-am info info-am \
-	install install-ait_includeHEADERS install-am install-data \
-	install-data-am install-dvi install-dvi-am install-exec \
-	install-exec-am install-html install-html-am install-info \
-	install-info-am install-libLTLIBRARIES install-man install-pdf \
-	install-pdf-am install-pkgconfigDATA install-ps install-ps-am \
-	install-strip installcheck installcheck-am installdirs \
-	maintainer-clean maintainer-clean-generic mostlyclean \
-	mostlyclean-compile mostlyclean-generic mostlyclean-libtool \
-	pdf pdf-am ps ps-am tags uninstall \
-	uninstall-ait_includeHEADERS uninstall-am \
-	uninstall-libLTLIBRARIES uninstall-pkgconfigDATA
+	install install-am install-data install-data-am install-dvi \
+	install-dvi-am install-exec install-exec-am install-html \
+	install-html-am install-info install-info-am install-man \
+	install-pdf install-pdf-am install-pkgconfigDATA install-ps \
+	install-ps-am install-strip installcheck installcheck-am \
+	installdirs installdirs-am maintainer-clean \
+	maintainer-clean-generic mostlyclean mostlyclean-generic \
+	mostlyclean-libtool pdf pdf-am ps ps-am tags tags-recursive \
+	uninstall uninstall-am uninstall-pkgconfigDATA
 
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

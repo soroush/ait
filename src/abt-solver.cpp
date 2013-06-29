@@ -1,16 +1,29 @@
 /*
- * abt-solver.cpp
- *
- *  Created on: Jun 3, 2013
- *      Author: soroush
+ AIT Library (Artificial Intelligence Toolkit), A C++ library of AI tools.
+
+ Copyright (c) 2012,2013 Soroush Rabiei <soroush-r@users.sf.net>,
+ Roya Ghasemzadeh <ghasemzadeh.roya1@gmail.com>
+
+ AIT is free software; you can redistribute it and/or
+ modify it under the terms of the GNU Lesser General Public
+ License as published by the Free Software Foundation; either
+ version 2.1 of the License, or (at your option) any later version.
+ See the file COPYING included with this distribution for more
+ information.
+
+ This library is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ Lesser General Public License for more details.
+
+ You should have received a copy of the GNU Lesser General Public
+ License along with this library; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
 #include <algorithm>
 
 #include "abt-solver.h"
-#include "abt-endpoint.h"
-#include "abt-nogood.h"
-#include "abt-message.h"
 #include "assignment.h"
 
 using namespace AIT;
@@ -28,7 +41,6 @@ ABT_Solver::ABT_Solver(const std::string& serverHost_,
 				serverPublisherPort_), context(2), serverRquest(context,
 				ZMQ_REQ), serverBroadcast(context, ZMQ_SUB), end(false), agentCount(
 				agentCount_) {
-	initializeDomain();
 	sem_init(&agentReadyLock, 0, 0);
 	sem_init(&messageCount, 0, 0);
 	pthread_mutex_init(&this->messageRW, NULL);
@@ -46,9 +58,8 @@ void ABT_Solver::ABT() {
 	getAgentList();
 	checkAgentView();
 	while (!end) {
-		ABT_Message m;
+		Message m;
 		m.readFromProtocol(getMessage());
-
 		switch (m.type) {
 		case P_MessageType::T_OK:
 			processInfo(m);
@@ -139,7 +150,7 @@ void ABT_Solver::connect() {
 }
 
 void ABT_Solver::checkAgentView() {
-	if (!consistent(this->value)) {
+	if (!consistent(this->value, this->agentView)) {
 		this->value = chooseValue();
 		if (this->value != 0) {
 			for (const auto& agent : succeeding) {
@@ -151,7 +162,7 @@ void ABT_Solver::checkAgentView() {
 	}
 }
 
-void ABT_Solver::processInfo(const ABT_Message& m) {
+void ABT_Solver::processInfo(const Message& m) {
 	updateAgentView(m.assignment);
 	checkAgentView();
 }
@@ -160,17 +171,17 @@ int ABT_Solver::chooseValue() {
 	for (auto &v : domain) {
 		bool eliminated = false;
 		eliminated = any_of(noGoodStore.begin(), noGoodStore.end(),
-				[&](const ABT_Nogood &ngd) {
+				[&](const Nogood &ngd) {
 					return (ngd.rhs.id==this->id and ngd.rhs.value==v);
 				});
 		if (!eliminated) {
-			if (consistent(v)) {
+			if (consistent(v, agentView)) {
 				_INFO("A new value has been assigned: %d", v);
 				return v;
 			} else {
 				int culpritID = findCulprit(v);
 				int culpirtValue = findCulpritsValue(culpritID);
-				ABT_Nogood ngd;
+				Nogood ngd;
 				ngd.lhs.items.insert(Assignment(culpritID, culpirtValue));
 				ngd.rhs.id = this->id;
 				ngd.rhs.value = v;
@@ -187,7 +198,7 @@ void ABT_Solver::backtrack() {
 		end = true;
 		sendMessageSTP();
 	} else {
-		ABT_Message nogoodMessage;
+		Message nogoodMessage;
 		nogoodMessage.nogood = newNogood;
 
 		AgentID lastCulpirt = findLastCulprit();
@@ -214,11 +225,11 @@ void ABT_Solver::updateAgentView(const Assignment& assignment) {
 	// remove invalid nogoods
 	auto x =
 			std::remove_if(noGoodStore.begin(), noGoodStore.end(),
-					[&](ABT_Nogood& ngd)->bool {return !coherent(ngd.lhs,agentView);});
+					[&](Nogood& ngd)->bool {return !coherent(ngd.lhs,agentView);});
 	noGoodStore.erase(x, noGoodStore.end());
 }
 
-void ABT_Solver::resolveConflict(const ABT_Message& msg) {
+void ABT_Solver::resolveConflict(const Message& msg) {
 	CompoundAssignment myselfAssignment;
 	myselfAssignment.items.insert(Assignment(this->id, this->value));
 
@@ -237,25 +248,6 @@ void ABT_Solver::resolveConflict(const ABT_Message& msg) {
 	}
 }
 
-bool ABT_Solver::consistent(const int& v) {
-	if (v == 0)
-		return false;
-	for (const auto& a : agentView.items) {
-		/* WARNING : VERY STUPID CODE AHEAD! */
-		int delta_a = a.id - this->id;
-		int delta_v = a.value - v;
-		if (delta_a < 0)
-			delta_a *= -1;
-		if (delta_v < 0)
-			delta_v *= -1;
-		/* END OF VERY SRUPID CODE */
-		if (a.value == v or delta_a == delta_v) {
-			return false;
-		}
-	}
-	return true;
-}
-
 P_Message ABT_Solver::getMessage() {
 	sem_wait(&messageCount);
 	pthread_mutex_lock(&this->messageRW);
@@ -265,9 +257,9 @@ P_Message ABT_Solver::getMessage() {
 	return x;
 }
 
-void ABT_Solver::setLink(const ABT_Message& message) {
+void ABT_Solver::setLink(const Message& message) {
 	bool repeated = any_of(succeeding.begin(), succeeding.end(),
-			[&](const std::vector<ABT_EndPoint>::iterator i)->bool
+			[&](const std::vector<EndPoint>::iterator i)->bool
 			{	return i->id() == message.sender;});
 	if (!repeated) {
 		auto index = find_if(everybody.begin(), everybody.end(),
@@ -277,10 +269,10 @@ void ABT_Solver::setLink(const ABT_Message& message) {
 	}
 }
 
-void ABT_Solver::checkAddLink(const ABT_Message& message) {
+void ABT_Solver::checkAddLink(const Message& message) {
 	for (const auto& assignment : message.nogood.items) {
 		if (!any_of(succeeding.begin(), succeeding.end(),
-				[&](const std::vector<ABT_EndPoint>::iterator i)->bool
+				[&](const std::vector<EndPoint>::iterator i)->bool
 				{	return i->id()==assignment.id;})) {
 			sendMessageADL(id);
 			updateAgentView(assignment);
@@ -337,7 +329,7 @@ void ABT_Solver::getAgentList() {
 	if (listPacket.type() == CP_MessageType::T_LIST) {
 		for (int i = 0; i < listPacket.others_size(); ++i) {
 			this->everybody.push_back(
-					ABT_EndPoint(listPacket.others(i), context));
+					EndPoint(listPacket.others(i), context));
 			_INFO("New agent introduced by server:\n"
 			"\tID:     %d\n"
 			"\tHost:   %s\n"
@@ -359,46 +351,22 @@ void ABT_Solver::getAgentList() {
 	}
 }
 
-int ABT_Solver::findCulprit(const int& v) {
-	AgentID lastCulpirt = 0;
-	for (const auto& a : agentView.items) {
-		int delta_a = (a.id - id); // FIXME Think about :|
-		int delta_v = (a.value - v);
-		if (delta_a < 0)
-			delta_a *= -1;
-		if (delta_v < 0)
-			delta_v *= -1;
-		if (a.value == v or delta_a == delta_v) { // culprit
-			lastCulpirt = (a.id > lastCulpirt) ? a.id : lastCulpirt; // and last
-		}
-	}
-	return lastCulpirt;
-}
-
-int AIT::ABT_Solver::findCulpritsValue(const int& culpirtsID) {
-	for (const auto& a : agentView.items) {
-		if (a.id == culpirtsID)
-			return a.value;
-	}
-	return 0;
-}
-
 void AIT::ABT_Solver::sendMessageOK(const AgentID& agent) {
-	ABT_Message ok;
+	Message ok;
 	ok.sender = this->id;
 	ok.type = P_MessageType::T_OK;
 	ok.assignment = Assignment(this->id, this->value);
 	sendMessage(agent, ok);
 }
 
-void AIT::ABT_Solver::sendMessageNGD(const AgentID& agent, ABT_Message& ngd) {
+void AIT::ABT_Solver::sendMessageNGD(const AgentID& agent, Message& ngd) {
 	ngd.sender = this->id;
 	ngd.type = P_MessageType::T_NOGOOD;
 	sendMessage(agent, ngd);
 }
 
 void AIT::ABT_Solver::sendMessageSTP() {
-	ABT_Message stop;
+	Message stop;
 	stop.type = P_MessageType::T_STOP;
 	stop.sender = this->id;
 	sendMessage(0, stop);
@@ -407,7 +375,7 @@ void AIT::ABT_Solver::sendMessageSTP() {
 void ABT_Solver::sendMessageADL(const AgentID& agent) {
 	if (agent == this->id)
 		return;
-	ABT_Message adl;
+	Message adl;
 	adl.sender = this->id;
 	adl.type = P_MessageType::T_ADDLINK;
 	sendMessage(agent, adl);
@@ -423,7 +391,7 @@ CompoundAssignment ABT_Solver::solve() {
 	return newNogood;
 }
 
-void ABT_Solver::sendMessage(const AgentID& agent, const ABT_Message& message) {
+void ABT_Solver::sendMessage(const AgentID& agent, const Message& message) {
 	if (agent == this->id)
 		return;
 	if (agent == 0) {
@@ -441,14 +409,8 @@ void ABT_Solver::sendMessage(const AgentID& agent, const ABT_Message& message) {
 	}
 }
 
-void AIT::ABT_Solver::initializeDomain() {
-	for (int i = 0; i < agentCount; ++i) {
-		this->domain.push_back(i + 1);
-	}
-}
-
 void ABT_Solver::add(const CompoundAssignment& ca) {
-	ABT_Nogood ngd;
+	Nogood ngd;
 	for (const auto& a : ca.items) {
 		if (a.id != this->id) {
 			ngd.lhs.items.insert(a);
@@ -457,17 +419,6 @@ void ABT_Solver::add(const CompoundAssignment& ca) {
 		}
 	}
 	noGoodStore.push_back(ngd);
-}
-
-int ABT_Solver::findLastCulprit() {
-	AgentID lastID = 0;
-	for (const auto& ngd : noGoodStore) {
-		for (const auto& a : ngd.lhs.items) {
-			if (a.id > lastID)
-				lastID = a.id;
-		}
-	}
-	return lastID;
 }
 
 void AIT::ABT_Solver::printNGS() {

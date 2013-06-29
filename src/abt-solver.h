@@ -1,8 +1,24 @@
 /*
- * abt-solver.h
- *
- *  Created on: Apr 30, 2013
- *      Author: soroush
+ AIT Library (Artificial Intelligence Toolkit), A C++ library of AI tools.
+
+ Copyright (c) 2012,2013 Soroush Rabiei <soroush-r@users.sf.net>,
+ Roya Ghasemzadeh <ghasemzadeh.roya1@gmail.com>
+
+ AIT is free software; you can redistribute it and/or
+ modify it under the terms of the GNU Lesser General Public
+ License as published by the Free Software Foundation; either
+ version 2.1 of the License, or (at your option) any later version.
+ See the file COPYING included with this distribution for more
+ information.
+
+ This library is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ Lesser General Public License for more details.
+
+ You should have received a copy of the GNU Lesser General Public
+ License along with this library; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
 #ifndef ABT_SOLVER_H_
@@ -25,34 +41,71 @@
 
 namespace AIT {
 
-class ABT_EndPoint;
-struct ABT_Nogood;
-struct ABT_Message;
-struct Assignment;
-
 class ABT_Solver {
+	friend class AABT_Solver;
 public:
 	ABT_Solver(const std::string&, const unsigned short&, const unsigned short&,
 			const AgentID&, const size_t&);
 	virtual ~ABT_Solver();
 	void ABT();
+	void parseFromFile(const std::string&);
+	void parseFromStream(const std::ifstream&);
+	void parseFromContent(const std::string&);
+
+protected:
+	virtual bool consistent(const int&, const CompoundAssignment&);
+
 private:
+	class EndPoint: public protocols::csp::abt::P_EndPoint {
+	public:
+		EndPoint(const protocols::csp::abt::P_EndPoint& ep,
+				zmq::context_t& context);
+		Socket* socket() const;
+	private:
+		Socket* socket_;
+	};
+
+	struct Message {
+		Message();
+		Message(const Message& other);
+		~Message();
+		Message& operator =(const Message& other);
+		operator protocols::csp::abt::P_Message() const;
+		void readFromProtocol(const protocols::csp::abt::P_Message&);
+
+		protocols::csp::abt::P_MessageType type;
+		AgentID sender;
+		Assignment assignment;
+		CompoundAssignment nogood;
+	};
+
+	struct Nogood {
+		Nogood();
+		Nogood(const Nogood& other);
+		Nogood(const CompoundAssignment& lhs, const Assignment& rhs);
+		~Nogood();
+		CompoundAssignment lhs;
+		Assignment rhs;
+		bool operator ==(const Nogood& other) const;
+		bool operator !=(const Nogood& other) const;
+		Nogood& operator =(const Nogood& other);
+		operator protocols::csp::abt::P_Nogood();
+	};
 	void connect();
 	void checkAgentView();
 	int chooseValue();
 	void backtrack();
-	void processInfo(const ABT_Message&);
+	void processInfo(const Message&);
 	void updateAgentView(const Assignment&);
 	bool coherent(const CompoundAssignment& nogood,
 			const CompoundAssignment& assign);
 	bool coherentSelf(const CompoundAssignment& nogood,
 			const CompoundAssignment& assign);
-	void resolveConflict(const ABT_Message&);
-	void checkAddLink(const ABT_Message&);
-	void setLink(const ABT_Message&);
-	bool consistent(const int&);
+	void resolveConflict(const Message&);
+	void checkAddLink(const Message&);
+	void setLink(const Message&);
 	void sendMessageOK(const AgentID&);
-	void sendMessageNGD(const AgentID&, ABT_Message&);
+	void sendMessageNGD(const AgentID&, Message&);
 	void sendMessageSTP();
 	void sendMessageADL(const AgentID&);
 	int value;
@@ -62,9 +115,8 @@ private:
 	int findLastCulprit();
 	int findCulpritsValue(const int& culpirtsID);
 	CompoundAssignment solve();
-	void sendMessage(const AgentID&, const ABT_Message&);
+	void sendMessage(const AgentID&, const Message&);
 	protocols::csp::abt::P_Message getMessage();
-	void initializeDomain();
 	void add(const CompoundAssignment&);
 	void printNGS();
 	void printAV();
@@ -72,11 +124,11 @@ private:
 	int agentCount;
 
 	AgentID id;
-	std::list<std::vector<ABT_EndPoint>::iterator> preceding; // Γ+
-	std::list<std::vector<ABT_EndPoint>::iterator> succeeding; // Γ-
-	std::vector<ABT_EndPoint> everybody;
+	std::list<std::vector<EndPoint>::iterator> preceding; // Γ+
+	std::list<std::vector<EndPoint>::iterator> succeeding; // Γ-
+	std::vector<EndPoint> everybody;
 	CompoundAssignment agentView;
-	std::list<ABT_Nogood> noGoodStore;
+	std::list<Nogood> noGoodStore;
 	std::vector<int> domain;
 
 	std::string address;

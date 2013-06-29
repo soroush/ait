@@ -1,8 +1,24 @@
 /*
- * compound-assignment.h
- *
- *  Created on: Jun 11, 2013
- *      Author: soroush
+ AIT Library (Artificial Intelligence Toolkit), A C++ library of AI tools.
+
+ Copyright (c) 2012,2013 Soroush Rabiei <soroush-r@users.sf.net>,
+ Roya Ghasemzadeh <ghasemzadeh.roya1@gmail.com>
+
+ AIT is free software; you can redistribute it and/or
+ modify it under the terms of the GNU Lesser General Public
+ License as published by the Free Software Foundation; either
+ version 2.1 of the License, or (at your option) any later version.
+ See the file COPYING included with this distribution for more
+ information.
+
+ This library is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ Lesser General Public License for more details.
+
+ You should have received a copy of the GNU Lesser General Public
+ License along with this library; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
 #ifndef COMPOUND_ASSIGNMENT_H_
@@ -13,8 +29,6 @@
 #include <set>
 
 namespace AIT {
-
-//typedef std::set<Assignment> CompoundAssignment;
 
 struct CompoundAssignment{
 	CompoundAssignment();
@@ -28,15 +42,6 @@ struct CompoundAssignment{
 	operator protocols::csp::P_CompoundAssignment() const;
 	void readFromProtocol(const protocols::csp::P_CompoundAssignment&);
 };
-
-//class CompoundAssignment: public AIT::protocols::csp::P_CompoundAssignment {
-//public:
-//	CompoundAssignment();
-//	virtual ~CompoundAssignment();
-//	void add(const protocols::csp::P_Assignment& item);
-//	void add(const protocols::csp::P_CompoundAssignment& item);
-//	void add(const int& id, const int& value);
-//};
 
 } /* namespace AIT */
 #endif /* COMPOUND_ASSIGNMENT_H_ */
