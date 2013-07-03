@@ -13,6 +13,6 @@ PKG_CHECK_MODULES([PROTOCOL_BUFFERS], [protobuf >= 2.5.0])
 LT_INIT([shared static])
 AC_SUBST([AIT_SO_VERSION], [0:1:0])
 AC_SUBST([AIT_API_VERSION], [0.1.0])
-AC_CONFIG_FILES([Makefile src/Makefile
+AC_CONFIG_FILES([Makefile src/Makefile test/Makefile
                  libait.pc:libait.pc.in])
 AC_OUTPUT

@@ -50,7 +50,8 @@ void AABT_Solver::Agile_ABT() {
 
 	CheckAgentView();
 	while (!end) {
-		AABT_Message msg = getMsg();
+		AABT_Message msg;
+		msg.readFromProtocol(getMessage());
 		switch (msg.msg_type) {
 		case AABT_MessageType::OK:
 			ProcessInfo(msg);

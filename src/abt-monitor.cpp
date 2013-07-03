@@ -26,12 +26,12 @@
 #include <sstream>
 #include <algorithm>
 
-using namespace AIT;
+using namespace AIT::CSP;
+using namespace AIT::protocols::csp::abt;
 using namespace zmq;
 using namespace std;
-using namespace protocols::csp::abt;
 
-AIT::ABT_Monitor::ABT_Monitor(const std::string& host,
+ABT_Monitor::ABT_Monitor(const std::string& host,
 		const unsigned short & responserPort,
 		const unsigned short & publisherPort, const size_t& agentCount) :
 		host_(host), portNumberResponser(responserPort), portNumberPublisher(

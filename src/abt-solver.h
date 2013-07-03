@@ -50,14 +50,18 @@ public:
 			const AgentID&, const size_t&);
 	virtual ~ABT_Solver();
 	void ABT();
+	virtual void prepareProblem()=0;
 	void parseFromFile(const std::string&);
 	void parseFromStream(const std::ifstream&);
 	void parseFromContent(const std::string&);
 
 protected:
-	virtual bool consistent(const int&, const CompoundAssignment&);
+	virtual bool consistent(const int&, const CompoundAssignment&)=0;
+	virtual int findCulprit(const int& v) = 0;
+	virtual int findLastCulprit() = 0;
+	virtual int findCulpritsValue(const int& culpirtsID) = 0;
 
-private:
+protected:
 	class EndPoint: public protocols::csp::abt::P_EndPoint {
 	public:
 		EndPoint(const protocols::csp::abt::P_EndPoint& ep,
@@ -110,12 +114,8 @@ private:
 	void sendMessageNGD(const AgentID&, Message&);
 	void sendMessageSTP();
 	void sendMessageADL(const AgentID&);
-	int value;
 	// helper functions:
 	void getAgentList();
-	int findCulprit(const int& v);
-	int findLastCulprit();
-	int findCulpritsValue(const int& culpirtsID);
 	CompoundAssignment solve();
 	void sendMessage(const AgentID&, const Message&);
 	protocols::csp::abt::P_Message getMessage();
@@ -129,9 +129,10 @@ private:
 	std::list<std::vector<EndPoint>::iterator> preceding; // Γ+
 	std::list<std::vector<EndPoint>::iterator> succeeding; // Γ-
 	std::vector<EndPoint> everybody;
-	CompoundAssignment agentView;
 	std::list<Nogood> noGoodStore;
 	std::vector<int> domain;
+	CompoundAssignment agentView;
+	int value;
 
 	std::string address;
 	unsigned short port;

@@ -88,7 +88,7 @@ public:
 	bool Compatible(const AABT_Nogood&);
 	bool Compatible(const AABT_Explanation&);
 	bool Compatible(const AABT_Nogood&, const std::vector<int>&);
-	AABT_Message getMsg();
+	//AABT_Message getMsg();
 	CompoundAssignment union_func(const AABT_Assignment&,
 			const CompoundAssignment&);
 	CompoundAssignment union_func(const CompoundAssignment&,

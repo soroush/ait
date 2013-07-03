@@ -21,38 +21,23 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#ifndef ABT_MONITOR_H_
-#define ABT_MONITOR_H_
+#ifndef N_QUEEN_ABT_SOLVER_H_
+#define N_QUEEN_ABT_SOLVER_H_
 
-#include <string>
-#include <vector>
-#include <zmq.hpp>
-#include "common_async.h"
-#include "abt-solver.h"
-#include "abt-socket.h"
+#include "../src/abt-solver.h"
+#include "../src/compound-assignment.h"
 
-namespace AIT {
-namespace CSP {
-
-class ABT_Monitor {
+class NQueen_ABT_Solver: public AIT::CSP::ABT_Solver {
 public:
-	ABT_Monitor();
-	ABT_Monitor(const std::string& host, const unsigned short& responserPort,
-			const unsigned short& publisherPort, const size_t& agentCount=2);
-	virtual ~ABT_Monitor();
-	void start();
-private:
-	unsigned short portNumberResponser, portNumberPublisher;
-	std::string host_;
-	zmq::context_t context;
-	Socket publisher;
-	Socket responser;
-	size_t agentCount_;
-	std::vector<protocols::csp::abt::P_EndPoint> agents;
-
-	void run();
+	NQueen_ABT_Solver(const std::string&, const unsigned short&, const unsigned short&,
+			const AIT::CSP::AgentID&, const size_t&);
+	virtual ~NQueen_ABT_Solver();
+protected:
+	bool consistent(const int&, const AIT::CSP::CompoundAssignment&);
+	int findCulprit(const int& v);
+	int findLastCulprit();
+	int findCulpritsValue(const int& culpirtsID);
+	void prepareProblem();
 };
 
-} /* namespace CSP */
-} /* namespace AIT */
-#endif /* ABT_MONITOR_H_ */
+#endif /* N_QUEEN_ABT_SOLVER_H_ */

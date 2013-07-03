@@ -38,8 +38,9 @@ ABT_Solver::ABT_Solver(const std::string& serverHost_,
 		const size_t& agentCount_) :
 		id(id_), serverAddress(serverHost_), serverResponderPort(
 				serverResponderPort_), serverPublisherPort(
-				serverPublisherPort_), context(2), serverRquest(context,
-				ZMQ_REQ), serverBroadcast(context, ZMQ_SUB), end(false), agentCount(
+				serverPublisherPort_), context(2), listener(
+				new Socket(context, ZMQ_PULL)), serverRquest(context,
+		ZMQ_REQ), serverBroadcast(context, ZMQ_SUB), end(false), agentCount(
 				agentCount_) {
 	sem_init(&agentReadyLock, 0, 0);
 	sem_init(&messageCount, 0, 0);
@@ -51,11 +52,14 @@ ABT_Solver::~ABT_Solver() {
 	serverRquest.close();
 	listener->close();
 	context.close();
+	delete listener;
 }
 
 void ABT_Solver::ABT() {
+	this->connect();
 	value = 0; // FIXME fix this
 	getAgentList();
+	prepareProblem();
 	checkAgentView();
 	while (!end) {
 		Message m;
@@ -93,8 +97,8 @@ void ABT_Solver::connect() {
 		serverRquest.connect(addressName.str().data());
 	} catch (zmq::error_t &e) {
 		_ERROR("Unable to connect to monitor.\n"
-		"\t\tTerminating process\n"
-		"\t\tSee below details for more information:\n")
+				"\t\tTerminating process\n"
+				"\t\tSee below details for more information:\n")
 		cerr << e.what() << endl;
 		return;
 	}
@@ -110,14 +114,14 @@ void ABT_Solver::connect() {
 		serverBroadcast.setsockopt(ZMQ_SUBSCRIBE, "", 0);
 	} catch (zmq::error_t &e) {
 		_ERROR("Unable to connect to broadcast channel of monitor agent.\n"
-		"\t\tTerminating process\n"
-		"\t\tSee below details for more information:")
+				"\t\tTerminating process\n"
+				"\t\tSee below details for more information:")
 		cerr << e.what() << endl;
 		return;
 	}
-	_INFO( "Successfully connected to broadcasting channel of "
-	"monitor agent at %s:%d, (%s)",
-			this->serverAddress.data(), this->serverPublisherPort, addressName.str().data());
+	_INFO("Successfully connected to broadcasting channel of "
+			"monitor agent at %s:%d, (%s)", this->serverAddress.data(),
+			this->serverPublisherPort, addressName.str().data());
 	// Send agent information to server
 	P_CommunicationProtocol introPacket;
 	introPacket.set_type(CP_MessageType::T_INTRODUCE);
@@ -133,12 +137,12 @@ void ABT_Solver::connect() {
 		if (this->serverRquest.recvMessage(introAckPacket)) {
 			_INFO("Message received from monitor");
 			if (introAckPacket.type() == CP_MessageType::T_INTRODUCE_ACK) {
-				_INFO( "Monitor agent accepted connection.");
+				_INFO("Monitor agent accepted connection.");
 			} else if (introAckPacket.type()
 					== CP_MessageType::ERR_REPEATED_ID) {
-				_ERROR( "An agent with ID number `%d'is already registered.\n"
-				"\t\tMonitor agent has ignored this request.\n"
-				"\t\tExiting silently.", this->id);
+				_ERROR("An agent with ID number `%d'is already registered.\n"
+						"\t\tMonitor agent has ignored this request.\n"
+						"\t\tExiting silently.", this->id);
 				return;
 			}
 		} else {
@@ -223,9 +227,8 @@ void ABT_Solver::updateAgentView(const Assignment& assignment) {
 	if (assignment.value != 0)
 		agentView.items.insert(assignment);
 	// remove invalid nogoods
-	auto x =
-			std::remove_if(noGoodStore.begin(), noGoodStore.end(),
-					[&](Nogood& ngd)->bool {return !coherent(ngd.lhs,agentView);});
+	auto x = std::remove_if(noGoodStore.begin(), noGoodStore.end(),
+			[&](Nogood& ngd)->bool {return !coherent(ngd.lhs,agentView);});
 	noGoodStore.erase(x, noGoodStore.end());
 }
 
@@ -238,7 +241,7 @@ void ABT_Solver::resolveConflict(const Message& msg) {
 	totalView.items.insert(Assignment(this->id, this->value));
 
 	if (coherent(msg.nogood, totalView)) {
-		checkAddLink(msg);
+		//checkAddLink(msg);
 		add(msg.nogood);
 		this->value = 0; // FIXME
 		checkAgentView();
@@ -308,7 +311,7 @@ bool ABT_Solver::coherentSelf(const CompoundAssignment& nogood,
 }
 
 void ABT_Solver::getAgentList() {
-	_INFO( "Sending Request List to monitor agent ...");
+	_INFO("Sending Request List to monitor agent ...");
 	P_CommunicationProtocol requestList;
 	requestList.set_type(CP_MessageType::T_REQUEST_LIST);
 	requestList.set_id(this->id);
@@ -317,24 +320,24 @@ void ABT_Solver::getAgentList() {
 	P_CommunicationProtocol requestListAck;
 	this->serverRquest.recvMessage(requestListAck);
 	if (requestListAck.type() == CP_MessageType::T_REQUEST_ACK) {
-		_INFO( "Monitor has accepted to send list of agents.");
+		_INFO("Monitor has accepted to send list of agents.");
 	} else {
-		_ERROR( "Unable to get agent list from monitor.\n"
-		"\tTerminating silently. Goodbye.");
+		_ERROR("Unable to get agent list from monitor.\n"
+				"\tTerminating silently. Goodbye.");
 	}
 
-	_INFO( "Waiting for all agents to came online...");
+	_INFO("Waiting for all agents to came online...");
 	P_CommunicationProtocol listPacket;
 	this->serverBroadcast.recvMessage(listPacket);
 	if (listPacket.type() == CP_MessageType::T_LIST) {
 		for (int i = 0; i < listPacket.others_size(); ++i) {
-			this->everybody.push_back(
-					EndPoint(listPacket.others(i), context));
+			this->everybody.push_back(EndPoint(listPacket.others(i), context));
 			_INFO("New agent introduced by server:\n"
-			"\tID:     %d\n"
-			"\tHost:   %s\n"
-			"\tPort:   %d",
-					listPacket.others(i).id(), listPacket.others(i).host().c_str(), listPacket.others(i).port());
+					"\tID:     %d\n"
+					"\tHost:   %s\n"
+					"\tPort:   %d", listPacket.others(i).id(),
+					listPacket.others(i).host().c_str(),
+					listPacket.others(i).port());
 		}
 		for (auto i = everybody.begin(); i < everybody.end(); ++i) {
 			if (i->id() < this->id)
@@ -444,6 +447,7 @@ void ABT_Solver::printAV() {
 
 void* ABT_Solver::_messageReader(void* param) {
 	// Let's listen to other agents:
+	_INFO("Get ready to listen to other agents...");
 	ABT_Solver* solver = (reinterpret_cast<ABT_Solver*>(param));
 	solver->listener = new Socket(solver->context, ZMQ_PULL);
 	stringstream addressName;
@@ -476,4 +480,16 @@ void* ABT_Solver::_messageReader(void* param) {
 		sem_post(&solver->messageCount);
 	}
 	return 0;
+}
+
+void ABT_Solver::parseFromFile(const std::string& path) {
+	// TODO implement after generic CSP solver
+}
+
+void ABT_Solver::parseFromStream(const std::ifstream& file) {
+	// TODO implement after generic CSP solver
+}
+
+void ABT_Solver::parseFromContent(const std::string& content) {
+	// TODO implement after generic CSP solver
 }

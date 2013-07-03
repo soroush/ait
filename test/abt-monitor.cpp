@@ -21,38 +21,19 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#ifndef ABT_MONITOR_H_
-#define ABT_MONITOR_H_
+#include "../src/abt-monitor.h"
+#include "../src/global.h"
 
-#include <string>
-#include <vector>
-#include <zmq.hpp>
-#include "common_async.h"
-#include "abt-solver.h"
-#include "abt-socket.h"
+using namespace AIT::CSP;
+using namespace std;
 
-namespace AIT {
-namespace CSP {
+int main(int argc, char *argv[])
+{
+	_INFO("Running 8 queens server in background...");
+    ABT_Monitor monitor(argv[1],atoi(argv[2]),atoi(argv[3]), atoi(argv[4]));
+    monitor.start();
+    return 0;
+}
 
-class ABT_Monitor {
-public:
-	ABT_Monitor();
-	ABT_Monitor(const std::string& host, const unsigned short& responserPort,
-			const unsigned short& publisherPort, const size_t& agentCount=2);
-	virtual ~ABT_Monitor();
-	void start();
-private:
-	unsigned short portNumberResponser, portNumberPublisher;
-	std::string host_;
-	zmq::context_t context;
-	Socket publisher;
-	Socket responser;
-	size_t agentCount_;
-	std::vector<protocols::csp::abt::P_EndPoint> agents;
 
-	void run();
-};
 
-} /* namespace CSP */
-} /* namespace AIT */
-#endif /* ABT_MONITOR_H_ */

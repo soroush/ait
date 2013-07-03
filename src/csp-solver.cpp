@@ -29,3 +29,6 @@ namespace CSP {
 
 } /* namespace CSP */
 } /* namespace AIT */
+
+AIT::CSP::CSP_Solver::~CSP_Solver() {
+}
