@@ -445,6 +445,37 @@ void ABT_Solver::printAV() {
 	_INFO("%s", ss.str().c_str());
 }
 
+bool ABT_Solver::consistent(const int& v, const CompoundAssignment& ca) {
+	for (const auto& c : this->constraints) {
+		bool isInAgentView = true;
+		for (const auto& i : c.identifier) {
+			bool found;
+			int value = getValueOf(i, found);
+			if (!found) {
+				isInAgentView = false;
+				continue;
+			}
+		}
+		if(isInAgentView){
+			for(const auto& r : c.relations){
+				// Check consistency
+			}
+		}
+	}
+	return true;
+}
+
+int ABT_Solver::getValueOf(const int& agent, bool& find) {
+	for (const auto& a : this->agentView.items) {
+		if (a.id == agent) {
+			find = true;
+			return a.value;
+		}
+	}
+	find = false;
+	return 0;
+}
+
 void* ABT_Solver::_messageReader(void* param) {
 	// Let's listen to other agents:
 	_INFO("Get ready to listen to other agents...");

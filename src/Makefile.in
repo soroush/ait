@@ -81,11 +81,11 @@ LTLIBRARIES = $(lib_LTLIBRARIES)
 am__DEPENDENCIES_1 =
 libait_la_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_libait_la_OBJECTS = abt.pb.lo assignment.lo compound-assignment.lo \
-	csp-solver.lo abt-message.lo abt-monitor.lo abt-socket.lo \
-	abt-nogood.lo abt-endpoint.lo abt-solver.lo aabt-solver.lo \
-	aabt.pb.lo aabt-assignment.lo aabt-explanation.lo \
-	aabt-message.lo aabt-nogood.lo aabt-order.lo \
-	common-protocols.pb.lo
+	constraint.lo csp-solver.lo abt-message.lo abt-monitor.lo \
+	abt-socket.lo abt-nogood.lo abt-endpoint.lo abt-solver.lo \
+	aabt-solver.lo aabt.pb.lo aabt-assignment.lo \
+	aabt-explanation.lo aabt-message.lo aabt-nogood.lo \
+	aabt-order.lo common-protocols.pb.lo
 libait_la_OBJECTS = $(am_libait_la_OBJECTS)
 libait_la_LINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CXXLD) $(AM_CXXFLAGS) \
@@ -243,6 +243,7 @@ libait_la_SOURCES = \
  			abt.pb.cc \
  			assignment.cpp \
  			compound-assignment.cpp \
+ 			constraint.cpp \
  			csp-solver.cpp \
  			abt-message.cpp \
  			abt-monitor.cpp \
@@ -266,6 +267,7 @@ ait_include_HEADERS = \
 			abt.pb.h \
 			assignment.h \
 			compound-assignment.h \
+			constraint.h \
 			csp-solver.h \
 			abt-monitor.h \
 			abt-solver.h \
@@ -372,6 +374,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/assignment.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/common-protocols.pb.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/compound-assignment.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/constraint.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/csp-solver.Plo@am__quote@
 
 .cc.o:

@@ -21,32 +21,19 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#ifndef CSP_SOLVER_H_
-#define CSP_SOLVER_H_
-
-#include <string>
-#include <fstream>
-#include <vector>
-#include <unordered_set>
 #include "constraint.h"
 
 namespace AIT {
 namespace CSP {
 
-class CSP_Solver {
-public:
-	virtual ~CSP_Solver();
-	virtual void parseFromFile(const std::string&);
-	virtual void parseFromStream(const std::ifstream&);
-	virtual void parseFromContent(const std::string&);
-protected:
-	// In formal definition of CSP, X, D and C are finite sets.
-	// That's the reason to provide integer-only CSP solvers
-	std::vector<size_t> variables; // X
-	std::vector<std::unordered_set<int>> domains; // D
-	std::vector<Constraint> constraints; // C
-};
+Constraint::Constraint() {
+	// TODO Auto-generated constructor stub
+
+}
+
+Constraint::~Constraint() {
+	// TODO Auto-generated destructor stub
+}
 
 } /* namespace CSP */
 } /* namespace AIT */
-#endif /* CSP_SOLVER_H_ */

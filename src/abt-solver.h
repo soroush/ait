@@ -56,12 +56,6 @@ public:
 	void parseFromContent(const std::string&);
 
 protected:
-	virtual bool consistent(const int&, const CompoundAssignment&)=0;
-	virtual int findCulprit(const int& v) = 0;
-	virtual int findLastCulprit() = 0;
-	virtual int findCulpritsValue(const int& culpirtsID) = 0;
-
-protected:
 	class EndPoint: public protocols::csp::abt::P_EndPoint {
 	public:
 		EndPoint(const protocols::csp::abt::P_EndPoint& ep,
@@ -97,6 +91,12 @@ protected:
 		Nogood& operator =(const Nogood& other);
 		operator protocols::csp::abt::P_Nogood();
 	};
+	virtual bool consistent(const int&, const CompoundAssignment&);
+	int getValueOf(const int&, bool&);
+	virtual int findCulprit(const int& v) = 0;
+	virtual int findLastCulprit() = 0;
+	virtual int findCulpritsValue(const int& culpirtsID) = 0;
+
 	void connect();
 	void checkAgentView();
 	int chooseValue();
