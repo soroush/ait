@@ -21,39 +21,33 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#ifndef AABT_MESSAGE_H_
-#define AABT_MESSAGE_H_
+#ifndef AABT_EXPLANATION_H_
+#define AABT_EXPLANATION_H_
+
+#include <vector>
 
 #include "aabt-assignment.h"
-#include "aabt-explanation.h"
-#include "aabt-nogood.h"
-#include <vector>
+#include "aabt.pb.h"
+#include "common-protocols.pb.h"
+#include "aabt.pb.h"
+#include "../global.h"
 
 namespace AIT {
 namespace CSP {
 
-enum class AABT_MessageType {
-	OK = 1, NOGOOD = 2, ORDER = 3, STOP = 4
-};
+struct LIBRARY_API AABT_Explanation {
+	AABT_Explanation();
+	AABT_Explanation(const AABT_Explanation& other);
+	~AABT_Explanation();
+	AABT_Explanation& operator=(const AABT_Explanation& e1);
+	operator protocols::csp::aabt::P_Explanation() const;
+	void readFromProtocol(const protocols::csp::aabt::P_Explanation&);
 
-struct AABT_Message {
-	AABT_Message();
-	AABT_Message(const AABT_Message& other);
-	AABT_Message(protocols::csp::aabt::P_Message&);
-	~AABT_Message();
-	AABT_Message& operator=(const AABT_Message& m1);
-	void readFromProtocol(const protocols::csp::aabt::P_Message&);
-	operator protocols::csp::aabt::P_Message() const;
-
-	AABT_MessageType msg_type;
-	int sender_id;
-	AABT_Assignment vi;
-	AABT_Explanation ei;
-	std::vector<int> oi;
-	std::vector<int> tvi;
-	AABT_Nogood ng;
+	int id;
+	std::vector<AABT_Assignment> LHS;
+	int RHS;
 };
 
 } /* namespace CSP */
 } /* namespace AIT */
-#endif /* AABT_MESSAGE_H_ */
+#endif /* AABT_EXPLANATION_H_ */

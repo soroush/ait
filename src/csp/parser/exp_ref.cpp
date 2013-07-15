@@ -21,32 +21,20 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#ifndef AABT_EXPLANATION_H_
-#define AABT_EXPLANATION_H_
+#include "exp_ref.h"
 
-#include <vector>
+using namespace AIT::CSP;
+using namespace std;
+#include  <iostream>
 
-#include "aabt-assignment.h"
-#include "aabt.pb.h"
-#include "common-protocols.pb.h"
-#include "aabt.pb.h"
+exp_ref::exp_ref(const vector<int>& v, const size_t& i) :
+		vec(v), index(i) {
+}
 
-namespace AIT {
-namespace CSP {
+exp_ref::~exp_ref() {
+}
 
-struct AABT_Explanation {
-	AABT_Explanation();
-	AABT_Explanation(const AABT_Explanation& other);
-	~AABT_Explanation();
-	AABT_Explanation& operator=(const AABT_Explanation& e1);
-	operator protocols::csp::aabt::P_Explanation() const;
-	void readFromProtocol(const protocols::csp::aabt::P_Explanation&);
+void exp_ref::evaluate(std::stack<int>& s) {
+	s.push(vec[this->index]);
+}
 
-	int id;
-	std::vector<AABT_Assignment> LHS;
-	int RHS;
-};
-
-} /* namespace CSP */
-} /* namespace AIT */
-#endif /* AABT_EXPLANATION_H_ */

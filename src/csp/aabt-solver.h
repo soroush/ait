@@ -32,6 +32,7 @@
 #include "abt-solver.h"
 #include "aabt.pb.h"
 #include "common_async.h"
+#include "../global.h"
 
 namespace AIT {
 namespace CSP {
@@ -40,7 +41,7 @@ struct AABT_Message;
 struct AABT_Nogood;
 struct CVOrderData;
 
-class AABT_Solver {
+class LIBRARY_API AABT_Solver {
 public:
 	int n; //problem size
 

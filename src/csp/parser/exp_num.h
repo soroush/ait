@@ -21,32 +21,25 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#ifndef SOCKET_H_
-#define SOCKET_H_
+#ifndef EXP_NUM_H_
+#define EXP_NUM_H_
 
-#include <zmq.hpp>
-#include <string>
-#include "abt.pb.h"
-#include "aabt.pb.h"
+#include "expression.h"
 
 namespace AIT {
+namespace CSP {
 
-class Socket: public zmq::socket_t {
+class exp_num: public Expression {
 public:
-	Socket(zmq::context_t &context_, int type_);
-	Socket(zmq::socket_t&& rhs);
-	virtual ~Socket();
-	// Common
-	size_t sendMessage(const protocols::csp::abt::P_CommunicationProtocol);
-	size_t recvMessage(protocols::csp::abt::P_CommunicationProtocol&);
-	// ABT
-	size_t sendMessage(const protocols::csp::abt::P_Message);
-	size_t recvMessage(protocols::csp::abt::P_Message&);
-	// AABT
-	size_t sendMessage(const protocols::csp::aabt::P_Message);
-	size_t recvMessage(protocols::csp::aabt::P_Message&);
-	static std::string getIP();
+	exp_num(const int& value);
+	~exp_num();
+	void evaluate(std::stack<int>&);
+
+private:
+	int value;
+
 };
 
+} /* namespace CSP */
 } /* namespace AIT */
-#endif /* SOCKET_H_ */
+#endif /* EXP_NUM_H_ */

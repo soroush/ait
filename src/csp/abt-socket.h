@@ -21,28 +21,32 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#ifndef AABT_ASSIGNMENT_H_
-#define AABT_ASSIGNMENT_H_
+#ifndef SOCKET_H_
+#define SOCKET_H_
 
+#include <zmq.hpp>
+#include <string>
+#include "abt.pb.h"
 #include "aabt.pb.h"
+#include "../global.h"
 
 namespace AIT {
-namespace CSP {
 
-struct AABT_Assignment {
-	// TODO implement a static `fromProtocol'
-	// or a friend conversion operator
-	AABT_Assignment();
-	AABT_Assignment(const AABT_Assignment& a);
-	~AABT_Assignment();
-	AABT_Assignment& operator=(const AABT_Assignment& a);
-	operator protocols::csp::aabt::P_Assignment() const;
-	void readFromProtocol(const protocols::csp::aabt::P_Assignment&);
-
-	int id;
-	int time_stamp;
-	int value;
+class LIBRARY_API Socket: public zmq::socket_t {
+public:
+	Socket(zmq::context_t &context_, int type_);
+	Socket(zmq::socket_t&& rhs);
+	virtual ~Socket();
+	// Common
+	size_t sendMessage(const protocols::csp::abt::P_CommunicationProtocol);
+	size_t recvMessage(protocols::csp::abt::P_CommunicationProtocol&);
+	// ABT
+	size_t sendMessage(const protocols::csp::abt::P_Message);
+	size_t recvMessage(protocols::csp::abt::P_Message&);
+	// AABT
+	size_t sendMessage(const protocols::csp::aabt::P_Message);
+	size_t recvMessage(protocols::csp::aabt::P_Message&);
 };
-} /* namespace CSP */
+
 } /* namespace AIT */
-#endif /* AABT_ASSIGNMENT_H_ */
+#endif /* SOCKET_H_ */

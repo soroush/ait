@@ -21,29 +21,33 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#ifndef AABT_ORDER_H_
-#define AABT_ORDER_H_
+#ifndef ASSIGNMENT_H_
+#define ASSIGNMENT_H_
 
-#include <forward_list>
-#include "aabt-explanation.h"
+#include "common_async.h"
+#include "common-protocols.pb.h"
+#include "../global.h"
 
 namespace AIT {
 namespace CSP {
 
-struct CVOrderData {
-	CVOrderData();
-	CVOrderData(const CVOrderData& other);
-	~CVOrderData();
-	CVOrderData& operator=(const CVOrderData& c1);
-	operator protocols::csp::aabt::P_CVOrderData() const;
-	void readFromProtocol(const protocols::csp::aabt::P_CVOrderData&);
-
-	AABT_Assignment a;
-	std::vector<int> o;
-	std::vector<int> tv;
-	std::forward_list<AABT_Explanation> E;
+struct LIBRARY_API Assignment {
+	Assignment();
+	Assignment(const Assignment& other);
+	Assignment(const AgentID&, const int&);
+	~Assignment();
+	int id;
+	int value;
+	bool operator ==(const Assignment& other) const;
+	bool operator !=(const Assignment& other) const;
+	bool operator >(const Assignment& other) const;
+	bool operator <(const Assignment& other) const;// for std::set
+	Assignment& operator =(const Assignment& other);
+	operator protocols::csp::P_Assignment();
+	void readFromProtocol(const protocols::csp::P_Assignment&);
 };
 
 } /* namespace CSP */
 } /* namespace AIT */
-#endif /* AABT_ORDER_H_ */
+
+#endif /* ASSIGNMENT_H_ */

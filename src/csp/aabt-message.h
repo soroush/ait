@@ -21,19 +21,40 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "../src/CSP/abt-monitor.h"
-#include "../src/CSP/global.h"
+#ifndef AABT_MESSAGE_H_
+#define AABT_MESSAGE_H_
 
-using namespace AIT::CSP;
-using namespace std;
+#include "aabt-assignment.h"
+#include "aabt-explanation.h"
+#include "aabt-nogood.h"
+#include "../global.h"
+#include <vector>
 
-int main(int argc, char *argv[])
-{
-	_INFO("Running 8 queens server in background...");
-    ABT_Monitor monitor(argv[1],atoi(argv[2]),atoi(argv[3]), atoi(argv[4]));
-    monitor.start();
-    return 0;
-}
+namespace AIT {
+namespace CSP {
 
+enum class LIBRARY_API AABT_MessageType {
+	OK = 1, NOGOOD = 2, ORDER = 3, STOP = 4
+};
 
+struct LIBRARY_API AABT_Message {
+	AABT_Message();
+	AABT_Message(const AABT_Message& other);
+	AABT_Message(protocols::csp::aabt::P_Message&);
+	~AABT_Message();
+	AABT_Message& operator=(const AABT_Message& m1);
+	void readFromProtocol(const protocols::csp::aabt::P_Message&);
+	operator protocols::csp::aabt::P_Message() const;
 
+	AABT_MessageType msg_type;
+	int sender_id;
+	AABT_Assignment vi;
+	AABT_Explanation ei;
+	std::vector<int> oi;
+	std::vector<int> tvi;
+	AABT_Nogood ng;
+};
+
+} /* namespace CSP */
+} /* namespace AIT */
+#endif /* AABT_MESSAGE_H_ */

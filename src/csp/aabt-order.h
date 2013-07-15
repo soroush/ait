@@ -1,7 +1,7 @@
 /*
  AIT Library (Artificial Intelligence Toolkit), A C++ library of AI tools.
 
- Copyright (c) 2013 Soroush Rabiei <soroush-r@users.sf.net>,
+ Copyright (c) 2012,2013 Soroush Rabiei <soroush-r@users.sf.net>,
  Roya Ghasemzadeh <ghasemzadeh.roya1@gmail.com>
 
  AIT is free software; you can redistribute it and/or
@@ -21,22 +21,30 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#ifndef CONSTRAINT_H_
-#define CONSTRAINT_H_
+#ifndef AABT_ORDER_H_
+#define AABT_ORDER_H_
 
-#include <vector>
+#include <forward_list>
+#include "aabt-explanation.h"
+#include "../global.h"
 
 namespace AIT {
 namespace CSP {
 
-class Constraint {
-public:
-	Constraint();
-	virtual ~Constraint();
-	std::vector<int> identifier;
-	std::vector<std::vector<int>> relations;
+struct LIBRARY_API CVOrderData {
+	CVOrderData();
+	CVOrderData(const CVOrderData& other);
+	~CVOrderData();
+	CVOrderData& operator=(const CVOrderData& c1);
+	operator protocols::csp::aabt::P_CVOrderData() const;
+	void readFromProtocol(const protocols::csp::aabt::P_CVOrderData&);
+
+	AABT_Assignment a;
+	std::vector<int> o;
+	std::vector<int> tv;
+	std::forward_list<AABT_Explanation> E;
 };
 
 } /* namespace CSP */
 } /* namespace AIT */
-#endif /* CONSTRAINT_H_ */
+#endif /* AABT_ORDER_H_ */

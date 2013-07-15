@@ -1,7 +1,7 @@
 /*
  AIT Library (Artificial Intelligence Toolkit), A C++ library of AI tools.
 
- Copyright (c) 2013 Soroush Rabiei <soroush-r@users.sf.net>,
+ Copyright (c) 2012,2013 Soroush Rabiei <soroush-r@users.sf.net>,
  Roya Ghasemzadeh <ghasemzadeh.roya1@gmail.com>
 
  AIT is free software; you can redistribute it and/or
@@ -21,32 +21,29 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#ifndef CSP_SOLVER_H_
-#define CSP_SOLVER_H_
+#ifndef AABT_ASSIGNMENT_H_
+#define AABT_ASSIGNMENT_H_
 
-#include <string>
-#include <fstream>
-#include <vector>
-#include <unordered_set>
-#include "constraint.h"
+#include "aabt.pb.h"
+#include "../global.h"
 
 namespace AIT {
 namespace CSP {
 
-class CSP_Solver {
-public:
-	virtual ~CSP_Solver();
-	virtual void parseFromFile(const std::string&);
-	virtual void parseFromStream(const std::ifstream&);
-	virtual void parseFromContent(const std::string&);
-protected:
-	// In formal definition of CSP, X, D and C are finite sets.
-	// That's the reason to provide integer-only CSP solvers
-	std::vector<size_t> variables; // X
-	std::vector<std::unordered_set<int>> domains; // D
-	std::vector<Constraint> constraints; // C
-};
+struct LIBRARY_API AABT_Assignment {
+	// TODO implement a static `fromProtocol'
+	// or a friend conversion operator
+	AABT_Assignment();
+	AABT_Assignment(const AABT_Assignment& a);
+	~AABT_Assignment();
+	AABT_Assignment& operator=(const AABT_Assignment& a);
+	operator protocols::csp::aabt::P_Assignment() const;
+	void readFromProtocol(const protocols::csp::aabt::P_Assignment&);
 
+	int id;
+	int time_stamp;
+	int value;
+};
 } /* namespace CSP */
 } /* namespace AIT */
-#endif /* CSP_SOLVER_H_ */
+#endif /* AABT_ASSIGNMENT_H_ */

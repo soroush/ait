@@ -21,19 +21,24 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "../src/CSP/abt-monitor.h"
-#include "../src/CSP/global.h"
+#include "../src/csp/predicate.h"
+#include "../src/global.h"
 
 using namespace AIT::CSP;
 using namespace std;
 
-int main(int argc, char *argv[])
-{
-	_INFO("Running 8 queens server in background...");
-    ABT_Monitor monitor(argv[1],atoi(argv[2]),atoi(argv[3]), atoi(argv[4]));
-    monitor.start();
-    return 0;
+int main(int argc, char *argv[]) {
+	_INFO("Testing Parser");
+	string parameters = "int A int B int X int Y int Z";
+	string functional = "and(ne(neg(A),B),le(add(X,Y),mul(sub(X,Y),abs(Z))))";
+	Predicate p(parameters,functional,Predicate::Type::Functional);
+	cout << p.evaluate({{1,2,3,4,5}}) << endl;
+	cout << p.evaluate({{10,20,3,4,5}}) << endl;
+	cout << p.evaluate({{10,20,1,1,-1}}) << endl;
+	cout << p.evaluate({{10,20,1,-2,-8}}) << endl;
+	cout << p.evaluate({{-8,-2,1,20,10}}) << endl;
+//	Predicate q("int A int B","gt(A,B)",Predicate::Type::Functional);
+//	cout << q.evaluate({{1,2}}) << endl;
+//	cout << q.evaluate({{2,1}}) << endl;
+	return 0;
 }
-
-
-

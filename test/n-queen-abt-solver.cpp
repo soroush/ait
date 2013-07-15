@@ -22,7 +22,7 @@
  */
 
 #include "n-queen-abt-solver.h"
-#include "../src/compound-assignment.h"
+#include "../src/CSP/compound-assignment.h"
 #include <iostream>
 
 using namespace AIT::CSP;

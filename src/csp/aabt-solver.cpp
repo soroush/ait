@@ -28,14 +28,13 @@
 #include "aabt-solver.h"
 #include "aabt-message.h"
 #include "aabt-order.h"
-#include "global.h"
 #include "abt.pb.h"
 
 using namespace std;
 using namespace AIT::CSP;
 using namespace AIT::protocols::csp;
 
-struct incoming {
+struct LIBRARY_API incoming {
 	int n;
 	int id;
 	std::vector<int> effective;

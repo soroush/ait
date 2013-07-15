@@ -24,8 +24,8 @@
 #ifndef N_QUEEN_ABT_SOLVER_H_
 #define N_QUEEN_ABT_SOLVER_H_
 
-#include "../src/abt-solver.h"
-#include "../src/compound-assignment.h"
+#include "../src/CSP/abt-solver.h"
+#include "../src/CSP/compound-assignment.h"
 
 class NQueen_ABT_Solver: public AIT::CSP::ABT_Solver {
 public:

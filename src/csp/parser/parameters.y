@@ -21,26 +21,27 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#ifndef AABT_NOGOOD_H_
-#define AABT_NOGOOD_H_
 
-#include <vector>
-#include "aabt-assignment.h"
+%class-name		         ParametersParser
+%baseclass-header        parameters_parserbase.h
+%class-header            parameters_parser.h
+%implementation-header   parameters_parser.ih
+%parsefun-source         parameters_parse.cpp
+%scanner                 parameters_scanner.h
+%scanner-token-function  d_scanner.lex()
 
-namespace AIT {
-namespace CSP {
+%union{
+	std::string*	s;
+}
 
-struct AABT_Nogood {
-	AABT_Nogood();
-	~AABT_Nogood();
-	AABT_Nogood(const AABT_Nogood& other);
-	AABT_Nogood& operator=(const AABT_Nogood& other);
-	void readFromProtocol(const protocols::csp::aabt::P_NoGood&);
-	operator protocols::csp::aabt::P_NoGood() const;
+%token INT ID
 
-	std::vector<AABT_Assignment> LHS;
-	AABT_Assignment RHS;
-};
-} /* namespace CSP */
-} /* namespace AIT */
-#endif /* AABT_NOGOOD_H_ */
+//%type <s> id
+
+%%
+
+parameters:	type id parameters |
+			type id ;
+type:		int;
+int:		INT ;
+id:			ID	{ this->parameters.push_back(0); this->names[d_scanner.matched().c_str()]=this->parameters.size()-1; };

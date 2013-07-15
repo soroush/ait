@@ -19,21 +19,15 @@
  You should have received a copy of the GNU Lesser General Public
  License along with this library; if not, write to the Free Software
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- */
-
-#include "../src/CSP/abt-monitor.h"
-#include "../src/CSP/global.h"
-
-using namespace AIT::CSP;
-using namespace std;
-
-int main(int argc, char *argv[])
-{
-	_INFO("Running 8 queens server in background...");
-    ABT_Monitor monitor(argv[1],atoi(argv[2]),atoi(argv[3]), atoi(argv[4]));
-    monitor.start();
-    return 0;
-}
-
-
-
+ */ 
+ 
+%class-name                "ParametersLexer"
+%baseclass-header          "parameters_scannerbase.h"
+%class-header              "parameters_scanner.h"
+%implementation-header     "parameters_scanner.ih"
+%lex-source                "parameters_scanner.cpp"
+ 
+ %%
+"int"                                 return ParametersParser::INT;
+[[:alpha:]]+                          return ParametersParser::ID;
+[ \t\n]+                              ;

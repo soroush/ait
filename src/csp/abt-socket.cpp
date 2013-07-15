@@ -78,25 +78,3 @@ size_t Socket::recvMessage(protocols::csp::aabt::P_Message& message) {
 	// TODO implement
 }
 
-std::string AIT::Socket::getIP() {
-	std::string address = "";
-	FILE * fp = popen("ifconfig", "r");
-	if (fp) {
-		char *p = NULL, *e;
-		size_t n;
-		while ((getline(&p, &n, fp) > 0) && p) {
-			if (p = strstr(p, "inet addr:")) {
-				p += 10;
-				if (e = strchr(p, ' ')) {
-					*e = '\0';
-					return std::string(p);
-					address = std::string(p);
-
-				}
-			}
-		}
-	}
-	pclose(fp);
-	return address;
-}
-

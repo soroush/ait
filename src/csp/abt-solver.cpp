@@ -41,10 +41,11 @@ ABT_Solver::ABT_Solver(const std::string& serverHost_,
 				serverPublisherPort_), context(2), listener(
 				new Socket(context, ZMQ_PULL)), serverRquest(context,
 		ZMQ_REQ), serverBroadcast(context, ZMQ_SUB), end(false), agentCount(
-				agentCount_) {
+				agentCount_), assignedAgents(new bool[agentCount]) {
 	sem_init(&agentReadyLock, 0, 0);
 	sem_init(&messageCount, 0, 0);
 	pthread_mutex_init(&this->messageRW, NULL);
+	agentViewX.reserve(this->id - 1);
 }
 
 ABT_Solver::~ABT_Solver() {
@@ -53,6 +54,7 @@ ABT_Solver::~ABT_Solver() {
 	listener->close();
 	context.close();
 	delete listener;
+	delete[] assignedAgents;
 }
 
 void ABT_Solver::ABT() {
@@ -218,18 +220,23 @@ void ABT_Solver::updateAgentView(const Assignment& assignment) {
 	for (auto it = agentView.items.begin(); it != agentView.items.end();) {
 		if (it->id == assignment.id) {
 			agentView.items.erase(it++);
+			assignedAgents[it->id] = false;
 			break;
 		} else {
 			++it;
 		}
 	}
 	// add new value
-	if (assignment.value != 0)
+	if (assignment.value != 0) {
 		agentView.items.insert(assignment);
+		this->assignedAgents[assignment.id] = true;
+		this->agentViewX[assignment.id] = assignment.value;
+	}
 	// remove invalid nogoods
-	auto x = std::remove_if(noGoodStore.begin(), noGoodStore.end(),
+//	auto x = std::remove_if(noGoodStore.begin(), noGoodStore.end(),
+//			[&](Nogood& ngd)->bool {return !coherent(ngd.lhs,agentView);});
+	noGoodStore.remove_if(
 			[&](Nogood& ngd)->bool {return !coherent(ngd.lhs,agentView);});
-	noGoodStore.erase(x, noGoodStore.end());
 }
 
 void ABT_Solver::resolveConflict(const Message& msg) {
@@ -456,8 +463,8 @@ bool ABT_Solver::consistent(const int& v, const CompoundAssignment& ca) {
 				continue;
 			}
 		}
-		if(isInAgentView){
-			for(const auto& r : c.relations){
+		if (isInAgentView) {
+			for (const auto& r : c.relations) {
 				// Check consistency
 			}
 		}

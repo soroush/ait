@@ -10,9 +10,10 @@ AC_TYPE_SIZE_T
 AC_HEADER_STDBOOL
 PKG_CHECK_MODULES([ZMQ], [libzmq >= 3.2.3])
 PKG_CHECK_MODULES([PROTOCOL_BUFFERS], [protobuf >= 2.5.0])
-LT_INIT([shared static])
+LT_INIT([shared static win32-dll pic-only])
 AC_SUBST([AIT_SO_VERSION], [0:1:0])
 AC_SUBST([AIT_API_VERSION], [0.1.0])
-AC_CONFIG_FILES([Makefile src/Makefile test/Makefile
+AC_CONFIG_FILES([Makefile src/Makefile src/csp/Makefile src/csp/parser/Makefile 
+					test/Makefile
                  libait.pc:libait.pc.in])
 AC_OUTPUT

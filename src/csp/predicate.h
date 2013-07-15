@@ -21,19 +21,34 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "../src/CSP/abt-monitor.h"
-#include "../src/CSP/global.h"
+#ifndef PREDICATE_H_
+#define PREDICATE_H_
 
-using namespace AIT::CSP;
-using namespace std;
-
-int main(int argc, char *argv[])
-{
-	_INFO("Running 8 queens server in background...");
-    ABT_Monitor monitor(argv[1],atoi(argv[2]),atoi(argv[3]), atoi(argv[4]));
-    monitor.start();
-    return 0;
-}
+#include <vector>
+#include <stack>
+#include <map>
+#include <string>
+#include "parser/expression.h"
+#include "../global.h"
 
 
+namespace AIT {
+namespace CSP {
 
+class LIBRARY_API Predicate {
+public:
+	enum class Type {Functional, Infix, Postfix, MathML};
+	Predicate(const std::string& parameters, const std::string& input, const Type&);
+	~Predicate();
+	bool evaluate(const std::vector<int>&);
+	bool evaluate(std::vector<int>&&);
+private:
+	std::vector<int> parameters;
+	std::map<std::string, size_t> names;
+	std::vector<Expression*> postfix;
+	std::stack<int> evaluation;
+};
+
+} /* namespace CSP */
+} /* namespace AIT */
+#endif /* PREDICATE_H_ */

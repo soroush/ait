@@ -20,32 +20,22 @@
  License along with this library; if not, write to the Free Software
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-#ifndef ASSIGNMENT_H_
-#define ASSIGNMENT_H_
 
-#include "common_async.h"
-#include "common-protocols.pb.h"
+#ifndef EXPRESSION_H_
+#define EXPRESSION_H_
+
+#include <stack>
 
 namespace AIT {
 namespace CSP {
 
-struct Assignment {
-	Assignment();
-	Assignment(const Assignment& other);
-	Assignment(const AgentID&, const int&);
-	~Assignment();
-	int id;
-	int value;
-	bool operator ==(const Assignment& other) const;
-	bool operator !=(const Assignment& other) const;
-	bool operator >(const Assignment& other) const;
-	bool operator <(const Assignment& other) const;// for std::set
-	Assignment& operator =(const Assignment& other);
-	operator protocols::csp::P_Assignment();
-	void readFromProtocol(const protocols::csp::P_Assignment&);
+class Expression {
+public:
+	Expression();
+	virtual ~Expression();
+	virtual void evaluate(std::stack<int>&);
 };
 
 } /* namespace CSP */
 } /* namespace AIT */
-
-#endif /* ASSIGNMENT_H_ */
+#endif /* EXPRESSION_H_ */

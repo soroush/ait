@@ -21,19 +21,29 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "../src/CSP/abt-monitor.h"
-#include "../src/CSP/global.h"
+#ifndef COMPOUND_ASSIGNMENT_H_
+#define COMPOUND_ASSIGNMENT_H_
 
-using namespace AIT::CSP;
-using namespace std;
+#include <set>
+#include "common-protocols.pb.h"
+#include "assignment.h"
 
-int main(int argc, char *argv[])
-{
-	_INFO("Running 8 queens server in background...");
-    ABT_Monitor monitor(argv[1],atoi(argv[2]),atoi(argv[3]), atoi(argv[4]));
-    monitor.start();
-    return 0;
-}
+namespace AIT {
+namespace CSP {
 
+struct LIBRARY_API CompoundAssignment{
+	CompoundAssignment();
+	CompoundAssignment(const CompoundAssignment& other);
+	~CompoundAssignment();
 
+	std::set<Assignment> items;
+	bool operator ==(const CompoundAssignment& other) const;
+	bool operator !=(const CompoundAssignment& other) const;
+	CompoundAssignment& operator =(const CompoundAssignment& other);
+	operator protocols::csp::P_CompoundAssignment() const;
+	void readFromProtocol(const protocols::csp::P_CompoundAssignment&);
+};
 
+} /* namespace CSP */
+} /* namespace AIT */
+#endif /* COMPOUND_ASSIGNMENT_H_ */

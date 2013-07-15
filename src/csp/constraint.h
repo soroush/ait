@@ -1,7 +1,7 @@
 /*
  AIT Library (Artificial Intelligence Toolkit), A C++ library of AI tools.
 
- Copyright (c) 2012,2013 Soroush Rabiei <soroush-r@users.sf.net>,
+ Copyright (c) 2013 Soroush Rabiei <soroush-r@users.sf.net>,
  Roya Ghasemzadeh <ghasemzadeh.roya1@gmail.com>
 
  AIT is free software; you can redistribute it and/or
@@ -21,19 +21,23 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "../src/CSP/abt-monitor.h"
-#include "../src/CSP/global.h"
+#ifndef CONSTRAINT_H_
+#define CONSTRAINT_H_
 
-using namespace AIT::CSP;
-using namespace std;
+#include <vector>
+#include "../global.h"
 
-int main(int argc, char *argv[])
-{
-	_INFO("Running 8 queens server in background...");
-    ABT_Monitor monitor(argv[1],atoi(argv[2]),atoi(argv[3]), atoi(argv[4]));
-    monitor.start();
-    return 0;
-}
+namespace AIT {
+namespace CSP {
 
+class LIBRARY_API Constraint {
+public:
+	Constraint();
+	virtual ~Constraint();
+	std::vector<int> identifier;
+	std::vector<std::vector<int>> relations;
+};
 
-
+} /* namespace CSP */
+} /* namespace AIT */
+#endif /* CONSTRAINT_H_ */

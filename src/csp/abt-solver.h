@@ -34,16 +34,16 @@
 #include <semaphore.h>
 #include <stdlib.h>
 
-#include "global.h"
 #include "common_async.h"
 #include "compound-assignment.h"
 #include "abt-socket.h"
 #include "csp-solver.h"
+#include "../global.h"
 
 namespace AIT {
 namespace CSP {
 
-class ABT_Solver : public CSP_Solver {
+class LIBRARY_API ABT_Solver : public CSP_Solver {
 	friend class AABT_Solver;
 public:
 	ABT_Solver(const std::string&, const unsigned short&, const unsigned short&,
@@ -123,7 +123,7 @@ protected:
 	void printNGS();
 	void printAV();
 
-	int agentCount;
+	size_t agentCount;
 
 	AgentID id;
 	std::list<std::vector<EndPoint>::iterator> preceding; // Γ+
@@ -132,6 +132,8 @@ protected:
 	std::list<Nogood> noGoodStore;
 	std::vector<int> domain;
 	CompoundAssignment agentView;
+	std::vector<int> agentViewX;
+	bool* assignedAgents;
 	int value;
 
 	std::string address;

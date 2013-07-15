@@ -21,19 +21,27 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "../src/CSP/abt-monitor.h"
-#include "../src/CSP/global.h"
+#ifndef AABT_NOGOOD_H_
+#define AABT_NOGOOD_H_
 
-using namespace AIT::CSP;
-using namespace std;
+#include <vector>
+#include "aabt-assignment.h"
+#include "../global.h"
 
-int main(int argc, char *argv[])
-{
-	_INFO("Running 8 queens server in background...");
-    ABT_Monitor monitor(argv[1],atoi(argv[2]),atoi(argv[3]), atoi(argv[4]));
-    monitor.start();
-    return 0;
-}
+namespace AIT {
+namespace CSP {
 
+struct LIBRARY_API AABT_Nogood {
+	AABT_Nogood();
+	~AABT_Nogood();
+	AABT_Nogood(const AABT_Nogood& other);
+	AABT_Nogood& operator=(const AABT_Nogood& other);
+	void readFromProtocol(const protocols::csp::aabt::P_NoGood&);
+	operator protocols::csp::aabt::P_NoGood() const;
 
-
+	std::vector<AABT_Assignment> LHS;
+	AABT_Assignment RHS;
+};
+} /* namespace CSP */
+} /* namespace AIT */
+#endif /* AABT_NOGOOD_H_ */

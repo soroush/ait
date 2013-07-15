@@ -21,19 +21,27 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "../src/CSP/abt-monitor.h"
-#include "../src/CSP/global.h"
+#ifndef EXP_REF_H_
+#define EXP_REF_H_
 
-using namespace AIT::CSP;
-using namespace std;
+#include "expression.h"
+#include <vector>
+#include <cstdlib>
 
-int main(int argc, char *argv[])
-{
-	_INFO("Running 8 queens server in background...");
-    ABT_Monitor monitor(argv[1],atoi(argv[2]),atoi(argv[3]), atoi(argv[4]));
-    monitor.start();
-    return 0;
-}
+namespace AIT {
+namespace CSP {
 
+class exp_ref : public Expression {
+public:
+	exp_ref(const std::vector<int>& vector, const size_t& index);
+	~exp_ref();
+	void evaluate(std::stack<int>&);
 
+private:
+	const std::vector<int>& vec;
+	const size_t index;
+};
 
+} /* namespace CSP */
+} /* namespace AIT */
+#endif /* EXP_REF_H_ */

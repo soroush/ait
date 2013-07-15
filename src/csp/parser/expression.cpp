@@ -21,29 +21,17 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#ifndef COMPOUND_ASSIGNMENT_H_
-#define COMPOUND_ASSIGNMENT_H_
+#include "expression.h"
 
-#include "common-protocols.pb.h"
-#include "assignment.h"
-#include <set>
+using namespace AIT::CSP;
+using namespace std;
 
-namespace AIT {
-namespace CSP {
+Expression::Expression() {
+}
 
-struct CompoundAssignment{
-	CompoundAssignment();
-	CompoundAssignment(const CompoundAssignment& other);
-	~CompoundAssignment();
+Expression::~Expression() {
+}
 
-	std::set<Assignment> items;
-	bool operator ==(const CompoundAssignment& other) const;
-	bool operator !=(const CompoundAssignment& other) const;
-	CompoundAssignment& operator =(const CompoundAssignment& other);
-	operator protocols::csp::P_CompoundAssignment() const;
-	void readFromProtocol(const protocols::csp::P_CompoundAssignment&);
-};
-
-} /* namespace CSP */
-} /* namespace AIT */
-#endif /* COMPOUND_ASSIGNMENT_H_ */
+void Expression::evaluate(stack<int>& s) {
+	s.push(0);
+}

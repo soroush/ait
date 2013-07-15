@@ -1,0 +1,2 @@
+Add check for libpthreads
+Add check for CXXFLAGS = -fPIC, LDFLAGS = -no-undefined 
