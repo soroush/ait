@@ -21,36 +21,40 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#ifndef CONSTRAINT_H_
-#define CONSTRAINT_H_
+#ifndef VARIABLE_H_
+#define VARIABLE_H_
 
-#include <vector>
-#include <string>
-#include "relation-base.h"
-#include "variable.h"
 #include "../global.h"
+#include "domain.h"
+#include <map>
 
 namespace AIT {
 namespace CSP {
 
-class CSP_Problem;
-
-class LIBRARY_API Constraint {
+class Variable {
 public:
-	Constraint(const std::string& name, const size_t& arity,
-			const std::string& scope, const std::string& reference,
-			const std::string& parameters = std::string(),
-			CSP_Problem* parent=nullptr);
-	Constraint(Constraint&&);
-	Constraint& operator =(Constraint&&);
-	~Constraint();
-	bool satisfies();
+	Variable();
+	Variable(Domain* domain, const std::string& name = "",
+			const int& value = 0);
+	Variable(Variable&&);
+	Variable& operator =(Variable&&);
+	~Variable();
+
+	void value(const int& value);
+	int* value();
+	const Domain* getDomain() const;
+	void setDomain(Domain* domain);
+	const std::string& getName() const;
+	void setName(const std::string& name);
+	int getValue() const;
+	void setValue(int value);
+
 private:
-	std::vector<Variable*> scope;
-	std::vector<int*> parameters;
-	RelationBase* reference;
+	Domain* m_domain;
+	std::string m_name;
+	int m_value;
 };
 
 } /* namespace CSP */
 } /* namespace AIT */
-#endif /* CONSTRAINT_H_ */
+#endif /* VARIABLE_H_ */

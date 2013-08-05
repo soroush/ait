@@ -1,7 +1,7 @@
 /*
  AIT Library (Artificial Intelligence Toolkit), A C++ library of AI tools.
 
- Copyright (c) 2013 Soroush Rabiei <soroush-r@users.sf.net>,
+ Copyright (c) 2012,2013 Soroush Rabiei <soroush-r@users.sf.net>,
  Roya Ghasemzadeh <ghasemzadeh.roya1@gmail.com>
 
  AIT is free software; you can redistribute it and/or
@@ -21,36 +21,23 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#ifndef CONSTRAINT_H_
-#define CONSTRAINT_H_
+#include "../src/csp/parser/xcsp-pskel.hxx"
+#include "../src/csp/parser/xdomains-parser.h"
+#include "../src/csp/parser/xdomain-parser.h"
+#include "../src/csp/domain.h"
+#include "../src/global.h"
 
-#include <vector>
-#include <string>
-#include "relation-base.h"
-#include "variable.h"
-#include "../global.h"
+using namespace AIT::CSP;
+using namespace std;
 
-namespace AIT {
-namespace CSP {
+int main(int argc, char *argv[]) {
+	_INFO("Testing XCSP 2.1 Parser");
+	instance_t_pskel instanceParser;
+	std::forward_list<Domain> domains;
+	XDomainsParser domainsParser(domains);
+	XDomainParser domainParser;
+	domainsParser.domain_parser(domainParser);
+	instanceParser.domains_parser(domainsParser);
 
-class CSP_Problem;
-
-class LIBRARY_API Constraint {
-public:
-	Constraint(const std::string& name, const size_t& arity,
-			const std::string& scope, const std::string& reference,
-			const std::string& parameters = std::string(),
-			CSP_Problem* parent=nullptr);
-	Constraint(Constraint&&);
-	Constraint& operator =(Constraint&&);
-	~Constraint();
-	bool satisfies();
-private:
-	std::vector<Variable*> scope;
-	std::vector<int*> parameters;
-	RelationBase* reference;
-};
-
-} /* namespace CSP */
-} /* namespace AIT */
-#endif /* CONSTRAINT_H_ */
+	return 0;
+}

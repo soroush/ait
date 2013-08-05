@@ -1,7 +1,7 @@
 /*
  AIT Library (Artificial Intelligence Toolkit), A C++ library of AI tools.
 
- Copyright (c) 2013 Soroush Rabiei <soroush-r@users.sf.net>,
+ Copyright (c) 2012,2013 Soroush Rabiei <soroush-r@users.sf.net>,
  Roya Ghasemzadeh <ghasemzadeh.roya1@gmail.com>
 
  AIT is free software; you can redistribute it and/or
@@ -21,36 +21,27 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#ifndef CONSTRAINT_H_
-#define CONSTRAINT_H_
+#ifndef XVARIABLES_PARSER_H_
+#define XVARIABLES_PARSER_H_
 
-#include <vector>
-#include <string>
-#include "relation-base.h"
-#include "variable.h"
-#include "../global.h"
+#include "xcsp-pskel.hxx"
 
 namespace AIT {
 namespace CSP {
 
+class Variable;
 class CSP_Problem;
 
-class LIBRARY_API Constraint {
+class XVariablesParser: public variables_t_pskel {
 public:
-	Constraint(const std::string& name, const size_t& arity,
-			const std::string& scope, const std::string& reference,
-			const std::string& parameters = std::string(),
-			CSP_Problem* parent=nullptr);
-	Constraint(Constraint&&);
-	Constraint& operator =(Constraint&&);
-	~Constraint();
-	bool satisfies();
+	XVariablesParser(CSP_Problem& instance);
+	~XVariablesParser();
+	void variable(Variable);
+	void nbVariables(unsigned long long);
 private:
-	std::vector<Variable*> scope;
-	std::vector<int*> parameters;
-	RelationBase* reference;
+	CSP_Problem& m_instance;
 };
 
 } /* namespace CSP */
 } /* namespace AIT */
-#endif /* CONSTRAINT_H_ */
+#endif /* XVARIABLES_PARSER_H_ */

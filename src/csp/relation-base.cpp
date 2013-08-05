@@ -21,36 +21,33 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#ifndef CONSTRAINT_H_
-#define CONSTRAINT_H_
-
-#include <vector>
-#include <string>
 #include "relation-base.h"
-#include "variable.h"
-#include "../global.h"
 
-namespace AIT {
-namespace CSP {
+using namespace AIT::CSP;
+using namespace std;
 
-class CSP_Problem;
+RelationBase::RelationBase() {
+}
 
-class LIBRARY_API Constraint {
-public:
-	Constraint(const std::string& name, const size_t& arity,
-			const std::string& scope, const std::string& reference,
-			const std::string& parameters = std::string(),
-			CSP_Problem* parent=nullptr);
-	Constraint(Constraint&&);
-	Constraint& operator =(Constraint&&);
-	~Constraint();
-	bool satisfies();
-private:
-	std::vector<Variable*> scope;
-	std::vector<int*> parameters;
-	RelationBase* reference;
-};
+RelationBase::~RelationBase() {
+}
 
-} /* namespace CSP */
-} /* namespace AIT */
-#endif /* CONSTRAINT_H_ */
+bool RelationBase::evaluate(const vector<int>& allocator)  {
+	return true;
+	// DUMMY CODE
+}
+
+bool RelationBase::evaluate(vector<int> && allocator)  {
+	return true;
+	// DUMMY CODE
+}
+
+bool RelationBase::evaluate(const vector<int*>& allocator)  {
+	return true;
+	// DUMMY CODE
+}
+
+bool RelationBase::evaluate(vector<int*> && allocator)  {
+	return true;
+	// DUMMY CODE
+}

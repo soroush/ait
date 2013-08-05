@@ -21,36 +21,28 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#ifndef CONSTRAINT_H_
-#define CONSTRAINT_H_
+#ifndef RELATION_BASE_H_
+#define RELATION_BASE_H_
 
 #include <vector>
+#include <stack>
+#include <map>
 #include <string>
-#include "relation-base.h"
-#include "variable.h"
 #include "../global.h"
 
 namespace AIT {
 namespace CSP {
 
-class CSP_Problem;
-
-class LIBRARY_API Constraint {
+class LIBRARY_API RelationBase {
 public:
-	Constraint(const std::string& name, const size_t& arity,
-			const std::string& scope, const std::string& reference,
-			const std::string& parameters = std::string(),
-			CSP_Problem* parent=nullptr);
-	Constraint(Constraint&&);
-	Constraint& operator =(Constraint&&);
-	~Constraint();
-	bool satisfies();
-private:
-	std::vector<Variable*> scope;
-	std::vector<int*> parameters;
-	RelationBase* reference;
+	RelationBase();
+	virtual ~RelationBase();
+	virtual bool evaluate(const std::vector<int>&) ;
+	virtual bool evaluate(std::vector<int>&&) ;
+	virtual bool evaluate(const std::vector<int*>&) ;
+	virtual bool evaluate(std::vector<int*>&&) ;
 };
 
 } /* namespace CSP */
 } /* namespace AIT */
-#endif /* CONSTRAINT_H_ */
+#endif /* RELATION_BASE_H_ */

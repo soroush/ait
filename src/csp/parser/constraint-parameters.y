@@ -21,35 +21,37 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#ifndef PREDICATE_H_
-#define PREDICATE_H_
 
-#include "parser/expression.h"
-#include "relation-base.h"
+%class-name		         ConstraintParametersParser
+%baseclass-header        constraint-parameters_parserbase.h
+%class-header            constraint-parameters_parser.h
+%implementation-header   constraint-parameters_parser.ih
+%parsefun-source         constraint-parameters_parse.cpp
+%scanner                 constraint-parameters_scanner.h
+%scanner-token-function  d_scanner.lex()
 
-namespace AIT {
-namespace CSP {
+%union{
+	int i;
+	std::string* s;
+}
 
-class LIBRARY_API Predicate: public RelationBase {
-public:
-	enum class Type {
-		Functional, Infix, Postfix, MathML
-	};
-	Predicate(const std::string& parameters, const std::string& input,
-			const Type&);
-	Predicate(Predicate&&);
-	Predicate& operator =(Predicate&&);
-	~Predicate();
-	bool evaluate(const std::vector<int>&);
-	bool evaluate(std::vector<int>&&) ;
-	bool evaluate(const std::vector<int*>&) ;
-private:
-	std::vector<int> parameters;
-	std::map<std::string, size_t> names;
-	std::vector<Expression*> postfix;
-	std::stack<int> evaluation;
-};
+%token INT VAR
 
-} /* namespace CSP */
-} /* namespace AIT */
-#endif /* PREDICATE_H_ */
+%%
+
+parameters:	iv parameters |
+			iv ;
+iv:			int | var ;
+var:		VAR {
+					Variable* v = this->problem->variable(d_scanner.matched());
+					if (this->mode == ParserMode::Scope) {
+						this->scope->push_back(v);
+					} else if (this->mode == ParserMode::Parameter) {
+						this->parameters->push_back(v->value());
+					}
+				} ;
+int:		INT {
+					int value = atoi(d_scanner.matched().c_str());
+					Variable* v = new Variable(&Domain::empty, "" ,  value);
+					this->parameters->push_back(v->value());
+				} ;

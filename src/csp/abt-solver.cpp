@@ -453,23 +453,24 @@ void ABT_Solver::printAV() {
 }
 
 bool ABT_Solver::consistent(const int& v, const CompoundAssignment& ca) {
-	for (const auto& c : this->constraints) {
-		bool isInAgentView = true;
-		for (const auto& i : c.identifier) {
-			bool found;
-			int value = getValueOf(i, found);
-			if (!found) {
-				isInAgentView = false;
-				continue;
-			}
-		}
-		if (isInAgentView) {
-			for (const auto& r : c.relations) {
-				// Check consistency
-			}
-		}
-	}
-	return true;
+//	for (const auto& c : this->constraints) {
+//		bool isInAgentView = true;
+//		for (const auto& i : c.identifier) {
+//			bool found;
+//			int value = getValueOf(i, found);
+//			if (!found) {
+//				isInAgentView = false;
+//				continue;
+//			}
+//		}
+//		if (isInAgentView) {
+//			for (const auto& r : c.relations) {
+//				// Check consistency
+//			}
+//		}
+//	}
+//	return true;
+	//TODO IMPLEMENT THIS !
 }
 
 int ABT_Solver::getValueOf(const int& agent, bool& find) {

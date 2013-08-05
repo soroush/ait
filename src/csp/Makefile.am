@@ -7,8 +7,12 @@ libait_csp_la_SOURCES = \
  			abt.pb.cc \
  			assignment.cpp \
  			compound-assignment.cpp \
+ 			domain.cpp \
+ 			relation-base.cpp \
+ 			variable.cpp \
  			predicate.cpp \
  			constraint.cpp \
+ 			csp-problem.cpp \
  			csp-solver.cpp \
  			abt-message.cpp \
  			abt-monitor.cpp \
@@ -31,8 +35,12 @@ ait_include_HEADERS =  \
 			abt.pb.h \
 			assignment.h \
 			compound-assignment.h \
+			domain.h \
+ 			relation-base.h \
+ 			variable.h \
 			predicate.h \
 			constraint.h \
+			csp-problem.h \
 			csp-solver.h \
 			abt-monitor.h \
 			abt-socket.h \

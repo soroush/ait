@@ -26,6 +26,7 @@
 #include "parser/parameters_parser.h"
 
 #include <algorithm>
+#include <utility>
 
 using namespace AIT::CSP;
 using namespace std;
@@ -68,8 +69,37 @@ bool Predicate::evaluate(const vector<int>& inputs) {
 	return (this->evaluation.top() == 1);
 }
 
-bool Predicate::evaluate(vector<int>&& inputs) {
+bool Predicate::evaluate(vector<int> && inputs) {
 	this->parameters = inputs;
+	while (!this->evaluation.empty())
+		this->evaluation.pop();
+	for (auto& e : this->postfix) {
+		e->evaluate(this->evaluation);
+	}
+	// TODO: Check for validity
+	return (this->evaluation.top() == 1);
+}
+
+Predicate::Predicate(Predicate&& other) :
+		parameters(std::move(other.parameters)), names(std::move(other.names)), postfix(
+				std::move(other.postfix)), evaluation(
+				std::move(other.evaluation)) {
+}
+
+Predicate& Predicate::operator =(Predicate&& other) {
+	this->parameters = std::move(other.parameters);
+	this->names = std::move(other.names);
+	this->postfix = std::move(other.postfix);
+	this->evaluation = std::move(other.evaluation);
+	return *this;
+}
+
+bool Predicate::evaluate(const vector<int*>& inputs) {
+	this->parameters.clear();
+	this->parameters.reserve(inputs.size());
+	for (const auto& x : inputs) {
+		this->parameters.push_back(*x);
+	}
 	while (!this->evaluation.empty())
 		this->evaluation.pop();
 	for (auto& e : this->postfix) {

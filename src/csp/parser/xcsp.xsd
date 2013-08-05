@@ -1,0 +1,131 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<!-- Problem Type -->
+	<xs:simpleType name="problemType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="CSP" />
+			<xs:enumeration value="QCSP" />
+			<xs:enumeration value="WCSP" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<!-- Semantics Type of Relations -->
+	<xs:simpleType name="semanticsType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="supports" />
+			<xs:enumeration value="conflicts" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="presentation_t">
+		<xs:attribute name="name" type="xs:string" use="optional" />
+		<xs:attribute name="maxConstraintArity" type="xs:string" use="optional" />
+		<xs:attribute name="minViolatedConstraints" type="xs:string" />
+		<xs:attribute name="nbSolutions" type="xs:string" use="optional" />
+		<xs:attribute name="solution" type="xs:string" use="optional" />
+		<xs:attribute name="type" type="problemType" use="optional" />
+		<xs:attribute name="format" type="xs:string" use="required" />
+	</xs:complexType>
+
+	<xs:complexType name="domain_t">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="name" type="xs:string" use="required" />
+				<xs:attribute name="nbValues" type="xs:positiveInteger" use="required" />
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<xs:complexType name="domains_t">
+		<xs:sequence>
+			<xs:element name="domain" minOccurs="1" maxOccurs="unbounded" type="domain_t" />
+		</xs:sequence>
+		<xs:attribute name="nbDomains" type="xs:positiveInteger" use="required" />
+	</xs:complexType>
+
+	<xs:complexType name="variable_t">
+		<xs:attribute name="name" type="xs:string" use="required" />
+		<xs:attribute name="domain" type="xs:string" use="required" />
+	</xs:complexType>
+
+	<xs:complexType name="variables_t">
+		<xs:sequence maxOccurs="1" minOccurs="1">
+			<xs:element name="variable" minOccurs="1" maxOccurs="unbounded" type="variable_t" />
+		</xs:sequence>
+		<xs:attribute name="nbVariables" type="xs:positiveInteger" use="required" />
+	</xs:complexType>
+
+	<xs:complexType name="relation_t">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="name" type="xs:string" use="required" />
+				<xs:attribute name="arity" type="xs:positiveInteger" use="optional" />
+				<xs:attribute name="nbTuples" type="xs:positiveInteger" use="required" />
+				<xs:attribute name="semantics" type="semanticsType" use="required" />
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<xs:complexType name="relations_t">
+		<xs:sequence>
+			<xs:element name="relation" minOccurs="1" maxOccurs="unbounded" type="relation_t" />
+		</xs:sequence>
+		<xs:attribute name="nbDomains" type="xs:positiveInteger" />
+		<xs:attribute name="nbRelations" type="xs:positiveInteger" />
+	</xs:complexType>
+
+	<xs:complexType name="expression_t">
+		<xs:all minOccurs="1" maxOccurs="1">
+			<xs:element name="functional" type="xs:string" minOccurs="0" />
+			<xs:element name="math" type="xs:string" maxOccurs="1" minOccurs="0" />
+			<xs:element name="postfix" type="xs:string" maxOccurs="1" minOccurs="0" />
+			<xs:element name="infix" type="xs:string" maxOccurs="1" minOccurs="0" />
+		</xs:all>
+	</xs:complexType>
+
+	<xs:complexType name="predicate_t">
+		<xs:sequence>
+			<xs:element name="parameters" type="xs:string" maxOccurs="1" minOccurs="1" />
+			<xs:element name="expression" type="expression_t" minOccurs="1" maxOccurs="1" />
+		</xs:sequence>
+		<xs:attribute name="name" type="xs:string" use="required" />
+	</xs:complexType>
+
+	<xs:complexType name="predicates_t">
+		<xs:sequence>
+			<xs:element name="predicate" minOccurs="1" maxOccurs="unbounded" type="predicate_t" />
+		</xs:sequence>
+		<xs:attribute name="nbPredicates" type="xs:positiveInteger" use="required" />
+	</xs:complexType>
+
+	<xs:complexType name="constraint_t">
+		<xs:sequence minOccurs="1" maxOccurs="1">
+			<xs:element name="parameters" type="xs:string" minOccurs="0" maxOccurs="1" />
+		</xs:sequence>
+		<xs:attribute name="name" type="xs:string" use="required" />
+		<xs:attribute name="scope" type="xs:string" use="required" />
+		<xs:attribute name="reference" type="xs:string" use="required" />
+		<xs:attribute name="arity" type="xs:string" use="required" />
+	</xs:complexType>
+
+	<xs:complexType name="constraints_t">
+		<xs:sequence minOccurs="1" maxOccurs="1">
+			<xs:element name="constraint" minOccurs="1" maxOccurs="unbounded" type="constraint_t" />
+		</xs:sequence>
+		<xs:attribute name="nbConstraints" type="xs:positiveInteger" use="required"></xs:attribute>
+	</xs:complexType>
+
+	<xs:complexType name="instance_t">
+		<xs:sequence minOccurs="1" maxOccurs="1">
+			<xs:element name="presentation" minOccurs="1" maxOccurs="1" type="presentation_t" />
+			<xs:element name="domains" minOccurs="1" maxOccurs="1" type="domains_t" />
+			<xs:element name="variables" minOccurs="1" maxOccurs="1" type="variables_t" />
+			<xs:element name="relations" maxOccurs="1" minOccurs="0" type="relations_t" />
+			<xs:element name="predicates" maxOccurs="1" minOccurs="0" type="predicates_t" />
+			<xs:element name="constraints" maxOccurs="1" minOccurs="1" type="constraints_t" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<!-- Problem Instance -->
+	<xs:element name="instance" type="instance_t" />
+</xs:schema> 

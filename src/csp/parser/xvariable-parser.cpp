@@ -1,7 +1,7 @@
 /*
  AIT Library (Artificial Intelligence Toolkit), A C++ library of AI tools.
 
- Copyright (c) 2013 Soroush Rabiei <soroush-r@users.sf.net>,
+ Copyright (c) 2012,2013 Soroush Rabiei <soroush-r@users.sf.net>,
  Roya Ghasemzadeh <ghasemzadeh.roya1@gmail.com>
 
  AIT is free software; you can redistribute it and/or
@@ -21,36 +21,29 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#ifndef CONSTRAINT_H_
-#define CONSTRAINT_H_
+#include "xvariable-parser.h"
+#include "../csp-problem.h"
 
-#include <vector>
-#include <string>
-#include "relation-base.h"
-#include "variable.h"
-#include "../global.h"
+using namespace AIT::CSP;
+using namespace std;
 
-namespace AIT {
-namespace CSP {
+XVariableParser::XVariableParser(const CSP_Problem& instance) :
+		m_instance(instance) {
+}
 
-class CSP_Problem;
+XVariableParser::~XVariableParser() {
+}
 
-class LIBRARY_API Constraint {
-public:
-	Constraint(const std::string& name, const size_t& arity,
-			const std::string& scope, const std::string& reference,
-			const std::string& parameters = std::string(),
-			CSP_Problem* parent=nullptr);
-	Constraint(Constraint&&);
-	Constraint& operator =(Constraint&&);
-	~Constraint();
-	bool satisfies();
-private:
-	std::vector<Variable*> scope;
-	std::vector<int*> parameters;
-	RelationBase* reference;
-};
+void XVariableParser::name(const string& name) {
+	this->m_name = name;
+}
 
-} /* namespace CSP */
-} /* namespace AIT */
-#endif /* CONSTRAINT_H_ */
+void XVariableParser::domain(const string& domainName) {
+	this->m_domain = domainName;
+}
+
+Variable XVariableParser::post_variable_t() {
+	Domain* d = this->m_instance.domain(this->m_domain);
+	Variable v(d, this->m_name);
+	return v;
+}

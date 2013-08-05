@@ -21,36 +21,17 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#ifndef CONSTRAINT_H_
-#define CONSTRAINT_H_
+#include "csp-problem.h"
+using namespace AIT::CSP;
+using namespace std;
 
-#include <vector>
-#include <string>
-#include "relation-base.h"
-#include "variable.h"
-#include "../global.h"
 
-namespace AIT {
-namespace CSP {
+Variable* CSP_Problem::variable(const string& name) const {
+}
 
-class CSP_Problem;
+Domain* CSP_Problem::domain(const string& name) const {
+}
 
-class LIBRARY_API Constraint {
-public:
-	Constraint(const std::string& name, const size_t& arity,
-			const std::string& scope, const std::string& reference,
-			const std::string& parameters = std::string(),
-			CSP_Problem* parent=nullptr);
-	Constraint(Constraint&&);
-	Constraint& operator =(Constraint&&);
-	~Constraint();
-	bool satisfies();
-private:
-	std::vector<Variable*> scope;
-	std::vector<int*> parameters;
-	RelationBase* reference;
-};
-
-} /* namespace CSP */
-} /* namespace AIT */
-#endif /* CONSTRAINT_H_ */
+RelationBase* CSP_Problem::relation(
+		const string& name) const {
+}

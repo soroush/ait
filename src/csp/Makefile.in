@@ -52,12 +52,12 @@ CONFIG_CLEAN_VPATH_FILES =
 LTLIBRARIES = $(noinst_LTLIBRARIES)
 libait_csp_la_DEPENDENCIES = parser/libait_csp_parser.la
 am_libait_csp_la_OBJECTS = abt.pb.lo assignment.lo \
-	compound-assignment.lo predicate.lo constraint.lo \
-	csp-solver.lo abt-message.lo abt-monitor.lo abt-socket.lo \
-	abt-nogood.lo abt-endpoint.lo abt-solver.lo aabt-solver.lo \
-	aabt.pb.lo aabt-assignment.lo aabt-explanation.lo \
-	aabt-message.lo aabt-nogood.lo aabt-order.lo \
-	common-protocols.pb.lo
+	compound-assignment.lo domain.lo relation-base.lo variable.lo \
+	predicate.lo constraint.lo csp-problem.lo csp-solver.lo \
+	abt-message.lo abt-monitor.lo abt-socket.lo abt-nogood.lo \
+	abt-endpoint.lo abt-solver.lo aabt-solver.lo aabt.pb.lo \
+	aabt-assignment.lo aabt-explanation.lo aabt-message.lo \
+	aabt-nogood.lo aabt-order.lo common-protocols.pb.lo
 libait_csp_la_OBJECTS = $(am_libait_csp_la_OBJECTS)
 libait_csp_la_LINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CXXLD) $(AM_CXXFLAGS) \
@@ -284,8 +284,12 @@ libait_csp_la_SOURCES = \
  			abt.pb.cc \
  			assignment.cpp \
  			compound-assignment.cpp \
+ 			domain.cpp \
+ 			relation-base.cpp \
+ 			variable.cpp \
  			predicate.cpp \
  			constraint.cpp \
+ 			csp-problem.cpp \
  			csp-solver.cpp \
  			abt-message.cpp \
  			abt-monitor.cpp \
@@ -309,8 +313,12 @@ ait_include_HEADERS = \
 			abt.pb.h \
 			assignment.h \
 			compound-assignment.h \
+			domain.h \
+ 			relation-base.h \
+ 			variable.h \
 			predicate.h \
 			constraint.h \
+			csp-problem.h \
 			csp-solver.h \
 			abt-monitor.h \
 			abt-socket.h \
@@ -396,8 +404,12 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/common-protocols.pb.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/compound-assignment.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/constraint.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/csp-problem.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/csp-solver.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/domain.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/predicate.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/relation-base.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/variable.Plo@am__quote@
 
 .cc.o:
 @am__fastdepCXX_TRUE@	depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.o$$||'`;\

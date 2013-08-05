@@ -1,7 +1,7 @@
 /*
  AIT Library (Artificial Intelligence Toolkit), A C++ library of AI tools.
 
- Copyright (c) 2013 Soroush Rabiei <soroush-r@users.sf.net>,
+ Copyright (c) 2012,2013 Soroush Rabiei <soroush-r@users.sf.net>,
  Roya Ghasemzadeh <ghasemzadeh.roya1@gmail.com>
 
  AIT is free software; you can redistribute it and/or
@@ -19,38 +19,15 @@
  You should have received a copy of the GNU Lesser General Public
  License along with this library; if not, write to the Free Software
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- */
-
-#ifndef CONSTRAINT_H_
-#define CONSTRAINT_H_
-
-#include <vector>
-#include <string>
-#include "relation-base.h"
-#include "variable.h"
-#include "../global.h"
-
-namespace AIT {
-namespace CSP {
-
-class CSP_Problem;
-
-class LIBRARY_API Constraint {
-public:
-	Constraint(const std::string& name, const size_t& arity,
-			const std::string& scope, const std::string& reference,
-			const std::string& parameters = std::string(),
-			CSP_Problem* parent=nullptr);
-	Constraint(Constraint&&);
-	Constraint& operator =(Constraint&&);
-	~Constraint();
-	bool satisfies();
-private:
-	std::vector<Variable*> scope;
-	std::vector<int*> parameters;
-	RelationBase* reference;
-};
-
-} /* namespace CSP */
-} /* namespace AIT */
-#endif /* CONSTRAINT_H_ */
+ */ 
+ 
+%class-name                "ConstraintParametersLexer"
+%baseclass-header          "constraint-parameters_scannerbase.h"
+%class-header              "constraint-parameters_scanner.h"
+%implementation-header     "constraint-parameters_scanner.ih"
+%lex-source                "constraint-parameters_scanner.cpp"
+ 
+ %%
+"int"                                 return ConstraintParametersParser::INT;
+[[:alpha:]]+                          return ConstraintParametersParser::VAR;
+[ \t\n]+                              ;

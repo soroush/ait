@@ -21,42 +21,51 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#ifndef CSP_SOLVER_H_
-#define CSP_SOLVER_H_
-
-#include <string>
-#include <fstream>
-#include <vector>
-#include <forward_list>
-#include <map>
 #include "domain.h"
-#include "variable.h"
-#include "relation-base.h"
-#include "constraint.h"
+#include "parser/domain_parser.h"
+#include <algorithm>
+#include <utility>
+#include <iterator>
 
-namespace AIT {
-namespace CSP {
+using namespace AIT::CSP;
+using namespace std;
 
-class LIBRARY_API CSP_Solver {
-public:
-	virtual ~CSP_Solver();
-	virtual void parseFromFile(const std::string&)=0;
-	virtual void parseFromStream(const std::ifstream&)=0;
-	virtual void parseFromContent(const std::string&)=0;
+// FIXME DomainParser may not be able to produce empty string
+Domain Domain::empty(0, "", "");
 
-	Variable* variable(const std::string&) const;
-	Domain* domain(const std::string&) const;
-	RelationBase* relation(const std::string&) const;
+Domain::Domain(const size_t& nbValues, const string& content,
+		const string& name) :
+		m_name(name) {
+	this->m_values.reserve(nbValues);
+	DomainParser parser(content, this->m_values);
+	parser.parse();
+}
 
-protected:
-	std::forward_list<Domain> domains;
-	std::forward_list<Variable> variables;
-	std::forward_list<Constraint> constraints;
+Domain::Domain(Domain&& other) :
+		m_values(move(other.m_values)), m_name(move(other.m_name)) {
+}
 
-	std::map<std::string, Variable*> variableNames;
-	std::map<std::string, Domain*> domainNames;
-};
+Domain& Domain::operator =(Domain&& other) {
+	this->m_values = move(other.m_values);
+	this->m_name = move(other.m_name);
+	return *this;
+}
 
-} /* namespace CSP */
-} /* namespace AIT */
-#endif /* CSP_SOLVER_H_ */
+Domain::~Domain() {
+}
+
+const string& Domain::getName() const {
+	return m_name;
+}
+
+void Domain::setName(const string& name) {
+	m_name = name;
+}
+
+const vector<int>& Domain::getValues() const {
+	return m_values;
+}
+
+void Domain::setValues(const vector<int>& values) {
+	m_values = values;
+}

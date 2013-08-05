@@ -1,7 +1,7 @@
 /*
  AIT Library (Artificial Intelligence Toolkit), A C++ library of AI tools.
 
- Copyright (c) 2013 Soroush Rabiei <soroush-r@users.sf.net>,
+ Copyright (c) 2012,2013 Soroush Rabiei <soroush-r@users.sf.net>,
  Roya Ghasemzadeh <ghasemzadeh.roya1@gmail.com>
 
  AIT is free software; you can redistribute it and/or
@@ -21,36 +21,27 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#ifndef CONSTRAINT_H_
-#define CONSTRAINT_H_
+#include "xvariables-parser.h"
+#include "../csp-problem.h"
+#include "../variable.h"
+#include <utility>
 
-#include <vector>
-#include <string>
-#include "relation-base.h"
-#include "variable.h"
-#include "../global.h"
+using namespace AIT::CSP;
+using namespace std;
 
-namespace AIT {
-namespace CSP {
+XVariablesParser::XVariablesParser(CSP_Problem& instance) :
+		m_instance(instance) {
+}
 
-class CSP_Problem;
+XVariablesParser::~XVariablesParser() {
+}
 
-class LIBRARY_API Constraint {
-public:
-	Constraint(const std::string& name, const size_t& arity,
-			const std::string& scope, const std::string& reference,
-			const std::string& parameters = std::string(),
-			CSP_Problem* parent=nullptr);
-	Constraint(Constraint&&);
-	Constraint& operator =(Constraint&&);
-	~Constraint();
-	bool satisfies();
-private:
-	std::vector<Variable*> scope;
-	std::vector<int*> parameters;
-	RelationBase* reference;
-};
+void XVariablesParser::variable(Variable variable) {
+	this->m_instance.variables.push_front(move(variable));
+	this->m_instance.variableNames[m_instance.variables.front().getName()] =
+			&m_instance.variables.front();
+}
 
-} /* namespace CSP */
-} /* namespace AIT */
-#endif /* CONSTRAINT_H_ */
+void XVariablesParser::nbVariables(unsigned long long unsignedLongLongInt) {
+	// TODO: Reserve space
+}

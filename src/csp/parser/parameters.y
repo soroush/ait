@@ -44,4 +44,7 @@ parameters:	type id parameters |
 			type id ;
 type:		int;
 int:		INT ;
-id:			ID	{ this->parameters.push_back(0); this->names[d_scanner.matched().c_str()]=this->parameters.size()-1; };
+id:			ID	{ 
+					this->parameters.push_back(0); 
+					this->names[d_scanner.matched().c_str()]=this->parameters.size()-1; 
+				};

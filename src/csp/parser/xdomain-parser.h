@@ -1,7 +1,7 @@
 /*
  AIT Library (Artificial Intelligence Toolkit), A C++ library of AI tools.
 
- Copyright (c) 2013 Soroush Rabiei <soroush-r@users.sf.net>,
+ Copyright (c) 2012,2013 Soroush Rabiei <soroush-r@users.sf.net>,
  Roya Ghasemzadeh <ghasemzadeh.roya1@gmail.com>
 
  AIT is free software; you can redistribute it and/or
@@ -21,36 +21,35 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#ifndef CONSTRAINT_H_
-#define CONSTRAINT_H_
+#ifndef XDOMAIN_PARSER_H_
+#define XDOMAIN_PARSER_H_
 
-#include <vector>
-#include <string>
-#include "relation-base.h"
-#include "variable.h"
-#include "../global.h"
+#include <xsd/cxx/parser/xml-schema.hxx>
+#include "xcsp-pskel.hxx"
 
 namespace AIT {
 namespace CSP {
 
-class CSP_Problem;
+class Domain;
 
-class LIBRARY_API Constraint {
+class XDomainParser: public domain_t_pskel,
+		public virtual xml_schema::string_pimpl {
 public:
-	Constraint(const std::string& name, const size_t& arity,
-			const std::string& scope, const std::string& reference,
-			const std::string& parameters = std::string(),
-			CSP_Problem* parent=nullptr);
-	Constraint(Constraint&&);
-	Constraint& operator =(Constraint&&);
-	~Constraint();
-	bool satisfies();
+	XDomainParser();
+	~XDomainParser();
+	void nbValues(unsigned long long);
+	void name(const ::std::string&);
+	AIT::CSP::Domain post_domain_t();
+	// API for top-level parsers
+	std::string name();
+	size_t nbValues();
+	std::string content();
 private:
-	std::vector<Variable*> scope;
-	std::vector<int*> parameters;
-	RelationBase* reference;
+	std::string m_name;
+	size_t m_nbValues;
+	std::string m_content;
 };
 
 } /* namespace CSP */
 } /* namespace AIT */
-#endif /* CONSTRAINT_H_ */
+#endif /* XDOMAIN_PARSER_H_ */

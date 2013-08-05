@@ -33,7 +33,7 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-check_PROGRAMS = parser_test$(EXEEXT)
+check_PROGRAMS = xsp$(EXEEXT)
 subdir = test
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -47,10 +47,10 @@ mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
-am_parser_test_OBJECTS = parser-test.$(OBJEXT)
-parser_test_OBJECTS = $(am_parser_test_OBJECTS)
-parser_test_LDADD = $(LDADD)
-parser_test_DEPENDENCIES = ../src/libait.la ../src/csp/libait_csp.la \
+am_xsp_OBJECTS = xsp.$(OBJEXT)
+xsp_OBJECTS = $(am_xsp_OBJECTS)
+xsp_LDADD = $(LDADD)
+xsp_DEPENDENCIES = ../src/libait.la ../src/csp/libait_csp.la \
 	../src/csp/parser/libait_csp_parser.la
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
@@ -65,8 +65,8 @@ CXXLD = $(CXX)
 CXXLINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
-SOURCES = $(parser_test_SOURCES)
-DIST_SOURCES = $(parser_test_SOURCES)
+SOURCES = $(xsp_SOURCES)
+DIST_SOURCES = $(xsp_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 am__tty_colors = \
@@ -205,7 +205,9 @@ LDADD = ../src/libait.la ../src/csp/libait_csp.la ../src/csp/parser/libait_csp_p
 #NQueens_ABT_Monitor NQueens_ABT_Agent
 #NQueens_ABT_Monitor_SOURCES = abt-monitor.cpp
 #NQueens_ABT_Agent_SOURCES = n-queen-abt-solver.cpp
-parser_test_SOURCES = parser-test.cpp
+#parser_test_SOURCES = parser-test.cpp
+#domain_SOURCES = domain.cpp
+xsp_SOURCES = xsp.cpp
 TESTS = $(check_PROGRAMS)
 all: all-am
 
@@ -250,9 +252,9 @@ clean-checkPROGRAMS:
 	list=`for p in $$list; do echo "$$p"; done | sed 's/$(EXEEXT)$$//'`; \
 	echo " rm -f" $$list; \
 	rm -f $$list
-parser_test$(EXEEXT): $(parser_test_OBJECTS) $(parser_test_DEPENDENCIES) $(EXTRA_parser_test_DEPENDENCIES) 
-	@rm -f parser_test$(EXEEXT)
-	$(CXXLINK) $(parser_test_OBJECTS) $(parser_test_LDADD) $(LIBS)
+xsp$(EXEEXT): $(xsp_OBJECTS) $(xsp_DEPENDENCIES) $(EXTRA_xsp_DEPENDENCIES) 
+	@rm -f xsp$(EXEEXT)
+	$(CXXLINK) $(xsp_OBJECTS) $(xsp_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -260,7 +262,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/parser-test.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xsp.Po@am__quote@
 
 .cpp.o:
 @am__fastdepCXX_TRUE@	$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<

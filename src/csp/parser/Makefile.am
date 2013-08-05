@@ -7,24 +7,48 @@ libait_csp_parser_la_SOURCES = \
 		exp_num.cpp \
 		exp_ref.cpp \
 		expression.cpp \
+		domain_scanner.cpp \
+		domain_parse.cpp \
+		constraint-parameters_scanner.cpp \
+		constraint-parameters_parse.cpp \
 		parameters_scanner.cpp \
 		parameters_parse.cpp \
 		predicate-f_scanner.cpp \
-		predicate-f_parse.cpp
+		predicate-f_parse.cpp \
+		xcsp-pskel.cxx \
+		xdomain-parser.cpp \
+		xdomains-parser.cpp \
+		xvariable-parser.cpp \
+		xvariables-parser.cpp
 ait_include_HEADERS =  \
 		exp_func.h \
 		exp_num.h \
 		exp_ref.h \
 		expression.h \
+		domain_scanner.h \
+		domain_scannerbase.h \
+		domain_parser.h \
+		domain_parser.ih \
+		domain_parserbase.h \
 		parameters_scanner.h \
 		parameters_scannerbase.h \
 		parameters_parser.h \
 		parameters_parser.ih \
 		parameters_parserbase.h \
+		constraint-parameters_scanner.h \
+		constraint-parameters_scannerbase.h \
+		constraint-parameters_parser.h \
+		constraint-parameters_parser.ih \
+		constraint-parameters_parserbase.h \
 		predicate-f_scanner.h \
 		predicate-f_scannerbase.h \
 		predicate-f_parser.h \
 		predicate-f_parser.ih \
-		predicate-f_parserbase.h
+		predicate-f_parserbase.h \
+		xcsp-pskel.hxx \
+		xdomain-parser.h \
+		xdomains-parser.h \
+		xvariable-parser.h \
+		xvariables-parser.h 
 ait_libincludedir = $(libdir)/ait/include
 

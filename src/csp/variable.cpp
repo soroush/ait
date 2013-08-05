@@ -21,42 +21,63 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "constraint.h"
-#include "parser/constraint-parameters_parser.h"
-#include "csp-problem.h"
-
+#include "variable.h"
 #include <utility>
 
 using namespace AIT::CSP;
 using namespace std;
 
-Constraint::Constraint(const std::string& name, const size_t& arity,
-		const std::string& scope_, const std::string& reference_,
-		const std::string& parameters_, CSP_Problem* parent) {
-	ConstraintParametersParser scopeParser(scope_, parent, this->scope);
-	scopeParser.parse();
-	ConstraintParametersParser parameterParser(parameters_, parent,
-			this->parameters);
-	parameterParser.parse();
-	this->reference = parent->relation(reference_);
+Variable::Variable(Domain* domain, const string& name, const int& value_) :
+		m_domain(domain), m_name(name), m_value(value_) {
 }
 
-Constraint::Constraint(Constraint&& other) :
-		scope(std::move(other.scope)), parameters(std::move(other.parameters)), reference(
-				std::move(other.reference)) {
+Variable::Variable() :
+		m_domain(&Domain::empty), m_name(""), m_value(0) {
 }
 
-Constraint& Constraint::operator =(Constraint&& other) {
-	this->scope = std::move(other.scope);
-	this->parameters = std::move(other.parameters);
-	this->reference = std::move(other.reference);
+Variable::Variable(Variable&& other) :
+		m_domain(other.m_domain), m_name(move(other.m_name)), m_value(
+				move(other.m_value)) {
+}
+
+Variable& Variable::operator =(Variable&& other) {
+	m_domain = std::move(other.m_domain);
+	m_name = std::move(other.m_name);
+	m_value = std::move(other.m_value);
 	return *this;
 }
 
-Constraint::~Constraint() {
+Variable::~Variable() {
 }
 
-bool Constraint::satisfies() {
-	return reference->evaluate(this->parameters);
+void Variable::value(const int& value) {
+	this->m_value = value;
 }
 
+int* Variable::value() {
+	return &(this->m_value);
+}
+
+const Domain* Variable::getDomain() const {
+	return m_domain;
+}
+
+void Variable::setDomain(Domain* domain) {
+	m_domain = domain;
+}
+
+const string& Variable::getName() const {
+	return m_name;
+}
+
+void Variable::setName(const string& name) {
+	m_name = name;
+}
+
+int Variable::getValue() const {
+	return m_value;
+}
+
+void Variable::setValue(int value) {
+	m_value = value;
+}
