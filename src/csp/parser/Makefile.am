@@ -16,10 +16,21 @@ libait_csp_parser_la_SOURCES = \
 		predicate-f_scanner.cpp \
 		predicate-f_parse.cpp \
 		xcsp-pskel.cxx \
+		xinstance-parser.cpp \
+		xpresentation-parser.cpp \
+		xproblem-type-parser.cpp \
 		xdomain-parser.cpp \
 		xdomains-parser.cpp \
 		xvariable-parser.cpp \
-		xvariables-parser.cpp
+		xvariables-parser.cpp \
+		xexpression-parser.cpp \
+		xpredicate-parser.cpp \
+		xpredicates-parser.cpp \
+		xrelation-parser.cpp \
+		xsemantics-type.cpp \
+		xrelations-parser.cpp \
+		xconstraint-parser.cpp \
+		xconstraints-parser.cpp
 ait_include_HEADERS =  \
 		exp_func.h \
 		exp_num.h \
@@ -46,9 +57,20 @@ ait_include_HEADERS =  \
 		predicate-f_parser.ih \
 		predicate-f_parserbase.h \
 		xcsp-pskel.hxx \
+		xinstance-parser.h \
+		xpresentation-parser.h \
+		xproblem-type-parser.h \
 		xdomain-parser.h \
 		xdomains-parser.h \
 		xvariable-parser.h \
-		xvariables-parser.h 
+		xvariables-parser.h \
+		xexpression-parser.h \
+		xpredicate-parser.h \
+		xpredicates-parser.h \
+		xrelation-parser.h \
+		xsemantics-type.h \
+		xrelations-parser.h \
+		xconstraint-parser.h \
+		xconstraints-parser.h
 ait_libincludedir = $(libdir)/ait/include
 

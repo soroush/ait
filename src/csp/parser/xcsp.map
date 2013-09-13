@@ -1,0 +1,15 @@
+include "../domain.h";
+include "../variable.h";
+include "../predicate.h";
+include "../constraint.h";
+include "../relation-base.h";
+include "../csp-problem.h";
+include <utility>;
+
+domain_t AIT::CSP::Domain AIT::CSP::Domain&&;
+variable_t AIT::CSP::Variable AIT::CSP::Variable&&;
+expression_t std::pair<AIT::CSP::Predicate::Type,std::string>;
+predicate_t AIT::CSP::Predicate AIT::CSP::Predicate&&;
+constraint_t AIT::CSP::Constraint AIT::CSP::Constraint&&;
+problemType AIT::CSP::CSP_Problem::Type;
+semanticsType AIT::CSP::RelationBase::Semantics;

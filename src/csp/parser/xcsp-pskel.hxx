@@ -83,10 +83,12 @@ class instance_t_pskel;
 #include <xsd/cxx/parser/validating/xml-schema-pimpl.hxx>
 #include <xsd/cxx/parser/expat/elements.hxx>
 
-#include <forward_list>
+#include <utility>
 #include "../variable.h"
+#include "../relation-base.h"
 #include "../predicate.h"
 #include "../domain.h"
+#include "../csp-problem.h"
 #include "../constraint.h"
 
 namespace xml_schema
@@ -280,8 +282,8 @@ class problemType_pskel: public virtual ::xml_schema::string_pskel
   // virtual void
   // pre ();
 
-  virtual void
-  post_problemType ();
+  virtual AIT::CSP::CSP_Problem::Type
+  post_problemType () = 0;
 };
 
 class semanticsType_pskel: public virtual ::xml_schema::string_pskel
@@ -292,8 +294,8 @@ class semanticsType_pskel: public virtual ::xml_schema::string_pskel
   // virtual void
   // pre ();
 
-  virtual void
-  post_semanticsType ();
+  virtual AIT::CSP::RelationBase::Semantics
+  post_semanticsType () = 0;
 };
 
 class presentation_t_pskel: public ::xml_schema::complex_content
@@ -308,7 +310,7 @@ class presentation_t_pskel: public ::xml_schema::complex_content
   name (const ::std::string&);
 
   virtual void
-  maxConstraintArity (const ::std::string&);
+  maxConstraintArity (unsigned long long);
 
   virtual void
   minViolatedConstraints (const ::std::string&);
@@ -320,7 +322,7 @@ class presentation_t_pskel: public ::xml_schema::complex_content
   solution (const ::std::string&);
 
   virtual void
-  type ();
+  type (const AIT::CSP::CSP_Problem::Type&);
 
   virtual void
   format (const ::std::string&);
@@ -334,7 +336,7 @@ class presentation_t_pskel: public ::xml_schema::complex_content
   name_parser (::xml_schema::string_pskel&);
 
   void
-  maxConstraintArity_parser (::xml_schema::string_pskel&);
+  maxConstraintArity_parser (::xml_schema::positive_integer_pskel&);
 
   void
   minViolatedConstraints_parser (::xml_schema::string_pskel&);
@@ -353,7 +355,7 @@ class presentation_t_pskel: public ::xml_schema::complex_content
 
   void
   parsers (::xml_schema::string_pskel& /* name */,
-           ::xml_schema::string_pskel& /* maxConstraintArity */,
+           ::xml_schema::positive_integer_pskel& /* maxConstraintArity */,
            ::xml_schema::string_pskel& /* minViolatedConstraints */,
            ::xml_schema::string_pskel& /* nbSolutions */,
            ::xml_schema::string_pskel& /* solution */,
@@ -375,7 +377,7 @@ class presentation_t_pskel: public ::xml_schema::complex_content
 
   protected:
   ::xml_schema::string_pskel* name_parser_;
-  ::xml_schema::string_pskel* maxConstraintArity_parser_;
+  ::xml_schema::positive_integer_pskel* maxConstraintArity_parser_;
   ::xml_schema::string_pskel* minViolatedConstraints_parser_;
   ::xml_schema::string_pskel* nbSolutions_parser_;
   ::xml_schema::string_pskel* solution_parser_;
@@ -470,13 +472,13 @@ class domains_t_pskel: public ::xml_schema::complex_content
   // pre ();
 
   virtual void
-  domain (AIT::CSP::Domain);
+  domain (AIT::CSP::Domain&&);
 
   virtual void
   nbDomains (unsigned long long);
 
-  virtual std::forward_list<AIT::CSP::Domain>
-  post_domains_t () = 0;
+  virtual void
+  post_domains_t ();
 
   // Parser construction API.
   //
@@ -641,13 +643,13 @@ class variables_t_pskel: public ::xml_schema::complex_content
   // pre ();
 
   virtual void
-  variable (AIT::CSP::Variable);
+  variable (AIT::CSP::Variable&&);
 
   virtual void
   nbVariables (unsigned long long);
 
-  virtual std::forward_list<AIT::CSP::Variable>
-  post_variables_t () = 0;
+  virtual void
+  post_variables_t ();
 
   // Parser construction API.
   //
@@ -758,7 +760,7 @@ class relation_t_pskel: public virtual ::xml_schema::string_pskel
   nbTuples (unsigned long long);
 
   virtual void
-  semantics ();
+  semantics (const AIT::CSP::RelationBase::Semantics&);
 
   virtual void
   post_relation_t ();
@@ -941,8 +943,8 @@ class expression_t_pskel: public ::xml_schema::complex_content
   virtual void
   infix (const ::std::string&);
 
-  virtual void
-  post_expression_t ();
+  virtual std::pair<AIT::CSP::Predicate::Type,std::string>
+  post_expression_t () = 0;
 
   // Parser construction API.
   //
@@ -1039,7 +1041,7 @@ class predicate_t_pskel: public ::xml_schema::complex_content
   parameters (const ::std::string&);
 
   virtual void
-  expression ();
+  expression (const std::pair<AIT::CSP::Predicate::Type,std::string>&);
 
   virtual void
   name (const ::std::string&);
@@ -1152,7 +1154,7 @@ class predicates_t_pskel: public ::xml_schema::complex_content
   // pre ();
 
   virtual void
-  predicate (AIT::CSP::Predicate);
+  predicate (AIT::CSP::Predicate&&);
 
   virtual void
   nbPredicates (unsigned long long);
@@ -1272,7 +1274,7 @@ class constraint_t_pskel: public ::xml_schema::complex_content
   reference (const ::std::string&);
 
   virtual void
-  arity (const ::std::string&);
+  arity (unsigned long long);
 
   virtual AIT::CSP::Constraint
   post_constraint_t () = 0;
@@ -1292,14 +1294,14 @@ class constraint_t_pskel: public ::xml_schema::complex_content
   reference_parser (::xml_schema::string_pskel&);
 
   void
-  arity_parser (::xml_schema::string_pskel&);
+  arity_parser (::xml_schema::positive_integer_pskel&);
 
   void
   parsers (::xml_schema::string_pskel& /* parameters */,
            ::xml_schema::string_pskel& /* name */,
            ::xml_schema::string_pskel& /* scope */,
            ::xml_schema::string_pskel& /* reference */,
-           ::xml_schema::string_pskel& /* arity */);
+           ::xml_schema::positive_integer_pskel& /* arity */);
 
   // Constructor.
   //
@@ -1328,7 +1330,7 @@ class constraint_t_pskel: public ::xml_schema::complex_content
   ::xml_schema::string_pskel* name_parser_;
   ::xml_schema::string_pskel* scope_parser_;
   ::xml_schema::string_pskel* reference_parser_;
-  ::xml_schema::string_pskel* arity_parser_;
+  ::xml_schema::positive_integer_pskel* arity_parser_;
 
   protected:
   struct v_state_descr_
@@ -1395,7 +1397,7 @@ class constraints_t_pskel: public ::xml_schema::complex_content
   // pre ();
 
   virtual void
-  constraint (AIT::CSP::Constraint);
+  constraint (AIT::CSP::Constraint&&);
 
   virtual void
   nbConstraints (unsigned long long);
@@ -1506,10 +1508,10 @@ class instance_t_pskel: public ::xml_schema::complex_content
   presentation ();
 
   virtual void
-  domains (std::forward_list<AIT::CSP::Domain>);
+  domains ();
 
   virtual void
-  variables (std::forward_list<AIT::CSP::Variable>);
+  variables ();
 
   virtual void
   relations ();

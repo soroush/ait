@@ -21,25 +21,38 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "xvariables-parser.h"
-#include "../csp-problem.h"
-#include "../variable.h"
-#include <utility>
+#include "xexpression-parser.h"
 
 using namespace AIT::CSP;
 using namespace std;
 
-XVariablesParser::XVariablesParser(CSP_Problem& instance) :
-		m_instance(instance) {
+XExpressionParser::XExpressionParser() {
 }
 
-XVariablesParser::~XVariablesParser() {
+XExpressionParser::~XExpressionParser() {
 }
 
-void XVariablesParser::variable(Variable variable) {
-	this->m_instance.addVariable(move(variable));
+void XExpressionParser::functional(const string& input) {
+	this->m_expression = input;
+	m_type = Predicate::Type::Functional;
 }
 
-void XVariablesParser::nbVariables(unsigned long long unsignedLongLongInt) {
-	// TODO: Reserve space
+void XExpressionParser::math(const string& input) {
+	this->m_expression = input;
+	m_type = Predicate::Type::MathML;
+}
+
+void XExpressionParser::postfix(const string& input) {
+	this->m_expression = input;
+	m_type = Predicate::Type::Postfix;
+}
+
+void XExpressionParser::infix(const string& input) {
+	this->m_expression = input;
+	m_type = Predicate::Type::Infix;
+}
+
+pair<Predicate::Type, string> XExpressionParser::post_expression_t() {
+	pair<Predicate::Type, string> result(this->m_type,this->m_expression);
+	return result;
 }

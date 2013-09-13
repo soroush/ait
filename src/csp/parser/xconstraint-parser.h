@@ -21,25 +21,36 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "xvariables-parser.h"
-#include "../csp-problem.h"
-#include "../variable.h"
-#include <utility>
+#ifndef XCONSTRAINT_PARSER_H_
+#define XCONSTRAINT_PARSER_H_
 
-using namespace AIT::CSP;
-using namespace std;
+#include "xcsp-pskel.hxx"
 
-XVariablesParser::XVariablesParser(CSP_Problem& instance) :
-		m_instance(instance) {
-}
+namespace AIT {
+namespace CSP {
 
-XVariablesParser::~XVariablesParser() {
-}
+class CSP_Problem;
 
-void XVariablesParser::variable(Variable variable) {
-	this->m_instance.addVariable(move(variable));
-}
+class XConstraintParser: public constraint_t_pskel {
+public:
+	XConstraintParser(CSP_Problem&);
+	~XConstraintParser();
+	void parameters(const std::string&);
+	void name(const std::string&);
+	void scope(const std::string&);
+	void reference(const std::string&);
+	//FIXME: Control behavior of XSD to generate more relax data types. Absolutely NOT long long!
+	void arity(unsigned long long);
+	Constraint post_constraint_t();
+private:
+	std::string m_parameters;
+	std::string m_name;
+	std::string m_scope;
+	std::string m_reference;
+	unsigned long long m_arity;
+	CSP_Problem& m_instance;
+};
 
-void XVariablesParser::nbVariables(unsigned long long unsignedLongLongInt) {
-	// TODO: Reserve space
-}
+} /* namespace CSP */
+} /* namespace AIT */
+#endif /* XCONSTRAINT_PARSER_H_ */

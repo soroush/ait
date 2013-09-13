@@ -48,7 +48,7 @@ name_parser (::xml_schema::string_pskel& p)
 }
 
 void presentation_t_pskel::
-maxConstraintArity_parser (::xml_schema::string_pskel& p)
+maxConstraintArity_parser (::xml_schema::positive_integer_pskel& p)
 {
   this->maxConstraintArity_parser_ = &p;
 }
@@ -85,7 +85,7 @@ format_parser (::xml_schema::string_pskel& p)
 
 void presentation_t_pskel::
 parsers (::xml_schema::string_pskel& name,
-         ::xml_schema::string_pskel& maxConstraintArity,
+         ::xml_schema::positive_integer_pskel& maxConstraintArity,
          ::xml_schema::string_pskel& minViolatedConstraints,
          ::xml_schema::string_pskel& nbSolutions,
          ::xml_schema::string_pskel& solution,
@@ -480,7 +480,7 @@ reference_parser (::xml_schema::string_pskel& p)
 }
 
 void constraint_t_pskel::
-arity_parser (::xml_schema::string_pskel& p)
+arity_parser (::xml_schema::positive_integer_pskel& p)
 {
   this->arity_parser_ = &p;
 }
@@ -490,7 +490,7 @@ parsers (::xml_schema::string_pskel& parameters,
          ::xml_schema::string_pskel& name,
          ::xml_schema::string_pskel& scope,
          ::xml_schema::string_pskel& reference,
-         ::xml_schema::string_pskel& arity)
+         ::xml_schema::positive_integer_pskel& arity)
 {
   this->parameters_parser_ = &parameters;
   this->name_parser_ = &name;
@@ -610,22 +610,6 @@ instance_t_pskel ()
 {
 }
 
-// problemType_pskel
-//
-
-void problemType_pskel::
-post_problemType ()
-{
-}
-
-// semanticsType_pskel
-//
-
-void semanticsType_pskel::
-post_semanticsType ()
-{
-}
-
 // presentation_t_pskel
 //
 
@@ -635,7 +619,7 @@ name (const ::std::string&)
 }
 
 void presentation_t_pskel::
-maxConstraintArity (const ::std::string&)
+maxConstraintArity (unsigned long long)
 {
 }
 
@@ -655,7 +639,7 @@ solution (const ::std::string&)
 }
 
 void presentation_t_pskel::
-type ()
+type (const AIT::CSP::CSP_Problem::Type&)
 {
 }
 
@@ -686,12 +670,17 @@ nbValues (unsigned long long)
 //
 
 void domains_t_pskel::
-domain (AIT::CSP::Domain)
+domain (AIT::CSP::Domain&&)
 {
 }
 
 void domains_t_pskel::
 nbDomains (unsigned long long)
+{
+}
+
+void domains_t_pskel::
+post_domains_t ()
 {
 }
 
@@ -712,12 +701,17 @@ domain (const ::std::string&)
 //
 
 void variables_t_pskel::
-variable (AIT::CSP::Variable)
+variable (AIT::CSP::Variable&&)
 {
 }
 
 void variables_t_pskel::
 nbVariables (unsigned long long)
+{
+}
+
+void variables_t_pskel::
+post_variables_t ()
 {
 }
 
@@ -740,7 +734,7 @@ nbTuples (unsigned long long)
 }
 
 void relation_t_pskel::
-semantics ()
+semantics (const AIT::CSP::RelationBase::Semantics&)
 {
 }
 
@@ -795,11 +789,6 @@ infix (const ::std::string&)
 {
 }
 
-void expression_t_pskel::
-post_expression_t ()
-{
-}
-
 // predicate_t_pskel
 //
 
@@ -809,7 +798,7 @@ parameters (const ::std::string&)
 }
 
 void predicate_t_pskel::
-expression ()
+expression (const std::pair<AIT::CSP::Predicate::Type,std::string>&)
 {
 }
 
@@ -822,7 +811,7 @@ name (const ::std::string&)
 //
 
 void predicates_t_pskel::
-predicate (AIT::CSP::Predicate)
+predicate (AIT::CSP::Predicate&&)
 {
 }
 
@@ -860,7 +849,7 @@ reference (const ::std::string&)
 }
 
 void constraint_t_pskel::
-arity (const ::std::string&)
+arity (unsigned long long)
 {
 }
 
@@ -868,7 +857,7 @@ arity (const ::std::string&)
 //
 
 void constraints_t_pskel::
-constraint (AIT::CSP::Constraint)
+constraint (AIT::CSP::Constraint&&)
 {
 }
 
@@ -891,12 +880,12 @@ presentation ()
 }
 
 void instance_t_pskel::
-domains (std::forward_list<AIT::CSP::Domain>)
+domains ()
 {
 }
 
 void instance_t_pskel::
-variables (std::forward_list<AIT::CSP::Variable>)
+variables ()
 {
 }
 
@@ -1076,8 +1065,7 @@ sequence_0 (unsigned long& state,
         {
           if (this->domain_parser_)
           {
-            AIT::CSP::Domain tmp (this->domain_parser_->post_domain_t ());
-            this->domain (std::move(tmp));
+            this->domain (this->domain_parser_->post_domain_t ());
           }
 
           count++;
@@ -1256,8 +1244,7 @@ sequence_0 (unsigned long& state,
         {
           if (this->variable_parser_)
           {
-            AIT::CSP::Variable tmp (this->variable_parser_->post_variable_t ());
-            this->variable (std::move(tmp));
+            this->variable (this->variable_parser_->post_variable_t ());
           }
 
           count++;
@@ -1556,8 +1543,7 @@ all_0 (unsigned long& state,
       {
         if (this->functional_parser_)
         {
-          const ::std::string& tmp (this->functional_parser_->post_string ());
-          this->functional (tmp);
+          this->functional (this->functional_parser_->post_string ());
         }
 
         count[0UL] = 1;
@@ -1584,8 +1570,7 @@ all_0 (unsigned long& state,
       {
         if (this->math_parser_)
         {
-          const ::std::string& tmp (this->math_parser_->post_string ());
-          this->math (tmp);
+          this->math (this->math_parser_->post_string ());
         }
 
         count[1UL] = 1;
@@ -1612,8 +1597,7 @@ all_0 (unsigned long& state,
       {
         if (this->postfix_parser_)
         {
-          const ::std::string& tmp (this->postfix_parser_->post_string ());
-          this->postfix (tmp);
+          this->postfix (this->postfix_parser_->post_string ());
         }
 
         count[2UL] = 1;
@@ -1640,8 +1624,7 @@ all_0 (unsigned long& state,
       {
         if (this->infix_parser_)
         {
-          const ::std::string& tmp (this->infix_parser_->post_string ());
-          this->infix (tmp);
+          this->infix (this->infix_parser_->post_string ());
         }
 
         count[3UL] = 1;
@@ -1815,8 +1798,7 @@ sequence_0 (unsigned long& state,
         {
           if (this->parameters_parser_)
           {
-            const ::std::string& tmp (this->parameters_parser_->post_string ());
-            this->parameters (tmp);
+            this->parameters (this->parameters_parser_->post_string ());
           }
 
           count = 0;
@@ -1852,8 +1834,7 @@ sequence_0 (unsigned long& state,
         {
           if (this->expression_parser_)
           {
-            this->expression_parser_->post_expression_t ();
-            this->expression ();
+            this->expression (this->expression_parser_->post_expression_t ());
           }
 
           count = 0;
@@ -2033,8 +2014,7 @@ sequence_0 (unsigned long& state,
         {
           if (this->predicate_parser_)
           {
-            AIT::CSP::Predicate tmp (this->predicate_parser_->post_predicate_t ());
-            this->predicate (std::move(tmp));
+            this->predicate (this->predicate_parser_->post_predicate_t ());
           }
 
           count++;
@@ -2206,8 +2186,7 @@ sequence_0 (unsigned long& state,
         {
           if (this->parameters_parser_)
           {
-            const ::std::string& tmp (this->parameters_parser_->post_string ());
-            this->parameters (tmp);
+            this->parameters (this->parameters_parser_->post_string ());
           }
 
           count = 0;
@@ -2383,8 +2362,7 @@ sequence_0 (unsigned long& state,
         {
           if (this->constraint_parser_)
           {
-            AIT::CSP::Constraint tmp (this->constraint_parser_->post_constraint_t ());
-            this->constraint (std::move(tmp));
+            this->constraint (this->constraint_parser_->post_constraint_t ());
           }
 
           count++;
@@ -2600,8 +2578,8 @@ sequence_0 (unsigned long& state,
         {
           if (this->domains_parser_)
           {
-            std::forward_list<AIT::CSP::Domain> tmp (this->domains_parser_->post_domains_t ());
-            this->domains (std::move(tmp));
+            this->domains_parser_->post_domains_t ();
+            this->domains ();
           }
 
           count = 0;
@@ -2637,8 +2615,8 @@ sequence_0 (unsigned long& state,
         {
           if (this->variables_parser_)
           {
-            std::forward_list<AIT::CSP::Variable> tmp (this->variables_parser_->post_variables_t ());
-            this->variables (std::move(tmp));
+            this->variables_parser_->post_variables_t ();
+            this->variables ();
           }
 
           count = 0;
@@ -2797,7 +2775,7 @@ _attribute_impl_phase_one (const ::xml_schema::ro_string& ns,
       this->maxConstraintArity_parser_->_pre_impl ();
       this->maxConstraintArity_parser_->_characters (s);
       this->maxConstraintArity_parser_->_post_impl ();
-      const ::std::string& tmp (this->maxConstraintArity_parser_->post_string ());
+      unsigned long long tmp (this->maxConstraintArity_parser_->post_positive_integer ());
       this->maxConstraintArity (tmp);
     }
 
@@ -2857,8 +2835,8 @@ _attribute_impl_phase_one (const ::xml_schema::ro_string& ns,
       this->type_parser_->_pre_impl ();
       this->type_parser_->_characters (s);
       this->type_parser_->_post_impl ();
-      this->type_parser_->post_problemType ();
-      this->type ();
+      const AIT::CSP::CSP_Problem::Type& tmp (this->type_parser_->post_problemType ());
+      this->type (tmp);
     }
 
     return true;
@@ -3197,8 +3175,8 @@ _attribute_impl_phase_one (const ::xml_schema::ro_string& ns,
       this->semantics_parser_->_pre_impl ();
       this->semantics_parser_->_characters (s);
       this->semantics_parser_->_post_impl ();
-      this->semantics_parser_->post_semanticsType ();
-      this->semantics ();
+      const AIT::CSP::RelationBase::Semantics& tmp (this->semantics_parser_->post_semanticsType ());
+      this->semantics (tmp);
     }
 
     static_cast< v_state_attr_* > (this->v_state_attr_stack_.top ())->semantics = true;
@@ -3437,7 +3415,7 @@ _attribute_impl_phase_one (const ::xml_schema::ro_string& ns,
       this->arity_parser_->_pre_impl ();
       this->arity_parser_->_characters (s);
       this->arity_parser_->_post_impl ();
-      const ::std::string& tmp (this->arity_parser_->post_string ());
+      unsigned long long tmp (this->arity_parser_->post_positive_integer ());
       this->arity (tmp);
     }
 

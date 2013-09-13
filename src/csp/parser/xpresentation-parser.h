@@ -21,25 +21,32 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "xvariables-parser.h"
-#include "../csp-problem.h"
-#include "../variable.h"
-#include <utility>
+#ifndef XPRESENTATION_PARSER_H_
+#define XPRESENTATION_PARSER_H_
 
-using namespace AIT::CSP;
-using namespace std;
+#include "xcsp-pskel.hxx"
 
-XVariablesParser::XVariablesParser(CSP_Problem& instance) :
-		m_instance(instance) {
-}
+namespace AIT {
+namespace CSP {
 
-XVariablesParser::~XVariablesParser() {
-}
+class CSP_Problem;
 
-void XVariablesParser::variable(Variable variable) {
-	this->m_instance.addVariable(move(variable));
-}
+class XPresentationParser: public presentation_t_pskel {
+public:
+	XPresentationParser(CSP_Problem&);
+	~XPresentationParser();
+	void name(const std::string&);
+	void maxConstraintArity(unsigned long long);
+	void minViolatedConstraints(const std::string&);
+	void nbSolutions(const std::string&);
+	void solution(const std::string&);
+	void type(const AIT::CSP::CSP_Problem::Type&);
+	void format(const std::string&);
 
-void XVariablesParser::nbVariables(unsigned long long unsignedLongLongInt) {
-	// TODO: Reserve space
-}
+private:
+	CSP_Problem& instance;
+};
+
+} /* namespace CSP */
+} /* namespace AIT */
+#endif /* XPRESENTATION_PARSER_H_ */

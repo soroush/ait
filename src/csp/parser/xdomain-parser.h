@@ -39,7 +39,7 @@ public:
 	~XDomainParser();
 	void nbValues(unsigned long long);
 	void name(const ::std::string&);
-	AIT::CSP::Domain post_domain_t();
+	Domain post_domain_t();
 	// API for top-level parsers
 	std::string name();
 	size_t nbValues();

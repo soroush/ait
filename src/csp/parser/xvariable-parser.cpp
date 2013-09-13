@@ -44,6 +44,6 @@ void XVariableParser::domain(const string& domainName) {
 
 Variable XVariableParser::post_variable_t() {
 	Domain* d = this->m_instance.domain(this->m_domain);
-	Variable v(d, this->m_name);
+	Variable v { d, this->m_name };
 	return v;
 }

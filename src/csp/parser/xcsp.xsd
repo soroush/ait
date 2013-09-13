@@ -19,7 +19,7 @@
 
 	<xs:complexType name="presentation_t">
 		<xs:attribute name="name" type="xs:string" use="optional" />
-		<xs:attribute name="maxConstraintArity" type="xs:string" use="optional" />
+		<xs:attribute name="maxConstraintArity" type="xs:positiveInteger" use="optional" />
 		<xs:attribute name="minViolatedConstraints" type="xs:string" />
 		<xs:attribute name="nbSolutions" type="xs:string" use="optional" />
 		<xs:attribute name="solution" type="xs:string" use="optional" />
@@ -105,7 +105,7 @@
 		<xs:attribute name="name" type="xs:string" use="required" />
 		<xs:attribute name="scope" type="xs:string" use="required" />
 		<xs:attribute name="reference" type="xs:string" use="required" />
-		<xs:attribute name="arity" type="xs:string" use="required" />
+		<xs:attribute name="arity" type="xs:positiveInteger" use="required" />
 	</xs:complexType>
 
 	<xs:complexType name="constraints_t">

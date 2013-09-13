@@ -35,12 +35,15 @@ namespace CSP {
 
 class LIBRARY_API RelationBase {
 public:
+	enum class Semantics {
+		Supports, Conflicts
+	};
 	RelationBase();
 	virtual ~RelationBase();
-	virtual bool evaluate(const std::vector<int>&) ;
-	virtual bool evaluate(std::vector<int>&&) ;
-	virtual bool evaluate(const std::vector<int*>&) ;
-	virtual bool evaluate(std::vector<int*>&&) ;
+	virtual bool evaluate(const std::vector<int>&);
+	virtual bool evaluate(std::vector<int>&&);
+	virtual bool evaluate(const std::vector<int*>&);
+	virtual bool evaluate(std::vector<int*>&&);
 };
 
 } /* namespace CSP */

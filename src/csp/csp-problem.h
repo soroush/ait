@@ -29,6 +29,7 @@
 #include <vector>
 #include <forward_list>
 #include <map>
+#include <utility>
 #include "domain.h"
 #include "variable.h"
 #include "relation-base.h"
@@ -41,14 +42,45 @@ class LIBRARY_API CSP_Problem {
 	friend class XDomainsParser;
 	friend class XVariablesParser;
 public:
+	enum class Type {
+		CSP, QCSP, WCSP, Unknown
+	};
+	enum class Format {
+		XCSP_21
+	};
+	enum class NumberType {
+		AtLeast, Exactly, Unknown
+	};
 	virtual ~CSP_Problem();
-	virtual void parseFromFile(const std::string&)=0;
-	virtual void parseFromStream(const std::ifstream&)=0;
-	virtual void parseFromContent(const std::string&)=0;
+	virtual void parseFromFile(const std::string&);
+	virtual void parseFromStream(const std::ifstream&);
+	virtual void parseFromContent(const std::string&);
+
+	void addDomain(Domain&& d);
+	void addVariable(Variable&& v);
+	void addConstraint(Constraint&& c);
 
 	Variable* variable(const std::string&) const;
 	Domain* domain(const std::string&) const;
 	RelationBase* relation(const std::string&) const;
+
+	// Interface:
+	void name(const std::string& name);
+	void maxConstraintArity(const unsigned int& max);
+	void minViolatedConstraints(std::pair<NumberType, unsigned int> number);
+	void nbSolutions(std::pair<NumberType, unsigned int> number);
+	void solution(const std::string& solution);
+	void type(const Type& type);
+	void format(const Format& format);
+
+private:
+	std::string m_name;
+	unsigned int m_maxConstraintArity;
+	std::pair<NumberType, unsigned int> m_minViolatedConstraints;
+	std::pair<NumberType, unsigned int> m_nbSolutions;
+	std::string m_solution;
+	Type m_type;
+	Format m_format;
 
 protected:
 	std::forward_list<Domain> domains;

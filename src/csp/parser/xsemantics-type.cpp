@@ -21,25 +21,27 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "xvariables-parser.h"
-#include "../csp-problem.h"
-#include "../variable.h"
-#include <utility>
+#include "xsemantics-type.h"
+#include "../relation-base.h"
+#include "../global.h"
+#include <string>
 
 using namespace AIT::CSP;
 using namespace std;
 
-XVariablesParser::XVariablesParser(CSP_Problem& instance) :
-		m_instance(instance) {
+XSemanticsType::XSemanticsType() {
 }
 
-XVariablesParser::~XVariablesParser() {
+XSemanticsType::~XSemanticsType() {
 }
 
-void XVariablesParser::variable(Variable variable) {
-	this->m_instance.addVariable(move(variable));
+RelationBase::Semantics XSemanticsType::post_semanticsType() {
+	string sem = this->post_string();
+	if (sem == "supports") {
+		return RelationBase::Semantics::Supports;
+	} else if (sem == "conflicts") {
+		return RelationBase::Semantics::Conflicts;
+	}
+	_ERROR("Invalid semantics type: `%s'.", sem.c_str());
 }
 
-void XVariablesParser::nbVariables(unsigned long long unsignedLongLongInt) {
-	// TODO: Reserve space
-}

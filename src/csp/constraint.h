@@ -39,8 +39,8 @@ class LIBRARY_API Constraint {
 public:
 	Constraint(const std::string& name, const size_t& arity,
 			const std::string& scope, const std::string& reference,
-			const std::string& parameters = std::string(),
-			CSP_Problem* parent=nullptr);
+			const std::string& parameters,
+			CSP_Problem* instance);
 	Constraint(Constraint&&);
 	Constraint& operator =(Constraint&&);
 	~Constraint();

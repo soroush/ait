@@ -21,25 +21,40 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "xvariables-parser.h"
-#include "../csp-problem.h"
-#include "../variable.h"
-#include <utility>
+#include "xconstraint-parser.h"
 
 using namespace AIT::CSP;
 using namespace std;
 
-XVariablesParser::XVariablesParser(CSP_Problem& instance) :
+XConstraintParser::XConstraintParser(CSP_Problem& instance) :
 		m_instance(instance) {
 }
 
-XVariablesParser::~XVariablesParser() {
+XConstraintParser::~XConstraintParser() {
 }
 
-void XVariablesParser::variable(Variable variable) {
-	this->m_instance.addVariable(move(variable));
+void XConstraintParser::parameters(const string& parameters) {
+	this->m_parameters = parameters;
 }
 
-void XVariablesParser::nbVariables(unsigned long long unsignedLongLongInt) {
-	// TODO: Reserve space
+void XConstraintParser::name(const string& name) {
+	this->m_name = name;
+}
+
+void XConstraintParser::scope(const string& scope) {
+	this->m_scope = scope;
+}
+
+void XConstraintParser::reference(const string& reference) {
+	this->m_reference = reference;
+}
+
+void XConstraintParser::arity(unsigned long long arity) {
+	this->m_arity = arity;
+}
+
+Constraint XConstraintParser::post_constraint_t() {
+	return Constraint(this->m_name, this->m_arity, this->m_scope,
+			this->m_reference, this->m_parameters, &(this->m_instance));
+	//FIXME: Replace pointer with reference
 }

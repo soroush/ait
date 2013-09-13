@@ -21,25 +21,28 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "xvariables-parser.h"
-#include "../csp-problem.h"
-#include "../variable.h"
-#include <utility>
+#include "xproblem-type-parser.h"
+#include "../global.h"
 
-using namespace AIT::CSP;
+using namespace AIT;
+using namespace CSP;
 using namespace std;
 
-XVariablesParser::XVariablesParser(CSP_Problem& instance) :
-		m_instance(instance) {
+XProblemTypeParser::XProblemTypeParser() {
 }
 
-XVariablesParser::~XVariablesParser() {
+XProblemTypeParser::~XProblemTypeParser() {
 }
 
-void XVariablesParser::variable(Variable variable) {
-	this->m_instance.addVariable(move(variable));
+CSP_Problem::Type XProblemTypeParser::post_problemType() {
+	string type = this->post_string();
+	if (type == "CSP")
+		return CSP_Problem::Type::CSP;
+	if (type == "QCSP")
+		return CSP_Problem::Type::QCSP;
+	if (type == "WCSP")
+		return CSP_Problem::Type::WCSP;
+	_ERROR("Unknown problem type: `%s'", type.c_str());
+	return CSP_Problem::Type::Unknown;
 }
 
-void XVariablesParser::nbVariables(unsigned long long unsignedLongLongInt) {
-	// TODO: Reserve space
-}

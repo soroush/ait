@@ -21,25 +21,27 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "xvariables-parser.h"
-#include "../csp-problem.h"
-#include "../variable.h"
-#include <utility>
+#ifndef XRELATION_PARSER_H_
+#define XRELATION_PARSER_H_
 
-using namespace AIT::CSP;
-using namespace std;
+#include "xcsp-pskel.hxx"
+#include <xsd/cxx/parser/xml-schema.hxx>
 
-XVariablesParser::XVariablesParser(CSP_Problem& instance) :
-		m_instance(instance) {
-}
+namespace AIT {
+namespace CSP {
 
-XVariablesParser::~XVariablesParser() {
-}
+class XRelationParser: public relation_t_pskel,
+		public virtual xml_schema::string_pimpl {
+public:
+	XRelationParser();
+	~XRelationParser();
+	void name(const std::string&);
+	void arity(unsigned long long);
+	void nbTuples(unsigned long long);
+	void semantics();
+	void post_relation_t();
+};
 
-void XVariablesParser::variable(Variable variable) {
-	this->m_instance.addVariable(move(variable));
-}
-
-void XVariablesParser::nbVariables(unsigned long long unsignedLongLongInt) {
-	// TODO: Reserve space
-}
+} /* namespace CSP */
+} /* namespace AIT */
+#endif /* XRELATION_PARSER_H_ */

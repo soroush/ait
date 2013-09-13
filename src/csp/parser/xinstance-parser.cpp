@@ -21,25 +21,14 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "xvariables-parser.h"
-#include "../csp-problem.h"
-#include "../variable.h"
-#include <utility>
+#include "xinstance-parser.h"
 
 using namespace AIT::CSP;
 using namespace std;
 
-XVariablesParser::XVariablesParser(CSP_Problem& instance) :
-		m_instance(instance) {
+XInstanceParser::XInstanceParser(CSP_Problem& instance):
+	m_instance(instance){
 }
 
-XVariablesParser::~XVariablesParser() {
-}
-
-void XVariablesParser::variable(Variable variable) {
-	this->m_instance.addVariable(move(variable));
-}
-
-void XVariablesParser::nbVariables(unsigned long long unsignedLongLongInt) {
-	// TODO: Reserve space
+XInstanceParser::~XInstanceParser() {
 }

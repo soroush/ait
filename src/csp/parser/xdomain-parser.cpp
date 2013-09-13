@@ -50,8 +50,8 @@ size_t XDomainParser::nbValues() {
 }
 
 Domain XDomainParser::post_domain_t() {
-	Domain d(this->m_nbValues, this->m_content, this->m_name);
-	return d;
+	this->m_content = this->post_string();
+	return Domain { this->m_nbValues, this->m_content, this->m_name };
 }
 
 string XDomainParser::content() {

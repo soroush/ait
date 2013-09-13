@@ -25,18 +25,20 @@
 #define XDOMAINS_PARSER_H_
 
 #include "xcsp-pskel.hxx"
-#include <forward_list>
 
 namespace AIT {
 namespace CSP {
 
 class Domain;
+class CSP_Problem;
 
 class XDomainsParser: public domains_t_pskel {
 public:
-	XDomainsParser();
-	void domain(Domain&);
+	XDomainsParser(CSP_Problem& instance);
+	void domain(Domain&&);
 	void nbDomains(unsigned long long);
+private:
+	CSP_Problem& m_instance;
 };
 
 } /* namespace CSP */

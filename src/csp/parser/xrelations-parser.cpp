@@ -21,25 +21,15 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "xvariables-parser.h"
-#include "../csp-problem.h"
-#include "../variable.h"
-#include <utility>
+#include "xrelations-parser.h"
 
-using namespace AIT::CSP;
-using namespace std;
+using namespace AIT ;
+using namespace CSP;
 
-XVariablesParser::XVariablesParser(CSP_Problem& instance) :
-		m_instance(instance) {
+XRelationsParser::XRelationsParser() {
+	// TODO Auto-generated constructor stub
 }
 
-XVariablesParser::~XVariablesParser() {
-}
-
-void XVariablesParser::variable(Variable variable) {
-	this->m_instance.addVariable(move(variable));
-}
-
-void XVariablesParser::nbVariables(unsigned long long unsignedLongLongInt) {
-	// TODO: Reserve space
+XRelationsParser::~XRelationsParser() {
+	// TODO Auto-generated destructor stub
 }

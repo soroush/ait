@@ -21,25 +21,25 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "xvariables-parser.h"
-#include "../csp-problem.h"
-#include "../variable.h"
-#include <utility>
+#ifndef XSEMANTICS_TYPE_H_
+#define XSEMANTICS_TYPE_H_
 
-using namespace AIT::CSP;
-using namespace std;
+#include <xsd/cxx/parser/xml-schema.hxx>
+#include "xcsp-pskel.hxx"
 
-XVariablesParser::XVariablesParser(CSP_Problem& instance) :
-		m_instance(instance) {
-}
+namespace AIT {
+namespace CSP {
 
-XVariablesParser::~XVariablesParser() {
-}
+class RelationBase;
 
-void XVariablesParser::variable(Variable variable) {
-	this->m_instance.addVariable(move(variable));
-}
+class XSemanticsType: public semanticsType_pskel,
+		public virtual xml_schema::string_pimpl {
+public:
+	XSemanticsType();
+	~XSemanticsType();
+	virtual RelationBase::Semantics post_semanticsType();
+};
 
-void XVariablesParser::nbVariables(unsigned long long unsignedLongLongInt) {
-	// TODO: Reserve space
-}
+} /* namespace CSP */
+} /* namespace AIT */
+#endif /* XSEMANTICS_TYPE_H_ */

@@ -23,6 +23,7 @@
 
 #include "xdomains-parser.h"
 #include "xdomain-parser.h"
+#include "../csp-problem.h"
 #include "../domain.h"
 
 #include <iostream>
@@ -31,11 +32,14 @@
 using namespace AIT::CSP;
 using namespace std;
 
-XDomainsParser::XDomainsParser()  {
+XDomainsParser::XDomainsParser(CSP_Problem& instance):
+		m_instance(instance){
 }
 
-void XDomainsParser::domain(Domain& domain) {
+void XDomainsParser::domain(Domain&& domain) {
+	this->m_instance.addDomain(std::move(domain));
 }
 
-void XDomainsParser::nbDomains(unsigned long long unsignedLongLongInt) {
+void XDomainsParser::nbDomains(unsigned long long number) {
+	// TODO: Reserve memory? Nah.. Just remove me
 }

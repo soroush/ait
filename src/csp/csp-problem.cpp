@@ -25,13 +25,21 @@
 using namespace AIT::CSP;
 using namespace std;
 
-
 Variable* CSP_Problem::variable(const string& name) const {
 }
 
 Domain* CSP_Problem::domain(const string& name) const {
 }
 
-RelationBase* CSP_Problem::relation(
-		const string& name) const {
+RelationBase* CSP_Problem::relation(const string& name) const {
+}
+
+void CSP_Problem::addDomain(Domain&& d) {
+//	if (domainNames.find(d.getName()) == domainNames.end()) {
+//		domains.push_front(move(d));
+//		domainNames[d.getName()] = &;
+//	}
+}
+
+void CSP_Problem::addVariable(Variable&& v) {
 }

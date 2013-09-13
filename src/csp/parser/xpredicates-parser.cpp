@@ -21,25 +21,21 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "xvariables-parser.h"
-#include "../csp-problem.h"
-#include "../variable.h"
-#include <utility>
+#include "xpredicates-parser.h"
 
 using namespace AIT::CSP;
 using namespace std;
 
-XVariablesParser::XVariablesParser(CSP_Problem& instance) :
-		m_instance(instance) {
+XPredicatesParser::XPredicatesParser() {
 }
 
-XVariablesParser::~XVariablesParser() {
+XPredicatesParser::~XPredicatesParser() {
 }
 
-void XVariablesParser::variable(Variable variable) {
-	this->m_instance.addVariable(move(variable));
+void XPredicatesParser::predicate(Predicate&& predicate) {
+	this->m_predicates.push_front(std::move(predicate));
 }
 
-void XVariablesParser::nbVariables(unsigned long long unsignedLongLongInt) {
-	// TODO: Reserve space
+void XPredicatesParser::nbPredicates(unsigned long long size) {
+	//TODO: Reserve space?
 }

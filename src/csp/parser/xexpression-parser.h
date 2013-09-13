@@ -21,25 +21,28 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "xvariables-parser.h"
-#include "../csp-problem.h"
-#include "../variable.h"
-#include <utility>
+#ifndef XEXPRESSION_PARSER_H_
+#define XEXPRESSION_PARSER_H_
 
-using namespace AIT::CSP;
-using namespace std;
+#include "xcsp-pskel.hxx"
 
-XVariablesParser::XVariablesParser(CSP_Problem& instance) :
-		m_instance(instance) {
-}
+namespace AIT {
+namespace CSP {
 
-XVariablesParser::~XVariablesParser() {
-}
+class XExpressionParser: public expression_t_pskel {
+public:
+	XExpressionParser();
+	~XExpressionParser();
+	void functional(const std::string&);
+	void math(const std::string&);
+	void postfix(const std::string&);
+	void infix(const std::string&);
+	std::pair<Predicate::Type, std::string> post_expression_t();
+private:
+	Predicate::Type m_type;
+	std::string m_expression;
+};
 
-void XVariablesParser::variable(Variable variable) {
-	this->m_instance.addVariable(move(variable));
-}
-
-void XVariablesParser::nbVariables(unsigned long long unsignedLongLongInt) {
-	// TODO: Reserve space
-}
+} /* namespace CSP */
+} /* namespace AIT */
+#endif /* XEXPRESSION_PARSER_H_ */

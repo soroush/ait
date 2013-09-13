@@ -29,32 +29,22 @@
 #include <vector>
 #include <forward_list>
 #include <map>
-#include "domain.h"
-#include "variable.h"
-#include "relation-base.h"
-#include "constraint.h"
+#include "csp-problem.h"
 
 namespace AIT {
 namespace CSP {
 
 class LIBRARY_API CSP_Solver {
 public:
+	CSP_Solver();
 	virtual ~CSP_Solver();
-	virtual void parseFromFile(const std::string&)=0;
-	virtual void parseFromStream(const std::ifstream&)=0;
-	virtual void parseFromContent(const std::string&)=0;
-
-	Variable* variable(const std::string&) const;
-	Domain* domain(const std::string&) const;
-	RelationBase* relation(const std::string&) const;
+	virtual void parseFromFile(const std::string&);
+	virtual void parseFromStream(const std::ifstream&);
+	virtual void parseFromContent(const std::string&);
 
 protected:
-	std::forward_list<Domain> domains;
-	std::forward_list<Variable> variables;
-	std::forward_list<Constraint> constraints;
+	CSP_Problem instance;
 
-	std::map<std::string, Variable*> variableNames;
-	std::map<std::string, Domain*> domainNames;
 };
 
 } /* namespace CSP */
