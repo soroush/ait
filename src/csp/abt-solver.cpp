@@ -127,7 +127,6 @@ void ABT_Solver::connect() {
 	// Send agent information to server
 	P_CommunicationProtocol introPacket;
 	introPacket.set_type(CP_MessageType::T_INTRODUCE);
-	introPacket.set_allocated_identity(new P_EndPoint());
 	introPacket.mutable_identity()->set_host(this->address);
 	introPacket.mutable_identity()->set_id(this->id);
 	introPacket.mutable_identity()->set_port(this->port);
