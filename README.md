@@ -26,5 +26,7 @@ AIT, will be released in 2015. Current versions do not have capability to
 compile modern C++ code. 
 ## Linux
 <code>./configure --prefix=/usr/local
+
 make
+
 sudo make install</code>
