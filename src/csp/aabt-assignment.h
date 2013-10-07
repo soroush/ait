@@ -24,7 +24,12 @@
 #ifndef AABT_ASSIGNMENT_H_
 #define AABT_ASSIGNMENT_H_
 
+#include "../../config.h"
+#ifdef PRECOMPILED_PROTOCOLS
+#include "aabt_precompiled.pb.h"
+#elif defined(GENERATED_PROTOCOLS)
 #include "aabt.pb.h"
+#endif
 #include "../global.h"
 
 namespace AIT {

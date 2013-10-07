@@ -26,10 +26,15 @@
 
 #include <vector>
 
+#include "../../config.h"
 #include "aabt-assignment.h"
+#ifdef PRECOMPILED_PROTOCOLS
+#include "aabt_precompiled.pb.h"
+#include "common-protocols_precompiled.pb.h"
+#elif defined(GENERATED_PROTOCOLS)
 #include "aabt.pb.h"
 #include "common-protocols.pb.h"
-#include "aabt.pb.h"
+#endif
 #include "../global.h"
 
 namespace AIT {

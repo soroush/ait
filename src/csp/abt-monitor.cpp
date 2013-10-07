@@ -46,7 +46,7 @@ ABT_Monitor::ABT_Monitor() :
 ABT_Monitor::~ABT_Monitor() {
 	this->responser.close();
 	this->publisher.close();
-	this->context.close();
+	delete this->context;
 }
 
 void ABT_Monitor::start() {
@@ -65,7 +65,7 @@ void ABT_Monitor::start() {
 		_INFO("Binding to %s:%d broadcast end point.",
 				"*", this->portNumberPublisher)
 		this->publisher.bind(address.str().data());
-	} catch (zmq::error_t e) {
+	} catch (zmq::error_t &e) {
 		_ERROR("Unable to bind to broadcast channel at %s:%d",
 				"*", this->portNumberPublisher)
 		cerr << e.what() << endl;

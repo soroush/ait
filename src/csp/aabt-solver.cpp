@@ -21,6 +21,7 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include "../../config.h"
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -28,7 +29,11 @@
 #include "aabt-solver.h"
 #include "aabt-message.h"
 #include "aabt-order.h"
+#ifdef PRECOMPILED_PROTOCOLS
+#include "abt_precompiled.pb.h"
+#elif defined(GENERATED_PROTOCOLS)
 #include "abt.pb.h"
+#endif
 
 using namespace std;
 using namespace AIT::CSP;

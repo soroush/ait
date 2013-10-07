@@ -21,6 +21,7 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include "../../config.h"
 #include <iostream>
 #include <vector>
 #include <queue>
@@ -30,7 +31,11 @@
 #include "aabt-assignment.h"
 #include "aabt-explanation.h"
 #include "abt-solver.h"
+#ifdef PRECOMPILED_PROTOCOLS
+#include "aabt_precompiled.pb.h"
+#elif defined(GENERATED_PROTOCOLS)
 #include "aabt.pb.h"
+#endif
 #include "common_async.h"
 #include "../global.h"
 

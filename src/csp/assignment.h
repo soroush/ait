@@ -24,8 +24,13 @@
 #ifndef ASSIGNMENT_H_
 #define ASSIGNMENT_H_
 
+#include "../../config.h"
 #include "common_async.h"
+#ifdef PRECOMPILED_PROTOCOLS
+#include "common-protocols_precompiled.pb.h"
+#elif defined(GENERATED_PROTOCOLS)
 #include "common-protocols.pb.h"
+#endif
 #include "../global.h"
 
 namespace AIT {

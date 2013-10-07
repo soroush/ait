@@ -24,10 +24,16 @@
 #ifndef SOCKET_H_
 #define SOCKET_H_
 
-#include <zmq.hpp>
+#include "../../config.h"
+#include "zmq.hpp"
 #include <string>
-#include "abt.pb.h"
+#ifdef PRECOMPILED_PROTOCOLS
+#include "aabt_precompiled.pb.h"
+#include "abt_precompiled.pb.h"
+#elif defined(GENERATED_PROTOCOLS)
 #include "aabt.pb.h"
+#include "abt.pb.h"
+#endif
 #include "../global.h"
 
 namespace AIT {

@@ -2,7 +2,7 @@
 // source: aabt.proto
 
 #define INTERNAL_SUPPRESS_PROTOBUF_FIELD_DEPRECATION
-#include "aabt.pb.h"
+#include "aabt_precompiled.pb.h"
 
 #include <algorithm>
 

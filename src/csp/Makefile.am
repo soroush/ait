@@ -3,8 +3,20 @@ AUTOMAKE_OPTIONS = subdir-objects
 AM_CPPFLAGS = -pipe
 ACLOCAL_AMFLAGS = ${ACLOCAL_FLAGS} -I m4
 noinst_LTLIBRARIES = libait_csp.la
-libait_csp_la_SOURCES = \
+if USE_GENERATED_PROTOCOLS
+%.pb.cc %.pb.h: %.proto
+	$(PROTOC) --proto_path=$(srcdir) --cpp_out=$(builddir) $^
+nodist_libait_csp_la_SOURCES = \
  			abt.pb.cc \
+ 			aabt.pb.cc \
+ 			common-protocols.pb.cc
+BUILT_SOURCES = \
+ 			abt.pb.h \
+ 			aabt.pb.h \
+ 			common-protocols.pb.h
+MOSTLYCLEANFILES = $(nodist_libait_csp_la_SOURCES) $(BUILT_SOURCES)
+endif
+libait_csp_la_SOURCES = \
  			assignment.cpp \
  			compound-assignment.cpp \
  			domain.cpp \
@@ -21,18 +33,15 @@ libait_csp_la_SOURCES = \
  			abt-endpoint.cpp \
  			abt-solver.cpp \
  			aabt-solver.cpp \
- 			aabt.pb.cc \
  			aabt-assignment.cpp \
  			aabt-explanation.cpp \
  			aabt-message.cpp \
  			aabt-nogood.cpp \
- 			aabt-order.cpp \
- 			common-protocols.pb.cc 
+ 			aabt-order.cpp
 libait_csp_la_LIBADD = parser/libait_csp_parser.la
 libait_csp_la_LDFLAGS = -version-info $(AIT_SO_VERSION)
 ait_includedir = $(includedir)/ait/csp
 ait_include_HEADERS =  \
-			abt.pb.h \
 			assignment.h \
 			compound-assignment.h \
 			domain.h \
@@ -46,12 +55,20 @@ ait_include_HEADERS =  \
 			abt-socket.h \
 			abt-solver.h \
 			common_async.h \
-			common-protocols.pb.h \
 			aabt-solver.h \
-			aabt.pb.h \
 			aabt-assignment.h \
 			aabt-explanation.h \
 			aabt-message.h \
 			aabt-nogood.h \
-			aabt-order.h 
+			aabt-order.h
+if USE_PRECOMPILED_PROTOCOLS
+libait_csp_la_SOURCES += \
+ 			abt_precompiled.pb.cc \
+ 			aabt_precompiled.pb.cc \
+ 			common-protocols_precompiled.pb.cc
+ait_include_HEADERS +=  \
+			abt_precompiled.pb.h \
+ 			aabt_precompiled.pb.h \
+ 			common-protocols_precompiled.pb.h
+endif
 ait_libincludedir = $(libdir)/ait/include
