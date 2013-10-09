@@ -1,0 +1,83 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Ait by soroush</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Ait</h1>
+        <p>Artificial Intelligence Toolkit</p>
+
+        <p class="view"><a href="https://github.com/soroush/ait">View the Project on GitHub <small>soroush/ait</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/soroush/ait/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/soroush/ait/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/soroush/ait">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a name="artificial-intelligence-toolkit" class="anchor" href="#artificial-intelligence-toolkit"><span class="octicon octicon-link"></span></a>Artificial Intelligence Toolkit</h1>
+
+<p>AIT is a C++ library aimed to provide a concrete framework for artificial
+intelligence research projects. It's also intended to fill the gap between
+academia and industry in area of AI by providing production-quality implementation
+of generic AI concepts and techniques.</p>
+
+<h2>
+<a name="dependencies" class="anchor" href="#dependencies"><span class="octicon octicon-link"></span></a>Dependencies</h2>
+
+<p>AIT is based on a modular architecture by design. Each module has it's own
+dependencies. Currently there is one module providing a framework to model <a href="en.wikipedia.org/wiki/Constraint_satisfaction_problem%E2%80%8E">constraint satisfaction problems</a> and solvers.</p>
+
+<h3>
+<a name="csp-library" class="anchor" href="#csp-library"><span class="octicon octicon-link"></span></a>CSP Library</h3>
+
+<p>CSP has a couple of dependencies. Dependency list depends on your needs.</p>
+
+<h2>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<p>You may either compile libAIT or download precompiled binaries. Currently a
+debian package repository is maintained in
+<a href="https://launchpad.net/%7Esoroush-r/+archive/solap">~soroush/solap</a> ppa. Also
+precompiled DLL's for Windows are available in sourceforge home page of the
+project.</p>
+
+<h1>
+<a name="compile" class="anchor" href="#compile"><span class="octicon octicon-link"></span></a>Compile</h1>
+
+<p><strong>WARNING</strong>: There is no support for Microsoft Visual Studio compilers. Please
+use latest GNU GCC to compile this project. Earliest MSVC that's able to compile
+AIT, will be released in 2015. Current versions do not have capability to
+compile modern C++ code. </p>
+
+<h2>
+<a name="linux" class="anchor" href="#linux"><span class="octicon octicon-link"></span></a>Linux</h2>
+
+<div class="highlight highlight-bash"><pre>./configure --prefix<span class="o">=</span>/usr/local
+make
+sudo make install
+</pre></div>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/soroush">soroush</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
