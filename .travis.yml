@@ -1,6 +1,7 @@
 before_install:
- - sudo apt-get update -qq
- - sudo apt-get install -qq libprotobuf-dev libzmq3-dev autotools-dev automake
+ - uname -a
+ - sudo apt-get update
+ - sudo apt-get install libprotobuf-dev libzmq3-dev autotools-dev automake
 language: cpp
 compiler:
   - gcc
