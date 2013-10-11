@@ -6,5 +6,5 @@ language: cpp
 compiler:
   - gcc
 script: 
-  - ./configure --enable-precompiled-protocols=yes --enable-silent-rules
+  - ./configure --enable-precompiled-protocols=no --enable-silent-rules
   - make
