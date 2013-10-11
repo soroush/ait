@@ -29,32 +29,13 @@
       </header>
       <section>
         <h1>
-<a name="artificial-intelligence-toolkit" class="anchor" href="#artificial-intelligence-toolkit"><span class="octicon octicon-link"></span></a>Artificial Intelligence Toolkit</h1>
+<a name="artificial-intelligence-toolkit-" class="anchor" href="#artificial-intelligence-toolkit-"><span class="octicon octicon-link"></span></a>Artificial Intelligence Toolkit <a href="https://travis-ci.org/soroush/ait"><img src="https://travis-ci.org/soroush/ait.png?branch=master" alt="Build Status"></a>
+</h1>
 
 <p>AIT is a C++ library aimed to provide a concrete framework for artificial
 intelligence research projects. It's also intended to fill the gap between
 academia and industry in area of AI by providing production-quality implementation
 of generic AI concepts and techniques.</p>
-
-<h2>
-<a name="dependencies" class="anchor" href="#dependencies"><span class="octicon octicon-link"></span></a>Dependencies</h2>
-
-<p>AIT is based on a modular architecture by design. Each module has it's own
-dependencies. Currently there is one module providing a framework to model <a href="en.wikipedia.org/wiki/Constraint_satisfaction_problem%E2%80%8E">constraint satisfaction problems</a> and solvers.</p>
-
-<h3>
-<a name="csp-library" class="anchor" href="#csp-library"><span class="octicon octicon-link"></span></a>CSP Library</h3>
-
-<p>CSP has a couple of dependencies. Dependency list depends on your needs.</p>
-
-<h2>
-<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
-
-<p>You may either compile libAIT or download precompiled binaries. Currently a
-debian package repository is maintained in
-<a href="https://launchpad.net/%7Esoroush-r/+archive/solap">~soroush/solap</a> ppa. Also
-precompiled DLL's for Windows are available in sourceforge home page of the
-project.</p>
 
 <h1>
 <a name="compile" class="anchor" href="#compile"><span class="octicon octicon-link"></span></a>Compile</h1>
@@ -65,12 +46,64 @@ AIT, will be released in 2015. Current versions do not have capability to
 compile modern C++ code. </p>
 
 <h2>
-<a name="linux" class="anchor" href="#linux"><span class="octicon octicon-link"></span></a>Linux</h2>
+<a name="dependencies" class="anchor" href="#dependencies"><span class="octicon octicon-link"></span></a>Dependencies</h2>
+
+<p>AIT is based on a modular architecture by design. Each module has it's own
+dependencies. Currently there is one module providing a framework to model <a href="en.wikipedia.org/wiki/Constraint_satisfaction_problem%E2%80%8E">constraint satisfaction problems</a> and solvers.</p>
+
+<h3>
+<a name="csp-library" class="anchor" href="#csp-library"><span class="octicon octicon-link"></span></a>CSP Library</h3>
+
+<p>CSP has a couple of dependencies. Dependency list depends on your needs. The minimal set of dependencies are:</p>
+
+<ul>
+<li>
+<a href="XML%20Data%20Binding%20for%20C++">ZeroMQ</a> - High-performance asynchronous messaging library (&gt;=3.0.0)</li>
+<li>
+<a href="http://www.codesynthesis.com/products/xsd/">XSD C++</a> - XML Data Binding for C++</li>
+<li>
+<a href="http://code.google.com/p/protobuf/">Protocol Buffers library</a> (&gt;= 2.4.0, &lt; 2.5.0)</li>
+</ul><p>To install dependencies in Debian/Ubuntu type:</p>
+
+<div class="highlight highlight-bash"><pre>sudo apt-get install libprotobuf-dev libzmq3-dev xsdcxx
+</pre></div>
+
+<p>And in RedHat/Fedora:</p>
+
+<div class="highlight highlight-bash"><pre>sudo yum install protobuf-devel zeromq-devel xsd
+</pre></div>
+
+<p><strong>Note</strong>: If you are using a higher version of protocol buffers on your system, you'll need to either downgrade it, download sources of an older version and compile it, or choose to re-generate protocol sources compatible with your current version of <code>libprotobuf</code>.</p>
+
+<p>Downgrading <code>libprotobuf</code> is likely to break package management system or other programs linked to it. It's highly recommended to statically link against an older compile of the library. To do so, pass path of old protobuf to <code>--with-protobuf-libdir</code> option at configure step. Make sure to pass <code>--enable-precompiled-protocols</code> to configure script.</p>
+
+<p>Another option is to re-generate protocol sources with your own version on <code>protoc</code> (protocol buffers C++ compiler). Of course you're required to have <code>protoc</code> installed on system. In Debian/Ubuntu type:</p>
+
+<div class="highlight highlight-bash"><pre>sudo apt-get install protobuf-compiler
+</pre></div>
+
+<p>And for RedHat/Fedora:</p>
+
+<div class="highlight highlight-bash"><pre>sudo yum install protobuf-compiler
+</pre></div>
+
+<p>Pass <code>--enable-precompiled-protocols=no</code> to force use of newly generated sources.</p>
+
+<p>After all dependencies satisfied, compile libAIT by typing:</p>
 
 <div class="highlight highlight-bash"><pre>./configure --prefix<span class="o">=</span>/usr/local
 make
 sudo make install
 </pre></div>
+
+<h2>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<p>You can either compile libAIT or download precompiled binaries. Currently a
+debian package repository is maintained in
+<a href="https://launchpad.net/%7Esoroush-r/+archive/solap">~soroush/solap</a> ppa. Also
+precompiled DLL's for Windows are available in sourceforge home page of the
+project.</p>
       </section>
       <footer>
         <p>This project is maintained by <a href="https://github.com/soroush">soroush</a></p>
