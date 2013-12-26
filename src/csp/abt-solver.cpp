@@ -452,9 +452,9 @@ void ABT_Solver::printAV() {
 }
 
 bool ABT_Solver::consistent(const int& v, const CompoundAssignment& ca) {
-//	for (const auto& c : this->constraints) {
+//	for (const auto& c : this->instance.constraints) {
 //		bool isInAgentView = true;
-//		for (const auto& i : c.identifier) {
+//		for (const auto& i : c.scope) {
 //			bool found;
 //			int value = getValueOf(i, found);
 //			if (!found) {
@@ -520,14 +520,14 @@ void* ABT_Solver::_messageReader(void* param) {
 	return 0;
 }
 
-void ABT_Solver::parseFromFile(const std::string& path) {
-	// TODO implement after generic CSP solver
-}
-
-void ABT_Solver::parseFromStream(const std::ifstream& file) {
-	// TODO implement after generic CSP solver
-}
-
-void ABT_Solver::parseFromContent(const std::string& content) {
-	// TODO implement after generic CSP solver
-}
+//void ABT_Solver::parseFromFile(const std::string& path) {
+//	// TODO implement after generic CSP solver
+//}
+//
+//void ABT_Solver::parseFromStream(const std::ifstream& file) {
+//	// TODO implement after generic CSP solver
+//}
+//
+//void ABT_Solver::parseFromContent(const std::string& content) {
+//	// TODO implement after generic CSP solver
+//}

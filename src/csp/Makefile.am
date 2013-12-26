@@ -72,3 +72,6 @@ ait_include_HEADERS +=  \
  			common-protocols_precompiled.pb.h
 endif
 ait_libincludedir = $(libdir)/ait/include
+EXTRA_DIST = aabt.proto \
+	aabt_precompiled.proto \
+	abt.proto

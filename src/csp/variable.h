@@ -31,7 +31,7 @@
 namespace AIT {
 namespace CSP {
 
-class Variable {
+class LIBRARY_API Variable {
 public:
 	Variable();
 	Variable(Domain* domain, const std::string& name = "",

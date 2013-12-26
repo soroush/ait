@@ -25,7 +25,7 @@
 #include <stdexcept>
 #include <vector>
 #include <sstream>
-#include "../global.h"
+#include "../../global.h"
 
 using namespace AIT;
 using namespace CSP;

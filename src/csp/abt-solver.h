@@ -51,9 +51,9 @@ public:
 	virtual ~ABT_Solver();
 	void ABT();
 	virtual void prepareProblem()=0;
-	void parseFromFile(const std::string&);
-	void parseFromStream(const std::ifstream&);
-	void parseFromContent(const std::string&);
+//	void parseFromFile(const std::string&);
+//	void parseFromStream(const std::ifstream&);
+//	void parseFromContent(const std::string&);
 
 protected:
 	class EndPoint: public protocols::csp::abt::P_EndPoint {

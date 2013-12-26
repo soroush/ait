@@ -73,4 +73,4 @@ ait_include_HEADERS =  \
 		xconstraint-parser.h \
 		xconstraints-parser.h
 ait_libincludedir = $(libdir)/ait/include
-
+EXTRA_DIST = *.ih

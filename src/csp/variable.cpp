@@ -27,12 +27,12 @@
 using namespace AIT::CSP;
 using namespace std;
 
-Variable::Variable(Domain* domain, const string& name, const int& value_) :
-		m_domain(domain), m_name(name), m_value(value_) {
-}
-
 Variable::Variable() :
 		m_domain(&Domain::empty), m_name(""), m_value(0) {
+}
+
+Variable::Variable(Domain* domain, const string& name, const int& value_) :
+		m_domain(domain), m_name(name), m_value(value_) {
 }
 
 Variable::Variable(Variable&& other) :

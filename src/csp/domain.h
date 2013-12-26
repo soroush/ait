@@ -39,6 +39,7 @@ public:
 	Domain(Domain&& );
 	Domain& operator =(Domain&&);
 	~Domain();
+
 	void reConstruct();
 	const std::string& getName() const;
 	void setName(const std::string& name);
@@ -53,4 +54,5 @@ private:
 
 } /* namespace CSP */
 } /* namespace AIT */
+
 #endif /* DOMAIN_H_ */

@@ -23,7 +23,7 @@
 
 #include "xsemantics-type.h"
 #include "../relation-base.h"
-#include "../global.h"
+#include "../../global.h"
 #include <string>
 
 using namespace AIT::CSP;
