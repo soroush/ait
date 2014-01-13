@@ -72,6 +72,7 @@ public:
 	void solution(const std::string& solution);
 	void type(const Type& type);
 	void format(const Format& format);
+	const std::forward_list<Constraint>& Constraints() const;
 
 private:
 	std::string m_name;

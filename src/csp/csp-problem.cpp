@@ -43,3 +43,8 @@ void CSP_Problem::addDomain(Domain&& d) {
 
 void CSP_Problem::addVariable(Variable&& v) {
 }
+
+const forward_list<Constraint>& CSP_Problem::Constraints() const {
+	return this->constraints;
+}
+

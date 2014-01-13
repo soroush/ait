@@ -43,7 +43,8 @@ Domain::Domain(const size_t& nbValues, const string& content,
 }
 
 Domain::Domain(Domain&& other) :
-		m_values(move(other.m_values)), m_name(move(other.m_name)) {
+		m_values(move(other.m_values)), m_name(move(other.m_name)) 
+                {
 }
 
 Domain& Domain::operator =(Domain&& other) {

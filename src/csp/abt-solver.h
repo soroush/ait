@@ -43,7 +43,7 @@
 namespace AIT {
 namespace CSP {
 
-class LIBRARY_API ABT_Solver : public CSP_Solver {
+class LIBRARY_API ABT_Solver: public CSP_Solver {
 	friend class AABT_Solver;
 public:
 	ABT_Solver(const std::string&, const unsigned short&, const unsigned short&,
@@ -51,9 +51,11 @@ public:
 	virtual ~ABT_Solver();
 	void ABT();
 	virtual void prepareProblem()=0;
-//	void parseFromFile(const std::string&);
-//	void parseFromStream(const std::ifstream&);
-//	void parseFromContent(const std::string&);
+	/**
+	 * This method extracts all constraints that current agent is evolved in
+	 * and stores pointers to them in a vector of Constraints.
+	 */
+	void prune();
 
 protected:
 	class EndPoint: public protocols::csp::abt::P_EndPoint {
@@ -155,6 +157,7 @@ protected:
 	Socket serverBroadcast;
 
 	bool end;
+	std::forward_list<Constraint> myConstraints;
 };
 
 } /* namespace CSP */

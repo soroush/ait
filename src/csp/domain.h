@@ -36,8 +36,8 @@ class CSP_Problem;
 class LIBRARY_API Domain {
 public:
 	Domain(const size_t& nbValues, const std::string& content, const std::string& name);
-	Domain(Domain&& );
-	Domain& operator =(Domain&&);
+	Domain(Domain&& d);
+	Domain& operator =(Domain&& d);
 	~Domain();
 
 	void reConstruct();

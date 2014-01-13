@@ -36,8 +36,8 @@ public:
 	Variable();
 	Variable(Domain* domain, const std::string& name = "",
 			const int& value = 0);
-	Variable(Variable&&);
-	Variable& operator =(Variable&&);
+	Variable(Variable&& v);
+	Variable& operator =(Variable&& v);
 	~Variable();
 
 	void value(const int& value);

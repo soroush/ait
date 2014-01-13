@@ -40,10 +40,10 @@ public:
 	};
 	RelationBase();
 	virtual ~RelationBase();
-	virtual bool evaluate(const std::vector<int>&);
-	virtual bool evaluate(std::vector<int>&&);
-	virtual bool evaluate(const std::vector<int*>&);
-	virtual bool evaluate(std::vector<int*>&&);
+	virtual bool evaluate(const std::vector<int>& v);
+	virtual bool evaluate(std::vector<int>&& v);
+	virtual bool evaluate(const std::vector<int*>& v);
+	virtual bool evaluate(std::vector<int*>&& v);
 };
 
 } /* namespace CSP */
