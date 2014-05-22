@@ -37,8 +37,7 @@ Domain::Domain(const size_t& nbValues, const string& content,
 		const string& name) :
 		m_name(name) {
 	this->m_values.reserve(nbValues);
-	// FIXME Replace this code with modern C++11
-	DomainParser parser(content, this->m_values);
+	DomainParser parser{content, this->m_values};
 	parser.parse();
 }
 
@@ -70,4 +69,5 @@ const vector<int>& Domain::getValues() const {
 
 void Domain::setValues(const vector<int>& values) {
 	m_values = values;
+	std::unique(m_values.begin(),m_values.end());
 }

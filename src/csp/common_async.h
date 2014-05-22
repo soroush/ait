@@ -25,11 +25,12 @@
 #define COMMON_ASYNC_HPP_
 
 #include <utility>
+#include <stddef.h>
 
 namespace AIT {
 namespace CSP {
 
-typedef unsigned AgentID;
+typedef size_t AgentID;
 
 } // namespace CSP
 } // namespace AIT

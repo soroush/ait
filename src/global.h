@@ -21,15 +21,17 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#ifndef GLOBAL_HPP_
-#define GLOBAL_HPP_
+#ifndef GLOBAL_H_
+#define GLOBAL_H_
 
 #include <iostream>
 #include <ctime>
 #include <stdio.h>
 
 #define LOGGING
-
+/**
+ * Library Export Symbols.
+ */
 #ifdef _WIN32
 #    ifdef DLL_EXPORT
 #        define LIBRARY_API __declspec(dllexport)
@@ -41,6 +43,9 @@
 #    define LIBRARY_API
 #endif
 
+/**
+ * Error Logging Backend
+ */
 #define _ERROR(format, args...)  \
 	{ \
 	time_t t = time(0);\
@@ -53,6 +58,9 @@
     fflush(stderr);\
 	}
 
+/**
+ * Information Logging Backend
+ */
 #define _INFO(format, args...)  \
 	{ \
     time_t t = time(0);\
@@ -65,4 +73,4 @@
     fflush(stdout);\
 	}
 
-#endif /* GLOBAL_HPP_ */
+#endif /* GLOBAL_H_ */

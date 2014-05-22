@@ -30,29 +30,31 @@
 
 namespace AIT {
 namespace CSP {
-
+/**
+ * This class represents a variable in a CSP problem. Each variable can take
+ * on the values in its nonempty domain @ref m_domain.
+ */
 class LIBRARY_API Variable {
 public:
-	Variable();
-	Variable(Domain* domain, const std::string& name = "",
-			const int& value = 0);
-	Variable(Variable&& v);
-	Variable& operator =(Variable&& v);
-	~Variable();
+    Variable();
+    Variable(Domain* domain, const std::string& name = "",
+            const int& value = 0);
+    Variable(Variable&& v);
+    Variable& operator =(Variable&& v);
+    ~Variable();
 
-	void value(const int& value);
-	int* value();
-	const Domain* getDomain() const;
-	void setDomain(Domain* domain);
-	const std::string& getName() const;
-	void setName(const std::string& name);
-	int getValue() const;
-	void setValue(int value);
+    int* value();
+    const Domain* getDomain() const;
+    void setDomain(Domain* domain);
+    const std::string& getName() const;
+    void setName(const std::string& name);
+    int getValue() const;
+    void setValue(int value);
 
 private:
-	Domain* m_domain;
-	std::string m_name;
-	int m_value;
+    Domain* m_domain;
+    std::string m_name;
+    int m_value;
 };
 
 } /* namespace CSP */

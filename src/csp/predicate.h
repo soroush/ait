@@ -32,22 +32,51 @@ namespace CSP {
 
 class LIBRARY_API Predicate: public RelationBase {
 public:
-	enum class Type {
-		Functional, Infix, Postfix, MathML
-	};
-	Predicate(const std::string& parameters, const std::string& input,
-			const Type&);
-	Predicate(Predicate&&);
-	Predicate& operator =(Predicate&&);
-	~Predicate();
-	bool evaluate(const std::vector<int>&);
-	bool evaluate(std::vector<int>&&) ;
-	bool evaluate(const std::vector<int*>&) ;
+    enum class Type {
+        Functional, Infix, Postfix, MathML
+    };
+    Predicate(const std::string& parameters, const std::string& input,
+            const Type&);
+    Predicate(Predicate&&);
+    Predicate& operator =(Predicate&&);
+    ~Predicate();
+    bool evaluate(const std::vector<int>&);
+    bool evaluate(std::vector<int>&&);
+    bool evaluate(const std::vector<int*>&);
 private:
-	std::vector<int> parameters;
-	std::map<std::string, size_t> names;
-	std::vector<Expression*> postfix;
-	std::stack<int> evaluation;
+    /**
+     * Parameters of a predicate. This vector holds actual values of parameters
+     * processed by the predicate
+     */
+    std::vector<int> parameters;
+    /**
+     * Names of parameters held by predicate. This variable, maps a name (e.g.
+     * "X", "A_0", ...) to an index in @ref parameters such that if "X" is first
+     * parameter of predicate, then names["X"] is 0 and parameters(names["X"])
+     * is value of "X".
+     */
+    std::map<std::string, size_t> names;
+    /**
+     * This vector holds pointers to expressions held by current predicate. A
+     * predicate can hold a variety of representations, one for each type.
+     * In order to get a simple computational approach over all types of
+     * representations, all types of expression will be converted to postfix
+     * notation.
+     * Currently only functional representation is supported. If there is more
+     * than one representation, then result of converting all representations to
+     * postfix should be same.
+     */
+    std::vector<Expression*> postfix;
+    /**
+     * Evaluation stack used by expressions. After finishing evaluation
+     * operation, this stack will have one value, either 0 or 1 which represents
+     * if predicate is satisfied by given values or not. If there exists more
+     * than one value in stack, then there is something wrong with evaluation.
+     * Either parser did not do the job correctly or evaluation is not done
+     * properly by the @ref Expression (Specifically the @ref exp_func class and
+     * its derivatives.)
+     */
+    std::stack<int> evaluation;
 };
 
 } /* namespace CSP */

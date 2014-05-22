@@ -41,7 +41,7 @@ bool NQueen_ABT_Solver::consistent(const int& v,
 		return false;
 	for (const auto& a : agentView_.items) {
 		if (v == a.value || (abs(v - a.value) == abs(this->id - a.id))) {
-			//_INFO("(%d,%d) <=> (%d,%d)", this->id, v, a.id, a.value);
+			_INFO("(%d,%d) <=> (%d,%d)", this->id, v, a.id, a.value);
 			return false;
 		}
 	}

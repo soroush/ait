@@ -1065,7 +1065,8 @@ sequence_0 (unsigned long& state,
         {
           if (this->domain_parser_)
           {
-            this->domain (this->domain_parser_->post_domain_t ());
+            AIT::CSP::Domain&& tmp (this->domain_parser_->post_domain_t ());
+            this->domain (std::move(tmp));
           }
 
           count++;
@@ -1244,7 +1245,8 @@ sequence_0 (unsigned long& state,
         {
           if (this->variable_parser_)
           {
-            this->variable (this->variable_parser_->post_variable_t ());
+            AIT::CSP::Variable&& tmp (this->variable_parser_->post_variable_t ());
+            this->variable (std::move(tmp));
           }
 
           count++;
@@ -1543,7 +1545,8 @@ all_0 (unsigned long& state,
       {
         if (this->functional_parser_)
         {
-          this->functional (this->functional_parser_->post_string ());
+          const ::std::string& tmp (this->functional_parser_->post_string ());
+          this->functional (tmp);
         }
 
         count[0UL] = 1;
@@ -1570,7 +1573,8 @@ all_0 (unsigned long& state,
       {
         if (this->math_parser_)
         {
-          this->math (this->math_parser_->post_string ());
+          const ::std::string& tmp (this->math_parser_->post_string ());
+          this->math (tmp);
         }
 
         count[1UL] = 1;
@@ -1597,7 +1601,8 @@ all_0 (unsigned long& state,
       {
         if (this->postfix_parser_)
         {
-          this->postfix (this->postfix_parser_->post_string ());
+          const ::std::string& tmp (this->postfix_parser_->post_string ());
+          this->postfix (tmp);
         }
 
         count[2UL] = 1;
@@ -1624,7 +1629,8 @@ all_0 (unsigned long& state,
       {
         if (this->infix_parser_)
         {
-          this->infix (this->infix_parser_->post_string ());
+          const ::std::string& tmp (this->infix_parser_->post_string ());
+          this->infix (tmp);
         }
 
         count[3UL] = 1;
@@ -1798,7 +1804,8 @@ sequence_0 (unsigned long& state,
         {
           if (this->parameters_parser_)
           {
-            this->parameters (this->parameters_parser_->post_string ());
+            const ::std::string& tmp (this->parameters_parser_->post_string ());
+            this->parameters (tmp);
           }
 
           count = 0;
@@ -1834,7 +1841,8 @@ sequence_0 (unsigned long& state,
         {
           if (this->expression_parser_)
           {
-            this->expression (this->expression_parser_->post_expression_t ());
+            const std::pair<AIT::CSP::Predicate::Type,std::string>& tmp (this->expression_parser_->post_expression_t ());
+            this->expression (tmp);
           }
 
           count = 0;
@@ -2014,7 +2022,8 @@ sequence_0 (unsigned long& state,
         {
           if (this->predicate_parser_)
           {
-            this->predicate (this->predicate_parser_->post_predicate_t ());
+            AIT::CSP::Predicate&& tmp (this->predicate_parser_->post_predicate_t ());
+            this->predicate (std::move(tmp));
           }
 
           count++;
@@ -2186,7 +2195,8 @@ sequence_0 (unsigned long& state,
         {
           if (this->parameters_parser_)
           {
-            this->parameters (this->parameters_parser_->post_string ());
+            const ::std::string& tmp (this->parameters_parser_->post_string ());
+            this->parameters (tmp);
           }
 
           count = 0;
@@ -2362,7 +2372,8 @@ sequence_0 (unsigned long& state,
         {
           if (this->constraint_parser_)
           {
-            this->constraint (this->constraint_parser_->post_constraint_t ());
+            AIT::CSP::Constraint&& tmp (this->constraint_parser_->post_constraint_t ());
+            this->constraint (std::move(tmp));
           }
 
           count++;

@@ -45,9 +45,26 @@ public:
 	Constraint& operator =(Constraint&&);
 	~Constraint();
 	bool satisfies();
+
+	const std::vector<Variable*>& Scope() const;
 private:
+	/**
+	 * List of all pointers to all variables of current constraint. This
+	 * variable is useless in current computation and it's computed and held
+	 * for future usages or external algorithms.
+	 */
 	std::vector<Variable*> scope;
+	/**
+	 * A vector of pointers to values of all variables and numerals that should
+	 * be passed
+	 * through predicate. If @ref reference is a relation (current constraint is
+	 * an extension) then this vector should be identical to @ref scope in terms
+	 * of logic, though for computational reasons we keep it empty in such case.
+	 */
 	std::vector<int*> parameters;
+	/**
+	 * Pointer to a @ref Relation or @ref Predicate.
+	 */
 	RelationBase* reference;
 };
 

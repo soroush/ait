@@ -50,10 +50,6 @@ Variable& Variable::operator =(Variable&& other) {
 Variable::~Variable() {
 }
 
-void Variable::value(const int& value) {
-	this->m_value = value;
-}
-
 int* Variable::value() {
 	return &(this->m_value);
 }

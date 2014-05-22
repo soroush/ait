@@ -25,7 +25,16 @@
 using namespace AIT::CSP;
 using namespace std;
 
-Variable* CSP_Problem::variable(const string& name) const {
+Variable* CSP_Problem::variable(const string& name) {
+    for(auto v = this->variables.begin(); v!= this->variables.end(); ++v){
+        if(v->getName() == name){
+            return &(*v);
+        }
+    }
+}
+
+Variable* CSP_Problem::variable(const size_t& index) const {
+    //return &(this->variables[index]);
 }
 
 Domain* CSP_Problem::domain(const string& name) const {
@@ -47,4 +56,3 @@ void CSP_Problem::addVariable(Variable&& v) {
 const forward_list<Constraint>& CSP_Problem::Constraints() const {
 	return this->constraints;
 }
-

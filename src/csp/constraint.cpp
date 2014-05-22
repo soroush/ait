@@ -33,8 +33,9 @@ using namespace std;
 Constraint::Constraint(const std::string& name, const size_t& arity,
 		const std::string& scope_, const std::string& reference_,
 		const std::string& parameters_, CSP_Problem* parent) {
-	ConstraintParametersParser scopeParser(scope_, parent, this->scope);
-	scopeParser.parse();
+	//FIXME: Uncomment following lines after resolving pointers problem
+    // ConstraintParametersParser scopeParser(scope_, parent, this->scope);
+	// scopeParser.parse();
 	ConstraintParametersParser parameterParser(parameters_, parent,
 			this->parameters);
 	parameterParser.parse();
@@ -57,6 +58,19 @@ Constraint::~Constraint() {
 }
 
 bool Constraint::satisfies() {
-	return reference->evaluate(this->parameters);
+    /** FIXME: This is a BUG. a Predicate do not take a vector of pointers to
+    * integers, but a vector of integers. Currently I'll make a new vector and
+    * deep copy everything into this one, then pass it to the predicate. But
+    * this is not a good solution. Remember to change definition of Predicate.
+    */
+    vector<int> values(this->parameters.size());
+    for(const auto& pointer : this->parameters)
+       values.push_back(*pointer);
+	return reference->evaluate(std::move(values));
 }
+
+const vector<Variable*>& Constraint::Scope() const {
+	return this->scope;
+}
+
 

@@ -19,16 +19,16 @@ public:
 		Scope, Parameter
 	};
 	ConstraintParametersParser(const std::string& input,
-			const AIT::CSP::CSP_Problem* problem,
+			AIT::CSP::CSP_Problem* problem,
 			std::vector<AIT::CSP::Variable*>& output);
 	ConstraintParametersParser(const std::string& input,
-			const AIT::CSP::CSP_Problem* problem, std::vector<int*>& output);
+			AIT::CSP::CSP_Problem* problem, std::vector<int*>& output);
 	int parse();
 
 private:
 	std::istringstream str;
 	ConstraintParametersLexer d_scanner;
-	const AIT::CSP::CSP_Problem* problem;
+	AIT::CSP::CSP_Problem* problem;
 	std::vector<AIT::CSP::Variable*>* scope;
 	std::vector<int*>* parameters;
 	ParserMode mode;
@@ -43,14 +43,14 @@ private:
 };
 
 inline ConstraintParametersParser::ConstraintParametersParser(
-		const std::string& input, const AIT::CSP::CSP_Problem* problem_,
+		const std::string& input, AIT::CSP::CSP_Problem* problem_,
 		std::vector<AIT::CSP::Variable*>& output) :
 		str(input), problem(problem_), scope(&output), parameters(nullptr), mode(
 				ParserMode::Scope) {
 }
 
 inline ConstraintParametersParser::ConstraintParametersParser(
-		const std::string& input, const AIT::CSP::CSP_Problem* problem_,
+		const std::string& input, AIT::CSP::CSP_Problem* problem_,
 		std::vector<int*>& output) :
 		str(input), problem(problem_), scope(nullptr), parameters(&output), mode(
 				ParserMode::Parameter) {

@@ -52,6 +52,8 @@ var:		VAR {
 				} ;
 int:		INT {
 					int value = atoi(d_scanner.matched().c_str());
-					Variable* v = new Variable(&Domain::empty, "" ,  value);
-					this->parameters->push_back(v->value());
+					//FIXME: instead of passing a dummy variable, just pass a 
+					// shared pointer to constraint and make sure that constraint class
+					// have a vector of std::_shared_ptr<int> to keep values.
+					this->parameters->push_back(new int(value));
 				} ;

@@ -188,7 +188,7 @@ void exp_func_xor::evaluate(std::stack<int>& s) {
 	int v2 = s.top();
 	s.pop();
 	s.emplace((v2 == v1) ? 0 : 1);
-	// TODO: Restric v2 and v1 to be `0' or `1'
+	// TODO: Restrict v2 and v1 to be `0' or `1'
 }
 
 void exp_func_iff::evaluate(std::stack<int>& s) {

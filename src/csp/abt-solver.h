@@ -132,6 +132,7 @@ protected:
 	std::list<std::vector<EndPoint>::iterator> succeeding; // Γ-
 	std::vector<EndPoint> everybody;
 	std::list<Nogood> noGoodStore;
+	// FIXME: Integrate other parts with new design: Copy domain from problem definition
 	std::vector<int> domain;
 	CompoundAssignment agentView;
 	std::vector<int> agentViewX;

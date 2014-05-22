@@ -60,7 +60,8 @@ public:
 	void addVariable(Variable&& v);
 	void addConstraint(Constraint&& c);
 
-	Variable* variable(const std::string&) const;
+	Variable* variable(const std::string&);
+	Variable* variable(const size_t&) const;
 	Domain* domain(const std::string&) const;
 	RelationBase* relation(const std::string&) const;
 

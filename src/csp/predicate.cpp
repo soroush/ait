@@ -32,79 +32,86 @@ using namespace AIT::CSP;
 using namespace std;
 
 Predicate::Predicate(const string& parameters, const string& input,
-		const Type& type) {
-	switch (type) {
-	case Type::Functional: {
-		ParametersParser pParser(parameters, this->parameters, this->names);
-		pParser.parse();
-		FunctionalParser fParser(input, this->postfix, this->parameters,
-				this->names);
-		fParser.parse();
-	}
-		break;
-	case Type::Infix:
-		break;
-	case Type::Postfix:
-		break;
-	case Type::MathML:
-		break;
-	default:
-		break;
-	}
+        const Type& type) {
+    switch (type) {
+    case Type::Functional: {
+        ParametersParser pParser(parameters, this->parameters, this->names);
+        pParser.parse();
+        FunctionalParser fParser(input, this->postfix, this->parameters,
+                this->names);
+        fParser.parse();
+        //TODO: Implement parsers for other types of representation.
+    }
+        break;
+    case Type::Infix:
+        break;
+    case Type::Postfix:
+        break;
+    case Type::MathML:
+        break;
+    default:
+        break;
+    }
 }
 
 Predicate::~Predicate() {
-	for (auto& e : this->postfix)
-		delete e;
+    for (auto& e : this->postfix)
+        delete e;
 }
 
 bool Predicate::evaluate(const vector<int>& inputs) {
-	this->parameters = inputs;
-	while (!this->evaluation.empty())
-		this->evaluation.pop();
-	for (auto& e : this->postfix) {
-		e->evaluate(this->evaluation);
-	}
-	// TODO: Check for validity
-	return (this->evaluation.top() == 1);
+    this->parameters = inputs;
+    // Clear the stack:
+    while (!this->evaluation.empty())
+        this->evaluation.pop();
+
+    for (auto& e : this->postfix) {
+        e->evaluate(this->evaluation);
+    }
+    // TODO: Check for validity
+    return (this->evaluation.top() == 1);
 }
 
 bool Predicate::evaluate(vector<int> && inputs) {
-	this->parameters = inputs;
-	while (!this->evaluation.empty())
-		this->evaluation.pop();
-	for (auto& e : this->postfix) {
-		e->evaluate(this->evaluation);
-	}
-	// TODO: Check for validity
-	return (this->evaluation.top() == 1);
+    this->parameters = inputs;
+    while (!this->evaluation.empty())
+        this->evaluation.pop();
+    for (auto& e : this->postfix) {
+        e->evaluate(this->evaluation);
+    }
+    // TODO: Check for validity
+    return (this->evaluation.top() == 1);
 }
 
 Predicate::Predicate(Predicate&& other) :
-		parameters(std::move(other.parameters)), names(std::move(other.names)), postfix(
-				std::move(other.postfix)), evaluation(
-				std::move(other.evaluation)) {
+        parameters(std::move(other.parameters)), names(std::move(other.names)), postfix(
+                std::move(other.postfix)), evaluation(
+                std::move(other.evaluation)) {
 }
 
 Predicate& Predicate::operator =(Predicate&& other) {
-	this->parameters = std::move(other.parameters);
-	this->names = std::move(other.names);
-	this->postfix = std::move(other.postfix);
-	this->evaluation = std::move(other.evaluation);
-	return *this;
+    this->parameters = std::move(other.parameters);
+    this->names = std::move(other.names);
+    this->postfix = std::move(other.postfix);
+    this->evaluation = std::move(other.evaluation);
+    return *this;
 }
 
 bool Predicate::evaluate(const vector<int*>& inputs) {
-	this->parameters.clear();
-	this->parameters.reserve(inputs.size());
-	for (const auto& x : inputs) {
-		this->parameters.push_back(*x);
-	}
+    this->parameters.clear();
+    this->parameters.reserve(inputs.size());
+    for (const auto& x : inputs) {
+        this->parameters.push_back(*x);
+    }
+/*
 	while (!this->evaluation.empty())
 		this->evaluation.pop();
-	for (auto& e : this->postfix) {
-		e->evaluate(this->evaluation);
-	}
-	// TODO: Check for validity
-	return (this->evaluation.top() == 1);
+*/
+    // FIXME: Check if this way of clearing a stack does not leak memory:
+    this->evaluation = stack<int>();
+    for (auto& e : this->postfix) {
+        e->evaluate(this->evaluation);
+    }
+    // TODO: Check for validity
+    return (this->evaluation.top() == 1);
 }
