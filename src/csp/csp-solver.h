@@ -39,8 +39,8 @@ public:
 	CSP_Solver();
 	virtual ~CSP_Solver();
 	virtual void parseFromFile(const std::string&);
-	virtual void parseFromStream(const std::ifstream&);
-	virtual void parseFromContent(const std::string&);
+//	virtual void parseFromStream(const std::ifstream&);
+//	virtual void parseFromContent(const std::string&);
 
 protected:
 	CSP_Problem instance;

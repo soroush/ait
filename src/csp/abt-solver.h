@@ -44,121 +44,124 @@ namespace AIT {
 namespace CSP {
 
 class LIBRARY_API ABT_Solver: public CSP_Solver {
-	friend class AABT_Solver;
+    friend class AABT_Solver;
 public:
-	ABT_Solver(const std::string&, const unsigned short&, const unsigned short&,
-			const AgentID&, const size_t&);
-	virtual ~ABT_Solver();
-	void ABT();
-	virtual void prepareProblem()=0;
-	/**
-	 * This method extracts all constraints that current agent is evolved in
-	 * and stores pointers to them in a vector of Constraints.
-	 */
-	void prune();
+    ABT_Solver(const std::string& serverHost,
+            const unsigned short& serverResponderPort,
+            const unsigned short& serverPublisherPort,
+            const std::string& name,
+            const std::string& xcspFile);
+    virtual ~ABT_Solver();
+    void ABT();
+    /**
+     * This method extracts all constraints that current agent is evolved in
+     * and stores pointers to them in a vector of Constraints.
+     */
+    void prune();
 
 protected:
-	class EndPoint: public protocols::csp::abt::P_EndPoint {
-	public:
-		EndPoint(const protocols::csp::abt::P_EndPoint& ep,
-				zmq::context_t& context);
-		Socket* socket() const;
-	private:
-		Socket* socket_;
-	};
+    class EndPoint: public protocols::csp::abt::P_EndPoint {
+    public:
+        EndPoint(const protocols::csp::abt::P_EndPoint& ep,
+                zmq::context_t& context);
+        Socket* socket() const;
+    private:
+        Socket* socket_;
+    };
 
-	struct Message {
-		Message();
-		Message(const Message& other);
-		~Message();
-		Message& operator =(const Message& other);
-		operator protocols::csp::abt::P_Message() const;
-		void readFromProtocol(const protocols::csp::abt::P_Message&);
+    struct Message {
+        Message();
+        Message(const Message& other);
+        ~Message();
+        Message& operator =(const Message& other);
+        operator protocols::csp::abt::P_Message() const;
+        void readFromProtocol(const protocols::csp::abt::P_Message&);
 
-		protocols::csp::abt::P_MessageType type;
-		AgentID sender;
-		Assignment assignment;
-		CompoundAssignment nogood;
-	};
+        protocols::csp::abt::P_MessageType type;
+        AgentID sender;
+        Assignment assignment;
+        CompoundAssignment nogood;
+    };
 
-	struct Nogood {
-		Nogood();
-		Nogood(const Nogood& other);
-		Nogood(const CompoundAssignment& lhs, const Assignment& rhs);
-		~Nogood();
-		CompoundAssignment lhs;
-		Assignment rhs;
-		bool operator ==(const Nogood& other) const;
-		bool operator !=(const Nogood& other) const;
-		Nogood& operator =(const Nogood& other);
-		operator protocols::csp::abt::P_Nogood();
-	};
-	virtual bool consistent(const int&, const CompoundAssignment&);
-	int getValueOf(const int&, bool&);
-	virtual int findCulprit(const int& v) = 0;
-	virtual int findLastCulprit() = 0;
-	virtual int findCulpritsValue(const int& culpirtsID) = 0;
+    struct Nogood {
+        Nogood();
+        Nogood(const Nogood& other);
+        Nogood(const CompoundAssignment& lhs, const Assignment& rhs);
+        ~Nogood();
+        CompoundAssignment lhs;
+        Assignment rhs;
+        bool operator ==(const Nogood& other) const;
+        bool operator !=(const Nogood& other) const;
+        Nogood& operator =(const Nogood& other);
+        operator protocols::csp::abt::P_Nogood();
+    };
+    virtual bool consistent(const int&, const CompoundAssignment&);
+    int getValueOf(const int&, bool&);
+    // FIXME: Remember what was these weird things supposed to be:
+    Variable* findCulprit(const int& v);
+    virtual int findLastCulprit();
 
-	void connect();
-	void checkAgentView();
-	int chooseValue();
-	void backtrack();
-	void processInfo(const Message&);
-	void updateAgentView(const Assignment&);
-	bool coherent(const CompoundAssignment& nogood,
-			const CompoundAssignment& assign);
-	bool coherentSelf(const CompoundAssignment& nogood,
-			const CompoundAssignment& assign);
-	void resolveConflict(const Message&);
-	void checkAddLink(const Message&);
-	void setLink(const Message&);
-	void sendMessageOK(const AgentID&);
-	void sendMessageNGD(const AgentID&, Message&);
-	void sendMessageSTP();
-	void sendMessageADL(const AgentID&);
-	// helper functions:
-	void getAgentList();
-	CompoundAssignment solve();
-	void sendMessage(const AgentID&, const Message&);
-	protocols::csp::abt::P_Message getMessage();
-	void add(const CompoundAssignment&);
-	void printNGS();
-	void printAV();
+    void connect();
+    void checkAgentView();
+    int chooseValue();
+    void backtrack();
+    void processInfo(const Message&);
+    void updateAgentView(const Assignment&);
+    bool coherent(const CompoundAssignment& nogood,
+            const CompoundAssignment& assign);
+    bool coherentSelf(const CompoundAssignment& nogood,
+            const CompoundAssignment& assign);
+    void resolveConflict(const Message&);
+    void checkAddLink(const Message&);
+    void setLink(const Message&);
+    void sendMessageOK(const AgentID&);
+    void sendMessageNGD(const AgentID&, Message&);
+    void sendMessageSTP();
+    void sendMessageADL(const AgentID&);
+    // helper functions:
+    void getAgentList();
+    CompoundAssignment solve();
+    void sendMessage(const AgentID&, const Message&);
+    protocols::csp::abt::P_Message getMessage();
+    void add(const CompoundAssignment&);
+    void printNGS();
+    void printAV();
 
-	size_t agentCount;
+    size_t agentCount;
 
-	AgentID id;
-	std::list<std::vector<EndPoint>::iterator> preceding; // Γ+
-	std::list<std::vector<EndPoint>::iterator> succeeding; // Γ-
-	std::vector<EndPoint> everybody;
-	std::list<Nogood> noGoodStore;
-	// FIXME: Integrate other parts with new design: Copy domain from problem definition
-	std::vector<int> domain;
-	CompoundAssignment agentView;
-	std::vector<int> agentViewX;
-	bool* assignedAgents;
-	int value;
+    size_t order;
+    std::string name;
+    std::list<std::vector<EndPoint>::iterator> preceding; // Γ+
+    std::list<std::vector<EndPoint>::iterator> succeeding; // Γ-
+    std::vector<EndPoint> everybody;
+    std::list<Nogood> noGoodStore;
+    CompoundAssignment agentView;
+    std::vector<int> agentViewX;
+    bool* assignedAgents;
+    int value;
 
-	std::string address;
-	unsigned short port;
-	std::string serverAddress;
-	unsigned short serverResponderPort;
-	unsigned short serverPublisherPort;
+    std::string address;
+    unsigned short port;
+    std::string serverAddress;
+    unsigned short serverResponderPort;
+    unsigned short serverPublisherPort;
 
-	static void* _messageReader(void* param);
-	std::queue<protocols::csp::abt::P_Message> messageQueue;
-	pthread_mutex_t messageRW;
-	sem_t messageCount;
-	sem_t agentReadyLock;
-	pthread_t messageReader;
+    static void* _messageReader(void* param);
+    std::queue<protocols::csp::abt::P_Message> messageQueue;
+    pthread_mutex_t messageRW;
+    sem_t messageCount;
+    sem_t agentReadyLock;
+    pthread_t messageReader;
 
-	zmq::context_t context;
-	Socket *listener;
-	Socket serverRquest;
-	Socket serverBroadcast;
+    zmq::context_t context;
+    Socket *listener;
+    Socket serverRquest;
+    Socket serverBroadcast;
 
-	bool end;
-	std::forward_list<Constraint> myConstraints;
+    bool end;
+    //FIXME: Remove value and replace this one instead:
+    Variable* me;
+    std::forward_list<Constraint*> myConstraints;
 };
 
 } /* namespace CSP */

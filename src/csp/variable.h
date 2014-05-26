@@ -50,11 +50,14 @@ public:
     void setName(const std::string& name);
     int getValue() const;
     void setValue(int value);
+    bool isSet() const;
+    void unset();
 
 private:
     Domain* m_domain;
     std::string m_name;
     int m_value;
+    bool set;
 };
 
 } /* namespace CSP */

@@ -24,12 +24,15 @@
 #ifndef COMPOUND_ASSIGNMENT_H_
 #define COMPOUND_ASSIGNMENT_H_
 
-#include "../../config.h"
-#ifdef PRECOMPILED_PROTOCOLS
+// FIXME: Remove inclusion of build-time configuration file in public API and
+//        packages.
+
+//#include "../../config.h"
+//#ifdef PRECOMPILED_PROTOCOLS
 #include "common-protocols_precompiled.pb.h"
-#elif defined(GENERATED_PROTOCOLS)
-#include "common-protocols.pb.h"
-#endif
+//#elif defined(GENERATED_PROTOCOLS)
+//#include "common-protocols.pb.h"
+//#endif
 #include <set>
 #include "assignment.h"
 

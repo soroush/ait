@@ -28,16 +28,16 @@ using namespace AIT::CSP;
 using namespace std;
 
 Variable::Variable() :
-		m_domain(&Domain::empty), m_name(""), m_value(0) {
+		m_domain(&Domain::empty), m_name(""), m_value(0), set(false) {
 }
 
 Variable::Variable(Domain* domain, const string& name, const int& value_) :
-		m_domain(domain), m_name(name), m_value(value_) {
+		m_domain(domain), m_name(name), m_value(value_), set(false) {
 }
 
 Variable::Variable(Variable&& other) :
 		m_domain(other.m_domain), m_name(move(other.m_name)), m_value(
-				move(other.m_value)) {
+				move(other.m_value)), set(move(other.set)) {
 }
 
 Variable& Variable::operator =(Variable&& other) {
@@ -55,25 +55,34 @@ int* Variable::value() {
 }
 
 const Domain* Variable::getDomain() const {
-	return m_domain;
+	return this->m_domain;
 }
 
 void Variable::setDomain(Domain* domain) {
-	m_domain = domain;
+    this->m_domain = domain;
 }
 
 const string& Variable::getName() const {
-	return m_name;
+	return this->m_name;
 }
 
 void Variable::setName(const string& name) {
-	m_name = name;
+    this->m_name = name;
 }
 
 int Variable::getValue() const {
-	return m_value;
+	return this->m_value;
 }
 
 void Variable::setValue(int value) {
-	m_value = value;
+    this->m_value = value;
+	this->set = true;
+}
+
+bool Variable::isSet() const {
+    return this->set;
+}
+
+void Variable::unset() {
+    this->set = false;
 }

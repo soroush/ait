@@ -25,8 +25,9 @@ package AIT.protocols.csp;
 
 message P_Assignment
 {
-  required int32 id = 1;
-  optional int32 value = 2;
+  required int32 order = 1;
+  required string id = 2;
+  optional int32 value = 3;
 }
 
 message P_CompoundAssignment

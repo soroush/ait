@@ -35,11 +35,12 @@ class XRelationParser: public relation_t_pskel,
 public:
 	XRelationParser();
 	~XRelationParser();
-	void name(const std::string&);
-	void arity(unsigned long long);
-	void nbTuples(unsigned long long);
-	void semantics();
-	void post_relation_t();
+	// FIXME: Remove temporary empty implementation
+	void name(const std::string&){};
+	void arity(unsigned long long){};
+	void nbTuples(unsigned long long){};
+	void semantics(){};
+	void post_relation_t(){};
 };
 
 } /* namespace CSP */

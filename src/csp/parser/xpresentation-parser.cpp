@@ -39,14 +39,14 @@ XPresentationParser::~XPresentationParser() {
 }
 
 void XPresentationParser::name(const string& name) {
-	instance.name(name);
+	instance.setName(name);
 }
 
 void XPresentationParser::minViolatedConstraints(const string& min) {
 	std::pair<CSP_Problem::NumberType, unsigned int> number;
 	if (min == "?") {
 		number.first = CSP_Problem::NumberType::Unknown;
-		instance.minViolatedConstraints(number);
+		instance.setMinViolatedConstraints(number);
 		return;
 	} else {
 		string buf;
@@ -59,28 +59,28 @@ void XPresentationParser::minViolatedConstraints(const string& min) {
 			if (tokens[0] == "at" && tokens[1] == "least") {
 				number.second = stoi(tokens[2]);
 				number.first = CSP_Problem::NumberType::AtLeast;
-				instance.minViolatedConstraints(number);
+				instance.setMinViolatedConstraints(number);
 				return;
 			}
 		} else if (tokens.size() == 1)
 			try {
 				number.second = stoi(tokens[0]);
 				number.first = CSP_Problem::NumberType::Exactly;
-				instance.minViolatedConstraints(number);
+				instance.setMinViolatedConstraints(number);
 			} catch (std::invalid_argument &e) {
 				_ERROR("%s", e.what());
 			}
 	}
 	_ERROR("Invalid value for `minViolatedConstraints' : %s", min.c_str());
 	number.first = CSP_Problem::NumberType::Unknown;
-	instance.minViolatedConstraints(number);
+	instance.setMinViolatedConstraints(number);
 }
 
 void XPresentationParser::nbSolutions(const string& nb) {
 	std::pair<CSP_Problem::NumberType, unsigned int> number;
 	if (nb == "?") {
 		number.first = CSP_Problem::NumberType::Unknown;
-		instance.nbSolutions(number);
+		instance.setNbSolutions(number);
 		return;
 	} else {
 		string buf;
@@ -93,39 +93,39 @@ void XPresentationParser::nbSolutions(const string& nb) {
 			if (tokens[0] == "at" && tokens[1] == "least") {
 				number.second = stoi(tokens[2]);
 				number.first = CSP_Problem::NumberType::AtLeast;
-				instance.nbSolutions(number);
+				instance.setNbSolutions(number);
 				return;
 			}
 		} else if (tokens.size() == 1)
 			try {
 				number.second = stoi(tokens[0]);
 				number.first = CSP_Problem::NumberType::Exactly;
-				instance.nbSolutions(number);
+				instance.setNbSolutions(number);
 			} catch (std::invalid_argument &e) {
 				_ERROR("%s", e.what());
 			}
 	}
 	_ERROR("Invalid value for `nbSolutions' : %s", nb.c_str());
 	number.first = CSP_Problem::NumberType::Unknown;
-	instance.nbSolutions(number);
+	instance.setNbSolutions(number);
 }
 
 void XPresentationParser::solution(const string& _solution) {
-	instance.solution(_solution);
+	instance.setSolution(_solution);
 }
 
 void XPresentationParser::type(const CSP_Problem::Type& _type) {
-	instance.type(_type);
+	instance.setType(_type);
 }
 
 void XPresentationParser::format(const string& format) {
 	if (format == "XCSP 2.1") {
-		instance.format(CSP_Problem::Format::XCSP_21);
+		instance.setFormat(CSP_Problem::Format::XCSP_21);
 	} else {
 		_ERROR("Unsupported format of CSP problem: `%s'", format.c_str());
 	}
 }
 
 void XPresentationParser::maxConstraintArity(unsigned long long arity) {
-	instance.maxConstraintArity(static_cast<unsigned int>(arity));
+	instance.setMaxConstraintArity(static_cast<unsigned int>(arity));
 }

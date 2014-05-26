@@ -24,16 +24,18 @@
 #ifndef SOCKET_H_
 #define SOCKET_H_
 
-#include "../../config.h"
+// FIXME: Remove inclusion of build-time configuration file in public API and
+//        packages.
+//#include "../../config.h"
 #include "zmq.hpp"
 #include <string>
-#ifdef PRECOMPILED_PROTOCOLS
+//#ifdef PRECOMPILED_PROTOCOLS
 #include "aabt_precompiled.pb.h"
 #include "abt_precompiled.pb.h"
-#elif defined(GENERATED_PROTOCOLS)
-#include "aabt.pb.h"
-#include "abt.pb.h"
-#endif
+//#elif defined(GENERATED_PROTOCOLS)
+//#include "aabt.pb.h"
+//#include "abt.pb.h"
+//#endif
 #include "../global.h"
 
 namespace AIT {

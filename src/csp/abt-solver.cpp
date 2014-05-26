@@ -34,18 +34,22 @@ using namespace AIT::protocols::csp::abt;
 
 ABT_Solver::ABT_Solver(const std::string& serverHost_,
         const unsigned short& serverResponderPort_,
-        const unsigned short& serverPublisherPort_, const AgentID& id_,
-        const size_t& agentCount_) :
-        id(id_), serverAddress(serverHost_), serverResponderPort(
+        const unsigned short& serverPublisherPort_, const std::string& name_,
+        const std::string& xcspFile) :
+        name(name_), serverAddress(serverHost_), serverResponderPort(
                 serverResponderPort_), serverPublisherPort(
                 serverPublisherPort_), context(2), listener(
                 new Socket(context, ZMQ_PULL)), serverRquest(context, ZMQ_REQ), serverBroadcast(
-                context, ZMQ_SUB), end(false), agentCount(agentCount_), assignedAgents(
+                context, ZMQ_SUB), end(false), assignedAgents(
                 new bool[agentCount]) {
+    this->parseFromFile(xcspFile);
     sem_init(&agentReadyLock, 0, 0);
     sem_init(&messageCount, 0, 0);
     pthread_mutex_init(&this->messageRW, NULL);
-    agentViewX.reserve(this->id - 1);
+    //agentViewX.reserve(this->id - 1);
+    this->order = this->instance.variableIndex(this->name);
+    this->me = this->instance.variable(this->name);
+    this->agentCount = this->instance.Variables().size();
 }
 
 ABT_Solver::~ABT_Solver() {
@@ -61,8 +65,8 @@ void ABT_Solver::ABT() {
     // TODO: Compute Γ+ and Γ- from problem instance
     this->connect();
     value = 0; // FIXME fix this
+    me->unset();
     getAgentList();
-    prepareProblem();
     checkAgentView();
     while (!end) {
         Message m;
@@ -129,7 +133,7 @@ void ABT_Solver::connect() {
     P_CommunicationProtocol introPacket;
     introPacket.set_type(CP_MessageType::T_INTRODUCE);
     introPacket.mutable_identity()->set_host(this->address);
-    introPacket.mutable_identity()->set_id(this->id);
+    introPacket.mutable_identity()->set_id(this->order);
     introPacket.mutable_identity()->set_port(this->port);
     _INFO("Sending introduction message to monitor...");
     if (this->serverRquest.sendMessage(introPacket)) {
@@ -142,9 +146,9 @@ void ABT_Solver::connect() {
                 _INFO("Monitor agent accepted connection.");
             } else if (introAckPacket.type()
                     == CP_MessageType::ERR_REPEATED_ID) {
-                _ERROR("An agent with ID number `%d'is already registered.\n"
+                _ERROR("An agent with order of `%d'is already registered.\n"
                         "\t\tMonitor agent has ignored this request.\n"
-                        "\t\tExiting silently.", this->id);
+                        "\t\tExiting silently.", this->order);
                 return;
             }
         } else {
@@ -158,6 +162,7 @@ void ABT_Solver::connect() {
 void ABT_Solver::checkAgentView() {
     if (!consistent(this->value, this->agentView)) {
         this->value = chooseValue();
+        // FIXME: Remove 0=unset logic
         if (this->value != 0) {
             for (const auto& agent : succeeding) {
                 sendMessageOK(agent->id());
@@ -174,27 +179,36 @@ void ABT_Solver::processInfo(const Message& m) {
 }
 
 int ABT_Solver::chooseValue() {
-    for (auto &v : domain) {
+    for (auto &possibleValue : this->me->getDomain()->getValues()) {
         bool eliminated = false;
-        eliminated = any_of(noGoodStore.begin(), noGoodStore.end(),
-                [&](const Nogood &ngd) {
-                    return (ngd.rhs.id==this->id and ngd.rhs.value==v);
-                });
+        eliminated =
+                any_of(noGoodStore.begin(), noGoodStore.end(),
+                        [&](const Nogood &ngd) {
+                            return (ngd.rhs.id==this->order and ngd.rhs.value==possibleValue);
+                        });
         if (!eliminated) {
-            if (consistent(v, agentView)) {
-                _INFO("A new value has been assigned: %d", v);
-                return v;
+            if (consistent(possibleValue, agentView)) {
+                _INFO("A new value has been assigned: %d", possibleValue);
+                // FIXME: Remove return and update to current type
+                me->setValue(possibleValue);
+                return possibleValue;
             } else {
-                int culpritID = findCulprit(v);
-                int culpirtValue = findCulpritsValue(culpritID);
+                me->setValue(possibleValue);
+                Variable* culprit = findCulprit(possibleValue);
+                me->unset();
                 Nogood ngd;
-                ngd.lhs.items.insert(Assignment(culpritID, culpirtValue));
-                ngd.rhs.id = this->id;
-                ngd.rhs.value = v;
+                ngd.lhs.items.insert(
+                        Assignment(
+                                this->instance.variableIndex(
+                                        culprit->getName()),
+                                culprit->getValue()));
+                ngd.rhs.id = this->order;
+                ngd.rhs.value = possibleValue;
                 noGoodStore.push_back(ngd);
             }
         }
     }
+    me->unset();
     return 0;
 }
 
@@ -217,7 +231,6 @@ void ABT_Solver::backtrack() {
 
 void ABT_Solver::updateAgentView(const Assignment& assignment) {
     // Remove old value of given id in agentView
-    // TODO: Convert following code to modern style, use algorithms
     for (auto it = agentView.items.begin(); it != agentView.items.end();) {
         if (it->id == assignment.id) {
             agentView.items.erase(it++);
@@ -242,16 +255,17 @@ void ABT_Solver::updateAgentView(const Assignment& assignment) {
 
 void ABT_Solver::resolveConflict(const Message& msg) {
     CompoundAssignment myselfAssignment;
-    myselfAssignment.items.insert(Assignment(this->id, this->value));
+    myselfAssignment.items.insert(Assignment(this->order, this->value));
 
     CompoundAssignment totalView;
     totalView = agentView;
-    totalView.items.insert(Assignment(this->id, this->value));
+    totalView.items.insert(Assignment(this->order, this->value));
 
     if (coherent(msg.nogood, totalView)) {
         //checkAddLink(msg);
         add(msg.nogood);
         this->value = 0; // FIXME
+        me->unset();
         checkAgentView();
     } else if (coherentSelf(msg.nogood, myselfAssignment)) {
         sendMessageOK(msg.sender);
@@ -285,7 +299,7 @@ void ABT_Solver::checkAddLink(const Message& message) {
         if (!any_of(succeeding.begin(), succeeding.end(),
                 [&](const std::vector<EndPoint>::iterator i)->bool
                 {   return i->id()==assignment.id;})) {
-            sendMessageADL(id);
+            sendMessageADL(order);
             updateAgentView(assignment);
         }
     }
@@ -322,7 +336,7 @@ void ABT_Solver::getAgentList() {
     _INFO("Sending Request List to monitor agent ...");
     P_CommunicationProtocol requestList;
     requestList.set_type(CP_MessageType::T_REQUEST_LIST);
-    requestList.set_id(this->id);
+    requestList.set_id(this->order);
     this->serverRquest.sendMessage(requestList);
 
     P_CommunicationProtocol requestListAck;
@@ -343,15 +357,14 @@ void ABT_Solver::getAgentList() {
             _INFO("New agent introduced by server:\n"
                     "\tID:     %d\n"
                     "\tHost:   %s\n"
-                    "\tPort:   %d",
-                    listPacket.others(i).id(),
+                    "\tPort:   %d", listPacket.others(i).id(),
                     listPacket.others(i).host().c_str(),
                     listPacket.others(i).port());
         }
         for (auto i = everybody.begin(); i < everybody.end(); ++i) {
-            if (i->id() < this->id)
+            if (i->id() < this->order)
                 preceding.push_back(i);
-            else if (i->id() > this->id)
+            else if (i->id() > this->order)
                 succeeding.push_back(i);
         }
         for (auto &agentEndPoint : everybody) {
@@ -365,14 +378,14 @@ void ABT_Solver::getAgentList() {
 
 void ABT_Solver::sendMessageOK(const AgentID& agent) {
     Message ok;
-    ok.sender = this->id;
+    ok.sender = this->order;
     ok.type = P_MessageType::T_OK;
-    ok.assignment = Assignment(this->id, this->value);
+    ok.assignment = Assignment(this->order, this->value);
     sendMessage(agent, ok);
 }
 
 void ABT_Solver::sendMessageNGD(const AgentID& agent, Message& ngd) {
-    ngd.sender = this->id;
+    ngd.sender = this->order;
     ngd.type = P_MessageType::T_NOGOOD;
     sendMessage(agent, ngd);
 }
@@ -380,15 +393,15 @@ void ABT_Solver::sendMessageNGD(const AgentID& agent, Message& ngd) {
 void ABT_Solver::sendMessageSTP() {
     Message stop;
     stop.type = P_MessageType::T_STOP;
-    stop.sender = this->id;
+    stop.sender = this->order;
     sendMessage(0, stop);
 }
 
 void ABT_Solver::sendMessageADL(const AgentID& agent) {
-    if (agent == this->id)
+    if (agent == this->order)
         return;
     Message adl;
-    adl.sender = this->id;
+    adl.sender = this->order;
     adl.type = P_MessageType::T_ADDLINK;
     sendMessage(agent, adl);
 }
@@ -404,7 +417,7 @@ CompoundAssignment ABT_Solver::solve() {
 }
 
 void ABT_Solver::sendMessage(const AgentID& agent, const Message& message) {
-    if (agent == this->id)
+    if (agent == this->order)
         return;
     if (agent == 0) {
         for (const auto &ep : this->everybody) {
@@ -424,7 +437,7 @@ void ABT_Solver::sendMessage(const AgentID& agent, const Message& message) {
 void ABT_Solver::add(const CompoundAssignment& ca) {
     Nogood ngd;
     for (const auto& a : ca.items) {
-        if (a.id != this->id) {
+        if (a.id != this->order) {
             ngd.lhs.items.insert(a);
         } else {
             ngd.rhs = a;
@@ -455,27 +468,37 @@ void ABT_Solver::printAV() {
 }
 
 bool ABT_Solver::consistent(const int& v, const CompoundAssignment& ca) {
-    for (const auto& c : this->instance.Constraints()) {
-        bool isInAgentView = true;
-        for (const auto& i : c.Scope()) {
-            bool found;
-            int *value = i->value();
+//    for (const auto& c : this->instance.Constraints()) {
+//        bool isInAgentView = true;
+//        for (const auto& i : c.Scope()) {
+//            bool found;
+//            int *value = i->value();
 //            if (!found) {
 //                isInAgentView = false;
 //                continue;
 //            }
-        }
+//        }
 //        if (isInAgentView) {
 //            for (const auto& r : c.relations) {
 //                // Check consistency
 //            }
 //        }
+//    }
+//    return true;
+    for (const auto& constraint : this->myConstraints) {
+        if (all_of(constraint->Scope().begin(), constraint->Scope().end(),
+                [&](const Variable* v)->bool
+                {   return v->isSet();})) {
+            if (!constraint->satisfies()) {
+                return false;
+            }
+        }
     }
     return true;
-    //TODO IMPLEMENT THIS !
 }
 
 int ABT_Solver::getValueOf(const int& agent, bool& find) {
+    // TODO: Completely get rid of agentView
     for (const auto& a : this->agentView.items) {
         if (a.id == agent) {
             find = true;
@@ -486,10 +509,37 @@ int ABT_Solver::getValueOf(const int& agent, bool& find) {
     return 0;
 }
 
+Variable* ABT_Solver::findCulprit(const int& v) {
+    for (const auto& constraint : this->myConstraints) {
+        if (all_of(constraint->Scope().begin(), constraint->Scope().end(),
+                [&](const Variable* v)->bool
+                {   return v->isSet();})) {
+            if (!constraint->satisfies()) {
+                auto x = std::max_element(constraint->Scope().begin(), constraint->Scope().end(),
+                        [&](Variable* v1, Variable* v2)
+                        {return this->instance.variableIndex(v1->getName()) > this->instance.variableIndex(v2->getName());});
+            }
+        }
+    }
+}
+
+int ABT_Solver::findLastCulprit() {
+    AgentID maximum = 0;
+    for(const auto& nogood : noGoodStore){
+        for(const auto& item: nogood.lhs.items){
+            maximum = item.id > maximum ? item.id : maximum;
+        }
+    }
+    return maximum;
+}
+
 void ABT_Solver::prune() {
     for (const auto& c : this->instance.Constraints()) {
-        for (const auto& v : c.Scope()) {
-//			if(v->getName() == this->id)
+        for (const auto& v : c->Scope()) {
+            if (v->getName() == this->name) {
+                myConstraints.push_front(c);
+                break;
+            }
         }
     }
 }

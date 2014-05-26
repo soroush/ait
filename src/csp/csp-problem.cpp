@@ -22,19 +22,43 @@
  */
 
 #include "csp-problem.h"
+#include <algorithm>
 using namespace AIT::CSP;
 using namespace std;
 
-Variable* CSP_Problem::variable(const string& name) {
-    for(auto v = this->variables.begin(); v!= this->variables.end(); ++v){
-        if(v->getName() == name){
-            return &(*v);
-        }
+
+CSP_Problem::~CSP_Problem() {
+}
+
+Variable* CSP_Problem::variable(const string& name) const {
+//    for(auto v : this->variables){
+//        if(v->getName() == name){
+//            return v;
+//        }
+//    }
+    auto item = find_if(this->variables.begin(), this->variables.end(),
+            [&](Variable* v) {return v->getName() == name;});
+    if (item != this->variables.end()) {
+        return *item;
+    } else {
+        // TODO: throw an exception
     }
 }
 
 Variable* CSP_Problem::variable(const size_t& index) const {
-    //return &(this->variables[index]);
+    return this->variables[index];
+}
+
+size_t CSP_Problem::variableIndex(const std::string& name) const {
+    size_t order = 1;
+    for (const auto& variable : this->variables) {
+        if (variable->getName() == name) {
+            return order;
+        } else {
+            ++order;
+        }
+    }
+    return 0;
 }
 
 Domain* CSP_Problem::domain(const string& name) const {
@@ -51,8 +75,47 @@ void CSP_Problem::addDomain(Domain&& d) {
 }
 
 void CSP_Problem::addVariable(Variable&& v) {
+    this->variables.push_back(new Variable(std::move(v)));
 }
 
-const forward_list<Constraint>& CSP_Problem::Constraints() const {
-	return this->constraints;
+void CSP_Problem::addConstraint(Constraint&& c) {
+    this->constraints.push_back(new Constraint(std::move(c)));
+}
+
+const vector<Constraint*>& CSP_Problem::Constraints() const {
+    return this->constraints;
+}
+
+const std::vector<Variable*>& CSP_Problem::Variables() const {
+    return this->variables;
+}
+
+void CSP_Problem::setType(const Type& type) {
+    this->m_type = type;
+}
+
+void CSP_Problem::setName(const std::string& name) {
+    this->m_name = name;
+}
+
+void CSP_Problem::setMaxConstraintArity(const unsigned int& max) {
+    this->m_maxConstraintArity = max;
+}
+
+void CSP_Problem::setMinViolatedConstraints(
+        std::pair<NumberType, unsigned int> number) {
+    this->m_minViolatedConstraints = number;
+}
+
+void CSP_Problem::setNbSolutions(
+        std::pair<NumberType, unsigned int> number) {
+    this->m_nbSolutions = number;
+}
+
+void CSP_Problem::setSolution(const std::string& solution) {
+    this->m_solution = solution;
+}
+
+void CSP_Problem::setFormat(const Format& format) {
+    this->m_format = format;
 }

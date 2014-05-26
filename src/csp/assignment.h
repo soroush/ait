@@ -24,13 +24,15 @@
 #ifndef ASSIGNMENT_H_
 #define ASSIGNMENT_H_
 
-#include "../../config.h"
+// FIXME: Remove inclusion of build-time configuration file in public API and
+//        packages.
+//#include "../../config.h"
 #include "common_async.h"
-#ifdef PRECOMPILED_PROTOCOLS
+//#ifdef PRECOMPILED_PROTOCOLS
 #include "common-protocols_precompiled.pb.h"
-#elif defined(GENERATED_PROTOCOLS)
-#include "common-protocols.pb.h"
-#endif
+//#elif defined(GENERATED_PROTOCOLS)
+//#include "common-protocols.pb.h"
+//#endif
 #include "../global.h"
 
 namespace AIT {

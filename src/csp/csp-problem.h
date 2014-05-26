@@ -27,7 +27,6 @@
 #include <string>
 #include <fstream>
 #include <vector>
-#include <forward_list>
 #include <map>
 #include <utility>
 #include "domain.h"
@@ -52,28 +51,27 @@ public:
 		AtLeast, Exactly, Unknown
 	};
 	virtual ~CSP_Problem();
-	virtual void parseFromFile(const std::string&);
-	virtual void parseFromStream(const std::ifstream&);
-	virtual void parseFromContent(const std::string&);
 
 	void addDomain(Domain&& d);
 	void addVariable(Variable&& v);
 	void addConstraint(Constraint&& c);
 
-	Variable* variable(const std::string&);
+	Variable* variable(const std::string&) const;
 	Variable* variable(const size_t&) const;
+	size_t variableIndex(const std::string&) const;
 	Domain* domain(const std::string&) const;
 	RelationBase* relation(const std::string&) const;
 
 	// Interface:
-	void name(const std::string& name);
-	void maxConstraintArity(const unsigned int& max);
-	void minViolatedConstraints(std::pair<NumberType, unsigned int> number);
-	void nbSolutions(std::pair<NumberType, unsigned int> number);
-	void solution(const std::string& solution);
-	void type(const Type& type);
-	void format(const Format& format);
-	const std::forward_list<Constraint>& Constraints() const;
+	void setName(const std::string& name);
+	void setMaxConstraintArity(const unsigned int& max);
+	void setMinViolatedConstraints(std::pair<NumberType, unsigned int> number);
+	void setNbSolutions(std::pair<NumberType, unsigned int> number);
+	void setSolution(const std::string& solution);
+	void setType(const Type& type);
+	void setFormat(const Format& format);
+	const std::vector<Constraint*>& Constraints() const;
+	const std::vector<Variable*>& Variables() const;
 
 private:
 	std::string m_name;
@@ -85,9 +83,9 @@ private:
 	Format m_format;
 
 protected:
-	std::forward_list<Domain> domains;
-	std::forward_list<Variable> variables;
-	std::forward_list<Constraint> constraints;
+	std::vector<Domain*> domains;
+	std::vector<Variable*> variables;
+	std::vector<Constraint*> constraints;
 
 	std::map<std::string, Variable*> variableNames;
 	std::map<std::string, Domain*> domainNames;
