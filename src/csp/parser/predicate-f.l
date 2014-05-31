@@ -52,5 +52,5 @@
 "xor"                               return FunctionalParser::XOR;
 "iff"                               return FunctionalParser::IFF;
 "-"?[[:digit:]]+                    return FunctionalParser::INTEGER;
-[[:alpha:]]+                        return FunctionalParser::ID;
+[[:alpha:]]+[[:alnum:]]+            return FunctionalParser::ID;
 [ \t\n]+                            ;

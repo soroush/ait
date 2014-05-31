@@ -5,6 +5,7 @@
 
 #include "parameters_parserbase.h"
 #include "parameters_scanner.h"
+#include "../csp-problem.h"
 #include <sstream>
 #include <vector>
 #include <map>
@@ -13,37 +14,37 @@
 class ParametersParser: public ParametersParserBase {
 
 public:
-	ParametersParser(const std::string& input, std::vector<int>& parameters,
-			std::map<std::string, size_t>& names);
-	int parse();
+    ParametersParser(const std::string& input, const std::string& predicate,
+            const AIT::CSP::CSP_Problem& instance);
+    int parse();
 
 private:
-	std::istringstream str;
-	ParametersLexer d_scanner;
-	std::vector<int>& parameters;
-	std::map<std::string, size_t>& names;
+    std::istringstream str;
+    ParametersLexer d_scanner;
+    const std::string predicate;
+    const AIT::CSP::CSP_Problem& instance;
 
-	void error(char const *msg);
-	int lex();
-	void print();
-	void executeAction(int ruleNr);
-	void errorRecovery();
-	int lookup(bool recovery);
-	void nextToken();
+    void error(char const *msg);
+    int lex();
+    void print();
+    void executeAction(int ruleNr);
+    void errorRecovery();
+    int lookup(bool recovery);
+    void nextToken();
 };
 
 inline ParametersParser::ParametersParser(const std::string& input,
-		std::vector<int>& parameters_, std::map<std::string, size_t>& names_) :
-		str(input), d_scanner(str, std::cout), parameters(parameters_), names(
-				names_) {
+        const std::string& predicate_, const AIT::CSP::CSP_Problem& instance_) :
+        str(input), d_scanner(str, std::cout), predicate(predicate_), instance(
+                instance_) {
 }
 
 inline void ParametersParser::error(char const *msg) {
-	std::cerr << msg << '\n';
+    std::cerr << msg << '\n';
 }
 
 inline int ParametersParser::lex() {
-	return d_scanner.lex();
+    return d_scanner.lex();
 }
 
 inline void ParametersParser::print() {

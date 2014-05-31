@@ -31,7 +31,7 @@ namespace CSP {
 
 class XPredicateParser: public predicate_t_pskel {
 public:
-	XPredicateParser();
+	XPredicateParser(const CSP_Problem& instance);
 	~XPredicateParser();
 	void parameters(const std::string&);
 	void expression(const std::pair<Predicate::Type, std::string>&);
@@ -41,6 +41,7 @@ private:
 	std::string m_name;
 	std::string m_parameters;
 	std::pair<Predicate::Type, std::string> m_pair;
+	const CSP_Problem& instance;
 };
 
 } /* namespace CSP */

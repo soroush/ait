@@ -34,14 +34,17 @@ XConstraintParser::~XConstraintParser() {
 }
 
 void XConstraintParser::parameters(const string& parameters) {
+    cout << "constraint parameters: " << parameters << endl;
 	this->m_parameters = parameters;
 }
 
 void XConstraintParser::name(const string& name) {
+    cout << "constraint name: " << name << endl;
 	this->m_name = name;
 }
 
 void XConstraintParser::scope(const string& scope) {
+    cout << "constraint scope: " << scope << endl;
 	this->m_scope = scope;
 }
 

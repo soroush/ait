@@ -64,9 +64,13 @@ protected:
     public:
         EndPoint(const protocols::csp::abt::P_EndPoint& ep,
                 zmq::context_t& context);
+        ~EndPoint();
         Socket* socket() const;
+        EndPoint* getByName(const std::string& name);
+        EndPoint* getByPriority(const size_t& priority);
     private:
         Socket* socket_;
+        static std::list<EndPoint*> m_everyBody;
     };
 
     struct Message {
@@ -97,7 +101,6 @@ protected:
     };
     virtual bool consistent(const int&, const CompoundAssignment&);
     int getValueOf(const int&, bool&);
-    // FIXME: Remember what was these weird things supposed to be:
     Variable* findCulprit(const int& v);
     virtual int findLastCulprit();
 
@@ -129,7 +132,7 @@ protected:
 
     size_t agentCount;
 
-    size_t order;
+    size_t priority;
     std::string name;
     std::list<std::vector<EndPoint>::iterator> preceding; // Γ+
     std::list<std::vector<EndPoint>::iterator> succeeding; // Γ-
@@ -137,7 +140,7 @@ protected:
     std::list<Nogood> noGoodStore;
     CompoundAssignment agentView;
     std::vector<int> agentViewX;
-    bool* assignedAgents;
+    //bool* assignedAgents;
     int value;
 
     std::string address;

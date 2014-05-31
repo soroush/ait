@@ -11,57 +11,44 @@
 #include "constraint-parameters_scanner.h"
 #include "../variable.h"
 #include "../csp-problem.h"
+#include "../constraint.h"
 
 #undef ConstraintParametersParser
 class ConstraintParametersParser: public ConstraintParametersParserBase {
 public:
-	enum class ParserMode {
-		Scope, Parameter
-	};
-	ConstraintParametersParser(const std::string& input,
-			AIT::CSP::CSP_Problem* problem,
-			std::vector<AIT::CSP::Variable*>& output);
-	ConstraintParametersParser(const std::string& input,
-			AIT::CSP::CSP_Problem* problem, std::vector<int*>& output);
-	int parse();
+    ConstraintParametersParser(const std::string& input,
+            AIT::CSP::CSP_Problem* problem,
+            std::vector<AIT::CSP::Constraint::Value>& output);
+    int parse();
 
 private:
-	std::istringstream str;
-	ConstraintParametersLexer d_scanner;
-	AIT::CSP::CSP_Problem* problem;
-	std::vector<AIT::CSP::Variable*>* scope;
-	std::vector<int*>* parameters;
-	ParserMode mode;
+    std::istringstream str;
+    ConstraintParametersLexer d_scanner;
+    AIT::CSP::CSP_Problem* problem;
+    std::vector<AIT::CSP::Constraint::Value>& parameters;
 
-	void error(char const *msg);
-	int lex();
-	void print();
-	void executeAction(int ruleNr);
-	void errorRecovery();
-	int lookup(bool recovery);
-	void nextToken();
+    void error(char const *msg);
+    int lex();
+    void print();
+    void executeAction(int ruleNr);
+    void errorRecovery();
+    int lookup(bool recovery);
+    void nextToken();
 };
 
 inline ConstraintParametersParser::ConstraintParametersParser(
-		const std::string& input, AIT::CSP::CSP_Problem* problem_,
-		std::vector<AIT::CSP::Variable*>& output) :
-		str(input), problem(problem_), scope(&output), parameters(nullptr), mode(
-				ParserMode::Scope) {
-}
-
-inline ConstraintParametersParser::ConstraintParametersParser(
-		const std::string& input, AIT::CSP::CSP_Problem* problem_,
-		std::vector<int*>& output) :
-		str(input), problem(problem_), scope(nullptr), parameters(&output), mode(
-				ParserMode::Parameter) {
+        const std::string& input, AIT::CSP::CSP_Problem* problem_,
+        std::vector<AIT::CSP::Constraint::Value>& output) :
+        str(input), d_scanner(str, std::cout), problem(problem_), parameters(
+                output) {
 }
 
 inline void ConstraintParametersParser::error(char const *msg) {
-	std::cerr << msg << '\n';
+    std::cerr << msg << '\n';
 }
 
 inline int ConstraintParametersParser::lex() {
-	return d_scanner.lex();
+    return d_scanner.lex();
 }
 
 inline void ConstraintParametersParser::print() {

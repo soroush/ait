@@ -45,8 +45,9 @@ void protobuf_AssignDesc_abt_5fprecompiled_2eproto() {
       "abt_precompiled.proto");
   GOOGLE_CHECK(file != NULL);
   P_EndPoint_descriptor_ = file->message_type(0);
-  static const int P_EndPoint_offsets_[3] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(P_EndPoint, id_),
+  static const int P_EndPoint_offsets_[4] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(P_EndPoint, name_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(P_EndPoint, priority_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(P_EndPoint, host_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(P_EndPoint, port_),
   };
@@ -64,7 +65,7 @@ void protobuf_AssignDesc_abt_5fprecompiled_2eproto() {
   P_CommunicationProtocol_descriptor_ = file->message_type(1);
   static const int P_CommunicationProtocol_offsets_[4] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(P_CommunicationProtocol, type_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(P_CommunicationProtocol, id_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(P_CommunicationProtocol, priority_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(P_CommunicationProtocol, identity_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(P_CommunicationProtocol, others_),
   };
@@ -160,26 +161,27 @@ void protobuf_AddDesc_abt_5fprecompiled_2eproto() {
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n\025abt_precompiled.proto\022\025AIT.protocols.c"
     "sp.abt\032\"common-protocols_precompiled.pro"
-    "to\"4\n\nP_EndPoint\022\n\n\002id\030\001 \002(\005\022\014\n\004host\030\002 \002"
-    "(\t\022\014\n\004port\030\003 \002(\005\"\302\001\n\027P_CommunicationProt"
-    "ocol\0223\n\004type\030\001 \002(\0162%.AIT.protocols.csp.a"
-    "bt.CP_MessageType\022\n\n\002id\030\002 \001(\005\0223\n\010identit"
-    "y\030\003 \001(\0132!.AIT.protocols.csp.abt.P_EndPoi"
-    "nt\0221\n\006others\030\004 \003(\0132!.AIT.protocols.csp.a"
-    "bt.P_EndPoint\"\275\001\n\tP_Message\0222\n\004type\030\001 \002("
-    "\0162$.AIT.protocols.csp.abt.P_MessageType\022"
-    "\016\n\006sender\030\002 \002(\005\0223\n\nassignment\030\003 \001(\0132\037.AI"
-    "T.protocols.csp.P_Assignment\0227\n\006nogood\030\004"
-    " \001(\0132\'.AIT.protocols.csp.P_CompoundAssig"
-    "nment\"n\n\010P_Nogood\0224\n\003lhs\030\001 \002(\0132\'.AIT.pro"
-    "tocols.csp.P_CompoundAssignment\022,\n\003rhs\030\002"
-    " \002(\0132\037.AIT.protocols.csp.P_Assignment*\247\001"
-    "\n\016CP_MessageType\022\017\n\013T_INTRODUCE\020\001\022\023\n\017T_I"
-    "NTRODUCE_ACK\020\002\022\022\n\016T_REQUEST_LIST\020\003\022\021\n\rT_"
-    "REQUEST_ACK\020\004\022\n\n\006T_LIST\020\005\022\026\n\022ERR_NO_MORE"
-    "_AGENTS\020\006\022\023\n\017ERR_REPEATED_ID\020\007\022\017\n\013ERR_UN"
-    "KNOWN\020\010*B\n\rP_MessageType\022\010\n\004T_OK\020\001\022\014\n\010T_"
-    "NOGOOD\020\002\022\r\n\tT_ADDLINK\020\003\022\n\n\006T_STOP\020\004", 875);
+    "to\"H\n\nP_EndPoint\022\014\n\004name\030\001 \002(\t\022\020\n\010priori"
+    "ty\030\002 \001(\005\022\014\n\004host\030\003 \002(\t\022\014\n\004port\030\004 \002(\005\"\310\001\n"
+    "\027P_CommunicationProtocol\0223\n\004type\030\001 \002(\0162%"
+    ".AIT.protocols.csp.abt.CP_MessageType\022\020\n"
+    "\010priority\030\002 \001(\005\0223\n\010identity\030\003 \001(\0132!.AIT."
+    "protocols.csp.abt.P_EndPoint\0221\n\006others\030\004"
+    " \003(\0132!.AIT.protocols.csp.abt.P_EndPoint\""
+    "\275\001\n\tP_Message\0222\n\004type\030\001 \002(\0162$.AIT.protoc"
+    "ols.csp.abt.P_MessageType\022\016\n\006sender\030\002 \002("
+    "\005\0223\n\nassignment\030\003 \001(\0132\037.AIT.protocols.cs"
+    "p.P_Assignment\0227\n\006nogood\030\004 \001(\0132\'.AIT.pro"
+    "tocols.csp.P_CompoundAssignment\"n\n\010P_Nog"
+    "ood\0224\n\003lhs\030\001 \002(\0132\'.AIT.protocols.csp.P_C"
+    "ompoundAssignment\022,\n\003rhs\030\002 \002(\0132\037.AIT.pro"
+    "tocols.csp.P_Assignment*\247\001\n\016CP_MessageTy"
+    "pe\022\017\n\013T_INTRODUCE\020\001\022\023\n\017T_INTRODUCE_ACK\020\002"
+    "\022\022\n\016T_REQUEST_LIST\020\003\022\021\n\rT_REQUEST_ACK\020\004\022"
+    "\n\n\006T_LIST\020\005\022\026\n\022ERR_NO_MORE_AGENTS\020\006\022\023\n\017E"
+    "RR_REPEATED_ID\020\007\022\017\n\013ERR_UNKNOWN\020\010*B\n\rP_M"
+    "essageType\022\010\n\004T_OK\020\001\022\014\n\010T_NOGOOD\020\002\022\r\n\tT_"
+    "ADDLINK\020\003\022\n\n\006T_STOP\020\004", 901);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "abt_precompiled.proto", &protobuf_RegisterTypes);
   P_EndPoint::default_instance_ = new P_EndPoint();
@@ -240,7 +242,8 @@ bool P_MessageType_IsValid(int value) {
 // ===================================================================
 
 #ifndef _MSC_VER
-const int P_EndPoint::kIdFieldNumber;
+const int P_EndPoint::kNameFieldNumber;
+const int P_EndPoint::kPriorityFieldNumber;
 const int P_EndPoint::kHostFieldNumber;
 const int P_EndPoint::kPortFieldNumber;
 #endif  // !_MSC_VER
@@ -261,7 +264,8 @@ P_EndPoint::P_EndPoint(const P_EndPoint& from)
 
 void P_EndPoint::SharedCtor() {
   _cached_size_ = 0;
-  id_ = 0;
+  name_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  priority_ = 0;
   host_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   port_ = 0;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
@@ -272,6 +276,9 @@ P_EndPoint::~P_EndPoint() {
 }
 
 void P_EndPoint::SharedDtor() {
+  if (name_ != &::google::protobuf::internal::kEmptyString) {
+    delete name_;
+  }
   if (host_ != &::google::protobuf::internal::kEmptyString) {
     delete host_;
   }
@@ -301,7 +308,12 @@ P_EndPoint* P_EndPoint::New() const {
 
 void P_EndPoint::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    id_ = 0;
+    if (has_name()) {
+      if (name_ != &::google::protobuf::internal::kEmptyString) {
+        name_->clear();
+      }
+    }
+    priority_ = 0;
     if (has_host()) {
       if (host_ != &::google::protobuf::internal::kEmptyString) {
         host_->clear();
@@ -319,23 +331,40 @@ bool P_EndPoint::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // required int32 id = 1;
+      // required string name = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &id_)));
-          set_has_id();
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_name()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->name().data(), this->name().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(18)) goto parse_host;
+        if (input->ExpectTag(16)) goto parse_priority;
         break;
       }
       
-      // required string host = 2;
+      // optional int32 priority = 2;
       case 2: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_priority:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &priority_)));
+          set_has_priority();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(26)) goto parse_host;
+        break;
+      }
+      
+      // required string host = 3;
+      case 3: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_host:
@@ -347,12 +376,12 @@ bool P_EndPoint::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(24)) goto parse_port;
+        if (input->ExpectTag(32)) goto parse_port;
         break;
       }
       
-      // required int32 port = 3;
-      case 3: {
+      // required int32 port = 4;
+      case 4: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
          parse_port:
@@ -385,23 +414,32 @@ bool P_EndPoint::MergePartialFromCodedStream(
 
 void P_EndPoint::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // required int32 id = 1;
-  if (has_id()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->id(), output);
+  // required string name = 1;
+  if (has_name()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->name().data(), this->name().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      1, this->name(), output);
   }
   
-  // required string host = 2;
+  // optional int32 priority = 2;
+  if (has_priority()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(2, this->priority(), output);
+  }
+  
+  // required string host = 3;
   if (has_host()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->host().data(), this->host().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     ::google::protobuf::internal::WireFormatLite::WriteString(
-      2, this->host(), output);
+      3, this->host(), output);
   }
   
-  // required int32 port = 3;
+  // required int32 port = 4;
   if (has_port()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(3, this->port(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(4, this->port(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -412,24 +450,34 @@ void P_EndPoint::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* P_EndPoint::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // required int32 id = 1;
-  if (has_id()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->id(), target);
+  // required string name = 1;
+  if (has_name()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->name().data(), this->name().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->name(), target);
   }
   
-  // required string host = 2;
+  // optional int32 priority = 2;
+  if (has_priority()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(2, this->priority(), target);
+  }
+  
+  // required string host = 3;
   if (has_host()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->host().data(), this->host().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        2, this->host(), target);
+        3, this->host(), target);
   }
   
-  // required int32 port = 3;
+  // required int32 port = 4;
   if (has_port()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(3, this->port(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(4, this->port(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -443,21 +491,28 @@ int P_EndPoint::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // required int32 id = 1;
-    if (has_id()) {
+    // required string name = 1;
+    if (has_name()) {
       total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::Int32Size(
-          this->id());
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->name());
     }
     
-    // required string host = 2;
+    // optional int32 priority = 2;
+    if (has_priority()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->priority());
+    }
+    
+    // required string host = 3;
     if (has_host()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
           this->host());
     }
     
-    // required int32 port = 3;
+    // required int32 port = 4;
     if (has_port()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
@@ -491,8 +546,11 @@ void P_EndPoint::MergeFrom(const ::google::protobuf::Message& from) {
 void P_EndPoint::MergeFrom(const P_EndPoint& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from.has_id()) {
-      set_id(from.id());
+    if (from.has_name()) {
+      set_name(from.name());
+    }
+    if (from.has_priority()) {
+      set_priority(from.priority());
     }
     if (from.has_host()) {
       set_host(from.host());
@@ -517,14 +575,15 @@ void P_EndPoint::CopyFrom(const P_EndPoint& from) {
 }
 
 bool P_EndPoint::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000007) != 0x00000007) return false;
+  if ((_has_bits_[0] & 0x0000000d) != 0x0000000d) return false;
   
   return true;
 }
 
 void P_EndPoint::Swap(P_EndPoint* other) {
   if (other != this) {
-    std::swap(id_, other->id_);
+    std::swap(name_, other->name_);
+    std::swap(priority_, other->priority_);
     std::swap(host_, other->host_);
     std::swap(port_, other->port_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
@@ -546,7 +605,7 @@ void P_EndPoint::Swap(P_EndPoint* other) {
 
 #ifndef _MSC_VER
 const int P_CommunicationProtocol::kTypeFieldNumber;
-const int P_CommunicationProtocol::kIdFieldNumber;
+const int P_CommunicationProtocol::kPriorityFieldNumber;
 const int P_CommunicationProtocol::kIdentityFieldNumber;
 const int P_CommunicationProtocol::kOthersFieldNumber;
 #endif  // !_MSC_VER
@@ -569,7 +628,7 @@ P_CommunicationProtocol::P_CommunicationProtocol(const P_CommunicationProtocol& 
 void P_CommunicationProtocol::SharedCtor() {
   _cached_size_ = 0;
   type_ = 1;
-  id_ = 0;
+  priority_ = 0;
   identity_ = NULL;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
@@ -607,7 +666,7 @@ P_CommunicationProtocol* P_CommunicationProtocol::New() const {
 void P_CommunicationProtocol::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     type_ = 1;
-    id_ = 0;
+    priority_ = 0;
     if (has_identity()) {
       if (identity_ != NULL) identity_->::AIT::protocols::csp::abt::P_EndPoint::Clear();
     }
@@ -639,19 +698,19 @@ bool P_CommunicationProtocol::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(16)) goto parse_id;
+        if (input->ExpectTag(16)) goto parse_priority;
         break;
       }
       
-      // optional int32 id = 2;
+      // optional int32 priority = 2;
       case 2: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_id:
+         parse_priority:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &id_)));
-          set_has_id();
+                 input, &priority_)));
+          set_has_priority();
         } else {
           goto handle_uninterpreted;
         }
@@ -712,9 +771,9 @@ void P_CommunicationProtocol::SerializeWithCachedSizes(
       1, this->type(), output);
   }
   
-  // optional int32 id = 2;
-  if (has_id()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(2, this->id(), output);
+  // optional int32 priority = 2;
+  if (has_priority()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(2, this->priority(), output);
   }
   
   // optional .AIT.protocols.csp.abt.P_EndPoint identity = 3;
@@ -743,9 +802,9 @@ void P_CommunicationProtocol::SerializeWithCachedSizes(
       1, this->type(), target);
   }
   
-  // optional int32 id = 2;
-  if (has_id()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(2, this->id(), target);
+  // optional int32 priority = 2;
+  if (has_priority()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(2, this->priority(), target);
   }
   
   // optional .AIT.protocols.csp.abt.P_EndPoint identity = 3;
@@ -779,11 +838,11 @@ int P_CommunicationProtocol::ByteSize() const {
         ::google::protobuf::internal::WireFormatLite::EnumSize(this->type());
     }
     
-    // optional int32 id = 2;
-    if (has_id()) {
+    // optional int32 priority = 2;
+    if (has_priority()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
-          this->id());
+          this->priority());
     }
     
     // optional .AIT.protocols.csp.abt.P_EndPoint identity = 3;
@@ -832,8 +891,8 @@ void P_CommunicationProtocol::MergeFrom(const P_CommunicationProtocol& from) {
     if (from.has_type()) {
       set_type(from.type());
     }
-    if (from.has_id()) {
-      set_id(from.id());
+    if (from.has_priority()) {
+      set_priority(from.priority());
     }
     if (from.has_identity()) {
       mutable_identity()->::AIT::protocols::csp::abt::P_EndPoint::MergeFrom(from.identity());
@@ -869,7 +928,7 @@ bool P_CommunicationProtocol::IsInitialized() const {
 void P_CommunicationProtocol::Swap(P_CommunicationProtocol* other) {
   if (other != this) {
     std::swap(type_, other->type_);
-    std::swap(id_, other->id_);
+    std::swap(priority_, other->priority_);
     std::swap(identity_, other->identity_);
     others_.Swap(&other->others_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);

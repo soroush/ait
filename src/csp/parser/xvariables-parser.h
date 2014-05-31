@@ -36,7 +36,7 @@ class XVariablesParser: public variables_t_pskel {
 public:
 	XVariablesParser(CSP_Problem& instance);
 	~XVariablesParser();
-	void variable(Variable);
+	void variable(Variable&&);
 	void nbVariables(unsigned long long);
 private:
 	CSP_Problem& m_instance;

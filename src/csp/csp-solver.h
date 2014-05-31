@@ -42,6 +42,8 @@ public:
 //	virtual void parseFromStream(const std::ifstream&);
 //	virtual void parseFromContent(const std::string&);
 
+	const CSP_Problem& getInstance() const;
+
 protected:
 	CSP_Problem instance;
 

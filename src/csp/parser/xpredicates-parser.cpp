@@ -26,16 +26,17 @@
 using namespace AIT::CSP;
 using namespace std;
 
-XPredicatesParser::XPredicatesParser() {
+XPredicatesParser::XPredicatesParser(CSP_Problem& instance) :
+        m_instance(instance) {
 }
 
 XPredicatesParser::~XPredicatesParser() {
 }
 
 void XPredicatesParser::predicate(Predicate&& predicate) {
-	this->m_predicates.push_front(std::move(predicate));
+    cout << "XPP: ADDING :" << predicate.getName() << endl;
+    this->m_instance.addPredicate(std::move(predicate));
 }
 
 void XPredicatesParser::nbPredicates(unsigned long long size) {
-	//TODO: Reserve space?
 }

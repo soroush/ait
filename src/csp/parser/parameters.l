@@ -29,5 +29,5 @@
  
  %%
 "int"                                 return ParametersParser::INT;
-[[:alpha:]]+                          return ParametersParser::ID;
+[[:alpha:]]+[[:alnum:]]+              return ParametersParser::ID;
 [ \t\n]+                              ;

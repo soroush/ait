@@ -73,6 +73,7 @@ void ABT_Monitor::start() {
 	_INFO("Successfully bound to broadcast channel.");
 
 	size_t counter = 0;
+	size_t priority = 1;
 	while (counter != 2 * this->agentCount_) {
 		P_CommunicationProtocol requestPacket;
 		this->responser.recvMessage(requestPacket);
@@ -80,16 +81,15 @@ void ABT_Monitor::start() {
 			_INFO(
 					"New agent subscribed. This information is introduced by new agent"
 					"\n\tHost          : %s"
-					"\n\tListener Port : %d"
-					"\n\tAgent ID      : %d",
-					requestPacket.identity().host().data(), requestPacket.identity().port(), requestPacket.identity().id());
-			bool repeated =
+					"\n\tListener Port : %d",
+					requestPacket.identity().host().data(), requestPacket.identity().port());
+			bool repeatedName =
 					std::any_of(agents.begin(), agents.end(),
-							[&](P_EndPoint i) {return (requestPacket.identity().id()==static_cast<int>(i.id()));});
-			if (repeated) {
+							[&](P_EndPoint i) {return (requestPacket.identity().name()==i.name());});
+			if (repeatedName) {
 				_ERROR(
-						"An agent with ID number `%d'is already registered. Ignoring this request",
-						requestPacket.identity().id());
+						"An agent with name `%s'is already registered. Ignoring this request",
+						requestPacket.identity().name().c_str());
 				P_CommunicationProtocol nackPacket;
 				nackPacket.set_type(CP_MessageType::ERR_REPEATED_ID);
 				this->responser.sendMessage(nackPacket);
@@ -97,8 +97,10 @@ void ABT_Monitor::start() {
 				agents.push_back(requestPacket.identity());
 				P_CommunicationProtocol ackPacket;
 				ackPacket.set_type(CP_MessageType::T_INTRODUCE_ACK);
+				ackPacket.set_priority(priority);
 				this->responser.sendMessage(ackPacket);
 				++counter;
+				++priority;
 			}
 		} else if (requestPacket.type() == CP_MessageType::T_REQUEST_LIST) {
 			P_CommunicationProtocol requestListAck;

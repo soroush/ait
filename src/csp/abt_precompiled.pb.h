@@ -143,17 +143,28 @@ class P_EndPoint : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // required int32 id = 1;
-  inline bool has_id() const;
-  inline void clear_id();
-  static const int kIdFieldNumber = 1;
-  inline ::google::protobuf::int32 id() const;
-  inline void set_id(::google::protobuf::int32 value);
+  // required string name = 1;
+  inline bool has_name() const;
+  inline void clear_name();
+  static const int kNameFieldNumber = 1;
+  inline const ::std::string& name() const;
+  inline void set_name(const ::std::string& value);
+  inline void set_name(const char* value);
+  inline void set_name(const char* value, size_t size);
+  inline ::std::string* mutable_name();
+  inline ::std::string* release_name();
   
-  // required string host = 2;
+  // optional int32 priority = 2;
+  inline bool has_priority() const;
+  inline void clear_priority();
+  static const int kPriorityFieldNumber = 2;
+  inline ::google::protobuf::int32 priority() const;
+  inline void set_priority(::google::protobuf::int32 value);
+  
+  // required string host = 3;
   inline bool has_host() const;
   inline void clear_host();
-  static const int kHostFieldNumber = 2;
+  static const int kHostFieldNumber = 3;
   inline const ::std::string& host() const;
   inline void set_host(const ::std::string& value);
   inline void set_host(const char* value);
@@ -161,17 +172,19 @@ class P_EndPoint : public ::google::protobuf::Message {
   inline ::std::string* mutable_host();
   inline ::std::string* release_host();
   
-  // required int32 port = 3;
+  // required int32 port = 4;
   inline bool has_port() const;
   inline void clear_port();
-  static const int kPortFieldNumber = 3;
+  static const int kPortFieldNumber = 4;
   inline ::google::protobuf::int32 port() const;
   inline void set_port(::google::protobuf::int32 value);
   
   // @@protoc_insertion_point(class_scope:AIT.protocols.csp.abt.P_EndPoint)
  private:
-  inline void set_has_id();
-  inline void clear_has_id();
+  inline void set_has_name();
+  inline void clear_has_name();
+  inline void set_has_priority();
+  inline void clear_has_priority();
   inline void set_has_host();
   inline void clear_has_host();
   inline void set_has_port();
@@ -179,12 +192,13 @@ class P_EndPoint : public ::google::protobuf::Message {
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
+  ::std::string* name_;
   ::std::string* host_;
-  ::google::protobuf::int32 id_;
+  ::google::protobuf::int32 priority_;
   ::google::protobuf::int32 port_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(4 + 31) / 32];
   
   friend void  protobuf_AddDesc_abt_5fprecompiled_2eproto();
   friend void protobuf_AssignDesc_abt_5fprecompiled_2eproto();
@@ -256,12 +270,12 @@ class P_CommunicationProtocol : public ::google::protobuf::Message {
   inline AIT::protocols::csp::abt::CP_MessageType type() const;
   inline void set_type(AIT::protocols::csp::abt::CP_MessageType value);
   
-  // optional int32 id = 2;
-  inline bool has_id() const;
-  inline void clear_id();
-  static const int kIdFieldNumber = 2;
-  inline ::google::protobuf::int32 id() const;
-  inline void set_id(::google::protobuf::int32 value);
+  // optional int32 priority = 2;
+  inline bool has_priority() const;
+  inline void clear_priority();
+  static const int kPriorityFieldNumber = 2;
+  inline ::google::protobuf::int32 priority() const;
+  inline void set_priority(::google::protobuf::int32 value);
   
   // optional .AIT.protocols.csp.abt.P_EndPoint identity = 3;
   inline bool has_identity() const;
@@ -287,15 +301,15 @@ class P_CommunicationProtocol : public ::google::protobuf::Message {
  private:
   inline void set_has_type();
   inline void clear_has_type();
-  inline void set_has_id();
-  inline void clear_has_id();
+  inline void set_has_priority();
+  inline void clear_has_priority();
   inline void set_has_identity();
   inline void clear_has_identity();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
   int type_;
-  ::google::protobuf::int32 id_;
+  ::google::protobuf::int32 priority_;
   ::AIT::protocols::csp::abt::P_EndPoint* identity_;
   ::google::protobuf::RepeatedPtrField< ::AIT::protocols::csp::abt::P_EndPoint > others_;
   
@@ -524,37 +538,95 @@ class P_Nogood : public ::google::protobuf::Message {
 
 // P_EndPoint
 
-// required int32 id = 1;
-inline bool P_EndPoint::has_id() const {
+// required string name = 1;
+inline bool P_EndPoint::has_name() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void P_EndPoint::set_has_id() {
+inline void P_EndPoint::set_has_name() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void P_EndPoint::clear_has_id() {
+inline void P_EndPoint::clear_has_name() {
   _has_bits_[0] &= ~0x00000001u;
 }
-inline void P_EndPoint::clear_id() {
-  id_ = 0;
-  clear_has_id();
+inline void P_EndPoint::clear_name() {
+  if (name_ != &::google::protobuf::internal::kEmptyString) {
+    name_->clear();
+  }
+  clear_has_name();
 }
-inline ::google::protobuf::int32 P_EndPoint::id() const {
-  return id_;
+inline const ::std::string& P_EndPoint::name() const {
+  return *name_;
 }
-inline void P_EndPoint::set_id(::google::protobuf::int32 value) {
-  set_has_id();
-  id_ = value;
+inline void P_EndPoint::set_name(const ::std::string& value) {
+  set_has_name();
+  if (name_ == &::google::protobuf::internal::kEmptyString) {
+    name_ = new ::std::string;
+  }
+  name_->assign(value);
+}
+inline void P_EndPoint::set_name(const char* value) {
+  set_has_name();
+  if (name_ == &::google::protobuf::internal::kEmptyString) {
+    name_ = new ::std::string;
+  }
+  name_->assign(value);
+}
+inline void P_EndPoint::set_name(const char* value, size_t size) {
+  set_has_name();
+  if (name_ == &::google::protobuf::internal::kEmptyString) {
+    name_ = new ::std::string;
+  }
+  name_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* P_EndPoint::mutable_name() {
+  set_has_name();
+  if (name_ == &::google::protobuf::internal::kEmptyString) {
+    name_ = new ::std::string;
+  }
+  return name_;
+}
+inline ::std::string* P_EndPoint::release_name() {
+  clear_has_name();
+  if (name_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = name_;
+    name_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
 }
 
-// required string host = 2;
-inline bool P_EndPoint::has_host() const {
+// optional int32 priority = 2;
+inline bool P_EndPoint::has_priority() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
-inline void P_EndPoint::set_has_host() {
+inline void P_EndPoint::set_has_priority() {
   _has_bits_[0] |= 0x00000002u;
 }
-inline void P_EndPoint::clear_has_host() {
+inline void P_EndPoint::clear_has_priority() {
   _has_bits_[0] &= ~0x00000002u;
+}
+inline void P_EndPoint::clear_priority() {
+  priority_ = 0;
+  clear_has_priority();
+}
+inline ::google::protobuf::int32 P_EndPoint::priority() const {
+  return priority_;
+}
+inline void P_EndPoint::set_priority(::google::protobuf::int32 value) {
+  set_has_priority();
+  priority_ = value;
+}
+
+// required string host = 3;
+inline bool P_EndPoint::has_host() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void P_EndPoint::set_has_host() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void P_EndPoint::clear_has_host() {
+  _has_bits_[0] &= ~0x00000004u;
 }
 inline void P_EndPoint::clear_host() {
   if (host_ != &::google::protobuf::internal::kEmptyString) {
@@ -604,15 +676,15 @@ inline ::std::string* P_EndPoint::release_host() {
   }
 }
 
-// required int32 port = 3;
+// required int32 port = 4;
 inline bool P_EndPoint::has_port() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
+  return (_has_bits_[0] & 0x00000008u) != 0;
 }
 inline void P_EndPoint::set_has_port() {
-  _has_bits_[0] |= 0x00000004u;
+  _has_bits_[0] |= 0x00000008u;
 }
 inline void P_EndPoint::clear_has_port() {
-  _has_bits_[0] &= ~0x00000004u;
+  _has_bits_[0] &= ~0x00000008u;
 }
 inline void P_EndPoint::clear_port() {
   port_ = 0;
@@ -653,26 +725,26 @@ inline void P_CommunicationProtocol::set_type(AIT::protocols::csp::abt::CP_Messa
   type_ = value;
 }
 
-// optional int32 id = 2;
-inline bool P_CommunicationProtocol::has_id() const {
+// optional int32 priority = 2;
+inline bool P_CommunicationProtocol::has_priority() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
-inline void P_CommunicationProtocol::set_has_id() {
+inline void P_CommunicationProtocol::set_has_priority() {
   _has_bits_[0] |= 0x00000002u;
 }
-inline void P_CommunicationProtocol::clear_has_id() {
+inline void P_CommunicationProtocol::clear_has_priority() {
   _has_bits_[0] &= ~0x00000002u;
 }
-inline void P_CommunicationProtocol::clear_id() {
-  id_ = 0;
-  clear_has_id();
+inline void P_CommunicationProtocol::clear_priority() {
+  priority_ = 0;
+  clear_has_priority();
 }
-inline ::google::protobuf::int32 P_CommunicationProtocol::id() const {
-  return id_;
+inline ::google::protobuf::int32 P_CommunicationProtocol::priority() const {
+  return priority_;
 }
-inline void P_CommunicationProtocol::set_id(::google::protobuf::int32 value) {
-  set_has_id();
-  id_ = value;
+inline void P_CommunicationProtocol::set_priority(::google::protobuf::int32 value) {
+  set_has_priority();
+  priority_ = value;
 }
 
 // optional .AIT.protocols.csp.abt.P_EndPoint identity = 3;

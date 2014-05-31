@@ -57,12 +57,12 @@ ABT_Solver::Message::operator P_Message() const {
 	case P_MessageType::T_NOGOOD:
 		for (const auto& a : nogood.items) {
 			P_Assignment* aa = m.mutable_nogood()->add_assignments();
-			aa->set_id(a.id);
+			aa->set_priority(a.id);
 			aa->set_value(a.value);
 		}
 		break;
 	case P_MessageType::T_OK:
-		m.mutable_assignment()->set_id(assignment.id);
+		m.mutable_assignment()->set_priority(assignment.id);
 		m.mutable_assignment()->set_value(assignment.value);
 		break;
 	case P_MessageType::T_STOP:
@@ -79,11 +79,11 @@ void ABT_Solver::Message::readFromProtocol(const P_Message& message) {
 		break;
 	case P_MessageType::T_NOGOOD:
 		for (const auto& a : message.nogood().assignments()) {
-			this->nogood.items.insert(Assignment(a.id(), a.value()));
+			this->nogood.items.insert(Assignment(a.priority(), a.value()));
 		}
 		break;
 	case P_MessageType::T_OK:
-		this->assignment.id = message.assignment().id();
+		this->assignment.id = message.assignment().priority();
 		this->assignment.value = message.assignment().value();
 		break;
 	case P_MessageType::T_STOP:

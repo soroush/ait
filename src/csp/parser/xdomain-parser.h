@@ -32,18 +32,13 @@ namespace CSP {
 
 class Domain;
 
-class XDomainParser: public domain_t_pskel,
-		public virtual xml_schema::string_pimpl {
+class XDomainParser: public domain_t_pskel, public virtual xml_schema::string_pimpl{
 public:
 	XDomainParser();
 	~XDomainParser();
 	void nbValues(unsigned long long);
 	void name(const ::std::string&);
 	Domain post_domain_t();
-	// API for top-level parsers
-	std::string name();
-	size_t nbValues();
-	std::string content();
 private:
 	std::string m_name;
 	size_t m_nbValues;

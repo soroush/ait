@@ -49,29 +49,42 @@ CSP_Solver::~CSP_Solver() {
 
 void CSP_Solver::parseFromFile(const string& path) {
 	// Initialize parsers
+	// Common parsers:
+    xml_schema::string_pimpl stringParser;
+    xml_schema::positive_integer_pimpl positiveIntegerParser;
+
 	XInstanceParser instanceParser{this->instance};
 	XPresentationParser presentation{this->instance};
 	XProblemTypeParser problemType;
-	presentation.type_parser(problemType);
+	presentation.parsers(stringParser,positiveIntegerParser,stringParser,stringParser,stringParser,problemType,stringParser);
 	XDomainsParser domains{this->instance};
 	XDomainParser domain;
-	domains.domain_parser(domain);
+	domain.parsers(stringParser,positiveIntegerParser);
+	domains.parsers(domain,positiveIntegerParser);
 	XVariablesParser variables{this->instance};
 	XVariableParser variable{this->instance};
-	variables.variable_parser(variable);
-	XPredicatesParser predicates;
-	XPredicateParser predicate;
+	variable.parsers(stringParser,stringParser);
+	variables.parsers(variable,positiveIntegerParser);
+	XPredicatesParser predicates{this->instance};
+	XPredicateParser predicate{this->instance};
 	XExpressionParser expression;
-	predicate.expression_parser(expression);
-	predicates.predicate_parser(predicate);
+	expression.parsers(stringParser,stringParser,stringParser,stringParser);
+	predicate.parsers(stringParser,expression,stringParser);
+	predicates.parsers(predicate,positiveIntegerParser);
 	XConstraintsParser constraints{this->instance};
 	XConstraintParser constraint{this->instance};
-	constraints.constraint_parser(constraint);
+	constraint.parsers(stringParser,stringParser,stringParser,stringParser,positiveIntegerParser);
+	constraints.parsers(constraint,positiveIntegerParser);
 	XRelationsParser relations;
 	XRelationParser relation;
 	relations.relation_parser(relation);
 	instanceParser.parsers(presentation,domains,variables,relations,predicates,constraints);
 	// Prepare document and parse
 	xml_schema::document doc(instanceParser,"instance");
+	std::cout << "Parsing started" << std::endl;
 	doc.parse(path);
+}
+
+const CSP_Problem& CSP_Solver::getInstance() const {
+    return this->instance;
 }

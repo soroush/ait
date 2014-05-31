@@ -24,21 +24,26 @@
 #include "predicate.h"
 #include "parser/predicate-f_parser.h"
 #include "parser/parameters_parser.h"
+#include "parser/expression.h"
+#include "csp-problem.h"
 
 #include <algorithm>
 #include <utility>
 
+#include <iostream>
+
 using namespace AIT::CSP;
 using namespace std;
 
-Predicate::Predicate(const string& parameters, const string& input,
-        const Type& type) {
+Predicate::Predicate(const string& name, const string& parameters_,
+        const string& input, const Type& type, const CSP_Problem& instance):
+            m_instance(instance) {
+    this->m_name = name;
     switch (type) {
     case Type::Functional: {
-        ParametersParser pParser(parameters, this->parameters, this->names);
+        ParametersParser pParser(parameters_, this->m_name, this->m_instance);
         pParser.parse();
-        FunctionalParser fParser(input, this->postfix, this->parameters,
-                this->names);
+        FunctionalParser fParser(input, this->m_name, this->m_instance);
         fParser.parse();
         //TODO: Implement parsers for other types of representation.
     }
@@ -54,64 +59,95 @@ Predicate::Predicate(const string& parameters, const string& input,
     }
 }
 
+Predicate::Predicate(Predicate&& other) :
+        parameters(std::move(other.parameters)), postfix(
+                std::move(other.postfix)), evaluation(
+                std::move(other.evaluation)),
+                m_instance(other.m_instance){
+    this->m_name = std::move(other.m_name);
+}
+
 Predicate::~Predicate() {
-    for (auto& e : this->postfix)
-        delete e;
 }
 
 bool Predicate::evaluate(const vector<int>& inputs) {
-    this->parameters = inputs;
-    // Clear the stack:
-    while (!this->evaluation.empty())
-        this->evaluation.pop();
-
-    for (auto& e : this->postfix) {
-        e->evaluate(this->evaluation);
-    }
-    // TODO: Check for validity
-    return (this->evaluation.top() == 1);
+//    this->parameters = inputs;
+//    // Clear the stack:
+//    while (!this->evaluation.empty())
+//        this->evaluation.pop();
+//
+//    for (auto& e : this->postfix) {
+//        e->evaluate(this->evaluation);
+//    }
+//    // TODO: Check for validity
+//    return (this->evaluation.top() == 1);
 }
 
 bool Predicate::evaluate(vector<int> && inputs) {
-    this->parameters = inputs;
+    size_t i = 0;
+    for (const auto& v : inputs) {
+        this->parameters[i++].value = v;
+    }
+//
+//    for (const auto& p : parameters) {
+//        cout << "PARAMETERS: " << p.name << "=" << p.value << endl;
+//    }
+//
     while (!this->evaluation.empty())
         this->evaluation.pop();
+//
     for (auto& e : this->postfix) {
-        e->evaluate(this->evaluation);
+        e.evaluate(this->evaluation);
     }
-    // TODO: Check for validity
-    return (this->evaluation.top() == 1);
+//    // TODO: Check for validity
+//    return (this->evaluation.top() == 1);
 }
 
-Predicate::Predicate(Predicate&& other) :
-        parameters(std::move(other.parameters)), names(std::move(other.names)), postfix(
-                std::move(other.postfix)), evaluation(
-                std::move(other.evaluation)) {
-}
-
-Predicate& Predicate::operator =(Predicate&& other) {
+Predicate & Predicate::operator =(Predicate && other) {
     this->parameters = std::move(other.parameters);
-    this->names = std::move(other.names);
     this->postfix = std::move(other.postfix);
     this->evaluation = std::move(other.evaluation);
+    this->m_name = std::move(other.m_name);
     return *this;
 }
 
 bool Predicate::evaluate(const vector<int*>& inputs) {
-    this->parameters.clear();
-    this->parameters.reserve(inputs.size());
-    for (const auto& x : inputs) {
-        this->parameters.push_back(*x);
-    }
-/*
-	while (!this->evaluation.empty())
-		this->evaluation.pop();
-*/
-    // FIXME: Check if this way of clearing a stack does not leak memory:
-    this->evaluation = stack<int>();
-    for (auto& e : this->postfix) {
-        e->evaluate(this->evaluation);
-    }
-    // TODO: Check for validity
-    return (this->evaluation.top() == 1);
+//    this->parameters.clear();
+//    this->parameters.reserve(inputs.size());
+//    for (const auto& x : inputs) {
+//        this->parameters.push_back(*x);
+//    }
+//
+//    while (!this->evaluation.empty())
+//        this->evaluation.pop();
+//
+//    for (auto& e : this->postfix) {
+//        e->evaluate(this->evaluation);
+//    }
+//    // TODO: Check for validity
+//    return (this->evaluation.top() == 1);
 }
+
+void Predicate::addParameter(const std::string& name, const int& value) {
+    this->parameters.emplace_back(Reference { value, name });
+}
+
+const std::vector<Predicate::Reference>& Predicate::getParameters() const {
+    return this->parameters;
+}
+
+void Predicate::addPostfixExpression(const Expression::Token& type,
+        const std::string& name) {
+    this->postfix.emplace_back(type, name, this->m_name, this->m_instance);
+}
+
+int Predicate::parameter(const std::string& name) const {
+    for (const auto& p : this->parameters) {
+        if (p.name == name) {
+            return p.value;
+        }
+    }
+// TODO: Throw exception
+    return 0;
+}
+

@@ -6,6 +6,7 @@
 #include "predicate-f_parserbase.h"
 #include "predicate-f_scanner.h"
 #include "expression.h"
+#include "../csp-problem.h"
 #include <sstream>
 #include <vector>
 #include <map>
@@ -14,44 +15,40 @@
 class FunctionalParser: public FunctionalParserBase {
 
 public:
-	FunctionalParser(const std::string& input,
-			std::vector<AIT::CSP::Expression*>& postfix,
-			const std::vector<int>& variables,
-			const std::map<std::string, size_t>& names);
-	int parse();
+    FunctionalParser(const std::string& input, const std::string& predicate,
+            const AIT::CSP::CSP_Problem& instance);
+    ~FunctionalParser() {
+    }
+    ;
+    int parse();
 
 private:
-	std::istringstream str;
-	PredicateFunctionalLexer d_scanner;
-	std::vector<AIT::CSP::Expression*>& postfix;
-	const std::vector<int>& variables;
-	const std::map<std::string, size_t>& names;
+    std::istringstream str;
+    PredicateFunctionalLexer d_scanner;
+    const AIT::CSP::CSP_Problem& instance;
+    const std::string predicate;
 
-	void error(char const *msg);
-	int lex();
-	void print();
-	void executeAction(int ruleNr);
-	void errorRecovery();
-	int lookup(bool recovery);
-	void nextToken();
+    void error(char const *msg);
+    int lex();
+    void print();
+    void executeAction(int ruleNr);
+    void errorRecovery();
+    int lookup(bool recovery);
+    void nextToken();
 };
 
 inline void FunctionalParser::error(char const *msg) {
-	std::cerr << msg << '\n';
+    std::cerr << msg << '\n';
 }
 
 inline int FunctionalParser::lex() {
-	return d_scanner.lex();
+    return d_scanner.lex();
 }
 
 inline FunctionalParser::FunctionalParser(const std::string& input,
-		std::vector<AIT::CSP::Expression*>& outputVector,
-		const std::vector<int>& variables_,
-		const std::map<std::string, size_t>& names_) :
-		str(input), d_scanner(str, std::cout), postfix(outputVector), variables(
-				variables_), names(names_) {
-	postfix.clear();
-	// TODO: Check if there is a memory leak or not.
+        const std::string& predicate_, const AIT::CSP::CSP_Problem& instance_) :
+        str(input), d_scanner(str, std::cout), instance(instance_), predicate(
+                predicate_) {
 }
 
 inline void FunctionalParser::print() {

@@ -26,7 +26,8 @@
 using namespace AIT::CSP;
 using namespace std;
 
-XPredicateParser::XPredicateParser() {
+XPredicateParser::XPredicateParser(const CSP_Problem& instance_):
+    instance(instance_){
 }
 
 XPredicateParser::~XPredicateParser() {
@@ -46,5 +47,5 @@ void XPredicateParser::name(const string& name) {
 }
 
 Predicate XPredicateParser::post_predicate_t() {
-	return Predicate(this->m_parameters,this->m_pair.second,this->m_pair.first);
+	return Predicate(this->m_name,this->m_parameters,this->m_pair.second,this->m_pair.first, this->instance);
 }

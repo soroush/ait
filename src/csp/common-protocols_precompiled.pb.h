@@ -93,12 +93,12 @@ class P_Assignment : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // required int32 id = 1;
-  inline bool has_id() const;
-  inline void clear_id();
-  static const int kIdFieldNumber = 1;
-  inline ::google::protobuf::int32 id() const;
-  inline void set_id(::google::protobuf::int32 value);
+  // required int32 priority = 1;
+  inline bool has_priority() const;
+  inline void clear_priority();
+  static const int kPriorityFieldNumber = 1;
+  inline ::google::protobuf::int32 priority() const;
+  inline void set_priority(::google::protobuf::int32 value);
   
   // optional int32 value = 2;
   inline bool has_value() const;
@@ -109,14 +109,14 @@ class P_Assignment : public ::google::protobuf::Message {
   
   // @@protoc_insertion_point(class_scope:AIT.protocols.csp.P_Assignment)
  private:
-  inline void set_has_id();
-  inline void clear_has_id();
+  inline void set_has_priority();
+  inline void clear_has_priority();
   inline void set_has_value();
   inline void clear_has_value();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
-  ::google::protobuf::int32 id_;
+  ::google::protobuf::int32 priority_;
   ::google::protobuf::int32 value_;
   
   mutable int _cached_size_;
@@ -221,26 +221,26 @@ class P_CompoundAssignment : public ::google::protobuf::Message {
 
 // P_Assignment
 
-// required int32 id = 1;
-inline bool P_Assignment::has_id() const {
+// required int32 priority = 1;
+inline bool P_Assignment::has_priority() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void P_Assignment::set_has_id() {
+inline void P_Assignment::set_has_priority() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void P_Assignment::clear_has_id() {
+inline void P_Assignment::clear_has_priority() {
   _has_bits_[0] &= ~0x00000001u;
 }
-inline void P_Assignment::clear_id() {
-  id_ = 0;
-  clear_has_id();
+inline void P_Assignment::clear_priority() {
+  priority_ = 0;
+  clear_has_priority();
 }
-inline ::google::protobuf::int32 P_Assignment::id() const {
-  return id_;
+inline ::google::protobuf::int32 P_Assignment::priority() const {
+  return priority_;
 }
-inline void P_Assignment::set_id(::google::protobuf::int32 value) {
-  set_has_id();
-  id_ = value;
+inline void P_Assignment::set_priority(::google::protobuf::int32 value) {
+  set_has_priority();
+  priority_ = value;
 }
 
 // optional int32 value = 2;

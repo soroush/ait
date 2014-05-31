@@ -40,10 +40,16 @@ public:
 	};
 	RelationBase();
 	virtual ~RelationBase();
+
+	void setName(const std::string& name);
+	std::string getName() const;
+
 	virtual bool evaluate(const std::vector<int>& v);
 	virtual bool evaluate(std::vector<int>&& v);
 	virtual bool evaluate(const std::vector<int*>& v);
 	virtual bool evaluate(std::vector<int*>&& v);
+protected:
+	std::string m_name;
 };
 
 } /* namespace CSP */

@@ -35,6 +35,7 @@ XConstraintsParser::~XConstraintsParser() {
 }
 
 void XConstraintsParser::constraint(Constraint&& constraint) {
+    cout << "Adding constraint: " << constraint.getName() << endl;
 	m_instance.addConstraint(std::move(constraint));
 }
 

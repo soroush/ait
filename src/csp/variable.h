@@ -36,7 +36,6 @@ namespace CSP {
  */
 class LIBRARY_API Variable {
 public:
-    Variable();
     Variable(Domain* domain, const std::string& name = "",
             const int& value = 0);
     Variable(Variable&& v);
@@ -57,7 +56,7 @@ private:
     Domain* m_domain;
     std::string m_name;
     int m_value;
-    bool set;
+    bool m_isSet;
 };
 
 } /* namespace CSP */

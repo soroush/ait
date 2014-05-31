@@ -26,14 +26,14 @@
 using namespace AIT::CSP;
 using namespace std;
 
-exp_num::exp_num(const int& _value) :
-		value(_value) {
-}
-
-exp_num::~exp_num() {
-}
-
-void exp_num::evaluate(stack<int>& s) {
-	s.push(this->value);
-}
+//exp_num::exp_num(const int& _value) :
+//		value(_value) {
+//}
+//
+//exp_num::~exp_num() {
+//}
+//
+//void exp_num::evaluate(stack<int>& s) {
+//	s.push(this->value);
+//}
 

@@ -45,6 +45,6 @@ parameters:	type id parameters |
 type:		int;
 int:		INT ;
 id:			ID	{ 
-					this->parameters.push_back(0); 
-					this->names[d_scanner.matched().c_str()]=this->parameters.size()-1; 
+					Predicate* ref = static_cast<Predicate*>(this->instance.relation(this->predicate));
+					ref->addParameter(d_scanner.matched()); 
 				};

@@ -25,19 +25,19 @@
 #define XPREDICATES_PARSER_H_
 
 #include "xcsp-pskel.hxx"
-#include <forward_list>
+#include "../csp-problem.h"
 
 namespace AIT {
 namespace CSP {
 
 class XPredicatesParser: public predicates_t_pskel {
 public:
-	XPredicatesParser();
+	XPredicatesParser(CSP_Problem& instance);
 	~XPredicatesParser();
 	void predicate(Predicate&&);
 	void nbPredicates(unsigned long long);
 private:
-	std::forward_list<Predicate> m_predicates;
+	CSP_Problem& m_instance;
 };
 
 } /* namespace CSP */

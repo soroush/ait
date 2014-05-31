@@ -30,56 +30,46 @@
 %scanner                 "predicate-f_scanner.h"
 %scanner-token-function  d_scanner.lex()
 
-%union{
-double		d;
-int		i;
-bool		b;
-std::string*	s;
-}
-
-//%token <d> 	DOUBLE
-%token <i> 	INTEGER
-%token <s> 	ID
+%token  INTEGER
+%token  ID
 
 %token LP RP COMMA NEG ABS ADD SUB MUL MOD POW MIN MAX 
 %token EQ NEQ GE GT LE LT NOT AND OR XOR IFF
-
-%type <i> int
-//%type <d> double
-%type <s> id
 
 %%
 
 functional: int_expr;
 
-int_expr:	NEG LP int_expr RP { this->postfix.push_back(new exp_func_neg()); } | 
-		ABS LP int_expr RP { this->postfix.push_back(new exp_func_abs());} |
-		ADD LP int_expr COMMA int_expr RP { this->postfix.push_back(new exp_func_add()); } |
-		SUB LP int_expr COMMA int_expr RP { this->postfix.push_back(new exp_func_sub()); } |
-		MUL LP int_expr COMMA int_expr RP { this->postfix.push_back(new exp_func_mul()); } |
-		MOD LP int_expr COMMA int_expr RP { this->postfix.push_back(new exp_func_mod()); } |
-		POW LP int_expr COMMA int_expr RP { this->postfix.push_back(new exp_func_pow()); } |
-		MIN LP int_expr COMMA int_expr RP { this->postfix.push_back(new exp_func_min()); } |
-		MAX LP int_expr COMMA int_expr RP { this->postfix.push_back(new exp_func_max()); } | 
+int_expr:	NEG LP int_expr RP { 
+                                    Predicate* ref = static_cast<Predicate*>(this->instance.relation(this->predicate));
+                                    ref->addPostfixExpression(Expression::Token::NEG); 
+                               } | 
+		ABS LP int_expr RP { 
+		                          Predicate* ref = static_cast<Predicate*>(this->instance.relation(this->predicate));
+		                          ref->addPostfixExpression(Expression::Token::ABS);} |
+		ADD LP int_expr COMMA int_expr RP { Predicate* ref = static_cast<Predicate*>(this->instance.relation(this->predicate)); ref->addPostfixExpression(Expression::Token::ADD); } |
+		SUB LP int_expr COMMA int_expr RP { Predicate* ref = static_cast<Predicate*>(this->instance.relation(this->predicate)); ref->addPostfixExpression(Expression::Token::SUB); } |
+		MUL LP int_expr COMMA int_expr RP { Predicate* ref = static_cast<Predicate*>(this->instance.relation(this->predicate)); ref->addPostfixExpression(Expression::Token::MUL); } |
+		MOD LP int_expr COMMA int_expr RP { Predicate* ref = static_cast<Predicate*>(this->instance.relation(this->predicate)); ref->addPostfixExpression(Expression::Token::MOD); } |
+		POW LP int_expr COMMA int_expr RP { Predicate* ref = static_cast<Predicate*>(this->instance.relation(this->predicate)); ref->addPostfixExpression(Expression::Token::POW); } |
+		MIN LP int_expr COMMA int_expr RP { Predicate* ref = static_cast<Predicate*>(this->instance.relation(this->predicate)); ref->addPostfixExpression(Expression::Token::MIN); } |
+		MAX LP int_expr COMMA int_expr RP { Predicate* ref = static_cast<Predicate*>(this->instance.relation(this->predicate)); ref->addPostfixExpression(Expression::Token::MAX); } | 
 
-		EQ LP int_expr COMMA int_expr RP { this->postfix.push_back(new exp_func_eq()); } | 
-		NEQ LP int_expr COMMA int_expr RP { this->postfix.push_back(new exp_func_neq()); } | 
-		GE LP int_expr COMMA int_expr RP { this->postfix.push_back(new exp_func_ge()); } | 
-		GT LP int_expr COMMA int_expr RP { this->postfix.push_back(new exp_func_gt()); } | 
-		LE LP int_expr COMMA int_expr RP { this->postfix.push_back(new exp_func_le()); } | 
-		LT LP int_expr COMMA int_expr RP { this->postfix.push_back(new exp_func_lt()); } | 
+		EQ LP int_expr COMMA int_expr RP { Predicate* ref = static_cast<Predicate*>(this->instance.relation(this->predicate)); ref->addPostfixExpression(Expression::Token::EQ); } | 
+		NEQ LP int_expr COMMA int_expr RP { Predicate* ref = static_cast<Predicate*>(this->instance.relation(this->predicate)); ref->addPostfixExpression(Expression::Token::NEQ); } | 
+		GE LP int_expr COMMA int_expr RP { Predicate* ref = static_cast<Predicate*>(this->instance.relation(this->predicate)); ref->addPostfixExpression(Expression::Token::GE); } | 
+		GT LP int_expr COMMA int_expr RP { Predicate* ref = static_cast<Predicate*>(this->instance.relation(this->predicate)); ref->addPostfixExpression(Expression::Token::GT); } | 
+		LE LP int_expr COMMA int_expr RP { Predicate* ref = static_cast<Predicate*>(this->instance.relation(this->predicate)); ref->addPostfixExpression(Expression::Token::LE); } | 
+		LT LP int_expr COMMA int_expr RP { Predicate* ref = static_cast<Predicate*>(this->instance.relation(this->predicate)); ref->addPostfixExpression(Expression::Token::LT); } | 
 
-		NOT LP int_expr RP { this->postfix.push_back(new exp_func_not()); } | 
-		AND LP int_expr COMMA int_expr RP { this->postfix.push_back(new exp_func_and()); } | 
-		OR LP int_expr COMMA int_expr RP { this->postfix.push_back(new exp_func_or()); } | 
-		XOR LP int_expr COMMA int_expr RP { this->postfix.push_back(new exp_func_xor()); } | 
-		IFF LP int_expr COMMA int_expr COMMA int_expr RP { this->postfix.push_back(new exp_func_iff()); } |
+		NOT LP int_expr RP { Predicate* ref = static_cast<Predicate*>(this->instance.relation(this->predicate)); ref->addPostfixExpression(Expression::Token::NOT); } | 
+		AND LP int_expr COMMA int_expr RP { Predicate* ref = static_cast<Predicate*>(this->instance.relation(this->predicate)); ref->addPostfixExpression(Expression::Token::AND); } | 
+		OR LP int_expr COMMA int_expr RP { Predicate* ref = static_cast<Predicate*>(this->instance.relation(this->predicate)); ref->addPostfixExpression(Expression::Token::OR); } | 
+		XOR LP int_expr COMMA int_expr RP { Predicate* ref = static_cast<Predicate*>(this->instance.relation(this->predicate)); ref->addPostfixExpression(Expression::Token::XOR); } | 
+		IFF LP int_expr COMMA int_expr COMMA int_expr RP { Predicate* ref = static_cast<Predicate*>(this->instance.relation(this->predicate)); ref->addPostfixExpression(Expression::Token::IFF); } |
 		
-		id {
-		     this->postfix.push_back(new exp_ref(this->variables,this->names.at(*$1))); 
+		ID {
+		      Predicate* ref = static_cast<Predicate*>(this->instance.relation(this->predicate)); 
+		      ref->addPostfixExpression(Expression::Token::REF, d_scanner.matched()); 
 		   } | 
-		int { this->postfix.push_back(new exp_num($1)); };
-int:	INTEGER {$$ = atoi(d_scanner.matched().c_str());} ;
-//double:	DOUBLE {$$ = atof(d_scanner.matched().c_str());} |
-//        int {$$ = static_cast<double>($1);} ;
-id:	ID	{ $$ = new std::string(d_scanner.matched().c_str()); };
+		INTEGER { Predicate* ref = static_cast<Predicate*>(this->instance.relation(this->predicate)); ref->addPostfixExpression(Expression::Token::CONST, d_scanner.matched()); };

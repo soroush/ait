@@ -27,23 +27,20 @@
 using namespace AIT::CSP;
 using namespace std;
 
-Variable::Variable() :
-		m_domain(&Domain::empty), m_name(""), m_value(0), set(false) {
-}
-
 Variable::Variable(Domain* domain, const string& name, const int& value_) :
-		m_domain(domain), m_name(name), m_value(value_), set(false) {
+		m_domain(domain), m_name(name), m_value(value_), m_isSet(false) {
 }
 
 Variable::Variable(Variable&& other) :
 		m_domain(other.m_domain), m_name(move(other.m_name)), m_value(
-				move(other.m_value)), set(move(other.set)) {
+				move(other.m_value)), m_isSet(move(other.m_isSet)) {
 }
 
 Variable& Variable::operator =(Variable&& other) {
 	m_domain = std::move(other.m_domain);
 	m_name = std::move(other.m_name);
 	m_value = std::move(other.m_value);
+	m_isSet = std::move(other.m_isSet);
 	return *this;
 }
 
@@ -51,6 +48,7 @@ Variable::~Variable() {
 }
 
 int* Variable::value() {
+    cout << "returning: " << &(this->m_value) << endl;
 	return &(this->m_value);
 }
 
@@ -76,13 +74,13 @@ int Variable::getValue() const {
 
 void Variable::setValue(int value) {
     this->m_value = value;
-	this->set = true;
+    this->m_isSet = true;
 }
 
 bool Variable::isSet() const {
-    return this->set;
+    return this->m_isSet;
 }
 
 void Variable::unset() {
-    this->set = false;
+    this->m_isSet = false;
 }

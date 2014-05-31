@@ -51,3 +51,11 @@ bool RelationBase::evaluate(vector<int*> && allocator)  {
 	return true;
 	// DUMMY CODE
 }
+
+void RelationBase::setName(const std::string& name) {
+    this->m_name = name;
+}
+
+string RelationBase::getName() const {
+    return this->m_name;
+}

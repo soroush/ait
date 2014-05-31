@@ -39,6 +39,7 @@ XPresentationParser::~XPresentationParser() {
 }
 
 void XPresentationParser::name(const string& name) {
+    cout << "Presentation: " << name << endl;
 	instance.setName(name);
 }
 
@@ -128,4 +129,8 @@ void XPresentationParser::format(const string& format) {
 
 void XPresentationParser::maxConstraintArity(unsigned long long arity) {
 	instance.setMaxConstraintArity(static_cast<unsigned int>(arity));
+}
+
+void XPresentationParser::post_presentation_t() {
+    cout << "presentation parsed" << endl;
 }

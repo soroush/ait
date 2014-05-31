@@ -30,9 +30,6 @@
 using namespace AIT::CSP;
 using namespace std;
 
-// FIXME DomainParser may not be able to produce empty string
-Domain Domain::empty(0, "", "");
-
 Domain::Domain(const size_t& nbValues, const string& content,
 		const string& name) :
 		m_name(name) {

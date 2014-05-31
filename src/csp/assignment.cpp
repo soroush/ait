@@ -55,7 +55,7 @@ bool Assignment::operator <(const Assignment& other) const {
 
 Assignment::operator P_Assignment() {
 	P_Assignment pa;
-	pa.set_id(this->id);
+	pa.set_priority(this->id);
 	pa.set_value(this->value);
 	return pa;
 }
@@ -71,7 +71,7 @@ Assignment::Assignment(const AgentID& id_, const int& value_) :
 }
 
 void Assignment::readFromProtocol(const P_Assignment& message) {
-	this->id = message.id();
+	this->id = message.priority();
 	if (message.has_value())
 		this->value = message.value();
 	else

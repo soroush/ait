@@ -549,7 +549,7 @@ void AABT_Solver::getAgentList() {
 	_INFO( "Sending Request List to monitor agent ...");
 	abt::P_CommunicationProtocol requestList;
 	requestList.set_type(abt::CP_MessageType::T_REQUEST_LIST);
-	requestList.set_id(this->id);
+	requestList.set_priority(this->id);
 	this->serverRquest.sendMessage(requestList);
 
 	abt::P_CommunicationProtocol requestListAck;
@@ -572,12 +572,12 @@ void AABT_Solver::getAgentList() {
 			"\tID:     %d\n"
 			"\tHost:   %s\n"
 			"\tPort:   %d",
-					listPacket.others(i).id(), listPacket.others(i).host().c_str(), listPacket.others(i).port());
+					listPacket.others(i).priority(), listPacket.others(i).host().c_str(), listPacket.others(i).port());
 		}
 		for (auto i = everybody.begin(); i != everybody.end(); ++i) {
-			if (i->id() < this->id)
+			if (i->priority() < this->id)
 				preceding.push_front(i);
-			else if (i->id() > this->id)
+			else if (i->priority() > this->id)
 				succeeding.push_front(i);
 		}
 		for (auto &agent : everybody) {

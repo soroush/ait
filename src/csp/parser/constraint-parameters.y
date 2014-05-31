@@ -44,16 +44,9 @@ parameters:	iv parameters |
 iv:			int | var ;
 var:		VAR {
 					Variable* v = this->problem->variable(d_scanner.matched());
-					if (this->mode == ParserMode::Scope) {
-						this->scope->push_back(v);
-					} else if (this->mode == ParserMode::Parameter) {
-						this->parameters->push_back(v->value());
-					}
+				    this->parameters.emplace_back(v);
 				} ;
 int:		INT {
-					int value = atoi(d_scanner.matched().c_str());
-					//FIXME: instead of passing a dummy variable, just pass a 
-					// shared pointer to constraint and make sure that constraint class
-					// have a vector of std::_shared_ptr<int> to keep values.
-					this->parameters->push_back(new int(value));
+					int v = atoi(d_scanner.matched().c_str());
+					this->parameters.emplace_back(v);
 				} ;

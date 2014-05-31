@@ -29,16 +29,16 @@
 namespace AIT {
 namespace CSP {
 
-class exp_num: public Expression {
-public:
-	exp_num(const int& value);
-	~exp_num();
-	void evaluate(std::stack<int>&);
-
-private:
-	int value;
-
-};
+//class exp_num: public Expression {
+//public:
+//	exp_num(const int& value);
+//	~exp_num();
+//	void evaluate(std::stack<int>&);
+//
+//private:
+//	int value;
+//
+//};
 
 } /* namespace CSP */
 } /* namespace AIT */

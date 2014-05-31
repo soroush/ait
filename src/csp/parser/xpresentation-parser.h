@@ -29,8 +29,6 @@
 namespace AIT {
 namespace CSP {
 
-class CSP_Problem;
-
 class XPresentationParser: public presentation_t_pskel {
 public:
 	XPresentationParser(CSP_Problem&);
@@ -42,6 +40,7 @@ public:
 	void solution(const std::string&);
 	void type(const AIT::CSP::CSP_Problem::Type&);
 	void format(const std::string&);
+	void post_presentation_t();
 
 private:
 	CSP_Problem& instance;

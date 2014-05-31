@@ -41,20 +41,7 @@ void XDomainParser::name(const ::string& name) {
 	this->m_name = name;
 }
 
-string XDomainParser::name() {
-	return this->m_name;
-}
-
-size_t XDomainParser::nbValues() {
-	return this->m_nbValues;
-}
-
 Domain XDomainParser::post_domain_t() {
 	this->m_content = this->post_string();
 	return Domain { this->m_nbValues, this->m_content, this->m_name };
 }
-
-string XDomainParser::content() {
-	return this->m_content;
-}
-

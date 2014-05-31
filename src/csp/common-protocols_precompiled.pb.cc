@@ -37,7 +37,7 @@ void protobuf_AssignDesc_common_2dprotocols_5fprecompiled_2eproto() {
   GOOGLE_CHECK(file != NULL);
   P_Assignment_descriptor_ = file->message_type(0);
   static const int P_Assignment_offsets_[2] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(P_Assignment, id_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(P_Assignment, priority_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(P_Assignment, value_),
   };
   P_Assignment_reflection_ =
@@ -101,10 +101,10 @@ void protobuf_AddDesc_common_2dprotocols_5fprecompiled_2eproto() {
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n\"common-protocols_precompiled.proto\022\021AI"
-    "T.protocols.csp\")\n\014P_Assignment\022\n\n\002id\030\001 "
-    "\002(\005\022\r\n\005value\030\002 \001(\005\"L\n\024P_CompoundAssignme"
-    "nt\0224\n\013assignments\030\001 \003(\0132\037.AIT.protocols."
-    "csp.P_Assignment", 176);
+    "T.protocols.csp\"/\n\014P_Assignment\022\020\n\010prior"
+    "ity\030\001 \002(\005\022\r\n\005value\030\002 \001(\005\"L\n\024P_CompoundAs"
+    "signment\0224\n\013assignments\030\001 \003(\0132\037.AIT.prot"
+    "ocols.csp.P_Assignment", 182);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "common-protocols_precompiled.proto", &protobuf_RegisterTypes);
   P_Assignment::default_instance_ = new P_Assignment();
@@ -125,7 +125,7 @@ struct StaticDescriptorInitializer_common_2dprotocols_5fprecompiled_2eproto {
 // ===================================================================
 
 #ifndef _MSC_VER
-const int P_Assignment::kIdFieldNumber;
+const int P_Assignment::kPriorityFieldNumber;
 const int P_Assignment::kValueFieldNumber;
 #endif  // !_MSC_VER
 
@@ -145,7 +145,7 @@ P_Assignment::P_Assignment(const P_Assignment& from)
 
 void P_Assignment::SharedCtor() {
   _cached_size_ = 0;
-  id_ = 0;
+  priority_ = 0;
   value_ = 0;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
@@ -181,7 +181,7 @@ P_Assignment* P_Assignment::New() const {
 
 void P_Assignment::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    id_ = 0;
+    priority_ = 0;
     value_ = 0;
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
@@ -194,14 +194,14 @@ bool P_Assignment::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // required int32 id = 1;
+      // required int32 priority = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &id_)));
-          set_has_id();
+                 input, &priority_)));
+          set_has_priority();
         } else {
           goto handle_uninterpreted;
         }
@@ -243,9 +243,9 @@ bool P_Assignment::MergePartialFromCodedStream(
 
 void P_Assignment::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // required int32 id = 1;
-  if (has_id()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->id(), output);
+  // required int32 priority = 1;
+  if (has_priority()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->priority(), output);
   }
   
   // optional int32 value = 2;
@@ -261,9 +261,9 @@ void P_Assignment::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* P_Assignment::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // required int32 id = 1;
-  if (has_id()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->id(), target);
+  // required int32 priority = 1;
+  if (has_priority()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->priority(), target);
   }
   
   // optional int32 value = 2;
@@ -282,11 +282,11 @@ int P_Assignment::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // required int32 id = 1;
-    if (has_id()) {
+    // required int32 priority = 1;
+    if (has_priority()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
-          this->id());
+          this->priority());
     }
     
     // optional int32 value = 2;
@@ -323,8 +323,8 @@ void P_Assignment::MergeFrom(const ::google::protobuf::Message& from) {
 void P_Assignment::MergeFrom(const P_Assignment& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from.has_id()) {
-      set_id(from.id());
+    if (from.has_priority()) {
+      set_priority(from.priority());
     }
     if (from.has_value()) {
       set_value(from.value());
@@ -353,7 +353,7 @@ bool P_Assignment::IsInitialized() const {
 
 void P_Assignment::Swap(P_Assignment* other) {
   if (other != this) {
-    std::swap(id_, other->id_);
+    std::swap(priority_, other->priority_);
     std::swap(value_, other->value_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);

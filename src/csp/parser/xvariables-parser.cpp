@@ -36,7 +36,7 @@ XVariablesParser::XVariablesParser(CSP_Problem& instance) :
 XVariablesParser::~XVariablesParser() {
 }
 
-void XVariablesParser::variable(Variable variable) {
+void XVariablesParser::variable(Variable&& variable) {
 	this->m_instance.addVariable(move(variable));
 }
 

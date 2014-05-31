@@ -36,6 +36,7 @@ XVariableParser::~XVariableParser() {
 
 void XVariableParser::name(const string& name) {
 	this->m_name = name;
+	cout << "Variable name: " << name << endl;
 }
 
 void XVariableParser::domain(const string& domainName) {

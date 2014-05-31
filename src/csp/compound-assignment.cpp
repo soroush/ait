@@ -59,7 +59,7 @@ CompoundAssignment::operator P_CompoundAssignment() const {
 	P_CompoundAssignment ca;
 	for (const auto& a : items) {
 		P_Assignment* newAssignment = ca.add_assignments();
-		newAssignment->set_id(a.id);
+		newAssignment->set_priority(a.id);
 		newAssignment->set_value(a.value);
 	}
 	return ca;
@@ -68,6 +68,6 @@ CompoundAssignment::operator P_CompoundAssignment() const {
 
 void CompoundAssignment::readFromProtocol(const P_CompoundAssignment& ca) {
 	for(const auto& a : ca.assignments()){
-		this->items.insert(Assignment(a.id(),a.value()));
+		this->items.insert(Assignment(a.priority(),a.value()));
 	}
 }

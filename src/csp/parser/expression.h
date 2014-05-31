@@ -25,15 +25,59 @@
 #define EXPRESSION_H_
 
 #include <stack>
+#include <string>
+#include <stddef.h>
 
 namespace AIT {
 namespace CSP {
 
+class CSP_Problem;
+
 class Expression {
 public:
-	Expression();
+    enum class Token{
+        // Parameters
+        REF,
+        // Unary Operators
+        NEG,
+        ABS,
+        // Binary Operators
+        ADD,
+        SUB,
+        MUL,
+        MOD,
+        POW,
+        MIN,
+        MAX,
+        // Logical Binary Operators
+        EQ,
+        NEQ,
+        GE,
+        GT,
+        LE,
+        LT,
+        AND,
+        OR,
+        XOR,
+        IFF,
+        // Logical Unary Operators
+        NOT,
+        // Constants
+        CONST
+    };
+	Expression(const Token& type, const std::string& name,
+	        const std::string& predicate,
+	        const CSP_Problem& instance);
 	virtual ~Expression();
+	Expression& operator=(const Expression& other);
 	virtual void evaluate(std::stack<int>&);
+private:
+	const CSP_Problem& m_instance;
+	Token m_type;
+	size_t m_refIndex;
+	int m_const;
+	std::string m_predicate;
+	std::string m_ref;
 };
 
 } /* namespace CSP */

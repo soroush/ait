@@ -28,6 +28,6 @@
 %lex-source                "constraint-parameters_scanner.cpp"
  
  %%
-"int"                                 return ConstraintParametersParser::INT;
-[[:alpha:]]+                          return ConstraintParametersParser::VAR;
+[[:digit:]]+                       return ConstraintParametersParser::INT;
+[[:alpha:]]+[[:alnum:]]*           return ConstraintParametersParser::VAR;
 [ \t\n]+                              ;

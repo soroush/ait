@@ -24,38 +24,50 @@
 #ifndef PREDICATE_H_
 #define PREDICATE_H_
 
-#include "parser/expression.h"
 #include "relation-base.h"
+#include "parser/expression.h"
 
 namespace AIT {
 namespace CSP {
+
+class CSP_Problem;
 
 class LIBRARY_API Predicate: public RelationBase {
 public:
     enum class Type {
         Functional, Infix, Postfix, MathML
     };
-    Predicate(const std::string& parameters, const std::string& input,
-            const Type&);
+    struct Reference {
+        int value;
+        std::string name;
+    };
+    Predicate(const std::string& name, const std::string& parameters,
+            const std::string& input, const Type&, const CSP_Problem& instance);
     Predicate(Predicate&&);
     Predicate& operator =(Predicate&&);
     ~Predicate();
     bool evaluate(const std::vector<int>&);
     bool evaluate(std::vector<int>&&);
     bool evaluate(const std::vector<int*>&);
+    void addParameter(const std::string&name, const int& value = 0);
+    void addPostfixExpression(const Expression::Token& type,
+            const std::string& name = std::string());
+    const std::vector<Reference>& getParameters() const;
+    int parameter(const std::string& name) const;
 private:
     /**
      * Parameters of a predicate. This vector holds actual values of parameters
      * processed by the predicate
      */
-    std::vector<int> parameters;
+    //std::vector<int> parameters;
+    std::vector<Reference> parameters;
     /**
      * Names of parameters held by predicate. This variable, maps a name (e.g.
      * "X", "A_0", ...) to an index in @ref parameters such that if "X" is first
      * parameter of predicate, then names["X"] is 0 and parameters(names["X"])
      * is value of "X".
      */
-    std::map<std::string, size_t> names;
+    //std::map<std::string, size_t> names;
     /**
      * This vector holds pointers to expressions held by current predicate. A
      * predicate can hold a variety of representations, one for each type.
@@ -66,7 +78,8 @@ private:
      * than one representation, then result of converting all representations to
      * postfix should be same.
      */
-    std::vector<Expression*> postfix;
+    //std::vector<Expression*> postfix;
+    std::vector<Expression> postfix;
     /**
      * Evaluation stack used by expressions. After finishing evaluation
      * operation, this stack will have one value, either 0 or 1 which represents
@@ -77,6 +90,7 @@ private:
      * its derivatives.)
      */
     std::stack<int> evaluation;
+    const CSP_Problem& m_instance;
 };
 
 } /* namespace CSP */

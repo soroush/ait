@@ -32,63 +32,69 @@
 #include "domain.h"
 #include "variable.h"
 #include "relation-base.h"
+#include "predicate.h"
 #include "constraint.h"
 
 namespace AIT {
 namespace CSP {
 
 class LIBRARY_API CSP_Problem {
-	friend class XDomainsParser;
-	friend class XVariablesParser;
+    friend class XDomainsParser;
+    friend class XVariablesParser;
 public:
-	enum class Type {
-		CSP, QCSP, WCSP, Unknown
-	};
-	enum class Format {
-		XCSP_21
-	};
-	enum class NumberType {
-		AtLeast, Exactly, Unknown
-	};
-	virtual ~CSP_Problem();
+    enum class Type {
+        CSP, QCSP, WCSP, Unknown
+    };
+    enum class Format {
+        XCSP_21
+    };
+    enum class NumberType {
+        AtLeast, Exactly, Unknown
+    };
+    CSP_Problem(){};
+    virtual ~CSP_Problem();
 
-	void addDomain(Domain&& d);
-	void addVariable(Variable&& v);
-	void addConstraint(Constraint&& c);
+    void addDomain(Domain&& d);
+    void addVariable(Variable&& v);
+    void addConstraint(Constraint&& c);
+    void addPredicate(Predicate&& p);
 
-	Variable* variable(const std::string&) const;
-	Variable* variable(const size_t&) const;
-	size_t variableIndex(const std::string&) const;
-	Domain* domain(const std::string&) const;
-	RelationBase* relation(const std::string&) const;
+    Variable* variable(const std::string&) const;
+    Variable* variable(const size_t&) const;
+    size_t variableIndex(const std::string&) const;
+    Domain* domain(const std::string&) const;
+    RelationBase* relation(const std::string&) const;
 
-	// Interface:
-	void setName(const std::string& name);
-	void setMaxConstraintArity(const unsigned int& max);
-	void setMinViolatedConstraints(std::pair<NumberType, unsigned int> number);
-	void setNbSolutions(std::pair<NumberType, unsigned int> number);
-	void setSolution(const std::string& solution);
-	void setType(const Type& type);
-	void setFormat(const Format& format);
-	const std::vector<Constraint*>& Constraints() const;
-	const std::vector<Variable*>& Variables() const;
+    // Interface:
+    void setName(const std::string& name);
+    void setMaxConstraintArity(const unsigned int& max);
+    void setMinViolatedConstraints(std::pair<NumberType, unsigned int> number);
+    void setNbSolutions(std::pair<NumberType, unsigned int> number);
+    void setSolution(const std::string& solution);
+    void setType(const Type& type);
+    void setFormat(const Format& format);
+    const std::vector<Domain*>& domains() const;
+    const std::vector<Variable*>& variables() const;
+    const std::vector<RelationBase*>& relationBases() const;
+    const std::vector<Constraint*>& constraints() const;
 
 private:
-	std::string m_name;
-	unsigned int m_maxConstraintArity;
-	std::pair<NumberType, unsigned int> m_minViolatedConstraints;
-	std::pair<NumberType, unsigned int> m_nbSolutions;
-	std::string m_solution;
-	Type m_type;
-	Format m_format;
+    std::string m_name;
+    unsigned int m_maxConstraintArity;
+    std::pair<NumberType, unsigned int> m_minViolatedConstraints;
+    std::pair<NumberType, unsigned int> m_nbSolutions;
+    std::string m_solution;
+    Type m_type;
+    Format m_format;
 
 protected:
-	std::vector<Domain*> domains;
-	std::vector<Variable*> variables;
-	std::vector<Constraint*> constraints;
+    std::vector<Domain*> m_domains;
+    std::vector<Variable*> m_variables;
+    std::vector<Constraint*> m_constraints;
+    std::vector<RelationBase*> m_relations;
 
-	std::map<std::string, Variable*> variableNames;
-	std::map<std::string, Domain*> domainNames;
+    std::map<std::string, Variable*> variableNames;
+    std::map<std::string, Domain*> domainNames;
 };
 
 } /* namespace CSP */

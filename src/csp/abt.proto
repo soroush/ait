@@ -27,9 +27,10 @@ package AIT.protocols.csp.abt;
 import "common-protocols.proto";
 
 message P_EndPoint {
-  required int32 id = 1;
-  required string host = 2;
-  required int32 port = 3;
+  required string name = 1;
+  optional int32 priority = 2;
+  required string host = 3;
+  required int32 port = 4;
 }
 
 enum CP_MessageType {
@@ -45,7 +46,7 @@ enum CP_MessageType {
 
 message P_CommunicationProtocol {
   required CP_MessageType type = 1;
-  optional int32 id = 2;
+  optional int32 priority = 2;
   optional P_EndPoint identity = 3;
   repeated P_EndPoint others = 4;
 }

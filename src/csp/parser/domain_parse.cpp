@@ -394,7 +394,7 @@ try
     if (d_acceptedTokens__ >= d_requiredTokens__)// only generate an error-
     {                                           // message if enough tokens 
         ++d_nErrors__;                          // were accepted. Otherwise
-        error("Syntax error");                  // simply skip input
+        error("Syntax error2");                  // simply skip input
 
     }
 

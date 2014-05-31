@@ -8,9 +8,7 @@
     // Add below here any includes etc. that are only 
     // required for the compilation of FunctionalParser's sources.
 
-#include    "exp_func.h"
-#include    "exp_num.h"
-#include    "exp_ref.h"
+#include "../predicate.h"
 
     // UN-comment the next using-declaration if you want to use
     // symbols from the namespace std without specifying std::

@@ -36,6 +36,7 @@ namespace CSP {
 class CSP_Problem;
 
 class LIBRARY_API Constraint {
+    friend class ConstraintParametersParser;
 public:
 	Constraint(const std::string& name, const size_t& arity,
 			const std::string& scope, const std::string& reference,
@@ -44,9 +45,27 @@ public:
 	Constraint(Constraint&&);
 	Constraint& operator =(Constraint&&);
 	~Constraint();
+	std::string getName() const;
+	void setName(const std::string&);
+
 	bool satisfies();
 
 	const std::vector<Variable*>& Scope() const;
+	class Value{
+	public:
+	    Value(Variable*);
+	    Value(const int&);
+	    int getValue() const;
+	    Value& operator=(const Value& other);
+	private:
+	    enum class Type {
+	      Variable,
+	      Constant
+	    };
+	    Variable* variable;
+	    int value;
+	    Type currentType;
+	};
 private:
 	/**
 	 * List of all pointers to all variables of current constraint. This
@@ -61,11 +80,14 @@ private:
 	 * an extension) then this vector should be identical to @ref scope in terms
 	 * of logic, though for computational reasons we keep it empty in such case.
 	 */
-	std::vector<int*> parameters;
+	//std::vector<int*> parameters;
+	std::vector<Value> parameters;
 	/**
 	 * Pointer to a @ref Relation or @ref Predicate.
 	 */
 	RelationBase* reference;
+
+	std::string m_name;
 };
 
 } /* namespace CSP */

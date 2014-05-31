@@ -92,7 +92,6 @@ public:
 	 */
 	void setValues(const std::vector<int>& values);
 
-	static Domain empty;
 private:
 	std::vector<int> m_values;
 	std::string m_name;

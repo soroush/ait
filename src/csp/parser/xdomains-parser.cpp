@@ -37,6 +37,7 @@ XDomainsParser::XDomainsParser(CSP_Problem& instance):
 }
 
 void XDomainsParser::domain(Domain&& domain) {
+    cout << "Adding domain: " << domain.getName() << endl;
 	this->m_instance.addDomain(std::move(domain));
 }
 
