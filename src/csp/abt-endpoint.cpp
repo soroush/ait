@@ -23,6 +23,9 @@
 
 #include "abt-solver.h"
 #include "abt-socket.h"
+#include <sstream>
+#include <stdexcept>
+#include <iostream>
 
 using namespace AIT;
 //FIXME remove incorrect using after moving Socket to a new namespace
@@ -30,39 +33,18 @@ using namespace AIT::CSP;
 using namespace AIT::protocols::csp;
 using namespace AIT::protocols::csp::abt;
 using namespace zmq;
+using namespace std;
 
-std::list<ABT_Solver::EndPoint*> ABT_Solver::EndPoint::m_everyBody;
 
 ABT_Solver::EndPoint::EndPoint(const protocols::csp::abt::P_EndPoint& ep,
         zmq::context_t& context) :
         socket_(new Socket(context, ZMQ_PUSH)) {
     this->CopyFrom(ep);
-    m_everyBody.push_back(this);
 }
 
 ABT_Solver::EndPoint::~EndPoint() {
-    m_everyBody.remove(this);
 }
 
 Socket* ABT_Solver::EndPoint::socket() const {
     return (this->socket_);
-}
-
-ABT_Solver::EndPoint* ABT_Solver::EndPoint::getByName(const std::string& name) {
-    for (const auto& ep : m_everyBody) {
-        if (ep->name() == name) {
-            return ep;
-        }
-    }
-    return nullptr;
-}
-
-ABT_Solver::EndPoint* ABT_Solver::EndPoint::getByPriority(
-        const size_t& priority) {
-    for (const auto& ep : m_everyBody) {
-        if (ep->priority() == priority) {
-            return ep;
-        }
-    }
-    return nullptr;
 }

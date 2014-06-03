@@ -31,106 +31,108 @@ using namespace AIT;
 using namespace CSP;
 using namespace std;
 
-XPresentationParser::XPresentationParser(CSP_Problem& _instance) :
-		instance(_instance) {
+XPresentationParser::XPresentationParser() {
 }
 
 XPresentationParser::~XPresentationParser() {
 }
 
 void XPresentationParser::name(const string& name) {
-    cout << "Presentation: " << name << endl;
-	instance.setName(name);
+    this->m_name = name;
 }
 
 void XPresentationParser::minViolatedConstraints(const string& min) {
-	std::pair<CSP_Problem::NumberType, unsigned int> number;
-	if (min == "?") {
-		number.first = CSP_Problem::NumberType::Unknown;
-		instance.setMinViolatedConstraints(number);
-		return;
-	} else {
-		string buf;
-		stringstream ss(min);
-		vector<string> tokens;
-		while (ss >> buf)
-			tokens.push_back(buf);
-		// Check sanity
-		if (tokens.size() == 3) {
-			if (tokens[0] == "at" && tokens[1] == "least") {
-				number.second = stoi(tokens[2]);
-				number.first = CSP_Problem::NumberType::AtLeast;
-				instance.setMinViolatedConstraints(number);
-				return;
-			}
-		} else if (tokens.size() == 1)
-			try {
-				number.second = stoi(tokens[0]);
-				number.first = CSP_Problem::NumberType::Exactly;
-				instance.setMinViolatedConstraints(number);
-			} catch (std::invalid_argument &e) {
-				_ERROR("%s", e.what());
-			}
-	}
-	_ERROR("Invalid value for `minViolatedConstraints' : %s", min.c_str());
-	number.first = CSP_Problem::NumberType::Unknown;
-	instance.setMinViolatedConstraints(number);
+    std::pair<CSP_Problem::Presentation::NumberType, unsigned int> number;
+    if (min == "?") {
+        number.first = CSP_Problem::Presentation::NumberType::Unknown;
+        this->m_minViolatedConstraints = number;
+        return;
+    } else {
+        string buf;
+        stringstream ss(min);
+        vector<string> tokens;
+        while (ss >> buf)
+            tokens.push_back(buf);
+        // Check sanity
+        if (tokens.size() == 3) {
+            if (tokens[0] == "at" && tokens[1] == "least") {
+                number.second = stoi(tokens[2]);
+                number.first = CSP_Problem::Presentation::NumberType::AtLeast;
+                this->m_minViolatedConstraints = number;
+                return;
+            }
+        } else if (tokens.size() == 1) {
+            try {
+                number.second = stoi(tokens[0]);
+                number.first = CSP_Problem::Presentation::NumberType::Exactly;
+                this->m_minViolatedConstraints = number;
+            } catch (std::invalid_argument &e) {
+                _ERROR("%s", e.what());
+            }
+            return;
+        }
+    }
+    _ERROR("Invalid value for `minViolatedConstraints' : %s", min.c_str());
+    number.first = CSP_Problem::Presentation::NumberType::Unknown;
+    this->m_minViolatedConstraints = number;
 }
 
 void XPresentationParser::nbSolutions(const string& nb) {
-	std::pair<CSP_Problem::NumberType, unsigned int> number;
-	if (nb == "?") {
-		number.first = CSP_Problem::NumberType::Unknown;
-		instance.setNbSolutions(number);
-		return;
-	} else {
-		string buf;
-		stringstream ss(nb);
-		vector<string> tokens;
-		while (ss >> buf)
-			tokens.push_back(buf);
-		// Check sanity
-		if (tokens.size() == 3) {
-			if (tokens[0] == "at" && tokens[1] == "least") {
-				number.second = stoi(tokens[2]);
-				number.first = CSP_Problem::NumberType::AtLeast;
-				instance.setNbSolutions(number);
-				return;
-			}
-		} else if (tokens.size() == 1)
-			try {
-				number.second = stoi(tokens[0]);
-				number.first = CSP_Problem::NumberType::Exactly;
-				instance.setNbSolutions(number);
-			} catch (std::invalid_argument &e) {
-				_ERROR("%s", e.what());
-			}
-	}
-	_ERROR("Invalid value for `nbSolutions' : %s", nb.c_str());
-	number.first = CSP_Problem::NumberType::Unknown;
-	instance.setNbSolutions(number);
+    std::pair<CSP_Problem::Presentation::NumberType, unsigned int> number;
+    if (nb == "?") {
+        number.first = CSP_Problem::Presentation::NumberType::Unknown;
+        this->m_nbSolutions = number;
+        return;
+    } else {
+        string buf;
+        stringstream ss(nb);
+        vector<string> tokens;
+        while (ss >> buf)
+            tokens.push_back(buf);
+        // Check sanity
+        if (tokens.size() == 3) {
+            if (tokens[0] == "at" && tokens[1] == "least") {
+                number.second = stoi(tokens[2]);
+                number.first = CSP_Problem::Presentation::NumberType::AtLeast;
+                this->m_nbSolutions = number;
+                return;
+            }
+        } else if (tokens.size() == 1) {
+            try {
+                number.second = stoi(tokens[0]);
+                number.first = CSP_Problem::Presentation::NumberType::Exactly;
+                this->m_nbSolutions = number;
+            } catch (std::invalid_argument &e) {
+                _ERROR("%s", e.what());
+            }
+            return;
+        }
+    }
+    _ERROR("Invalid value for `nbSolutions' : %s", nb.c_str());
+    number.first = CSP_Problem::Presentation::NumberType::Unknown;
+    this->m_nbSolutions = number;
 }
 
-void XPresentationParser::solution(const string& _solution) {
-	instance.setSolution(_solution);
+void XPresentationParser::solution(const string& solution) {
+    this->m_solution = solution;
 }
 
-void XPresentationParser::type(const CSP_Problem::Type& _type) {
-	instance.setType(_type);
+void XPresentationParser::type(const CSP_Problem::Presentation::Type& type) {
+    this->m_type = type;
 }
 
-void XPresentationParser::format(const string& format) {
-	if (format == "XCSP 2.1") {
-		instance.setFormat(CSP_Problem::Format::XCSP_21);
-	} else {
-		_ERROR("Unsupported format of CSP problem: `%s'", format.c_str());
-	}
+void XPresentationParser::format(
+        const AIT::CSP::CSP_Problem::Presentation::Format& format) {
+    this->m_format = format;
 }
 
 void XPresentationParser::maxConstraintArity(unsigned long long arity) {
-	instance.setMaxConstraintArity(static_cast<unsigned int>(arity));
+    this->m_maxConstraintArity = static_cast<unsigned int>(arity);
 }
 
-void XPresentationParser::post_presentation_t() {
-    cout << "presentation parsed" << endl;
+unique_ptr<CSP_Problem::Presentation> XPresentationParser::post_presentation_t() {
+    return unique_ptr<CSP_Problem::Presentation>(
+            new CSP_Problem::Presentation(this->m_name,
+                    this->m_maxConstraintArity, this->m_minViolatedConstraints,
+                    this->m_nbSolutions, this->m_type, this->m_format));
 }

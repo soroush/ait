@@ -66,11 +66,8 @@ protected:
                 zmq::context_t& context);
         ~EndPoint();
         Socket* socket() const;
-        EndPoint* getByName(const std::string& name);
-        EndPoint* getByPriority(const size_t& priority);
     private:
         Socket* socket_;
-        static std::list<EndPoint*> m_everyBody;
     };
 
     struct Message {
@@ -139,7 +136,7 @@ protected:
     std::vector<EndPoint> everybody;
     std::list<Nogood> noGoodStore;
     CompoundAssignment agentView;
-    std::vector<int> agentViewX;
+    //std::vector<int> agentViewX;
     //bool* assignedAgents;
     int value;
 
@@ -165,6 +162,9 @@ protected:
     //FIXME: Remove value and replace this one instead:
     Variable* me;
     std::forward_list<Constraint*> myConstraints;
+    private:
+    const ABT_Solver::EndPoint& getByName(const std::string& name);
+    const ABT_Solver::EndPoint& getByPriority(const size_t& priority);
 };
 
 } /* namespace CSP */

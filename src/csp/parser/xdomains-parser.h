@@ -34,11 +34,12 @@ class CSP_Problem;
 
 class XDomainsParser: public domains_t_pskel {
 public:
-	XDomainsParser(CSP_Problem& instance);
-	void domain(Domain&&);
-	void nbDomains(unsigned long long);
+    XDomainsParser();
+    void domain (std::unique_ptr<Domain>);
+    void nbDomains(unsigned long long);
+    std::vector<std::unique_ptr<Domain>>&& post_domains_t();
 private:
-	CSP_Problem& m_instance;
+    std::vector<std::unique_ptr<Domain>> m_domains;
 };
 
 } /* namespace CSP */

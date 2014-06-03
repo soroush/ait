@@ -26,7 +26,7 @@
 using namespace AIT::CSP;
 using namespace std;
 
-XConstraintParser::XConstraintParser(CSP_Problem& instance) :
+XConstraintParser::XConstraintParser(CSP_Problem* const instance) :
 		m_instance(instance) {
 }
 
@@ -56,8 +56,7 @@ void XConstraintParser::arity(unsigned long long arity) {
 	this->m_arity = arity;
 }
 
-Constraint XConstraintParser::post_constraint_t() {
-	return Constraint(this->m_name, this->m_arity, this->m_scope,
-			this->m_reference, this->m_parameters, &(this->m_instance));
-	//FIXME: Replace pointer with reference
+unique_ptr<Constraint> XConstraintParser::post_constraint_t() {
+	return unique_ptr<Constraint>(new Constraint(this->m_name, this->m_arity, this->m_scope,
+			this->m_reference, this->m_parameters, this->m_instance));
 }

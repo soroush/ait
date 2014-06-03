@@ -33,13 +33,13 @@ class CSP_Problem;
 
 class XConstraintsParser: public constraints_t_pskel {
 public:
-	XConstraintsParser(CSP_Problem&);
+	XConstraintsParser();
 	~XConstraintsParser();
-	void constraint(Constraint&&);
+	void constraint(std::unique_ptr<Constraint>);
 	void nbConstraints(unsigned long long);
-	void post_constraints_t();
+	std::vector<std::unique_ptr<AIT::CSP::Constraint>>&& post_constraints_t();
 private:
-	CSP_Problem& m_instance;
+	std::vector<std::unique_ptr<AIT::CSP::Constraint>> m_constraints;
 };
 
 } /* namespace CSP */

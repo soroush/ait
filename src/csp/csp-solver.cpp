@@ -25,6 +25,7 @@
 #include "parser/xinstance-parser.h"
 #include "parser/xpresentation-parser.h"
 #include "parser/xproblem-type-parser.h"
+#include "parser/xproblem-format-parser.h"
 #include "parser/xdomains-parser.h"
 #include "parser/xdomain-parser.h"
 #include "parser/xvariables-parser.h"
@@ -41,7 +42,7 @@ using namespace AIT;
 using namespace AIT::CSP;
 using namespace std;
 
-CSP_Solver::CSP_Solver() {
+CSP_Solver::CSP_Solver(): instance(unique_ptr<CSP_Problem>(new CSP_Problem)) {
 }
 
 CSP_Solver::~CSP_Solver() {
@@ -52,39 +53,39 @@ void CSP_Solver::parseFromFile(const string& path) {
 	// Common parsers:
     xml_schema::string_pimpl stringParser;
     xml_schema::positive_integer_pimpl positiveIntegerParser;
-
-	XInstanceParser instanceParser{this->instance};
-	XPresentationParser presentation{this->instance};
+//
+	XInstanceParser instanceParser{this->instance.get()};
+	XPresentationParser presentation;
 	XProblemTypeParser problemType;
-	presentation.parsers(stringParser,positiveIntegerParser,stringParser,stringParser,stringParser,problemType,stringParser);
-	XDomainsParser domains{this->instance};
+	XProblemFormatParser problemFormat;
+	presentation.parsers(stringParser,positiveIntegerParser,stringParser,stringParser,stringParser,problemType,problemFormat);
+	XDomainsParser domains;
 	XDomainParser domain;
 	domain.parsers(stringParser,positiveIntegerParser);
 	domains.parsers(domain,positiveIntegerParser);
-	XVariablesParser variables{this->instance};
-	XVariableParser variable{this->instance};
+	XVariablesParser variables;
+	XVariableParser variable{this->instance.get()};
 	variable.parsers(stringParser,stringParser);
 	variables.parsers(variable,positiveIntegerParser);
-	XPredicatesParser predicates{this->instance};
-	XPredicateParser predicate{this->instance};
+	XPredicatesParser predicates;
+	XPredicateParser predicate;
 	XExpressionParser expression;
 	expression.parsers(stringParser,stringParser,stringParser,stringParser);
 	predicate.parsers(stringParser,expression,stringParser);
 	predicates.parsers(predicate,positiveIntegerParser);
-	XConstraintsParser constraints{this->instance};
-	XConstraintParser constraint{this->instance};
+	XConstraintsParser constraints;
+	XConstraintParser constraint{this->instance.get()};
 	constraint.parsers(stringParser,stringParser,stringParser,stringParser,positiveIntegerParser);
 	constraints.parsers(constraint,positiveIntegerParser);
 	XRelationsParser relations;
 	XRelationParser relation;
 	relations.relation_parser(relation);
 	instanceParser.parsers(presentation,domains,variables,relations,predicates,constraints);
-	// Prepare document and parse
+//	// Prepare document and parse
 	xml_schema::document doc(instanceParser,"instance");
-	std::cout << "Parsing started" << std::endl;
 	doc.parse(path);
 }
 
-const CSP_Problem& CSP_Solver::getInstance() const {
-    return this->instance;
+const CSP_Problem* CSP_Solver::getInstance() const {
+    return this->instance.get();
 }

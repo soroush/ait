@@ -2,6 +2,7 @@ ACLOCAL_AMFLAGS = ${ACLOCAL_FLAGS} -I m4
 AM_CPPFLAGS = -pipe
 noinst_LTLIBRARIES = libait_csp_parser.la
 ait_includedir = $(includedir)/ait/csp/parser
+libait_csp_parser_la_LDFLAGS = -version-info $(AIT_SO_VERSION)
 libait_csp_parser_la_SOURCES = \
 		exp_func.cpp \
 		exp_num.cpp \
@@ -11,6 +12,8 @@ libait_csp_parser_la_SOURCES = \
 		domain_parse.cpp \
 		constraint-parameters_scanner.cpp \
 		constraint-parameters_parse.cpp \
+		constraint-scope_scanner.cpp \
+		constraint-scope_parse.cpp \
 		parameters_scanner.cpp \
 		parameters_parse.cpp \
 		predicate-f_scanner.cpp \
@@ -19,6 +22,7 @@ libait_csp_parser_la_SOURCES = \
 		xinstance-parser.cpp \
 		xpresentation-parser.cpp \
 		xproblem-type-parser.cpp \
+		xproblem-format-parser.cpp \
 		xdomain-parser.cpp \
 		xdomains-parser.cpp \
 		xvariable-parser.cpp \
@@ -51,6 +55,11 @@ ait_include_HEADERS =  \
 		constraint-parameters_parser.h \
 		constraint-parameters_parser.ih \
 		constraint-parameters_parserbase.h \
+		constraint-scope_scanner.h \
+		constraint-scope_scannerbase.h \
+		constraint-scope_parser.h \
+		constraint-scope_parser.ih \
+		constraint-scope_parserbase.h \
 		predicate-f_scanner.h \
 		predicate-f_scannerbase.h \
 		predicate-f_parser.h \
@@ -60,6 +69,7 @@ ait_include_HEADERS =  \
 		xinstance-parser.h \
 		xpresentation-parser.h \
 		xproblem-type-parser.h \
+		xproblem-format-parser.h \
 		xdomain-parser.h \
 		xdomains-parser.h \
 		xvariable-parser.h \

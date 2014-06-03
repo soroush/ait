@@ -46,7 +46,7 @@ ABT_Monitor::ABT_Monitor() :
 ABT_Monitor::~ABT_Monitor() {
 	this->responser.close();
 	this->publisher.close();
-	delete this->context;
+	//delete this->context;
 }
 
 void ABT_Monitor::start() {
@@ -81,8 +81,11 @@ void ABT_Monitor::start() {
 			_INFO(
 					"New agent subscribed. This information is introduced by new agent"
 					"\n\tHost          : %s"
+					"\n\tVariable Name : %s"
 					"\n\tListener Port : %d",
-					requestPacket.identity().host().data(), requestPacket.identity().port());
+					requestPacket.identity().host().data(),
+					requestPacket.identity().name().data(),
+					requestPacket.identity().port());
 			bool repeatedName =
 					std::any_of(agents.begin(), agents.end(),
 							[&](P_EndPoint i) {return (requestPacket.identity().name()==i.name());});
@@ -94,6 +97,7 @@ void ABT_Monitor::start() {
 				nackPacket.set_type(CP_MessageType::ERR_REPEATED_ID);
 				this->responser.sendMessage(nackPacket);
 			} else {
+			    requestPacket.mutable_identity()->set_priority(priority);
 				agents.push_back(requestPacket.identity());
 				P_CommunicationProtocol ackPacket;
 				ackPacket.set_type(CP_MessageType::T_INTRODUCE_ACK);

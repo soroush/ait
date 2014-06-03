@@ -87,6 +87,9 @@ libait_la_OBJECTS = $(am_libait_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
+libait_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
+	$(libait_la_LDFLAGS) $(LDFLAGS) -o $@
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -296,6 +299,7 @@ AUTOMAKE_OPTIONS = subdir-objects
 ACLOCAL_AMFLAGS = ${ACLOCAL_FLAGS} -I m4
 lib_LTLIBRARIES = libait.la
 libait_la_SOURCES = 
+libait_la_LDFLAGS = -version-info $(AIT_SO_VERSION)
 libait_la_LIBADD = $(ZMQ_LIBS) $(PROTOCOL_BUFFERS_LIBS) csp/libait_csp.la
 ait_includedir = $(includedir)/ait
 ait_include_HEADERS = \
@@ -366,7 +370,7 @@ clean-libLTLIBRARIES:
 	  rm -f "$${dir}/so_locations"; \
 	done
 libait.la: $(libait_la_OBJECTS) $(libait_la_DEPENDENCIES) $(EXTRA_libait_la_DEPENDENCIES) 
-	$(AM_V_CCLD)$(LINK) -rpath $(libdir) $(libait_la_OBJECTS) $(libait_la_LIBADD) $(LIBS)
+	$(AM_V_CCLD)$(libait_la_LINK) -rpath $(libdir) $(libait_la_OBJECTS) $(libait_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)

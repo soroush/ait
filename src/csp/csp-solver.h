@@ -29,6 +29,7 @@
 #include <vector>
 #include <forward_list>
 #include <map>
+#include <memory>
 #include "csp-problem.h"
 
 namespace AIT {
@@ -42,10 +43,10 @@ public:
 //	virtual void parseFromStream(const std::ifstream&);
 //	virtual void parseFromContent(const std::string&);
 
-	const CSP_Problem& getInstance() const;
+	const CSP_Problem* getInstance() const;
 
 protected:
-	CSP_Problem instance;
+	std::unique_ptr<CSP_Problem> instance;
 
 };
 

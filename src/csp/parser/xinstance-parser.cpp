@@ -22,13 +22,40 @@
  */
 
 #include "xinstance-parser.h"
+#include <algorithm>
 
 using namespace AIT::CSP;
 using namespace std;
 
-XInstanceParser::XInstanceParser(CSP_Problem& instance):
-	m_instance(instance){
+XInstanceParser::XInstanceParser(CSP_Problem* const problem):
+    m_problem(problem) {
 }
 
 XInstanceParser::~XInstanceParser() {
+}
+
+void XInstanceParser::presentation(
+        unique_ptr<CSP_Problem::Presentation> presentation) {
+    m_problem->m_presentation = std::move(presentation);
+}
+
+void XInstanceParser::domains(vector<unique_ptr<Domain>>&& domains) {
+    m_problem->m_domains = std::move(domains);
+}
+
+void XInstanceParser::variables(vector<unique_ptr<Variable>>&& variables) {
+    m_problem->m_variables = std::move(variables);
+}
+
+void XInstanceParser::predicates(
+        vector<unique_ptr<Predicate>>&& predicates) {
+    //move(predicates.begin(),predicates.end(),this->m_problem->m_relations.begin());
+    for(size_t i=0; i<predicates.size(); ++i){
+        m_problem->m_relations.push_back(std::move(predicates[i]));
+    }
+}
+
+void AIT::CSP::XInstanceParser::constraints(
+        std::vector<std::unique_ptr<Constraint>>&& constraints) {
+    this->m_problem->m_constraints = std::move(constraints);
 }

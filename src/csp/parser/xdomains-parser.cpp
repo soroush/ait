@@ -32,15 +32,17 @@
 using namespace AIT::CSP;
 using namespace std;
 
-XDomainsParser::XDomainsParser(CSP_Problem& instance):
-		m_instance(instance){
+XDomainsParser::XDomainsParser(){
 }
 
-void XDomainsParser::domain(Domain&& domain) {
-    cout << "Adding domain: " << domain.getName() << endl;
-	this->m_instance.addDomain(std::move(domain));
+void XDomainsParser::domain(unique_ptr<Domain> domain) {
+    this->m_domains.push_back(std::move(domain));
 }
 
 void XDomainsParser::nbDomains(unsigned long long number) {
-	// TODO: Reserve memory? Nah.. Just remove me
+    //this->m_domains.reserve(number);
+}
+
+vector<unique_ptr<Domain>>&& XDomainsParser::post_domains_t() {
+    return std::move(this->m_domains);
 }

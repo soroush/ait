@@ -33,7 +33,7 @@ class CSP_Problem;
 
 class XConstraintParser: public constraint_t_pskel {
 public:
-	XConstraintParser(CSP_Problem&);
+	XConstraintParser(CSP_Problem* const instance);
 	~XConstraintParser();
 	void parameters(const std::string&);
 	void name(const std::string&);
@@ -41,14 +41,14 @@ public:
 	void reference(const std::string&);
 	//FIXME: Control behavior of XSD to generate more relax data types. Absolutely NOT long long!
 	void arity(unsigned long long);
-	Constraint post_constraint_t();
+	std::unique_ptr<Constraint> post_constraint_t();
 private:
 	std::string m_parameters;
 	std::string m_name;
 	std::string m_scope;
 	std::string m_reference;
 	unsigned long long m_arity;
-	CSP_Problem& m_instance;
+	CSP_Problem* const m_instance;
 };
 
 } /* namespace CSP */

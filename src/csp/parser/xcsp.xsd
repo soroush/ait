@@ -9,6 +9,13 @@
 		</xs:restriction>
 	</xs:simpleType>
 
+	<!-- Problem Format -->
+	<xs:simpleType name="problemFormat">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="XCSP 2.1" />
+		</xs:restriction>
+	</xs:simpleType>
+
 	<!-- Semantics Type of Relations -->
 	<xs:simpleType name="semanticsType">
 		<xs:restriction base="xs:string">
@@ -24,7 +31,7 @@
 		<xs:attribute name="nbSolutions" type="xs:string" use="optional" />
 		<xs:attribute name="solution" type="xs:string" use="optional" />
 		<xs:attribute name="type" type="problemType" use="optional" />
-		<xs:attribute name="format" type="xs:string" use="required" />
+		<xs:attribute name="format" type="problemFormat" use="required" />
 	</xs:complexType>
 
 	<xs:complexType name="domain_t">

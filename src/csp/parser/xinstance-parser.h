@@ -33,10 +33,16 @@ class CSP_Problem;
 
 class XInstanceParser: public instance_t_pskel {
 public:
-	XInstanceParser(CSP_Problem&);
-	~XInstanceParser();
+    XInstanceParser(CSP_Problem* const);
+    ~XInstanceParser();
+    void presentation(std::unique_ptr<CSP_Problem::Presentation>);
+    void domains(std::vector<std::unique_ptr<Domain>>&&);
+    void variables(std::vector<std::unique_ptr<Variable>>&&);
+    void predicates(std::vector<std::unique_ptr<Predicate>>&&);
+    void constraints(std::vector<std::unique_ptr<Constraint>>&&);
+    std::unique_ptr<CSP_Problem> post_instance_t(){}
 private:
-	CSP_Problem& m_instance;
+    CSP_Problem* const m_problem;
 };
 
 } /* namespace CSP */

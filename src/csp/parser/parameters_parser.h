@@ -14,15 +14,13 @@
 class ParametersParser: public ParametersParserBase {
 
 public:
-    ParametersParser(const std::string& input, const std::string& predicate,
-            const AIT::CSP::CSP_Problem& instance);
+    ParametersParser(const std::string& input, AIT::CSP::Predicate* predicate);
     int parse();
 
 private:
     std::istringstream str;
     ParametersLexer d_scanner;
-    const std::string predicate;
-    const AIT::CSP::CSP_Problem& instance;
+    AIT::CSP::Predicate* predicate;
 
     void error(char const *msg);
     int lex();
@@ -34,9 +32,8 @@ private:
 };
 
 inline ParametersParser::ParametersParser(const std::string& input,
-        const std::string& predicate_, const AIT::CSP::CSP_Problem& instance_) :
-        str(input), d_scanner(str, std::cout), predicate(predicate_), instance(
-                instance_) {
+        AIT::CSP::Predicate* predicate_) :
+        str(input), d_scanner(str, std::cout), predicate(predicate_) {
 }
 
 inline void ParametersParser::error(char const *msg) {

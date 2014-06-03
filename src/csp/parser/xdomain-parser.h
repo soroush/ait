@@ -26,6 +26,7 @@
 
 #include <xsd/cxx/parser/xml-schema.hxx>
 #include "xcsp-pskel.hxx"
+#include <memory>
 
 namespace AIT {
 namespace CSP {
@@ -38,7 +39,7 @@ public:
 	~XDomainParser();
 	void nbValues(unsigned long long);
 	void name(const ::std::string&);
-	Domain post_domain_t();
+	std::unique_ptr<Domain> post_domain_t();
 private:
 	std::string m_name;
 	size_t m_nbValues;

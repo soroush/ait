@@ -29,17 +29,20 @@
 using namespace AIT::CSP;
 using namespace std;
 
-XVariablesParser::XVariablesParser(CSP_Problem& instance) :
-		m_instance(instance) {
+XVariablesParser::XVariablesParser() {
 }
 
 XVariablesParser::~XVariablesParser() {
 }
 
-void XVariablesParser::variable(Variable&& variable) {
-	this->m_instance.addVariable(move(variable));
+void XVariablesParser::variable(unique_ptr<Variable> variable) {
+    this->m_variables.push_back(move(variable));
 }
 
-void XVariablesParser::nbVariables(unsigned long long unsignedLongLongInt) {
-	// TODO: Reserve space
+void XVariablesParser::nbVariables(unsigned long long value) {
+    this->m_variables.reserve(value);
+}
+
+vector<unique_ptr<Variable>>&& XVariablesParser::post_variables_t() {
+    return std::move(this->m_variables);
 }

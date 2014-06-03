@@ -33,7 +33,7 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-check_PROGRAMS = xsp$(EXEEXT)
+check_PROGRAMS = abt_monitor$(EXEEXT)
 subdir = test
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -48,10 +48,10 @@ mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
-am_xsp_OBJECTS = xsp.$(OBJEXT)
-xsp_OBJECTS = $(am_xsp_OBJECTS)
-xsp_LDADD = $(LDADD)
-xsp_DEPENDENCIES = ../src/libait.la ../src/csp/libait_csp.la \
+am_abt_monitor_OBJECTS = abt-monitor.$(OBJEXT)
+abt_monitor_OBJECTS = $(am_abt_monitor_OBJECTS)
+abt_monitor_LDADD = $(LDADD)
+abt_monitor_DEPENDENCIES = ../src/libait.la ../src/csp/libait_csp.la \
 	../src/csp/parser/libait_csp_parser.la
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -82,8 +82,8 @@ am__v_CXXLD_0 = @echo "  CXXLD " $@;
 AM_V_GEN = $(am__v_GEN_@AM_V@)
 am__v_GEN_ = $(am__v_GEN_@AM_DEFAULT_V@)
 am__v_GEN_0 = @echo "  GEN   " $@;
-SOURCES = $(xsp_SOURCES)
-DIST_SOURCES = $(xsp_SOURCES)
+SOURCES = $(abt_monitor_SOURCES)
+DIST_SOURCES = $(abt_monitor_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 am__tty_colors = \
@@ -227,13 +227,12 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 AM_CPPFLAGS = -I$(srcdir)/.. $(OTHER_CPPFLAGS)
-LDADD = ../src/libait.la ../src/csp/libait_csp.la ../src/csp/parser/libait_csp_parser.la 
-#NQueens_ABT_Monitor NQueens_ABT_Agent
-#NQueens_ABT_Monitor_SOURCES = abt-monitor.cpp
-#NQueens_ABT_Agent_SOURCES = n-queen-abt-solver.cpp
-#parser_test_SOURCES = parser-test.cpp
-#domain_SOURCES = domain.cpp
-xsp_SOURCES = xsp.cpp
+LDADD = ../src/libait.la \
+		../src/csp/libait_csp.la \
+		../src/csp/parser/libait_csp_parser.la \
+		-lzmq -lexpat
+
+abt_monitor_SOURCES = abt-monitor.cpp
 TESTS = $(check_PROGRAMS)
 all: all-am
 
@@ -278,9 +277,9 @@ clean-checkPROGRAMS:
 	list=`for p in $$list; do echo "$$p"; done | sed 's/$(EXEEXT)$$//'`; \
 	echo " rm -f" $$list; \
 	rm -f $$list
-xsp$(EXEEXT): $(xsp_OBJECTS) $(xsp_DEPENDENCIES) $(EXTRA_xsp_DEPENDENCIES) 
-	@rm -f xsp$(EXEEXT)
-	$(AM_V_CXXLD)$(CXXLINK) $(xsp_OBJECTS) $(xsp_LDADD) $(LIBS)
+abt_monitor$(EXEEXT): $(abt_monitor_OBJECTS) $(abt_monitor_DEPENDENCIES) $(EXTRA_abt_monitor_DEPENDENCIES) 
+	@rm -f abt_monitor$(EXEEXT)
+	$(AM_V_CXXLD)$(CXXLINK) $(abt_monitor_OBJECTS) $(abt_monitor_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -288,7 +287,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xsp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/abt-monitor.Po@am__quote@
 
 .cpp.o:
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<

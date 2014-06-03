@@ -22,7 +22,6 @@
  */
 
 #include "xproblem-type-parser.h"
-#include "../../global.h"
 
 using namespace AIT;
 using namespace CSP;
@@ -34,15 +33,15 @@ XProblemTypeParser::XProblemTypeParser() {
 XProblemTypeParser::~XProblemTypeParser() {
 }
 
-CSP_Problem::Type XProblemTypeParser::post_problemType() {
+CSP_Problem::Presentation::Type XProblemTypeParser::post_problemType() {
 	string type = this->post_string();
 	if (type == "CSP")
-		return CSP_Problem::Type::CSP;
+		return CSP_Problem::Presentation::Type::CSP;
 	if (type == "QCSP")
-		return CSP_Problem::Type::QCSP;
+		return CSP_Problem::Presentation::Type::QCSP;
 	if (type == "WCSP")
-		return CSP_Problem::Type::WCSP;
+		return CSP_Problem::Presentation::Type::WCSP;
 	_ERROR("Unknown problem type: `%s'", type.c_str());
-	return CSP_Problem::Type::Unknown;
+	return CSP_Problem::Presentation::Type::Unknown;
 }
 

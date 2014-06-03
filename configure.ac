@@ -1,4 +1,4 @@
-AC_INIT([libait], [0.1.1], [soroush-r@users.sf.net], [libait], [http://sourceforge.net/projects/ait++/])
+AC_INIT([libait], [1.0.0], [soroush-r@users.sf.net], [libait], [https://github.com/soroush/ait])
 AC_PREREQ([2.59])
 AM_INIT_AUTOMAKE([1.10 -Wall no-define])
 AM_SILENT_RULES
@@ -61,8 +61,9 @@ AS_IF([test "x$enable_precompiled_protocols" = "xyes"],
       [AC_DEFINE(GENERATED_PROTOCOLS,1,[Define if generating new sources of protocols])])
 
 LT_INIT([shared static win32-dll pic-only])
-AC_SUBST([AIT_SO_VERSION], [0:1:1])
-AC_SUBST([AIT_API_VERSION], [0.1.1])
+AC_SUBST([AIT_SO_VERSION], [1:0:0])
+AC_SUBST([AIT_API_VERSION], [1.0.0])
+
 AC_CONFIG_FILES([Makefile src/Makefile src/csp/Makefile src/csp/parser/Makefile 
 					test/Makefile
                  libait.pc:libait.pc.in])

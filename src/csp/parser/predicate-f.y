@@ -41,35 +41,35 @@
 functional: int_expr;
 
 int_expr:	NEG LP int_expr RP { 
-                                    Predicate* ref = static_cast<Predicate*>(this->instance.relation(this->predicate));
-                                    ref->addPostfixExpression(Expression::Token::NEG); 
+                                    
+                                    this->predicate->addPostfixExpression(Expression::Token::NEG); 
                                } | 
 		ABS LP int_expr RP { 
-		                          Predicate* ref = static_cast<Predicate*>(this->instance.relation(this->predicate));
-		                          ref->addPostfixExpression(Expression::Token::ABS);} |
-		ADD LP int_expr COMMA int_expr RP { Predicate* ref = static_cast<Predicate*>(this->instance.relation(this->predicate)); ref->addPostfixExpression(Expression::Token::ADD); } |
-		SUB LP int_expr COMMA int_expr RP { Predicate* ref = static_cast<Predicate*>(this->instance.relation(this->predicate)); ref->addPostfixExpression(Expression::Token::SUB); } |
-		MUL LP int_expr COMMA int_expr RP { Predicate* ref = static_cast<Predicate*>(this->instance.relation(this->predicate)); ref->addPostfixExpression(Expression::Token::MUL); } |
-		MOD LP int_expr COMMA int_expr RP { Predicate* ref = static_cast<Predicate*>(this->instance.relation(this->predicate)); ref->addPostfixExpression(Expression::Token::MOD); } |
-		POW LP int_expr COMMA int_expr RP { Predicate* ref = static_cast<Predicate*>(this->instance.relation(this->predicate)); ref->addPostfixExpression(Expression::Token::POW); } |
-		MIN LP int_expr COMMA int_expr RP { Predicate* ref = static_cast<Predicate*>(this->instance.relation(this->predicate)); ref->addPostfixExpression(Expression::Token::MIN); } |
-		MAX LP int_expr COMMA int_expr RP { Predicate* ref = static_cast<Predicate*>(this->instance.relation(this->predicate)); ref->addPostfixExpression(Expression::Token::MAX); } | 
+		                          
+		                          this->predicate->addPostfixExpression(Expression::Token::ABS);} |
+		ADD LP int_expr COMMA int_expr RP {  this->predicate->addPostfixExpression(Expression::Token::ADD); } |
+		SUB LP int_expr COMMA int_expr RP {  this->predicate->addPostfixExpression(Expression::Token::SUB); } |
+		MUL LP int_expr COMMA int_expr RP {  this->predicate->addPostfixExpression(Expression::Token::MUL); } |
+		MOD LP int_expr COMMA int_expr RP {  this->predicate->addPostfixExpression(Expression::Token::MOD); } |
+		POW LP int_expr COMMA int_expr RP {  this->predicate->addPostfixExpression(Expression::Token::POW); } |
+		MIN LP int_expr COMMA int_expr RP {  this->predicate->addPostfixExpression(Expression::Token::MIN); } |
+		MAX LP int_expr COMMA int_expr RP {  this->predicate->addPostfixExpression(Expression::Token::MAX); } | 
 
-		EQ LP int_expr COMMA int_expr RP { Predicate* ref = static_cast<Predicate*>(this->instance.relation(this->predicate)); ref->addPostfixExpression(Expression::Token::EQ); } | 
-		NEQ LP int_expr COMMA int_expr RP { Predicate* ref = static_cast<Predicate*>(this->instance.relation(this->predicate)); ref->addPostfixExpression(Expression::Token::NEQ); } | 
-		GE LP int_expr COMMA int_expr RP { Predicate* ref = static_cast<Predicate*>(this->instance.relation(this->predicate)); ref->addPostfixExpression(Expression::Token::GE); } | 
-		GT LP int_expr COMMA int_expr RP { Predicate* ref = static_cast<Predicate*>(this->instance.relation(this->predicate)); ref->addPostfixExpression(Expression::Token::GT); } | 
-		LE LP int_expr COMMA int_expr RP { Predicate* ref = static_cast<Predicate*>(this->instance.relation(this->predicate)); ref->addPostfixExpression(Expression::Token::LE); } | 
-		LT LP int_expr COMMA int_expr RP { Predicate* ref = static_cast<Predicate*>(this->instance.relation(this->predicate)); ref->addPostfixExpression(Expression::Token::LT); } | 
+		EQ LP int_expr COMMA int_expr RP {  this->predicate->addPostfixExpression(Expression::Token::EQ); } | 
+		NEQ LP int_expr COMMA int_expr RP {  this->predicate->addPostfixExpression(Expression::Token::NEQ); } | 
+		GE LP int_expr COMMA int_expr RP {  this->predicate->addPostfixExpression(Expression::Token::GE); } | 
+		GT LP int_expr COMMA int_expr RP {  this->predicate->addPostfixExpression(Expression::Token::GT); } | 
+		LE LP int_expr COMMA int_expr RP {  this->predicate->addPostfixExpression(Expression::Token::LE); } | 
+		LT LP int_expr COMMA int_expr RP {  this->predicate->addPostfixExpression(Expression::Token::LT); } | 
 
-		NOT LP int_expr RP { Predicate* ref = static_cast<Predicate*>(this->instance.relation(this->predicate)); ref->addPostfixExpression(Expression::Token::NOT); } | 
-		AND LP int_expr COMMA int_expr RP { Predicate* ref = static_cast<Predicate*>(this->instance.relation(this->predicate)); ref->addPostfixExpression(Expression::Token::AND); } | 
-		OR LP int_expr COMMA int_expr RP { Predicate* ref = static_cast<Predicate*>(this->instance.relation(this->predicate)); ref->addPostfixExpression(Expression::Token::OR); } | 
-		XOR LP int_expr COMMA int_expr RP { Predicate* ref = static_cast<Predicate*>(this->instance.relation(this->predicate)); ref->addPostfixExpression(Expression::Token::XOR); } | 
-		IFF LP int_expr COMMA int_expr COMMA int_expr RP { Predicate* ref = static_cast<Predicate*>(this->instance.relation(this->predicate)); ref->addPostfixExpression(Expression::Token::IFF); } |
+		NOT LP int_expr RP {  this->predicate->addPostfixExpression(Expression::Token::NOT); } | 
+		AND LP int_expr COMMA int_expr RP {  this->predicate->addPostfixExpression(Expression::Token::AND); } | 
+		OR LP int_expr COMMA int_expr RP {  this->predicate->addPostfixExpression(Expression::Token::OR); } | 
+		XOR LP int_expr COMMA int_expr RP {  this->predicate->addPostfixExpression(Expression::Token::XOR); } | 
+		IFF LP int_expr COMMA int_expr COMMA int_expr RP {  this->predicate->addPostfixExpression(Expression::Token::IFF); } |
 		
 		ID {
-		      Predicate* ref = static_cast<Predicate*>(this->instance.relation(this->predicate)); 
-		      ref->addPostfixExpression(Expression::Token::REF, d_scanner.matched()); 
+		       
+		      this->predicate->addPostfixExpression(Expression::Token::REF, d_scanner.matched()); 
 		   } | 
-		INTEGER { Predicate* ref = static_cast<Predicate*>(this->instance.relation(this->predicate)); ref->addPostfixExpression(Expression::Token::CONST, d_scanner.matched()); };
+		INTEGER {  this->predicate->addPostfixExpression(Expression::Token::CONST, d_scanner.matched()); };

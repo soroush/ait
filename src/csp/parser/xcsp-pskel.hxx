@@ -50,6 +50,7 @@
 // Forward declarations
 //
 class problemType_pskel;
+class problemFormat_pskel;
 class semanticsType_pskel;
 class presentation_t_pskel;
 class domain_t_pskel;
@@ -84,6 +85,7 @@ class instance_t_pskel;
 #include <xsd/cxx/parser/expat/elements.hxx>
 
 #include <utility>
+#include <memory>
 #include "../variable.h"
 #include "../relation-base.h"
 #include "../predicate.h"
@@ -282,8 +284,20 @@ class problemType_pskel: public virtual ::xml_schema::string_pskel
   // virtual void
   // pre ();
 
-  virtual AIT::CSP::CSP_Problem::Type
+  virtual AIT::CSP::CSP_Problem::Presentation::Type
   post_problemType () = 0;
+};
+
+class problemFormat_pskel: public virtual ::xml_schema::string_pskel
+{
+  public:
+  // Parser callbacks. Override them in your implementation.
+  //
+  // virtual void
+  // pre ();
+
+  virtual AIT::CSP::CSP_Problem::Presentation::Format
+  post_problemFormat () = 0;
 };
 
 class semanticsType_pskel: public virtual ::xml_schema::string_pskel
@@ -322,13 +336,13 @@ class presentation_t_pskel: public ::xml_schema::complex_content
   solution (const ::std::string&);
 
   virtual void
-  type (const AIT::CSP::CSP_Problem::Type&);
+  type (const AIT::CSP::CSP_Problem::Presentation::Type&);
 
   virtual void
-  format (const ::std::string&);
+  format (const AIT::CSP::CSP_Problem::Presentation::Format&);
 
-  virtual void
-  post_presentation_t ();
+  virtual std::unique_ptr<AIT::CSP::CSP_Problem::Presentation>
+  post_presentation_t () = 0;
 
   // Parser construction API.
   //
@@ -351,7 +365,7 @@ class presentation_t_pskel: public ::xml_schema::complex_content
   type_parser (::problemType_pskel&);
 
   void
-  format_parser (::xml_schema::string_pskel&);
+  format_parser (::problemFormat_pskel&);
 
   void
   parsers (::xml_schema::string_pskel& /* name */,
@@ -360,7 +374,7 @@ class presentation_t_pskel: public ::xml_schema::complex_content
            ::xml_schema::string_pskel& /* nbSolutions */,
            ::xml_schema::string_pskel& /* solution */,
            ::problemType_pskel& /* type */,
-           ::xml_schema::string_pskel& /* format */);
+           ::problemFormat_pskel& /* format */);
 
   // Constructor.
   //
@@ -382,7 +396,7 @@ class presentation_t_pskel: public ::xml_schema::complex_content
   ::xml_schema::string_pskel* nbSolutions_parser_;
   ::xml_schema::string_pskel* solution_parser_;
   ::problemType_pskel* type_parser_;
-  ::xml_schema::string_pskel* format_parser_;
+  ::problemFormat_pskel* format_parser_;
 
   protected:
   struct v_state_attr_
@@ -414,7 +428,7 @@ class domain_t_pskel: public virtual ::xml_schema::string_pskel
   virtual void
   nbValues (unsigned long long);
 
-  virtual AIT::CSP::Domain
+  virtual std::unique_ptr<AIT::CSP::Domain>
   post_domain_t () = 0;
 
   // Parser construction API.
@@ -472,13 +486,13 @@ class domains_t_pskel: public ::xml_schema::complex_content
   // pre ();
 
   virtual void
-  domain (AIT::CSP::Domain&&);
+  domain (std::unique_ptr<AIT::CSP::Domain>);
 
   virtual void
   nbDomains (unsigned long long);
 
-  virtual void
-  post_domains_t ();
+  virtual std::vector<std::unique_ptr<AIT::CSP::Domain>>&&
+  post_domains_t () = 0;
 
   // Parser construction API.
   //
@@ -585,7 +599,7 @@ class variable_t_pskel: public ::xml_schema::complex_content
   virtual void
   domain (const ::std::string&);
 
-  virtual AIT::CSP::Variable
+  virtual std::unique_ptr<AIT::CSP::Variable>
   post_variable_t () = 0;
 
   // Parser construction API.
@@ -643,13 +657,13 @@ class variables_t_pskel: public ::xml_schema::complex_content
   // pre ();
 
   virtual void
-  variable (AIT::CSP::Variable&&);
+  variable (std::unique_ptr<AIT::CSP::Variable>);
 
   virtual void
   nbVariables (unsigned long long);
 
-  virtual void
-  post_variables_t ();
+  virtual std::vector<std::unique_ptr<AIT::CSP::Variable>>&&
+  post_variables_t () = 0;
 
   // Parser construction API.
   //
@@ -1046,7 +1060,7 @@ class predicate_t_pskel: public ::xml_schema::complex_content
   virtual void
   name (const ::std::string&);
 
-  virtual AIT::CSP::Predicate
+  virtual std::unique_ptr<AIT::CSP::Predicate>
   post_predicate_t () = 0;
 
   // Parser construction API.
@@ -1154,13 +1168,13 @@ class predicates_t_pskel: public ::xml_schema::complex_content
   // pre ();
 
   virtual void
-  predicate (AIT::CSP::Predicate&&);
+  predicate (std::unique_ptr<AIT::CSP::Predicate>);
 
   virtual void
   nbPredicates (unsigned long long);
 
-  virtual void
-  post_predicates_t ();
+  virtual std::vector<std::unique_ptr<AIT::CSP::Predicate>>&&
+  post_predicates_t () = 0;
 
   // Parser construction API.
   //
@@ -1276,7 +1290,7 @@ class constraint_t_pskel: public ::xml_schema::complex_content
   virtual void
   arity (unsigned long long);
 
-  virtual AIT::CSP::Constraint
+  virtual std::unique_ptr<AIT::CSP::Constraint>
   post_constraint_t () = 0;
 
   // Parser construction API.
@@ -1397,13 +1411,13 @@ class constraints_t_pskel: public ::xml_schema::complex_content
   // pre ();
 
   virtual void
-  constraint (AIT::CSP::Constraint&&);
+  constraint (std::unique_ptr<AIT::CSP::Constraint>);
 
   virtual void
   nbConstraints (unsigned long long);
 
-  virtual void
-  post_constraints_t ();
+  virtual std::vector<std::unique_ptr<AIT::CSP::Constraint>>&&
+  post_constraints_t () = 0;
 
   // Parser construction API.
   //
@@ -1505,25 +1519,25 @@ class instance_t_pskel: public ::xml_schema::complex_content
   // pre ();
 
   virtual void
-  presentation ();
+  presentation (std::unique_ptr<AIT::CSP::CSP_Problem::Presentation>);
 
   virtual void
-  domains ();
+  domains (std::vector<std::unique_ptr<AIT::CSP::Domain>>&&);
 
   virtual void
-  variables ();
+  variables (std::vector<std::unique_ptr<AIT::CSP::Variable>>&&);
 
   virtual void
   relations ();
 
   virtual void
-  predicates ();
+  predicates (std::vector<std::unique_ptr<AIT::CSP::Predicate>>&&);
 
   virtual void
-  constraints ();
+  constraints (std::vector<std::unique_ptr<AIT::CSP::Constraint>>&&);
 
-  virtual void
-  post_instance_t ();
+  virtual std::unique_ptr<AIT::CSP::CSP_Problem>
+  post_instance_t () = 0;
 
   // Parser construction API.
   //

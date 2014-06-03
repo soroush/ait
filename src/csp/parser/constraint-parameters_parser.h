@@ -3,7 +3,6 @@
 #ifndef ConstraintParametersParser_h_included
 #define ConstraintParametersParser_h_included
 
-#include <map>
 #include <sstream>
 #include <vector>
 
@@ -17,14 +16,14 @@
 class ConstraintParametersParser: public ConstraintParametersParserBase {
 public:
     ConstraintParametersParser(const std::string& input,
-            AIT::CSP::CSP_Problem* problem,
+            AIT::CSP::CSP_Problem* const problem,
             std::vector<AIT::CSP::Constraint::Value>& output);
     int parse();
 
 private:
     std::istringstream str;
     ConstraintParametersLexer d_scanner;
-    AIT::CSP::CSP_Problem* problem;
+    AIT::CSP::CSP_Problem* const problem;
     std::vector<AIT::CSP::Constraint::Value>& parameters;
 
     void error(char const *msg);
@@ -37,7 +36,7 @@ private:
 };
 
 inline ConstraintParametersParser::ConstraintParametersParser(
-        const std::string& input, AIT::CSP::CSP_Problem* problem_,
+        const std::string& input, AIT::CSP::CSP_Problem* const problem_,
         std::vector<AIT::CSP::Constraint::Value>& output) :
         str(input), d_scanner(str, std::cout), problem(problem_), parameters(
                 output) {

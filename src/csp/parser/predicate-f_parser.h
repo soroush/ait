@@ -6,7 +6,7 @@
 #include "predicate-f_parserbase.h"
 #include "predicate-f_scanner.h"
 #include "expression.h"
-#include "../csp-problem.h"
+#include "../predicate.h"
 #include <sstream>
 #include <vector>
 #include <map>
@@ -15,8 +15,8 @@
 class FunctionalParser: public FunctionalParserBase {
 
 public:
-    FunctionalParser(const std::string& input, const std::string& predicate,
-            const AIT::CSP::CSP_Problem& instance);
+    FunctionalParser(const std::string& input,
+            AIT::CSP::Predicate* predicate);
     ~FunctionalParser() {
     }
     ;
@@ -25,8 +25,7 @@ public:
 private:
     std::istringstream str;
     PredicateFunctionalLexer d_scanner;
-    const AIT::CSP::CSP_Problem& instance;
-    const std::string predicate;
+    AIT::CSP::Predicate* predicate;
 
     void error(char const *msg);
     int lex();
@@ -46,9 +45,8 @@ inline int FunctionalParser::lex() {
 }
 
 inline FunctionalParser::FunctionalParser(const std::string& input,
-        const std::string& predicate_, const AIT::CSP::CSP_Problem& instance_) :
-        str(input), d_scanner(str, std::cout), instance(instance_), predicate(
-                predicate_) {
+        AIT::CSP::Predicate* predicate_) :
+        str(input), d_scanner(str, std::cout), predicate(predicate_) {
 }
 
 inline void FunctionalParser::print() {

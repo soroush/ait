@@ -41,7 +41,7 @@ void XDomainParser::name(const ::string& name) {
 	this->m_name = name;
 }
 
-Domain XDomainParser::post_domain_t() {
+unique_ptr<Domain> XDomainParser::post_domain_t() {
 	this->m_content = this->post_string();
-	return Domain { this->m_nbValues, this->m_content, this->m_name };
+	return unique_ptr<Domain>(new Domain(this->m_nbValues, this->m_content, this->m_name));
 }

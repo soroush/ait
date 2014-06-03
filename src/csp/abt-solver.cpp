@@ -22,6 +22,7 @@
  */
 
 #include <algorithm>
+#include <stdexcept>
 
 #include "abt-solver.h"
 #include "assignment.h"
@@ -45,10 +46,12 @@ ABT_Solver::ABT_Solver(const std::string& serverHost_,
     sem_init(&agentReadyLock, 0, 0);
     sem_init(&messageCount, 0, 0);
     pthread_mutex_init(&this->messageRW, NULL);
-    this->priority = this->instance.variableIndex(this->name);
-    this->me = this->instance.variable(this->name);
-    this->agentCount = this->instance.variables().size();
-    cout << this->priority << " of " << this->agentCount << ',' << this->name << endl;
+    this->priority = this->instance->variableIndex(this->name);
+    this->me = this->instance->variable(this->name);
+    this->agentCount = this->instance->variables().size();
+    cout << this->priority << " of " << this->agentCount << ',' << this->name
+            << endl;
+    this->prune();
 }
 
 ABT_Solver::~ABT_Solver() {
@@ -143,13 +146,15 @@ void ABT_Solver::connect() {
             _INFO("Message received from monitor");
             if (introAckPacket.type() == CP_MessageType::T_INTRODUCE_ACK) {
                 this->priority = introAckPacket.priority();
-                _INFO("Monitor agent accepted connection. Current priority is: %d",
+                _INFO(
+                        "Monitor agent accepted connection. Current priority is: %d",
                         this->priority);
             } else if (introAckPacket.type()
                     == CP_MessageType::ERR_REPEATED_ID) {
-                _ERROR("An agent with current name (`%s') is already registered.\n"
-                        "\t\tMonitor agent has ignored this request.\n"
-                        "\t\tExiting silently.", this->name.c_str());
+                _ERROR(
+                        "An agent with current name (`%s') is already registered.\n"
+                                "\t\tMonitor agent has ignored this request.\n"
+                                "\t\tExiting silently.", this->name.c_str());
                 return;
             }
         } else {
@@ -162,10 +167,13 @@ void ABT_Solver::connect() {
 
 void ABT_Solver::checkAgentView() {
     if (!consistent(this->value, this->agentView)) {
+        cout << "checkAgentView: !consistent" << endl;
         this->value = chooseValue();
         // FIXME: Remove 0=unset logic
         if (this->value != 0) {
+                cout << "SUC: " << succeeding.size() << endl;
             for (const auto& agent : succeeding) {
+                cout << "Sending message to: " << agent->name() << endl;
                 sendMessageOK(agent->priority());
             }
         } else {
@@ -175,6 +183,7 @@ void ABT_Solver::checkAgentView() {
 }
 
 void ABT_Solver::processInfo(const Message& m) {
+    cout << "OK received";
     updateAgentView(m.assignment);
     checkAgentView();
 }
@@ -200,7 +209,7 @@ int ABT_Solver::chooseValue() {
                 Nogood ngd;
                 ngd.lhs.items.insert(
                         Assignment(
-                                this->instance.variableIndex(
+                                this->instance->variableIndex(
                                         culprit->getName()),
                                 culprit->getValue()));
                 ngd.rhs.id = this->priority;
@@ -243,11 +252,12 @@ void ABT_Solver::updateAgentView(const Assignment& assignment) {
     // Add new value
     if (assignment.value != 0) {
         agentView.items.insert(assignment);
-        this->agentViewX[assignment.id] = assignment.value;
+        //this->agentViewX[assignment.id] = assignment.value;
     }
     // Add new value to problem structures (generic CSP definitions)
     // FIXME: Use global names instead of IDs or use a global name-to-id map.
-    this->instance.variable(assignment.id)->setValue(assignment.value);
+    const auto& x = getByPriority(assignment.id).name();
+    this->instance->variable(x)->setValue(assignment.value);
     // Remove invalid nogoods
     noGoodStore.remove_if(
             [&](Nogood& ngd)->bool {return !coherent(ngd.lhs,agentView);});
@@ -265,7 +275,8 @@ void ABT_Solver::resolveConflict(const Message& msg) {
     if (coherent(msg.nogood, totalView)) {
         //checkAddLink(msg);
         add(msg.nogood);
-        this->value = 0; // FIXME
+        // FIXME: Remove value and convert to xurrent structures
+        this->value = 0;
         me->unset();
         checkAgentView();
     } else if (coherentSelf(msg.nogood, myselfAssignment)) {
@@ -354,15 +365,22 @@ void ABT_Solver::getAgentList() {
     this->serverBroadcast.recvMessage(listPacket);
     if (listPacket.type() == CP_MessageType::T_LIST) {
         for (int i = 0; i < listPacket.others_size(); ++i) {
-            this->everybody.push_back(EndPoint(listPacket.others(i), context));
+            int p = listPacket.others(i).priority();
+            this->everybody.push_back(
+                    EndPoint { listPacket.others(i), context });
             _INFO("New agent introduced by server:\n"
-                    "\tID:     %d\n"
-                    "\tHost:   %s\n"
-                    "\tPort:   %d", listPacket.others(i).priority(),
+                    "\tID:        %d\n"
+                    "\tHost:      %s\n"
+                    "\tVariable:  %s\n"
+                    "\tPort:      %d", listPacket.others(i).priority(),
                     listPacket.others(i).host().c_str(),
+                    listPacket.others(i).name().c_str(),
                     listPacket.others(i).port());
         }
+        // TODO: Generalize this to solve not only fully-connected problems
+        cout << "My priority is:" << this->priority << endl;
         for (auto i = everybody.begin(); i < everybody.end(); ++i) {
+            cout << "Checking priority of :" << i->priority() << endl;
             if (i->priority() < this->priority)
                 preceding.push_back(i);
             else if (i->priority() > this->priority)
@@ -468,33 +486,21 @@ void ABT_Solver::printAV() {
     _INFO("%s", ss.str().c_str());
 }
 
-bool ABT_Solver::consistent(const int& v, const CompoundAssignment& ca) {
-//    for (const auto& c : this->instance.Constraints()) {
-//        bool isInAgentView = true;
-//        for (const auto& i : c.Scope()) {
-//            bool found;
-//            int *value = i->value();
-//            if (!found) {
-//                isInAgentView = false;
-//                continue;
-//            }
-//        }
-//        if (isInAgentView) {
-//            for (const auto& r : c.relations) {
-//                // Check consistency
-//            }
-//        }
-//    }
-//    return true;
+bool ABT_Solver::consistent(const int& possibleValue,
+        const CompoundAssignment& ca) {
+    int previousValue = me->getValue();
+    me->setValue(possibleValue);
     for (const auto& constraint : this->myConstraints) {
-        if (all_of(constraint->Scope().begin(), constraint->Scope().end(),
-                [&](const Variable* v)->bool
-                {   return v->isSet();})) {
-            if (!constraint->satisfies()) {
-                return false;
-            }
+//        if (all_of(constraint->Scope().begin(), constraint->Scope().end(),
+//                [&](const Variable* v)->bool
+//                {   return v->isSet();})) {
+        if (!constraint->satisfies()) {
+            me->setValue(previousValue);
+            return false;
         }
+//        }
     }
+    me->setValue(previousValue);
     return true;
 }
 
@@ -511,19 +517,26 @@ int ABT_Solver::getValueOf(const int& agent, bool& find) {
 }
 
 Variable* ABT_Solver::findCulprit(const int& v) {
+    string maxName;
+    int max = 0;
     for (const auto& constraint : this->myConstraints) {
-        if (all_of(constraint->Scope().begin(), constraint->Scope().end(),
-                [&](const Variable* v)->bool
-                {   return v->isSet();})) {
-            if (!constraint->satisfies()) {
-                auto x =
-                        std::max_element(constraint->Scope().begin(),
-                                constraint->Scope().end(),
-                                [&](Variable* v1, Variable* v2)
-                                {   return this->instance.variableIndex(v1->getName()) > this->instance.variableIndex(v2->getName());});
+        if (!constraint->satisfies()) {
+            cout << constraint->getName() << " is not sat" << endl;
+            for (const auto& variable : constraint->Scope()) {
+                if (variable != me) {
+                    const EndPoint& ptr = this->getByName(variable->getName());
+                    if (ptr.priority() > max) {
+                        maxName = ptr.name();
+                        max = ptr.priority();
+                        //cout << "Current Culprit: " << maxName << " " << max << endl;
+                    }
+                }
             }
         }
     }
+//    cout << "Final Culprit: " << maxName << " "
+//            << this->instance->variable(maxName)->getValue() << endl;
+    return this->instance->variable(maxName);
 }
 
 int ABT_Solver::findLastCulprit() {
@@ -537,10 +550,10 @@ int ABT_Solver::findLastCulprit() {
 }
 
 void ABT_Solver::prune() {
-    for (const auto& c : this->instance.constraints()) {
+    for (const auto& c : this->instance->constraints()) {
         for (const auto& v : c->Scope()) {
             if (v->getName() == this->name) {
-                myConstraints.push_front(c);
+                myConstraints.push_front(c.get());
                 break;
             }
         }
@@ -582,4 +595,23 @@ void* ABT_Solver::_messageReader(void* param) {
         sem_post(&solver->messageCount);
     }
     return 0;
+}
+
+const ABT_Solver::EndPoint& ABT_Solver::getByName(const std::string& name) {
+    for (const auto& ep : everybody) {
+        if (ep.name() == name) {
+            return ep;
+        }
+    }
+    std::stringstream ss;
+    ss << "There is no such EndPoint: `" << name << "'";
+    throw std::out_of_range { ss.str() };
+}
+
+const ABT_Solver::EndPoint& ABT_Solver::getByPriority(const size_t& priority) {
+    for (const auto& ep : everybody) {
+        if (ep.priority() == priority) {
+            return ep;
+        }
+    }
 }

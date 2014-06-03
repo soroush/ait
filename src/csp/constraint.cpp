@@ -23,6 +23,7 @@
 
 #include "constraint.h"
 #include "parser/constraint-parameters_parser.h"
+#include "parser/constraint-scope_parser.h"
 #include "csp-problem.h"
 
 #include <utility>
@@ -32,11 +33,10 @@ using namespace std;
 
 Constraint::Constraint(const std::string& name, const size_t& arity,
         const std::string& scope_, const std::string& reference_,
-        const std::string& parameters_, CSP_Problem* parent) :
+        const std::string& parameters_, CSP_Problem* const parent) :
         m_name(name) {
-    //FIXME: Uncomment following lines after resolving pointers problem
-    // ConstraintParametersParser scopeParser(scope_, parent, this->scope);
-    // scopeParser.parse();
+     ConstraintScopeParser scopeParser(scope_, parent, this->scope);
+     scopeParser.parse();
     ConstraintParametersParser parameterParser(parameters_, parent,
             this->parameters);
     parameterParser.parse();
@@ -76,14 +76,6 @@ bool Constraint::satisfies() {
     vector<int> values;
     for (const auto& value : this->parameters)
         values.push_back(value.getValue());
-
-    for(const auto& p : this->parameters){
-        cout << "Pointer to : " << p.getValue() <<  endl;
-    }
-    for(const auto& p : values){
-        cout << "Passed : " << p << endl;
-    }
-
     return reference->evaluate(std::move(values));
 }
 

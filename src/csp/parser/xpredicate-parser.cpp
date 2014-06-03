@@ -26,26 +26,25 @@
 using namespace AIT::CSP;
 using namespace std;
 
-XPredicateParser::XPredicateParser(const CSP_Problem& instance_):
-    instance(instance_){
+XPredicateParser::XPredicateParser() {
 }
 
 XPredicateParser::~XPredicateParser() {
 }
 
 void XPredicateParser::parameters(const string& parameters) {
-	this->m_parameters = parameters;
+    this->m_parameters = parameters;
 }
 
-void XPredicateParser::expression(
-		const pair<Predicate::Type, string>& pair) {
-	this->m_pair = pair;
+void XPredicateParser::expression(const pair<Predicate::Type, string>& pair) {
+    this->m_pair = pair;
 }
 
 void XPredicateParser::name(const string& name) {
-	this->m_name = name;
+    this->m_name = name;
 }
 
-Predicate XPredicateParser::post_predicate_t() {
-	return Predicate(this->m_name,this->m_parameters,this->m_pair.second,this->m_pair.first, this->instance);
+unique_ptr<Predicate> XPredicateParser::post_predicate_t() {
+    return unique_ptr<Predicate> { new Predicate(this->m_name, this->m_parameters,
+            this->m_pair.second, this->m_pair.first) };
 }

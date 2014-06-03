@@ -37,7 +37,7 @@ class XProblemTypeParser: public problemType_pskel,
 public:
 	XProblemTypeParser();
 	~XProblemTypeParser();
-	CSP_Problem::Type post_problemType();
+	CSP_Problem::Presentation::Type post_problemType();
 };
 
 } /* namespace CSP */

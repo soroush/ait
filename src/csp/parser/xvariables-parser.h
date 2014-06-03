@@ -29,17 +29,15 @@
 namespace AIT {
 namespace CSP {
 
-class Variable;
-class CSP_Problem;
-
 class XVariablesParser: public variables_t_pskel {
 public:
-	XVariablesParser(CSP_Problem& instance);
-	~XVariablesParser();
-	void variable(Variable&&);
-	void nbVariables(unsigned long long);
+    XVariablesParser();
+    ~XVariablesParser();
+    void variable(std::unique_ptr<Variable>);
+    void nbVariables(unsigned long long);
+    std::vector<std::unique_ptr<Variable>>&& post_variables_t();
 private:
-	CSP_Problem& m_instance;
+    std::vector<std::unique_ptr<Variable>> m_variables;
 };
 
 } /* namespace CSP */

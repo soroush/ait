@@ -78,7 +78,7 @@ type_parser (::problemType_pskel& p)
 }
 
 void presentation_t_pskel::
-format_parser (::xml_schema::string_pskel& p)
+format_parser (::problemFormat_pskel& p)
 {
   this->format_parser_ = &p;
 }
@@ -90,7 +90,7 @@ parsers (::xml_schema::string_pskel& name,
          ::xml_schema::string_pskel& nbSolutions,
          ::xml_schema::string_pskel& solution,
          ::problemType_pskel& type,
-         ::xml_schema::string_pskel& format)
+         ::problemFormat_pskel& format)
 {
   this->name_parser_ = &name;
   this->maxConstraintArity_parser_ = &maxConstraintArity;
@@ -639,17 +639,12 @@ solution (const ::std::string&)
 }
 
 void presentation_t_pskel::
-type (const AIT::CSP::CSP_Problem::Type&)
+type (const AIT::CSP::CSP_Problem::Presentation::Type&)
 {
 }
 
 void presentation_t_pskel::
-format (const ::std::string&)
-{
-}
-
-void presentation_t_pskel::
-post_presentation_t ()
+format (const AIT::CSP::CSP_Problem::Presentation::Format&)
 {
 }
 
@@ -670,17 +665,12 @@ nbValues (unsigned long long)
 //
 
 void domains_t_pskel::
-domain (AIT::CSP::Domain&&)
+domain (std::unique_ptr<AIT::CSP::Domain>)
 {
 }
 
 void domains_t_pskel::
 nbDomains (unsigned long long)
-{
-}
-
-void domains_t_pskel::
-post_domains_t ()
 {
 }
 
@@ -701,17 +691,12 @@ domain (const ::std::string&)
 //
 
 void variables_t_pskel::
-variable (AIT::CSP::Variable&&)
+variable (std::unique_ptr<AIT::CSP::Variable>)
 {
 }
 
 void variables_t_pskel::
 nbVariables (unsigned long long)
-{
-}
-
-void variables_t_pskel::
-post_variables_t ()
 {
 }
 
@@ -811,17 +796,12 @@ name (const ::std::string&)
 //
 
 void predicates_t_pskel::
-predicate (AIT::CSP::Predicate&&)
+predicate (std::unique_ptr<AIT::CSP::Predicate>)
 {
 }
 
 void predicates_t_pskel::
 nbPredicates (unsigned long long)
-{
-}
-
-void predicates_t_pskel::
-post_predicates_t ()
 {
 }
 
@@ -857,7 +837,7 @@ arity (unsigned long long)
 //
 
 void constraints_t_pskel::
-constraint (AIT::CSP::Constraint&&)
+constraint (std::unique_ptr<AIT::CSP::Constraint>)
 {
 }
 
@@ -866,26 +846,21 @@ nbConstraints (unsigned long long)
 {
 }
 
-void constraints_t_pskel::
-post_constraints_t ()
-{
-}
-
 // instance_t_pskel
 //
 
 void instance_t_pskel::
-presentation ()
+presentation (std::unique_ptr<AIT::CSP::CSP_Problem::Presentation>)
 {
 }
 
 void instance_t_pskel::
-domains ()
+domains (std::vector<std::unique_ptr<AIT::CSP::Domain>>&&)
 {
 }
 
 void instance_t_pskel::
-variables ()
+variables (std::vector<std::unique_ptr<AIT::CSP::Variable>>&&)
 {
 }
 
@@ -895,17 +870,12 @@ relations ()
 }
 
 void instance_t_pskel::
-predicates ()
+predicates (std::vector<std::unique_ptr<AIT::CSP::Predicate>>&&)
 {
 }
 
 void instance_t_pskel::
-constraints ()
-{
-}
-
-void instance_t_pskel::
-post_instance_t ()
+constraints (std::vector<std::unique_ptr<AIT::CSP::Constraint>>&&)
 {
 }
 
@@ -1065,8 +1035,7 @@ sequence_0 (unsigned long& state,
         {
           if (this->domain_parser_)
           {
-            AIT::CSP::Domain&& tmp (this->domain_parser_->post_domain_t ());
-            this->domain (std::move(tmp));
+            this->domain (std::move(this->domain_parser_->post_domain_t ()));
           }
 
           count++;
@@ -1245,8 +1214,7 @@ sequence_0 (unsigned long& state,
         {
           if (this->variable_parser_)
           {
-            AIT::CSP::Variable&& tmp (this->variable_parser_->post_variable_t ());
-            this->variable (std::move(tmp));
+            this->variable (std::move(this->variable_parser_->post_variable_t ()));
           }
 
           count++;
@@ -2022,8 +1990,7 @@ sequence_0 (unsigned long& state,
         {
           if (this->predicate_parser_)
           {
-            AIT::CSP::Predicate&& tmp (this->predicate_parser_->post_predicate_t ());
-            this->predicate (std::move(tmp));
+            this->predicate (this->predicate_parser_->post_predicate_t ());
           }
 
           count++;
@@ -2372,8 +2339,7 @@ sequence_0 (unsigned long& state,
         {
           if (this->constraint_parser_)
           {
-            AIT::CSP::Constraint&& tmp (this->constraint_parser_->post_constraint_t ());
-            this->constraint (std::move(tmp));
+            this->constraint (std::move(this->constraint_parser_->post_constraint_t ()));
           }
 
           count++;
@@ -2552,8 +2518,7 @@ sequence_0 (unsigned long& state,
         {
           if (this->presentation_parser_)
           {
-            this->presentation_parser_->post_presentation_t ();
-            this->presentation ();
+            this->presentation (std::move(this->presentation_parser_->post_presentation_t ()));
           }
 
           count = 0;
@@ -2589,8 +2554,7 @@ sequence_0 (unsigned long& state,
         {
           if (this->domains_parser_)
           {
-            this->domains_parser_->post_domains_t ();
-            this->domains ();
+            this->domains (std::move(this->domains_parser_->post_domains_t ()));
           }
 
           count = 0;
@@ -2626,8 +2590,7 @@ sequence_0 (unsigned long& state,
         {
           if (this->variables_parser_)
           {
-            this->variables_parser_->post_variables_t ();
-            this->variables ();
+            this->variables (std::move(this->variables_parser_->post_variables_t ()));
           }
 
           count = 0;
@@ -2696,8 +2659,7 @@ sequence_0 (unsigned long& state,
         {
           if (this->predicates_parser_)
           {
-            this->predicates_parser_->post_predicates_t ();
-            this->predicates ();
+            this->predicates (std::move(this->predicates_parser_->post_predicates_t ()));
           }
 
           count = 0;
@@ -2729,8 +2691,7 @@ sequence_0 (unsigned long& state,
         {
           if (this->constraints_parser_)
           {
-            this->constraints_parser_->post_constraints_t ();
-            this->constraints ();
+            this->constraints (std::move(this->constraints_parser_->post_constraints_t ()));
           }
 
           count = 0;
@@ -2846,7 +2807,7 @@ _attribute_impl_phase_one (const ::xml_schema::ro_string& ns,
       this->type_parser_->_pre_impl ();
       this->type_parser_->_characters (s);
       this->type_parser_->_post_impl ();
-      const AIT::CSP::CSP_Problem::Type& tmp (this->type_parser_->post_problemType ());
+      const AIT::CSP::CSP_Problem::Presentation::Type& tmp (this->type_parser_->post_problemType ());
       this->type (tmp);
     }
 
@@ -2861,7 +2822,7 @@ _attribute_impl_phase_one (const ::xml_schema::ro_string& ns,
       this->format_parser_->_pre_impl ();
       this->format_parser_->_characters (s);
       this->format_parser_->_post_impl ();
-      const ::std::string& tmp (this->format_parser_->post_string ());
+      const AIT::CSP::CSP_Problem::Presentation::Format& tmp (this->format_parser_->post_problemFormat ());
       this->format (tmp);
     }
 

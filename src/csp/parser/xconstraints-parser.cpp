@@ -27,20 +27,20 @@
 using namespace AIT::CSP;
 using namespace std;
 
-XConstraintsParser::XConstraintsParser(CSP_Problem& instance) :
-		m_instance(instance) {
+XConstraintsParser::XConstraintsParser() {
 }
 
 XConstraintsParser::~XConstraintsParser() {
 }
 
-void XConstraintsParser::constraint(Constraint&& constraint) {
-    cout << "Adding constraint: " << constraint.getName() << endl;
-	m_instance.addConstraint(std::move(constraint));
+void XConstraintsParser::constraint(std::unique_ptr<Constraint> constraint) {
+    this->m_constraints.push_back(std::move(constraint));
 }
 
-void XConstraintsParser::nbConstraints(unsigned long long unsignedLongLongInt) {
+void XConstraintsParser::nbConstraints(unsigned long long size) {
+    this->m_constraints.reserve(size);
 }
 
-void XConstraintsParser::post_constraints_t() {
+vector<std::unique_ptr<Constraint>> && XConstraintsParser::post_constraints_t() {
+    return std::move(this->m_constraints);
 }

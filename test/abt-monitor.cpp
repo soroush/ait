@@ -21,16 +21,16 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "../src/CSP/abt-monitor.h"
-#include "../src/CSP/global.h"
+#include "../src/csp/abt-monitor.h"
+#include "../src/global.h"
 
 using namespace AIT::CSP;
 using namespace std;
 
-int main(int argc, char *argv[])
+int main()
 {
 	_INFO("Running 8 queens server in background...");
-    ABT_Monitor monitor(argv[1],atoi(argv[2]),atoi(argv[3]), atoi(argv[4]));
+    ABT_Monitor monitor("127.0.0.1",5000,5001,4);
     monitor.start();
     return 0;
 }

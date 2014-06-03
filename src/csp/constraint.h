@@ -41,7 +41,7 @@ public:
 	Constraint(const std::string& name, const size_t& arity,
 			const std::string& scope, const std::string& reference,
 			const std::string& parameters,
-			CSP_Problem* instance);
+			CSP_Problem* const instance);
 	Constraint(Constraint&&);
 	Constraint& operator =(Constraint&&);
 	~Constraint();
@@ -80,7 +80,6 @@ private:
 	 * an extension) then this vector should be identical to @ref scope in terms
 	 * of logic, though for computational reasons we keep it empty in such case.
 	 */
-	//std::vector<int*> parameters;
 	std::vector<Value> parameters;
 	/**
 	 * Pointer to a @ref Relation or @ref Predicate.

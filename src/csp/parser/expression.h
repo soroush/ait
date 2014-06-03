@@ -31,7 +31,7 @@
 namespace AIT {
 namespace CSP {
 
-class CSP_Problem;
+class Predicate;
 
 class Expression {
 public:
@@ -66,18 +66,15 @@ public:
         CONST
     };
 	Expression(const Token& type, const std::string& name,
-	        const std::string& predicate,
-	        const CSP_Problem& instance);
+	        AIT::CSP::Predicate* const predicate);
 	virtual ~Expression();
-	Expression& operator=(const Expression& other);
+//	Expression& operator=(const Expression& other);
 	virtual void evaluate(std::stack<int>&);
 private:
-	const CSP_Problem& m_instance;
 	Token m_type;
 	size_t m_refIndex;
 	int m_const;
-	std::string m_predicate;
-	std::string m_ref;
+	AIT::CSP::Predicate* const m_predicate;
 };
 
 } /* namespace CSP */

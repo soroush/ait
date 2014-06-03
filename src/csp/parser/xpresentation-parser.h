@@ -25,25 +25,32 @@
 #define XPRESENTATION_PARSER_H_
 
 #include "xcsp-pskel.hxx"
+#include <memory>
 
 namespace AIT {
 namespace CSP {
 
 class XPresentationParser: public presentation_t_pskel {
 public:
-	XPresentationParser(CSP_Problem&);
-	~XPresentationParser();
-	void name(const std::string&);
-	void maxConstraintArity(unsigned long long);
-	void minViolatedConstraints(const std::string&);
-	void nbSolutions(const std::string&);
-	void solution(const std::string&);
-	void type(const AIT::CSP::CSP_Problem::Type&);
-	void format(const std::string&);
-	void post_presentation_t();
-
+    XPresentationParser();
+    ~XPresentationParser();
+    void name(const std::string&);
+    void maxConstraintArity(unsigned long long);
+    void minViolatedConstraints(const std::string&);
+    void nbSolutions(const std::string&);
+    void solution(const std::string&);
+    void type(const AIT::CSP::CSP_Problem::Presentation::Type&);
+    void format(const AIT::CSP::CSP_Problem::Presentation::Format&);
+    std::unique_ptr<CSP_Problem::Presentation> post_presentation_t();
 private:
-	CSP_Problem& instance;
+    std::string m_name;
+    unsigned int m_maxConstraintArity;
+    std::pair<CSP_Problem::Presentation::NumberType, unsigned int> m_minViolatedConstraints;
+    std::pair<CSP_Problem::Presentation::NumberType, unsigned int> m_nbSolutions;
+    std::string m_solution;
+    CSP_Problem::Presentation::Type m_type;
+    CSP_Problem::Presentation::Format m_format;
+
 };
 
 } /* namespace CSP */

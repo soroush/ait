@@ -34,13 +34,13 @@ class CSP_Problem;
 
 class XVariableParser: public variable_t_pskel {
 public:
-	XVariableParser(const CSP_Problem& instance);
+	XVariableParser(CSP_Problem* const instance);
 	~XVariableParser();
 	void name(const std::string&);
 	void domain(const std::string&);
-	Variable post_variable_t();
+	std::unique_ptr<Variable> post_variable_t();
 private:
-	const CSP_Problem& m_instance;
+	CSP_Problem* const m_instance;
 	std::string m_name;
 	std::string m_domain;
 };

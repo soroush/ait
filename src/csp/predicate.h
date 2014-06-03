@@ -26,6 +26,7 @@
 
 #include "relation-base.h"
 #include "parser/expression.h"
+#include <memory>
 
 namespace AIT {
 namespace CSP {
@@ -42,7 +43,7 @@ public:
         std::string name;
     };
     Predicate(const std::string& name, const std::string& parameters,
-            const std::string& input, const Type&, const CSP_Problem& instance);
+            const std::string& input, const Type&);
     Predicate(Predicate&&);
     Predicate& operator =(Predicate&&);
     ~Predicate();
@@ -59,7 +60,6 @@ private:
      * Parameters of a predicate. This vector holds actual values of parameters
      * processed by the predicate
      */
-    //std::vector<int> parameters;
     std::vector<Reference> parameters;
     /**
      * Names of parameters held by predicate. This variable, maps a name (e.g.
@@ -79,7 +79,7 @@ private:
      * postfix should be same.
      */
     //std::vector<Expression*> postfix;
-    std::vector<Expression> postfix;
+    std::vector<std::unique_ptr<Expression>> postfix;
     /**
      * Evaluation stack used by expressions. After finishing evaluation
      * operation, this stack will have one value, either 0 or 1 which represents
@@ -90,7 +90,6 @@ private:
      * its derivatives.)
      */
     std::stack<int> evaluation;
-    const CSP_Problem& m_instance;
 };
 
 } /* namespace CSP */

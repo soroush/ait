@@ -27,24 +27,22 @@
 using namespace AIT::CSP;
 using namespace std;
 
-XVariableParser::XVariableParser(const CSP_Problem& instance) :
-		m_instance(instance) {
+XVariableParser::XVariableParser(CSP_Problem* const instance) :
+        m_instance(instance) {
 }
 
 XVariableParser::~XVariableParser() {
 }
 
 void XVariableParser::name(const string& name) {
-	this->m_name = name;
-	cout << "Variable name: " << name << endl;
+    this->m_name = name;
 }
 
 void XVariableParser::domain(const string& domainName) {
-	this->m_domain = domainName;
+    this->m_domain = domainName;
 }
 
-Variable XVariableParser::post_variable_t() {
-	Domain* d = this->m_instance.domain(this->m_domain);
-	Variable v { d, this->m_name };
-	return v;
+std::unique_ptr<Variable> XVariableParser::post_variable_t() {
+    Domain* ref = m_instance->domain(this->m_domain);
+    return unique_ptr<Variable>(new Variable(ref,this->m_name));
 }

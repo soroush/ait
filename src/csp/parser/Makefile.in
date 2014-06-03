@@ -55,12 +55,13 @@ libait_csp_parser_la_LIBADD =
 am_libait_csp_parser_la_OBJECTS = exp_func.lo exp_num.lo exp_ref.lo \
 	expression.lo domain_scanner.lo domain_parse.lo \
 	constraint-parameters_scanner.lo \
-	constraint-parameters_parse.lo parameters_scanner.lo \
+	constraint-parameters_parse.lo constraint-scope_scanner.lo \
+	constraint-scope_parse.lo parameters_scanner.lo \
 	parameters_parse.lo predicate-f_scanner.lo \
 	predicate-f_parse.lo xcsp-pskel.lo xinstance-parser.lo \
 	xpresentation-parser.lo xproblem-type-parser.lo \
-	xdomain-parser.lo xdomains-parser.lo xvariable-parser.lo \
-	xvariables-parser.lo xexpression-parser.lo \
+	xproblem-format-parser.lo xdomain-parser.lo xdomains-parser.lo \
+	xvariable-parser.lo xvariables-parser.lo xexpression-parser.lo \
 	xpredicate-parser.lo xpredicates-parser.lo xrelation-parser.lo \
 	xsemantics-type.lo xrelations-parser.lo xconstraint-parser.lo \
 	xconstraints-parser.lo
@@ -68,6 +69,10 @@ libait_csp_parser_la_OBJECTS = $(am_libait_csp_parser_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
+libait_csp_parser_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CXXLD) \
+	$(AM_CXXFLAGS) $(CXXFLAGS) $(libait_csp_parser_la_LDFLAGS) \
+	$(LDFLAGS) -o $@
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -269,6 +274,7 @@ ACLOCAL_AMFLAGS = ${ACLOCAL_FLAGS} -I m4
 AM_CPPFLAGS = -pipe
 noinst_LTLIBRARIES = libait_csp_parser.la
 ait_includedir = $(includedir)/ait/csp/parser
+libait_csp_parser_la_LDFLAGS = -version-info $(AIT_SO_VERSION)
 libait_csp_parser_la_SOURCES = \
 		exp_func.cpp \
 		exp_num.cpp \
@@ -278,6 +284,8 @@ libait_csp_parser_la_SOURCES = \
 		domain_parse.cpp \
 		constraint-parameters_scanner.cpp \
 		constraint-parameters_parse.cpp \
+		constraint-scope_scanner.cpp \
+		constraint-scope_parse.cpp \
 		parameters_scanner.cpp \
 		parameters_parse.cpp \
 		predicate-f_scanner.cpp \
@@ -286,6 +294,7 @@ libait_csp_parser_la_SOURCES = \
 		xinstance-parser.cpp \
 		xpresentation-parser.cpp \
 		xproblem-type-parser.cpp \
+		xproblem-format-parser.cpp \
 		xdomain-parser.cpp \
 		xdomains-parser.cpp \
 		xvariable-parser.cpp \
@@ -319,6 +328,11 @@ ait_include_HEADERS = \
 		constraint-parameters_parser.h \
 		constraint-parameters_parser.ih \
 		constraint-parameters_parserbase.h \
+		constraint-scope_scanner.h \
+		constraint-scope_scannerbase.h \
+		constraint-scope_parser.h \
+		constraint-scope_parser.ih \
+		constraint-scope_parserbase.h \
 		predicate-f_scanner.h \
 		predicate-f_scannerbase.h \
 		predicate-f_parser.h \
@@ -328,6 +342,7 @@ ait_include_HEADERS = \
 		xinstance-parser.h \
 		xpresentation-parser.h \
 		xproblem-type-parser.h \
+		xproblem-format-parser.h \
 		xdomain-parser.h \
 		xdomains-parser.h \
 		xvariable-parser.h \
@@ -387,7 +402,7 @@ clean-noinstLTLIBRARIES:
 	  rm -f "$${dir}/so_locations"; \
 	done
 libait_csp_parser.la: $(libait_csp_parser_la_OBJECTS) $(libait_csp_parser_la_DEPENDENCIES) $(EXTRA_libait_csp_parser_la_DEPENDENCIES) 
-	$(AM_V_CXXLD)$(CXXLINK)  $(libait_csp_parser_la_OBJECTS) $(libait_csp_parser_la_LIBADD) $(LIBS)
+	$(AM_V_CXXLD)$(libait_csp_parser_la_LINK)  $(libait_csp_parser_la_OBJECTS) $(libait_csp_parser_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -397,6 +412,8 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/constraint-parameters_parse.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/constraint-parameters_scanner.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/constraint-scope_parse.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/constraint-scope_scanner.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/domain_parse.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/domain_scanner.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/exp_func.Plo@am__quote@
@@ -417,6 +434,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xpredicate-parser.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xpredicates-parser.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xpresentation-parser.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xproblem-format-parser.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xproblem-type-parser.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xrelation-parser.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xrelations-parser.Plo@am__quote@

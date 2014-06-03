@@ -32,12 +32,13 @@ namespace CSP {
 
 class XPredicatesParser: public predicates_t_pskel {
 public:
-	XPredicatesParser(CSP_Problem& instance);
-	~XPredicatesParser();
-	void predicate(Predicate&&);
-	void nbPredicates(unsigned long long);
+    XPredicatesParser();
+    ~XPredicatesParser();
+    void predicate(std::unique_ptr<Predicate>);
+    void nbPredicates(unsigned long long);
+    std::vector<std::unique_ptr<Predicate>>&& post_predicates_t();
 private:
-	CSP_Problem& m_instance;
+    std::vector<std::unique_ptr<Predicate>> m_predicates;
 };
 
 } /* namespace CSP */

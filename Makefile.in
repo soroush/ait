@@ -40,8 +40,8 @@ DIST_COMMON = README $(am__configure_deps) $(dist_noinst_SCRIPTS) \
 	$(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(srcdir)/config.h.in $(srcdir)/libait.pc.in \
 	$(top_srcdir)/configure AUTHORS COPYING ChangeLog INSTALL NEWS \
-	TODO ar-lib config.guess config.sub depcomp install-sh \
-	ltmain.sh missing
+	ar-lib config.guess config.sub depcomp install-sh ltmain.sh \
+	missing
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/ax_cxx_compile_stdcxx_11.m4 \
 	$(top_srcdir)/m4/ax_lib_expat.m4 $(top_srcdir)/m4/ax_xsdcxx.m4 \

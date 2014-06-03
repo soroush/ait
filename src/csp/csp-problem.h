@@ -29,6 +29,7 @@
 #include <vector>
 #include <map>
 #include <utility>
+#include <memory>
 #include "domain.h"
 #include "variable.h"
 #include "relation-base.h"
@@ -39,25 +40,52 @@ namespace AIT {
 namespace CSP {
 
 class LIBRARY_API CSP_Problem {
-    friend class XDomainsParser;
-    friend class XVariablesParser;
+    friend class XInstanceParser;
 public:
-    enum class Type {
-        CSP, QCSP, WCSP, Unknown
+    class Presentation {
+    public:
+        enum class Type {
+            CSP, QCSP, WCSP, Unknown
+        };
+        enum class Format {
+            XCSP_21, Unknown
+        };
+        enum class NumberType {
+            AtLeast, Exactly, Unknown
+        };
+        Presentation(const std::string& name, const unsigned int& maxConstraint,
+                const std::pair<NumberType, unsigned int>& minViolatedConstraints,
+                const std::pair<NumberType, unsigned int>& nbSolutions,
+                const Type& type,
+                const Format& format);
+        ~Presentation();
+        void setName(const std::string& name);
+        void setMaxConstraintArity(const unsigned int& max);
+        void setMinViolatedConstraints(
+                std::pair<NumberType, unsigned int> number);
+        void setNbSolutions(std::pair<NumberType, unsigned int> number);
+        void setSolution(const std::string& solution);
+        void setType(const Type& type);
+        void setFormat(const Format& format);
+    private:
+        std::string m_name;
+        unsigned int m_maxConstraintArity;
+        std::pair<NumberType, unsigned int> m_minViolatedConstraints;
+        std::pair<NumberType, unsigned int> m_nbSolutions;
+        std::string m_solution;
+        Type m_type;
+        Format m_format;
     };
-    enum class Format {
-        XCSP_21
-    };
-    enum class NumberType {
-        AtLeast, Exactly, Unknown
-    };
-    CSP_Problem(){};
+
+    CSP_Problem() {
+    }
+    ;
     virtual ~CSP_Problem();
 
-    void addDomain(Domain&& d);
-    void addVariable(Variable&& v);
-    void addConstraint(Constraint&& c);
-    void addPredicate(Predicate&& p);
+    void addDomain(std::unique_ptr<Domain> d);
+    void addVariable(std::unique_ptr<Variable> v);
+    void addConstraint(std::unique_ptr<Constraint> c);
+    void addPredicate(std::unique_ptr<Predicate> p);
 
     Variable* variable(const std::string&) const;
     Variable* variable(const size_t&) const;
@@ -66,35 +94,17 @@ public:
     RelationBase* relation(const std::string&) const;
 
     // Interface:
-    void setName(const std::string& name);
-    void setMaxConstraintArity(const unsigned int& max);
-    void setMinViolatedConstraints(std::pair<NumberType, unsigned int> number);
-    void setNbSolutions(std::pair<NumberType, unsigned int> number);
-    void setSolution(const std::string& solution);
-    void setType(const Type& type);
-    void setFormat(const Format& format);
-    const std::vector<Domain*>& domains() const;
-    const std::vector<Variable*>& variables() const;
-    const std::vector<RelationBase*>& relationBases() const;
-    const std::vector<Constraint*>& constraints() const;
-
-private:
-    std::string m_name;
-    unsigned int m_maxConstraintArity;
-    std::pair<NumberType, unsigned int> m_minViolatedConstraints;
-    std::pair<NumberType, unsigned int> m_nbSolutions;
-    std::string m_solution;
-    Type m_type;
-    Format m_format;
+    const std::vector<std::unique_ptr<Domain>>& domains() const;
+    const std::vector<std::unique_ptr<Variable>>& variables() const;
+    const std::vector<std::unique_ptr<RelationBase>>& relationBases() const;
+    const std::vector<std::unique_ptr<Constraint>>& constraints() const;
 
 protected:
-    std::vector<Domain*> m_domains;
-    std::vector<Variable*> m_variables;
-    std::vector<Constraint*> m_constraints;
-    std::vector<RelationBase*> m_relations;
-
-    std::map<std::string, Variable*> variableNames;
-    std::map<std::string, Domain*> domainNames;
+    std::unique_ptr<Presentation> m_presentation;
+    std::vector<std::unique_ptr<Domain>> m_domains;
+    std::vector<std::unique_ptr<Variable>> m_variables;
+    std::vector<std::unique_ptr<Constraint>> m_constraints;
+    std::vector<std::unique_ptr<RelationBase>> m_relations;
 };
 
 } /* namespace CSP */
