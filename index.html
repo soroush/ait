@@ -1,38 +1,41 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
+
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Ait by soroush</title>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Ait : Artificial Intelligence Toolkit" />
 
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Ait</title>
   </head>
+
   <body>
-    <div class="wrapper">
-      <header>
-        <h1>Ait</h1>
-        <p>Artificial Intelligence Toolkit</p>
 
-        <p class="view"><a href="https://github.com/soroush/ait">View the Project on GitHub <small>soroush/ait</small></a></p>
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/soroush/ait">View on GitHub</a>
 
+          <h1 id="project_title">Ait</h1>
+          <h2 id="project_tagline">Artificial Intelligence Toolkit</h2>
 
-        <ul>
-          <li><a href="https://github.com/soroush/ait/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/soroush/ait/tarball/master">Download <strong>TAR Ball</strong></a></li>
-          <li><a href="https://github.com/soroush/ait">View On <strong>GitHub</strong></a></li>
-        </ul>
-      </header>
-      <section>
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/soroush/ait/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/soroush/ait/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
         <h1>
 <a name="artificial-intelligence-toolkit-" class="anchor" href="#artificial-intelligence-toolkit-"><span class="octicon octicon-link"></span></a>Artificial Intelligence Toolkit <a href="https://travis-ci.org/soroush/ait"><img src="https://travis-ci.org/soroush/ait.png?branch=master" alt="Build Status"></a>
 </h1>
 
-<p>AIT is a C++ library aimed to provide a concrete framework for artificial
+<p>AIT is a C++ library intended to provide a concrete framework for artificial
 intelligence research projects. It's also intended to fill the gap between
 academia and industry in area of AI by providing production-quality implementation
 of generic AI concepts and techniques.</p>
@@ -41,7 +44,7 @@ of generic AI concepts and techniques.</p>
 <a name="compile" class="anchor" href="#compile"><span class="octicon octicon-link"></span></a>Compile</h1>
 
 <p><strong>WARNING</strong>: There is no support for Microsoft Visual Studio compilers. Please
-use latest GNU GCC to compile this project. Earliest MSVC that's able to compile
+use latest GNU GCC or Clang to compile this project. Earliest MSVC that's able to compile
 AIT, will be released in 2015. Current versions do not have capability to
 compile modern C++ code. </p>
 
@@ -62,15 +65,17 @@ dependencies. Currently there is one module providing a framework to model <a hr
 <li>
 <a href="http://www.codesynthesis.com/products/xsd/">XSD C++</a> - XML Data Binding for C++</li>
 <li>
-<a href="http://code.google.com/p/protobuf/">Protocol Buffers library</a> (&gt;= 2.4.0, &lt; 2.5.0)</li>
+<a href="http://code.google.com/p/protobuf/">Protocol Buffers library</a> (&gt;= 2.5.0, &lt; 2.6)</li>
+<li>
+<a href="http://boost-log.sourceforge.net">Boost logging library 2</a> (&gt;= 1.53.0)</li>
 </ul><p>To install dependencies in Debian/Ubuntu type:</p>
 
-<div class="highlight highlight-bash"><pre>sudo apt-get install libprotobuf-dev libzmq3-dev xsdcxx
+<div class="highlight highlight-bash"><pre>sudo apt-get install libprotobuf-dev libzmq3-dev xsdcxx libboost-log-dev
 </pre></div>
 
 <p>And in RedHat/Fedora:</p>
 
-<div class="highlight highlight-bash"><pre>sudo yum install protobuf-devel zeromq-devel xsd
+<div class="highlight highlight-bash"><pre>sudo yum install protobuf-devel zeromq-devel xsd boost-log
 </pre></div>
 
 <p><strong>Note</strong>: If you are using a higher version of protocol buffers on your system, you'll need to either downgrade it, download sources of an older version and compile it, or choose to re-generate protocol sources compatible with your current version of <code>libprotobuf</code>.</p>
@@ -105,12 +110,17 @@ debian package repository is maintained in
 precompiled DLL's for Windows are available in sourceforge home page of the
 project.</p>
       </section>
-      <footer>
-        <p>This project is maintained by <a href="https://github.com/soroush">soroush</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Ait maintained by <a href="https://github.com/soroush">soroush</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
       </footer>
     </div>
-    <script src="javascripts/scale.fix.js"></script>
+
     
+
   </body>
 </html>
