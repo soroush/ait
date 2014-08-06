@@ -1,6 +1,7 @@
 before_install:
+ - sudo add-apt-repository ppa:boost-latest/ppa
  - sudo apt-get update -qq
- - sudo apt-get install -qq libboost-log-dev libprotobuf-dev protobuf-compiler libzmq3-dev xsdcxx
+ - sudo apt-get install -qq libboost-log1.55-dev libprotobuf-dev protobuf-compiler libzmq3-dev xsdcxx
  - autoreconf
 language: cpp
 compiler:
