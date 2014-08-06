@@ -24,6 +24,7 @@
 #ifndef SOCKET_H_
 #define SOCKET_H_
 
+#include "../global.hpp"
 #include <config.h>
 #include "zmq.hpp"
 #include <string>
@@ -32,7 +33,6 @@
 #elif defined(GENERATED_PROTOCOLS)
 #include "abt.pb.h"
 #endif
-#include "../global.hpp"
 
 
 namespace AIT {

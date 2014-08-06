@@ -25,11 +25,25 @@
 #include <stdexcept>
 #include <vector>
 #include <sstream>
-#include "../../global.hpp"
+#define BOOST_ALL_DYN_LINK
+#define DSO
+#include <boost/log/core.hpp>
+#include <boost/log/expressions.hpp>
+#include <boost/log/sinks/text_file_backend.hpp>
+#include <boost/log/utility/setup/file.hpp>
+#include <boost/log/utility/setup/common_attributes.hpp>
+#include <boost/log/sources/severity_logger.hpp>
+#include <boost/log/sources/record_ostream.hpp>
+#include <boost/format.hpp>
 
 using namespace AIT;
 using namespace CSP;
 using namespace std;
+namespace logging = boost::log;
+namespace src = boost::log::sources;
+namespace sinks = boost::log::sinks;
+namespace keywords = boost::log::keywords;
+using namespace logging::trivial;
 
 XPresentationParser::XPresentationParser() {
 }
@@ -67,12 +81,14 @@ void XPresentationParser::minViolatedConstraints(const string& min) {
                 number.first = CSP_Problem::Presentation::NumberType::Exactly;
                 this->m_minViolatedConstraints = number;
             } catch (std::invalid_argument &e) {
-                _ERROR("%s", e.what());
+                BOOST_LOG_SEV(lg, error)<<
+                boost::format("An error occured: `%1%'") % e.what();
             }
             return;
         }
     }
-    _ERROR("Invalid value for `minViolatedConstraints' : %s", min.c_str());
+    BOOST_LOG_SEV(lg, error)<<
+    boost::format("Invalid value for `minViolatedConstraints': %1%") % min;
     number.first = CSP_Problem::Presentation::NumberType::Unknown;
     this->m_minViolatedConstraints = number;
 }
@@ -103,12 +119,14 @@ void XPresentationParser::nbSolutions(const string& nb) {
                 number.first = CSP_Problem::Presentation::NumberType::Exactly;
                 this->m_nbSolutions = number;
             } catch (std::invalid_argument &e) {
-                _ERROR("%s", e.what());
+                BOOST_LOG_SEV(lg, error)<<
+                boost::format("An error occured: %1%") % e.what();
             }
             return;
         }
     }
-    _ERROR("Invalid value for `nbSolutions' : %s", nb.c_str());
+    BOOST_LOG_SEV(lg, error)<<
+    boost::format("Invalid value for `nbSolutions' : %1%") % nb;
     number.first = CSP_Problem::Presentation::NumberType::Unknown;
     this->m_nbSolutions = number;
 }
@@ -131,8 +149,8 @@ void XPresentationParser::maxConstraintArity(unsigned long long arity) {
 }
 
 unique_ptr<CSP_Problem::Presentation> XPresentationParser::post_presentation_t() {
-    return unique_ptr<CSP_Problem::Presentation>(
-            new CSP_Problem::Presentation(this->m_name,
+    return unique_ptr < CSP_Problem::Presentation
+            > (new CSP_Problem::Presentation(this->m_name,
                     this->m_maxConstraintArity, this->m_minViolatedConstraints,
                     this->m_nbSolutions, this->m_type, this->m_format));
 }

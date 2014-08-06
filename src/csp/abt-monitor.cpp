@@ -21,7 +21,6 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "../global.hpp"
 #include "abt-monitor.hpp"
 #include "csp-problem.hpp"
 #include "csp-solver.hpp"
@@ -69,14 +68,12 @@ using namespace logging::trivial;
 
 ABT_Monitor::ABT_Monitor(const std::string& host,
         const unsigned short & responserPort,
-        const unsigned short & publisherPort,
-        const std::string& xcsp,
+        const unsigned short & publisherPort, const std::string& xcsp,
         const std::string& logfile) :
-        m_host(host), m_responserPort(responserPort),
-        m_publisherPort(publisherPort), m_context(2),
-        m_responser(m_context, ZMQ_REP), m_publisher(m_context, ZMQ_PUB),
-        m_finished(false),
-        m_instance(unique_ptr<CSP_Problem> { new CSP_Problem() }) {
+        m_host(host), m_responserPort(responserPort), m_publisherPort(
+                publisherPort), m_context(2), m_responser(m_context, ZMQ_REP), m_publisher(
+                m_context, ZMQ_PUB), m_finished(false), m_instance(
+                unique_ptr<CSP_Problem> { new CSP_Problem() }) {
     parse(xcsp);
     this->m_agentCount = m_instance->variables().size();
     m_time = new Awareness*[m_agentCount];
@@ -88,11 +85,10 @@ ABT_Monitor::ABT_Monitor(const std::string& host,
         }
     }
     logging::add_common_attributes();
-    logging::register_simple_formatter_factory<logging::trivial::severity_level,char>("Severity");
-    logging::add_file_log(
-            keywords::file_name = logfile,
-            keywords::auto_flush = true,
-            keywords::format = "[%TimeStamp%][%Severity%]: %Message%");
+    logging::register_simple_formatter_factory<logging::trivial::severity_level,
+            char>("Severity");
+    logging::add_file_log(keywords::file_name = logfile, keywords::auto_flush =
+            true, keywords::format = "[%TimeStamp%][%Severity%]: %Message%");
 }
 
 ABT_Monitor::~ABT_Monitor() {
@@ -118,41 +114,42 @@ void ABT_Monitor::start() {
     address.str("");
     address << "tcp://*:" << this->m_publisherPort;
     try {
-        BOOST_LOG_SEV(lg, trace) <<
-            boost::format("Binding to *:%1% broadcast end point...")
-            % this->m_publisherPort;
+        BOOST_LOG_SEV(lg, trace)<<
+        boost::format("Binding to *:%1% broadcast end point...")
+        % this->m_publisherPort;
         this->m_publisher.bind(address.str().data());
     } catch (zmq::error_t &e) {
         BOOST_LOG_SEV(lg, fatal) <<
-            boost::format("Unable to bind to broadcast channel at *:%1%. "
-                    "Following information may describe possible failure "
-                    "causes: %2%")
-            % this->m_publisherPort % e.what();
+        boost::format("Unable to bind to broadcast channel at *:%1%. "
+                "Following information may describe possible failure "
+                "causes: %2%")
+        % this->m_publisherPort % e.what();
     }
-    BOOST_LOG_SEV(lg, trace) << "Successfully bound to broadcast channel.";
+    BOOST_LOG_SEV(lg, trace)<< "Successfully bound to broadcast channel.";
     size_t counter = 0;
     size_t priority = 1;
     while (counter != 2 * this->m_agentCount) {
         P_CommunicationProtocol requestPacket;
         this->m_responser.recvMessage(requestPacket);
         if (requestPacket.type() == CP_MessageType::T_INTRODUCE) {
-            BOOST_LOG_SEV(lg, trace) <<
-                boost::format(
-                        "New agent subscribed. This information is introduced "
-                        "by new agent"
-                        "\n\tHost          : %1%"
-                        "\n\tVariable Name : %2%"
-                        "\n\tListener Port : %3%")
-                % requestPacket.identity().host()
-                % requestPacket.identity().name()
-                % requestPacket.identity().port();
+            BOOST_LOG_SEV(lg, trace)<<
+            boost::format(
+                    "New agent subscribed. This information is introduced "
+                    "by new agent"
+                    "\n\tHost          : %1%"
+                    "\n\tVariable Name : %2%"
+                    "\n\tListener Port : %3%")
+            % requestPacket.identity().host()
+            % requestPacket.identity().name()
+            % requestPacket.identity().port();
             bool repeatedName =
-                    std::any_of(m_agents.begin(), m_agents.end(),
-                            [&](P_EndPoint i) {return (requestPacket.identity().name()==i.name());});
+            std::any_of(m_agents.begin(), m_agents.end(),
+                    [&](P_EndPoint i) {return (requestPacket.identity().name()==i.name());});
             if (repeatedName) {
-                _ERROR(
-                        "An agent with name `%s'is already registered. Ignoring this request",
-                        requestPacket.identity().name().c_str());
+                BOOST_LOG_SEV(lg, trace) <<
+                boost::format("An agent with name `%1%'is already registered."
+                        "Ignoring this request")
+                %requestPacket.identity().name();
                 P_CommunicationProtocol nackPacket;
                 nackPacket.set_type(CP_MessageType::ERR_REPEATED_ID);
                 this->m_responser.sendMessage(nackPacket);
@@ -204,7 +201,8 @@ void ABT_Monitor::start() {
             int i = notif.sender() - 1;
             int j = notif.assignment().priority() - 1;
             if (i == j) {
-                this->m_p2v[notif.sender()]->setValue(notif.assignment().value());
+                this->m_p2v[notif.sender()]->setValue(
+                        notif.assignment().value());
             }
             if (m_time[i][j].sequence < x.sequence)
                 m_time[i][j] = x;
@@ -225,21 +223,19 @@ void ABT_Monitor::start() {
         this->m_finished = checkMatrix();
     }
     auto end = steady_clock::now();
-    _INFO("Time to execute algorithm: %d ms", duration_cast<milliseconds>(end-start).count());
-    _INFO("Sending all agents finish signal...");
+    BOOST_LOG_SEV(lg, info)<<
+    boost::format("Time to execute algorithm: %d ms.")%duration_cast<milliseconds>(end-start).count();
+    BOOST_LOG_SEV(lg, info)<< "Sending all agents finish signal...";
 
     P_Message finished;
     finished.set_type(P_MessageType::T_FINISH);
     finished.set_sender(0);
     this->m_publisher.sendMessage(finished);
 
-    _INFO("Algorithm is finished. Found values are:")
-    {
-        for (const auto& x : this->m_instance->variables()) {
-            cout << x->getName() << "=" << x->getValue() << endl;
-        }
+    BOOST_LOG_SEV(lg, info)<<"Algorithm is finished. Found values are";
+    for (const auto& x : this->m_instance->variables()) {
+        cout << x->getName() << "=" << x->getValue() << endl;
     }
-
 }
 
 void ABT_Monitor::parse(const string& path) {
@@ -323,17 +319,18 @@ bool ABT_Monitor::checkMatrix() {
  *
  * **************************************************************************/
 
-C_ABT_Monitor* abt_monitor_create(char* host, const unsigned short responserPort,
-        const unsigned short publisherPort, char* xcsp) {
-    return reinterpret_cast<C_ABT_Monitor*>(new ABT_Monitor(host,responserPort,
-            publisherPort,xcsp));
+C_ABT_Monitor* abt_monitor_create(char* host,
+        const unsigned short responserPort, const unsigned short publisherPort,
+        char* xcsp) {
+    return reinterpret_cast<C_ABT_Monitor*>(new ABT_Monitor(host, responserPort,
+            publisherPort, xcsp));
 }
 
 void abt_monitor_destroy(C_ABT_Monitor* m) {
     delete reinterpret_cast<ABT_Monitor*>(m);
 }
 
-void abt_monitor_start(C_ABT_Monitor* m){
+void abt_monitor_start(C_ABT_Monitor* m) {
     auto monitor = reinterpret_cast<ABT_Monitor*>(m);
     monitor->start();
 }
