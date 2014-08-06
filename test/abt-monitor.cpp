@@ -21,8 +21,8 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "../src/csp/abt-monitor.h"
-#include "../src/global.h"
+#include "../src/csp/abt-monitor.hpp"
+#include "../src/global.hpp"
 
 using namespace AIT::CSP;
 using namespace std;
