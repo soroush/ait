@@ -21,7 +21,7 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */ 
  
-%class-name                "ConstraintParametersLexer"
+%class-name                ConstraintParametersLexer
 %baseclass-header          "constraint-parameters_scannerbase.h"
 %class-header              "constraint-parameters_scanner.h"
 %implementation-header     "constraint-parameters_scanner.ih"

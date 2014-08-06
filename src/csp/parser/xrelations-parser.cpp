@@ -21,7 +21,7 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "xrelations-parser.h"
+#include "xrelations-parser.hpp"
 
 using namespace AIT ;
 using namespace CSP;

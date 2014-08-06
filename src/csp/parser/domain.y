@@ -22,13 +22,13 @@
  */
 
 
-%class-name		         DomainParser
-%baseclass-header        "domain_parserbase.h"
-%class-header            "domain_parser.h"
-%implementation-header   "domain_parser.ih"
-%parsefun-source         "domain_parse.cpp"
+%class-name              DomainParser
+%baseclass-header        domain_parserbase.h
+%class-header            domain_parser.h
+%implementation-header   domain_parser.ih
+%parsefun-source         domain_parse.cpp
 %baseclass-preinclude    <vector>
-%scanner                 "domain_scanner.h"
+%scanner                 domain_scanner.h
 %scanner-token-function  d_scanner.lex()
 
 %union{

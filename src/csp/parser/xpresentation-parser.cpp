@@ -21,11 +21,11 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "xpresentation-parser.h"
+#include "xpresentation-parser.hpp"
 #include <stdexcept>
 #include <vector>
 #include <sstream>
-#include "../../global.h"
+#include "../../global.hpp"
 
 using namespace AIT;
 using namespace CSP;

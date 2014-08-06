@@ -21,11 +21,11 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "predicate.h"
-#include "parser/predicate-f_parser.h"
-#include "parser/parameters_parser.h"
-#include "parser/expression.h"
-#include "csp-problem.h"
+#include "predicate.hpp"
+#include "parser/predicate-f_parser.hpp"
+#include "parser/parameters_parser.hpp"
+#include "parser/expression.hpp"
+#include "csp-problem.hpp"
 
 #include <algorithm>
 #include <utility>
@@ -88,7 +88,7 @@ bool Predicate::evaluate(const vector<int>& inputs) {
 //    return (this->evaluation.top() == 1);
 }
 
-bool Predicate::evaluate(vector<int>&& inputs) {
+bool Predicate::evaluate(vector<int> && inputs) {
     size_t i = 0;
     for (const auto& v : inputs) {
         this->parameters[i++].value = v;
@@ -126,10 +126,15 @@ const std::vector<Predicate::Reference>& Predicate::getParameters() const {
     return this->parameters;
 }
 
-void Predicate::addPostfixExpression(const Expression::Token& type,
-        const std::string& name) {
-    this->postfix.push_back( unique_ptr<Expression>{new Expression(type, name, this)});
+void Predicate::addPostfixExpression(Expression* exp) {
+    std::unique_ptr<Expression> e { exp };
+    this->postfix.push_back(std::move(e));
 }
+
+//void Predicate::addPostfixExpression(const Expression::Token& type,
+//        const std::string& name) {
+//    this->postfix.push_back( unique_ptr<Expression>{new Expression(type, name, this)});
+//}
 
 int Predicate::parameter(const std::string& name) const {
     for (const auto& p : this->parameters) {
@@ -141,3 +146,12 @@ int Predicate::parameter(const std::string& name) const {
     return 0;
 }
 
+const int* Predicate::getParameterPointer(const std::string& name) const {
+    for (const auto& p : this->parameters) {
+        if (p.name == name) {
+            return &(p.value);
+        }
+    }
+// TODO: Throw exception
+    return nullptr;
+}

@@ -1,5 +1,4 @@
-#include "../variable.h"
-#include "constraint-parameters_parser.h"
+#include "../variable.hpp"
+#include "constraint-parameters_parser.hpp"
 using namespace std;
 using namespace AIT::CSP;
-

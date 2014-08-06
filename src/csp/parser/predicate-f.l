@@ -21,7 +21,7 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */ 
  
-%class-name                "PredicateFunctionalLexer"
+%class-name                PredicateFunctionalLexer
 %baseclass-header          "predicate-f_scannerbase.h"
 %class-header              "predicate-f_scanner.h"
 %implementation-header     "predicate-f_scanner.ih"

@@ -21,27 +21,29 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "variable.h"
+#include "variable.hpp"
 #include <utility>
+#include <stdexcept>
+#include <stdio.h>
 
 using namespace AIT::CSP;
 using namespace std;
 
 Variable::Variable(Domain* domain, const string& name, const int& value_) :
-		m_domain(domain), m_name(name), m_value(value_), m_isSet(false) {
+        m_domain(domain), m_name(name), m_value(value_), m_isSet(false) {
 }
 
 Variable::Variable(Variable&& other) :
-		m_domain(other.m_domain), m_name(move(other.m_name)), m_value(
-				move(other.m_value)), m_isSet(move(other.m_isSet)) {
+        m_domain(other.m_domain), m_name(move(other.m_name)), m_value(
+                move(other.m_value)), m_isSet(move(other.m_isSet)) {
 }
 
 Variable& Variable::operator =(Variable&& other) {
-	m_domain = std::move(other.m_domain);
-	m_name = std::move(other.m_name);
-	m_value = std::move(other.m_value);
-	m_isSet = std::move(other.m_isSet);
-	return *this;
+    m_domain = std::move(other.m_domain);
+    m_name = std::move(other.m_name);
+    m_value = std::move(other.m_value);
+    m_isSet = std::move(other.m_isSet);
+    return *this;
 }
 
 Variable::~Variable() {
@@ -49,11 +51,11 @@ Variable::~Variable() {
 
 int* Variable::value() {
     cout << "returning: " << &(this->m_value) << endl;
-	return &(this->m_value);
+    return &(this->m_value);
 }
 
 const Domain* Variable::getDomain() const {
-	return this->m_domain;
+    return this->m_domain;
 }
 
 void Variable::setDomain(Domain* domain) {
@@ -61,7 +63,7 @@ void Variable::setDomain(Domain* domain) {
 }
 
 const string& Variable::getName() const {
-	return this->m_name;
+    return this->m_name;
 }
 
 void Variable::setName(const string& name) {
@@ -69,7 +71,14 @@ void Variable::setName(const string& name) {
 }
 
 int Variable::getValue() const {
-	return this->m_value;
+    if (this->m_isSet) {
+        return this->m_value;
+    } else {
+        char buffer [128];
+        sprintf (buffer, "Variable %s is not set and it's value is invalid", this->m_name.c_str());
+        throw std::logic_error(
+                buffer);
+    }
 }
 
 void Variable::setValue(int value) {

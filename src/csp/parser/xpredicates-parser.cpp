@@ -21,7 +21,7 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "xpredicates-parser.h"
+#include "xpredicates-parser.hpp"
 
 using namespace AIT::CSP;
 using namespace std;

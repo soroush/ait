@@ -1,5 +1,9 @@
+# Hidden files and folders, Documentation, Packaging and Cache
 .*
-/doc
+/doc/*
+/package/*
+/stats/*
+/csp-gui/*
 *.cache
 
 # Compiled Object files

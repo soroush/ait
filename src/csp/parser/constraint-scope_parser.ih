@@ -1,0 +1,4 @@
+#include "constraint-scope_parser.hpp"
+#include "../variable.hpp"
+using namespace std;
+using namespace AIT::CSP;

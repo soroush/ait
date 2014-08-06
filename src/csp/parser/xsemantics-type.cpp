@@ -21,9 +21,9 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "xsemantics-type.h"
-#include "../relation-base.h"
-#include "../../global.h"
+#include "xsemantics-type.hpp"
+#include "../relation-base.hpp"
+#include "../../global.hpp"
 #include <string>
 
 using namespace AIT::CSP;

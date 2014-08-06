@@ -21,8 +21,8 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "xconstraints-parser.h"
-#include "../csp-problem.h"
+#include "xconstraints-parser.hpp"
+#include "../csp-problem.hpp"
 
 using namespace AIT::CSP;
 using namespace std;

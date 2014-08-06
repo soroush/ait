@@ -21,7 +21,7 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */ 
  
-%class-name                "ParametersLexer"
+%class-name                ParametersLexer
 %baseclass-header          "parameters_scannerbase.h"
 %class-header              "parameters_scanner.h"
 %implementation-header     "parameters_scanner.ih"

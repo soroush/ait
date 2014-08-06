@@ -21,7 +21,7 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "xconstraint-parser.h"
+#include "xconstraint-parser.hpp"
 
 using namespace AIT::CSP;
 using namespace std;
@@ -34,17 +34,14 @@ XConstraintParser::~XConstraintParser() {
 }
 
 void XConstraintParser::parameters(const string& parameters) {
-    cout << "constraint parameters: " << parameters << endl;
 	this->m_parameters = parameters;
 }
 
 void XConstraintParser::name(const string& name) {
-    cout << "constraint name: " << name << endl;
 	this->m_name = name;
 }
 
 void XConstraintParser::scope(const string& scope) {
-    cout << "constraint scope: " << scope << endl;
 	this->m_scope = scope;
 }
 

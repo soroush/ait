@@ -21,9 +21,9 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "xvariables-parser.h"
-#include "../csp-problem.h"
-#include "../variable.h"
+#include "xvariables-parser.hpp"
+#include "../csp-problem.hpp"
+#include "../variable.hpp"
 #include <utility>
 
 using namespace AIT::CSP;

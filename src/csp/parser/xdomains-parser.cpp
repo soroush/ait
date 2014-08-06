@@ -21,10 +21,10 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "xdomains-parser.h"
-#include "xdomain-parser.h"
-#include "../csp-problem.h"
-#include "../domain.h"
+#include "xdomains-parser.hpp"
+#include "xdomain-parser.hpp"
+#include "../csp-problem.hpp"
+#include "../domain.hpp"
 
 #include <iostream>
 #include <utility>

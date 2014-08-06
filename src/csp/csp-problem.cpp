@@ -21,11 +21,12 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "csp-problem.h"
+#include "csp-problem.hpp"
 #include <algorithm>
 #include <memory>
 #include <stdexcept>
 #include <sstream>
+
 
 using namespace AIT::CSP;
 using namespace std;

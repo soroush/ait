@@ -56,6 +56,8 @@ enum P_MessageType {
   T_NOGOOD = 2;
   T_ADDLINK = 3;
   T_STOP = 4;
+  T_OK_MONITOR = 5;
+  T_FINISH = 6;
 }
 
 message P_Message {
@@ -63,6 +65,8 @@ message P_Message {
     required int32 sender = 2;
     optional P_Assignment assignment = 3;
     optional P_CompoundAssignment nogood = 4;
+    optional int32 sequence = 5;
+    optional bool approved = 6;
 }
 
 message P_Nogood {

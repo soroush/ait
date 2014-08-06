@@ -86,12 +86,12 @@ class instance_t_pskel;
 
 #include <utility>
 #include <memory>
-#include "../variable.h"
-#include "../relation-base.h"
-#include "../predicate.h"
-#include "../domain.h"
-#include "../csp-problem.h"
-#include "../constraint.h"
+#include "../variable.hpp"
+#include "../relation-base.hpp"
+#include "../predicate.hpp"
+#include "../domain.hpp"
+#include "../csp-problem.hpp"
+#include "../constraint.hpp"
 
 namespace xml_schema
 {

@@ -23,11 +23,11 @@
 
 
 %class-name		         FunctionalParser
-%baseclass-header        "predicate-f_parserbase.h"
-%class-header            "predicate-f_parser.h"
-%implementation-header   "predicate-f_parser.ih"
-%parsefun-source         "predicate-f_parse.cpp"
-%scanner                 "predicate-f_scanner.h"
+%baseclass-header        predicate-f_parserbase.h
+%class-header            predicate-f_parser.h
+%implementation-header   predicate-f_parser.ih
+%parsefun-source         predicate-f_parse.cpp
+%scanner                 predicate-f_scanner.h
 %scanner-token-function  d_scanner.lex()
 
 %token  INTEGER
@@ -41,35 +41,34 @@
 functional: int_expr;
 
 int_expr:	NEG LP int_expr RP { 
-                                    
-                                    this->predicate->addPostfixExpression(Expression::Token::NEG); 
+                                    this->predicate->addPostfixExpression(new exp_func_neg()); 
                                } | 
-		ABS LP int_expr RP { 
-		                          
-		                          this->predicate->addPostfixExpression(Expression::Token::ABS);} |
-		ADD LP int_expr COMMA int_expr RP {  this->predicate->addPostfixExpression(Expression::Token::ADD); } |
-		SUB LP int_expr COMMA int_expr RP {  this->predicate->addPostfixExpression(Expression::Token::SUB); } |
-		MUL LP int_expr COMMA int_expr RP {  this->predicate->addPostfixExpression(Expression::Token::MUL); } |
-		MOD LP int_expr COMMA int_expr RP {  this->predicate->addPostfixExpression(Expression::Token::MOD); } |
-		POW LP int_expr COMMA int_expr RP {  this->predicate->addPostfixExpression(Expression::Token::POW); } |
-		MIN LP int_expr COMMA int_expr RP {  this->predicate->addPostfixExpression(Expression::Token::MIN); } |
-		MAX LP int_expr COMMA int_expr RP {  this->predicate->addPostfixExpression(Expression::Token::MAX); } | 
+		ABS LP int_expr RP { this->predicate->addPostfixExpression(new exp_func_abs());} |
+		ADD LP int_expr COMMA int_expr RP {  this->predicate->addPostfixExpression(new exp_func_add()); } |
+		SUB LP int_expr COMMA int_expr RP {  this->predicate->addPostfixExpression(new exp_func_sub()); } |
+		MUL LP int_expr COMMA int_expr RP {  this->predicate->addPostfixExpression(new exp_func_mul()); } |
+		MOD LP int_expr COMMA int_expr RP {  this->predicate->addPostfixExpression(new exp_func_mod()); } |
+		POW LP int_expr COMMA int_expr RP {  this->predicate->addPostfixExpression(new exp_func_pow()); } |
+		MIN LP int_expr COMMA int_expr RP {  this->predicate->addPostfixExpression(new exp_func_min()); } |
+		MAX LP int_expr COMMA int_expr RP {  this->predicate->addPostfixExpression(new exp_func_max()); } | 
 
-		EQ LP int_expr COMMA int_expr RP {  this->predicate->addPostfixExpression(Expression::Token::EQ); } | 
-		NEQ LP int_expr COMMA int_expr RP {  this->predicate->addPostfixExpression(Expression::Token::NEQ); } | 
-		GE LP int_expr COMMA int_expr RP {  this->predicate->addPostfixExpression(Expression::Token::GE); } | 
-		GT LP int_expr COMMA int_expr RP {  this->predicate->addPostfixExpression(Expression::Token::GT); } | 
-		LE LP int_expr COMMA int_expr RP {  this->predicate->addPostfixExpression(Expression::Token::LE); } | 
-		LT LP int_expr COMMA int_expr RP {  this->predicate->addPostfixExpression(Expression::Token::LT); } | 
+		EQ LP int_expr COMMA int_expr RP { this->predicate->addPostfixExpression(new exp_func_eq()); } | 
+		NEQ LP int_expr COMMA int_expr RP { this->predicate->addPostfixExpression(new exp_func_neq()); } | 
+		GE LP int_expr COMMA int_expr RP { this->predicate->addPostfixExpression(new exp_func_ge()); } | 
+		GT LP int_expr COMMA int_expr RP { this->predicate->addPostfixExpression(new exp_func_gt()); } | 
+		LE LP int_expr COMMA int_expr RP { this->predicate->addPostfixExpression(new exp_func_le()); } | 
+		LT LP int_expr COMMA int_expr RP { this->predicate->addPostfixExpression(new exp_func_lt()); } | 
 
-		NOT LP int_expr RP {  this->predicate->addPostfixExpression(Expression::Token::NOT); } | 
-		AND LP int_expr COMMA int_expr RP {  this->predicate->addPostfixExpression(Expression::Token::AND); } | 
-		OR LP int_expr COMMA int_expr RP {  this->predicate->addPostfixExpression(Expression::Token::OR); } | 
-		XOR LP int_expr COMMA int_expr RP {  this->predicate->addPostfixExpression(Expression::Token::XOR); } | 
-		IFF LP int_expr COMMA int_expr COMMA int_expr RP {  this->predicate->addPostfixExpression(Expression::Token::IFF); } |
+		NOT LP int_expr RP { this->predicate->addPostfixExpression(new exp_func_not()); } | 
+		AND LP int_expr COMMA int_expr RP { this->predicate->addPostfixExpression(new exp_func_and()); } | 
+		OR LP int_expr COMMA int_expr RP { this->predicate->addPostfixExpression(new exp_func_or()); } | 
+		XOR LP int_expr COMMA int_expr RP { this->predicate->addPostfixExpression(new exp_func_xor()); } | 
+		IFF LP int_expr COMMA int_expr COMMA int_expr RP { this->predicate->addPostfixExpression(new exp_func_iff()); } |
 		
 		ID {
-		       
-		      this->predicate->addPostfixExpression(Expression::Token::REF, d_scanner.matched()); 
+		      auto* p = this->predicate->getParameterPointer(d_scanner.matched());
+		      this->predicate->addPostfixExpression(new exp_ref(p)); 
 		   } | 
-		INTEGER {  this->predicate->addPostfixExpression(Expression::Token::CONST, d_scanner.matched()); };
+		INTEGER {
+		           this->predicate->addPostfixExpression(new exp_num(atoi(d_scanner.matched().c_str())));
+		        };

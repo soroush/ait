@@ -21,24 +21,20 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-//#include "exp_ref.h"
-//
-//using namespace AIT::CSP;
-//using namespace std;
-//#include  <iostream>
-//
-//exp_ref::exp_ref(const vector<int>& v, const size_t& i) :
-//		vec(v), index(i) {
-//        cout << "FROM EXP_REF: " << &(this->vec) << endl;
-//    for(const auto& v: this->vec){
-//        cout << v << endl;
-//    }
-//}
-//
-//exp_ref::~exp_ref() {
-//}
-//
-//void exp_ref::evaluate(std::stack<int>& s) {
-//	s.push(vec[this->index]);
-//}
+#include "exp_ref.hpp"
+
+using namespace AIT::CSP;
+using namespace std;
+#include  <iostream>
+
+exp_ref::exp_ref(const int* const reference):
+    m_reference(reference) {
+}
+
+exp_ref::~exp_ref() {
+}
+
+void exp_ref::evaluate(std::stack<int>& s) {
+	s.push(*(this->m_reference));
+}
 

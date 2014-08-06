@@ -21,8 +21,8 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "abt-solver.h"
-#include "abt-socket.h"
+#include "abt-solver.hpp"
+#include "abt-socket.hpp"
 #include <sstream>
 #include <stdexcept>
 #include <iostream>
@@ -40,6 +40,8 @@ ABT_Solver::EndPoint::EndPoint(const protocols::csp::abt::P_EndPoint& ep,
         zmq::context_t& context) :
         socket_(new Socket(context, ZMQ_PUSH)) {
     this->CopyFrom(ep);
+    int linger = 0;
+    this->socket_->setsockopt(ZMQ_LINGER,&linger, sizeof(linger));
 }
 
 ABT_Solver::EndPoint::~EndPoint() {

@@ -21,22 +21,22 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "csp-solver.h"
-#include "parser/xinstance-parser.h"
-#include "parser/xpresentation-parser.h"
-#include "parser/xproblem-type-parser.h"
-#include "parser/xproblem-format-parser.h"
-#include "parser/xdomains-parser.h"
-#include "parser/xdomain-parser.h"
-#include "parser/xvariables-parser.h"
-#include "parser/xvariable-parser.h"
-#include "parser/xpredicates-parser.h"
-#include "parser/xpredicate-parser.h"
-#include "parser/xexpression-parser.h"
-#include "parser/xconstraints-parser.h"
-#include "parser/xconstraint-parser.h"
-#include "parser/xrelations-parser.h"
-#include "parser/xrelation-parser.h"
+#include "csp-solver.hpp"
+#include "parser/xinstance-parser.hpp"
+#include "parser/xpresentation-parser.hpp"
+#include "parser/xproblem-type-parser.hpp"
+#include "parser/xproblem-format-parser.hpp"
+#include "parser/xdomains-parser.hpp"
+#include "parser/xdomain-parser.hpp"
+#include "parser/xvariables-parser.hpp"
+#include "parser/xvariable-parser.hpp"
+#include "parser/xpredicates-parser.hpp"
+#include "parser/xpredicate-parser.hpp"
+#include "parser/xexpression-parser.hpp"
+#include "parser/xconstraints-parser.hpp"
+#include "parser/xconstraint-parser.hpp"
+#include "parser/xrelations-parser.hpp"
+#include "parser/xrelation-parser.hpp"
 
 using namespace AIT;
 using namespace AIT::CSP;

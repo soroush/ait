@@ -21,38 +21,22 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#ifndef ABT_MONITOR_H_
-#define ABT_MONITOR_H_
+#ifndef C_ABT_MONITOR_H_
+#define C_ABT_MONITOR_H_
 
-#include <string>
-#include <vector>
-#include <zmq.hpp>
-#include "common_async.h"
-#include "abt-solver.h"
-#include "abt-socket.h"
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-namespace AIT {
-namespace CSP {
+struct C_ABT_Monitor;
+typedef struct C_ABT_Monitor C_ABT_Monitor;
+C_ABT_Monitor* abt_monitor_create(char* host, const unsigned short responserPort,
+        const unsigned short publisherPort, char* xcsp);
+void abt_monitor_destroy(C_ABT_Monitor* m);
+void abt_monitor_start(C_ABT_Monitor* m);
 
-class ABT_Monitor {
-public:
-	ABT_Monitor();
-	ABT_Monitor(const std::string& host, const unsigned short& responserPort,
-			const unsigned short& publisherPort, const size_t& agentCount=2);
-	virtual ~ABT_Monitor();
-	void start();
-private:
-	unsigned short portNumberResponser, portNumberPublisher;
-	std::string host_;
-	zmq::context_t context;
-	Socket publisher;
-	Socket responser;
-	size_t agentCount_;
-	std::vector<protocols::csp::abt::P_EndPoint> agents;
+#ifdef __cplusplus
+}
+#endif
 
-	void run();
-};
-
-} /* namespace CSP */
-} /* namespace AIT */
-#endif /* ABT_MONITOR_H_ */
+#endif /* C_ABT_MONITOR_H_ */

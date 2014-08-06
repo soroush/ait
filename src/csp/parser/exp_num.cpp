@@ -21,19 +21,19 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "exp_num.h"
+#include "exp_num.hpp"
 
 using namespace AIT::CSP;
 using namespace std;
 
-//exp_num::exp_num(const int& _value) :
-//		value(_value) {
-//}
-//
-//exp_num::~exp_num() {
-//}
-//
-//void exp_num::evaluate(stack<int>& s) {
-//	s.push(this->value);
-//}
+exp_num::exp_num(const int& _value) :
+		value(_value) {
+}
+
+exp_num::~exp_num() {
+}
+
+void exp_num::evaluate(stack<int>& s) {
+	s.push(this->value);
+}
 

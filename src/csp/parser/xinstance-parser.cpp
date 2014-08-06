@@ -21,7 +21,7 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "xinstance-parser.h"
+#include "xinstance-parser.hpp"
 #include <algorithm>
 
 using namespace AIT::CSP;

@@ -21,7 +21,7 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */ 
  
-%class-name                "DomainLexer"
+%class-name                DomainLexer
 %baseclass-header          "domain_scannerbase.h"
 %class-header              "domain_scanner.h"
 %implementation-header     "domain_scanner.ih"

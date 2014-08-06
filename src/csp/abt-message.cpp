@@ -21,7 +21,7 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "abt-solver.h"
+#include "abt-solver.hpp"
 
 using namespace AIT::CSP;
 using namespace AIT::protocols::csp;
@@ -32,7 +32,7 @@ ABT_Solver::Message::Message() {
 
 ABT_Solver::Message::Message(const Message& other) :
 		type(other.type), sender(other.sender), assignment(other.assignment), nogood(
-				other.nogood) {
+				other.nogood), sequence(other.sequence), approved(other.approved) {
 }
 
 ABT_Solver::Message::~Message() {
@@ -44,6 +44,8 @@ ABT_Solver::Message& ABT_Solver::Message::operator =(const Message& other) {
 	sender = other.sender;
 	assignment = other.assignment;
 	nogood = other.nogood;
+	sequence = other.sequence;
+	approved = other.approved;
 	return *this;
 }
 
@@ -64,9 +66,16 @@ ABT_Solver::Message::operator P_Message() const {
 	case P_MessageType::T_OK:
 		m.mutable_assignment()->set_priority(assignment.id);
 		m.mutable_assignment()->set_value(assignment.value);
+        m.set_sequence(this->sequence);
 		break;
 	case P_MessageType::T_STOP:
 		break;
+	case P_MessageType::T_OK_MONITOR:
+        m.mutable_assignment()->set_priority(assignment.id);
+        m.mutable_assignment()->set_value(assignment.value);
+        m.set_sequence(this->sequence);
+        m.set_approved(this->approved);
+	    break;
 	}
 	return m;
 }
@@ -85,9 +94,16 @@ void ABT_Solver::Message::readFromProtocol(const P_Message& message) {
 	case P_MessageType::T_OK:
 		this->assignment.id = message.assignment().priority();
 		this->assignment.value = message.assignment().value();
+        this->sequence = message.sequence();
 		break;
 	case P_MessageType::T_STOP:
 		break;
+	case P_MessageType::T_OK_MONITOR:
+        this->assignment.id = message.assignment().priority();
+        this->assignment.value = message.assignment().value();
+	    this->sequence = message.sequence();
+	    this->approved = message.approved();
+	    break;
 	}
 }
 

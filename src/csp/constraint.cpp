@@ -21,10 +21,10 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "constraint.h"
-#include "parser/constraint-parameters_parser.h"
-#include "parser/constraint-scope_parser.h"
-#include "csp-problem.h"
+#include "constraint.hpp"
+#include "parser/constraint-parameters_parser.hpp"
+#include "parser/constraint-scope_parser.hpp"
+#include "csp-problem.hpp"
 
 #include <utility>
 

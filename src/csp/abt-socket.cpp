@@ -21,60 +21,54 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "abt-socket.h"
+#include "abt-socket.hpp"
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <string>
+#include <iostream>
 
 using namespace AIT;
 using namespace zmq;
+using namespace std;
 
 Socket::Socket(context_t &context_, int type_) :
-		socket_t(context_, type_) {
+        socket_t(context_, type_) {
 }
 
-Socket::Socket(zmq::socket_t&& rhs) :socket_t(std::move(rhs)) {
+Socket::Socket(zmq::socket_t&& rhs) :
+        socket_t(std::move(rhs)) {
 }
 
 Socket::~Socket() {
 }
 
 size_t Socket::sendMessage(
-		const protocols::csp::abt::P_CommunicationProtocol packet) {
-	size_t length = packet.ByteSize();
-	message_t message(length);
-	packet.SerializeToArray(message.data(), length);
-	return socket_t::send(message);
+        const protocols::csp::abt::P_CommunicationProtocol packet) {
+    size_t length = packet.ByteSize();
+    message_t message(length);
+    packet.SerializeToArray(message.data(), length);
+    return socket_t::send(message);
 }
 
 size_t Socket::sendMessage(const protocols::csp::abt::P_Message packet) {
-	size_t length = packet.ByteSize();
-	message_t message(length);
-	packet.SerializeToArray(message.data(), length);
-	return socket_t::send(message);
+    size_t length = packet.ByteSize();
+    message_t message(length);
+    packet.SerializeToArray(message.data(), length);
+    return socket_t::send(message);
 }
 
 size_t AIT::Socket::recvMessage(
-		protocols::csp::abt::P_CommunicationProtocol& packet) {
-	message_t message;
-	bool returnValue = recv(&message);
-	packet.ParseFromArray(message.data(), message.size());
-	return returnValue;
+        protocols::csp::abt::P_CommunicationProtocol& packet) {
+    message_t message;
+    bool returnValue = recv(&message);
+    packet.ParseFromArray(message.data(), message.size());
+    return returnValue;
 }
 
 size_t AIT::Socket::recvMessage(protocols::csp::abt::P_Message& packet) {
-	message_t message;
-	bool returnValue = recv(&message);
-	packet.ParseFromArray(message.data(), message.size());
-	return returnValue;
+    message_t message;
+    bool returnValue = recv(&message);
+    packet.ParseFromArray(message.data(), message.size());
+    return returnValue;
 }
-
-size_t Socket::sendMessage(const protocols::csp::aabt::P_Message message) {
-	// TODO implement
-}
-
-size_t Socket::recvMessage(protocols::csp::aabt::P_Message& message) {
-	// TODO implement
-}
-
