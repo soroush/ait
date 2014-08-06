@@ -10,12 +10,15 @@ AX_CXX_COMPILE_STDCXX_11()
 AM_PROG_AR
 AC_TYPE_SIZE_T
 AC_HEADER_STDBOOL
+LT_INIT([shared static win32-dll pic-only])
 
 # Check for dependencies
 AX_XSDCXX
 AX_LIB_EXPAT(2.0.0)
 PKG_CHECK_MODULES([ZMQ], [libzmq >= 2.1.11])
 PKG_CHECK_MODULES([PROTOCOL_BUFFERS], [protobuf >= 2.4.1])
+BOOST_REQUIRE([1.54])
+BOOST_LOG([])
 
 # Enable custom protobuff directory 
 AC_ARG_WITH([protobuf-libdir],
@@ -38,9 +41,8 @@ CPPFLAGS="$CPPFLAGS -I$XSDCXX_INCLUDE"
 # Choose between either re-generate protocol sources using protoc or compile pre-generated sources
 AC_ARG_ENABLE([precompiled-protocols],
 		[AC_HELP_STRING([--enable-precompiled-protocols=@<:@yes/no@:>@])],
-		[enable use of precompiled sources of Protocols Buffer @<:@default=yes@:>@],
 		[enable_precompiled_protocols=yes],
-		[enable_precompiled_protocols=yes])
+		[enable_precompiled_protocols=no])
 
 # Custom protoc command
 AC_ARG_WITH([protoc],
@@ -50,7 +52,8 @@ AC_ARG_WITH([protoc],
     [PROTOC='protoc'])
 AC_SUBST([PROTOC])
 
-# Check if protocol buffers compiler is available. If not, disable --enable-precompiled-protocols
+# Check if protocol buffers compiler is available. If not, disable 
+# --enable-precompiled-protocols
 
 # Automake conditions
 AM_CONDITIONAL([USE_PRECOMPILED_PROTOCOLS], [test $enable_precompiled_protocols = yes])
@@ -60,7 +63,6 @@ AS_IF([test "x$enable_precompiled_protocols" = "xyes"],
       [AC_DEFINE(PRECOMPILED_PROTOCOLS,1,[Define if uisng pre-compiled sources of protocols])],
       [AC_DEFINE(GENERATED_PROTOCOLS,1,[Define if generating new sources of protocols])])
 
-LT_INIT([shared static win32-dll pic-only])
 AC_SUBST([AIT_SO_VERSION], [1:0:0])
 AC_SUBST([AIT_API_VERSION], [1.0.0])
 

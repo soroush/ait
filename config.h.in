@@ -3,6 +3,12 @@
 /* Define if generating new sources of protocols */
 #undef GENERATED_PROTOCOLS
 
+/* Defined if the requested minimum BOOST version is satisfied */
+#undef HAVE_BOOST
+
+/* Define to 1 if you have <boost/log/core/core.hpp> */
+#undef HAVE_BOOST_LOG_CORE_CORE_HPP
+
 /* define if the compiler supports basic C++11 syntax */
 #undef HAVE_CXX11
 
