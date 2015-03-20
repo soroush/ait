@@ -6,7 +6,7 @@ AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_HEADERS([config.h])
 AC_LANG([C++])
 AC_PROG_CXX
-AX_CXX_COMPILE_STDCXX_11()
+AX_CXX_COMPILE_STDCXX_11([noext],[mandatory])
 AM_PROG_AR
 AC_TYPE_SIZE_T
 AC_HEADER_STDBOOL
@@ -15,7 +15,7 @@ LT_INIT([shared static win32-dll pic-only])
 # Check for dependencies
 AX_XSDCXX
 AX_LIB_EXPAT(2.0.0)
-PKG_CHECK_MODULES([ZMQ], [libzmq >= 2.1.11])
+PKG_CHECK_MODULES([ZMQ], [libzmq >= 4.0.0])
 PKG_CHECK_MODULES([PROTOCOL_BUFFERS], [protobuf >= 2.4.1])
 BOOST_REQUIRE([1.54])
 BOOST_LOG([])
@@ -66,7 +66,9 @@ AS_IF([test "x$enable_precompiled_protocols" = "xyes"],
 AC_SUBST([AIT_SO_VERSION], [1:0:0])
 AC_SUBST([AIT_API_VERSION], [1.0.0])
 
-AC_CONFIG_FILES([Makefile src/Makefile src/csp/Makefile src/csp/parser/Makefile 
-					test/Makefile
-                 libait.pc:libait.pc.in])
+AC_CONFIG_FILES([Makefile src/Makefile 
+                    src/csp/Makefile src/csp/parser/Makefile 
+                    src/fuzzy/Makefile
+                    test/Makefile
+                    libait.pc:libait.pc.in])
 AC_OUTPUT

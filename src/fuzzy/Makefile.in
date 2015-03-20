@@ -100,17 +100,9 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-@USE_PRECOMPILED_PROTOCOLS_TRUE@am__append_1 = \
-@USE_PRECOMPILED_PROTOCOLS_TRUE@			abt_precompiled.pb.cc \
-@USE_PRECOMPILED_PROTOCOLS_TRUE@			common-protocols_precompiled.pb.cc
-
-@USE_PRECOMPILED_PROTOCOLS_TRUE@am__append_2 = \
-@USE_PRECOMPILED_PROTOCOLS_TRUE@			abt_precompiled.pb.h \
-@USE_PRECOMPILED_PROTOCOLS_TRUE@			common-protocols_precompiled.pb.h
-
-subdir = src/csp
+subdir = src/fuzzy
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
-	$(top_srcdir)/depcomp $(am__ait_include_HEADERS_DIST)
+	$(top_srcdir)/depcomp $(ait_include_HEADERS)
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/ax_cxx_compile_stdcxx_11.m4 \
 	$(top_srcdir)/m4/ax_lib_expat.m4 $(top_srcdir)/m4/ax_xsdcxx.m4 \
@@ -125,24 +117,11 @@ CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 LTLIBRARIES = $(noinst_LTLIBRARIES)
-libait_csp_la_DEPENDENCIES = parser/libait_csp_parser.la
-am__libait_csp_la_SOURCES_DIST = common_async.cpp assignment.cpp \
-	compound-assignment.cpp domain.cpp relation-base.cpp \
-	variable.cpp predicate.cpp constraint.cpp csp-problem.cpp \
-	csp-solver.cpp abt-message.cpp abt-monitor.cpp abt-socket.cpp \
-	abt-nogood.cpp abt-endpoint.cpp abt-solver.cpp \
-	abt_precompiled.pb.cc common-protocols_precompiled.pb.cc
-@USE_PRECOMPILED_PROTOCOLS_TRUE@am__objects_1 = abt_precompiled.pb.lo \
-@USE_PRECOMPILED_PROTOCOLS_TRUE@	common-protocols_precompiled.pb.lo
-am_libait_csp_la_OBJECTS = common_async.lo assignment.lo \
-	compound-assignment.lo domain.lo relation-base.lo variable.lo \
-	predicate.lo constraint.lo csp-problem.lo csp-solver.lo \
-	abt-message.lo abt-monitor.lo abt-socket.lo abt-nogood.lo \
-	abt-endpoint.lo abt-solver.lo $(am__objects_1)
-@USE_GENERATED_PROTOCOLS_TRUE@nodist_libait_csp_la_OBJECTS =  \
-@USE_GENERATED_PROTOCOLS_TRUE@	abt.pb.lo common-protocols.pb.lo
-libait_csp_la_OBJECTS = $(am_libait_csp_la_OBJECTS) \
-	$(nodist_libait_csp_la_OBJECTS)
+libait_fuzzy_la_LIBADD =
+am_libait_fuzzy_la_OBJECTS = function.lo membership-function.lo \
+	implicated-mf.lo triangular-mf.lo triangular-imf.lo \
+	operator.lo rule.lo io-base.lo
+libait_fuzzy_la_OBJECTS = $(am_libait_fuzzy_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
@@ -181,8 +160,8 @@ AM_V_CXXLD = $(am__v_CXXLD_@AM_V@)
 am__v_CXXLD_ = $(am__v_CXXLD_@AM_DEFAULT_V@)
 am__v_CXXLD_0 = @echo "  CXXLD   " $@;
 am__v_CXXLD_1 = 
-SOURCES = $(libait_csp_la_SOURCES) $(nodist_libait_csp_la_SOURCES)
-DIST_SOURCES = $(am__libait_csp_la_SOURCES_DIST)
+SOURCES = $(libait_fuzzy_la_SOURCES)
+DIST_SOURCES = $(libait_fuzzy_la_SOURCES)
 RECURSIVE_TARGETS = all-recursive check-recursive cscopelist-recursive \
 	ctags-recursive dvi-recursive html-recursive info-recursive \
 	install-data-recursive install-dvi-recursive \
@@ -196,12 +175,6 @@ am__can_run_installinfo = \
     n|no|NO) false;; \
     *) (install-info --version) >/dev/null 2>&1;; \
   esac
-am__ait_include_HEADERS_DIST = common_async.hpp assignment.hpp \
-	compound-assignment.hpp domain.hpp relation-base.hpp \
-	variable.hpp predicate.hpp constraint.hpp csp-problem.hpp \
-	csp-solver.hpp abt-monitor.hpp abt-monitor.h abt-socket.hpp \
-	abt-solver.hpp abt-solver.h abt_precompiled.pb.h \
-	common-protocols_precompiled.pb.h
 am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
 am__vpath_adj = case $$p in \
     $(srcdir)/*) f=`echo "$$p" | sed "s|^$$srcdirstrip/||"`;; \
@@ -429,41 +402,36 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-SUBDIRS = parser .
+SUBDIRS = .
 AUTOMAKE_OPTIONS = subdir-objects
 AM_CPPFLAGS = -pipe
 ACLOCAL_AMFLAGS = ${ACLOCAL_FLAGS} -I m4
-noinst_LTLIBRARIES = libait_csp.la
-@USE_GENERATED_PROTOCOLS_TRUE@nodist_libait_csp_la_SOURCES = \
-@USE_GENERATED_PROTOCOLS_TRUE@			abt.pb.cc \
-@USE_GENERATED_PROTOCOLS_TRUE@			common-protocols.pb.cc
+noinst_LTLIBRARIES = libait_fuzzy.la
+libait_fuzzy_la_SOURCES = \
+	function.cpp \
+	membership-function.cpp \
+	implicated-mf.cpp \
+	triangular-mf.cpp \
+	triangular-imf.cpp \
+	operator.cpp \
+	rule.cpp \
+	io-base.cpp
 
-@USE_GENERATED_PROTOCOLS_TRUE@BUILT_SOURCES = \
-@USE_GENERATED_PROTOCOLS_TRUE@			abt.pb.h \
-@USE_GENERATED_PROTOCOLS_TRUE@			common-protocols.pb.h
+ait_includedir = $(includedir)/ait/fuzzy
+ait_include_HEADERS = \
+	function.hpp \
+	membership-function.hpp \
+	implicated-mf.hpp \
+	triangular-mf.hpp \
+	triangular-imf.hpp \
+	rule.hpp \
+	io-base.hpp
 
-@USE_GENERATED_PROTOCOLS_TRUE@MOSTLYCLEANFILES = $(nodist_libait_csp_la_SOURCES) $(BUILT_SOURCES)
-libait_csp_la_SOURCES = common_async.cpp assignment.cpp \
-	compound-assignment.cpp domain.cpp relation-base.cpp \
-	variable.cpp predicate.cpp constraint.cpp csp-problem.cpp \
-	csp-solver.cpp abt-message.cpp abt-monitor.cpp abt-socket.cpp \
-	abt-nogood.cpp abt-endpoint.cpp abt-solver.cpp $(am__append_1)
-libait_csp_la_LIBADD = parser/libait_csp_parser.la
-ait_includedir = $(includedir)/ait/csp
-ait_include_HEADERS = common_async.hpp assignment.hpp \
-	compound-assignment.hpp domain.hpp relation-base.hpp \
-	variable.hpp predicate.hpp constraint.hpp csp-problem.hpp \
-	csp-solver.hpp abt-monitor.hpp abt-monitor.h abt-socket.hpp \
-	abt-solver.hpp abt-solver.h $(am__append_2)
 ait_libincludedir = $(libdir)/ait/include
-EXTRA_DIST = \
-	abt.proto
-
-all: $(BUILT_SOURCES)
-	$(MAKE) $(AM_MAKEFLAGS) all-recursive
+all: all-recursive
 
 .SUFFIXES:
-.SUFFIXES: .cc .cpp .lo .o .obj
+.SUFFIXES: .cpp .lo .o .obj
 $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	@for dep in $?; do \
 	  case '$(am__configure_deps)' in \
@@ -473,9 +441,9 @@ $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu src/csp/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu src/fuzzy/Makefile'; \
 	$(am__cd) $(top_srcdir) && \
-	  $(AUTOMAKE) --gnu src/csp/Makefile
+	  $(AUTOMAKE) --gnu src/fuzzy/Makefile
 .PRECIOUS: Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
@@ -506,8 +474,8 @@ clean-noinstLTLIBRARIES:
 	  rm -f $${locs}; \
 	}
 
-libait_csp.la: $(libait_csp_la_OBJECTS) $(libait_csp_la_DEPENDENCIES) $(EXTRA_libait_csp_la_DEPENDENCIES) 
-	$(AM_V_CXXLD)$(CXXLINK)  $(libait_csp_la_OBJECTS) $(libait_csp_la_LIBADD) $(LIBS)
+libait_fuzzy.la: $(libait_fuzzy_la_OBJECTS) $(libait_fuzzy_la_DEPENDENCIES) $(EXTRA_libait_fuzzy_la_DEPENDENCIES) 
+	$(AM_V_CXXLD)$(CXXLINK)  $(libait_fuzzy_la_OBJECTS) $(libait_fuzzy_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -515,50 +483,14 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/abt-endpoint.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/abt-message.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/abt-monitor.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/abt-nogood.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/abt-socket.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/abt-solver.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/abt.pb.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/abt_precompiled.pb.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/assignment.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/common-protocols.pb.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/common-protocols_precompiled.pb.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/common_async.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/compound-assignment.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/constraint.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/csp-problem.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/csp-solver.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/domain.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/predicate.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/relation-base.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/variable.Plo@am__quote@
-
-.cc.o:
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.o$$||'`;\
-@am__fastdepCXX_TRUE@	$(CXXCOMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ $< &&\
-@am__fastdepCXX_TRUE@	$(am__mv) $$depbase.Tpo $$depbase.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXXCOMPILE) -c -o $@ $<
-
-.cc.obj:
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.obj$$||'`;\
-@am__fastdepCXX_TRUE@	$(CXXCOMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ `$(CYGPATH_W) '$<'` &&\
-@am__fastdepCXX_TRUE@	$(am__mv) $$depbase.Tpo $$depbase.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXXCOMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
-
-.cc.lo:
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.lo$$||'`;\
-@am__fastdepCXX_TRUE@	$(LTCXXCOMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ $< &&\
-@am__fastdepCXX_TRUE@	$(am__mv) $$depbase.Tpo $$depbase.Plo
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LTCXXCOMPILE) -c -o $@ $<
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/function.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/implicated-mf.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/io-base.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/membership-function.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/operator.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rule.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/triangular-imf.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/triangular-mf.Plo@am__quote@
 
 .cpp.o:
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.o$$||'`;\
@@ -766,16 +698,14 @@ distdir: $(DISTFILES)
 	  fi; \
 	done
 check-am: all-am
-check: $(BUILT_SOURCES)
-	$(MAKE) $(AM_MAKEFLAGS) check-recursive
+check: check-recursive
 all-am: Makefile $(LTLIBRARIES) $(HEADERS)
 installdirs: installdirs-recursive
 installdirs-am:
 	for dir in "$(DESTDIR)$(ait_includedir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
-install: $(BUILT_SOURCES)
-	$(MAKE) $(AM_MAKEFLAGS) install-recursive
+install: install-recursive
 install-exec: install-exec-recursive
 install-data: install-data-recursive
 uninstall: uninstall-recursive
@@ -795,7 +725,6 @@ install-strip:
 	    "INSTALL_PROGRAM_ENV=STRIPPROG='$(STRIP)'" install; \
 	fi
 mostlyclean-generic:
-	-test -z "$(MOSTLYCLEANFILES)" || rm -f $(MOSTLYCLEANFILES)
 
 clean-generic:
 
@@ -806,7 +735,6 @@ distclean-generic:
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
-	-test -z "$(BUILT_SOURCES)" || rm -f $(BUILT_SOURCES)
 clean: clean-recursive
 
 clean-am: clean-generic clean-libtool clean-noinstLTLIBRARIES \
@@ -878,8 +806,7 @@ ps-am:
 
 uninstall-am: uninstall-ait_includeHEADERS
 
-.MAKE: $(am__recursive_targets) all check install install-am \
-	install-strip
+.MAKE: $(am__recursive_targets) install-am install-strip
 
 .PHONY: $(am__recursive_targets) CTAGS GTAGS TAGS all all-am check \
 	check-am clean clean-generic clean-libtool \
@@ -897,8 +824,6 @@ uninstall-am: uninstall-ait_includeHEADERS
 	tags tags-am uninstall uninstall-ait_includeHEADERS \
 	uninstall-am
 
-@USE_GENERATED_PROTOCOLS_TRUE@%.pb.cc %.pb.h: %.proto
-@USE_GENERATED_PROTOCOLS_TRUE@	$(PROTOC) --proto_path=$(srcdir) --cpp_out=$(builddir) $^
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

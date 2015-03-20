@@ -13,6 +13,27 @@
 # PARTICULAR PURPOSE.
 
 @SET_MAKE@
+
+# AIT Library (Artificial Intelligence Toolkit), A C++ library of AI tools.
+#
+# Copyright (c) 2012,2013 Soroush Rabiei <soroush-r@users.sf.net>,
+# Roya Ghasemzadeh <ghasemzadeh.roya1@gmail.com>
+#
+# AIT is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Lesser General Public
+# License as published by the Free Software Foundation; either
+# version 2.1 of the License, or (at your option) any later version.
+# See the file COPYING included with this distribution for more
+# information.
+#
+# This library is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public
+# License along with this library; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 VPATH = @srcdir@
 am__is_gnu_make = test -n '$(MAKEFILE_LIST)' && test -n '$(MAKELEVEL)'
 am__make_running_with_option = \
@@ -77,7 +98,8 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-check_PROGRAMS = abt_monitor$(EXEEXT)
+check_PROGRAMS = fuzzy$(EXEEXT) fuzzy_functions$(EXEEXT) \
+	abt_monitor$(EXEEXT)
 subdir = test
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(top_srcdir)/depcomp $(top_srcdir)/test-driver
@@ -97,12 +119,27 @@ CONFIG_CLEAN_VPATH_FILES =
 am_abt_monitor_OBJECTS = abt-monitor.$(OBJEXT)
 abt_monitor_OBJECTS = $(am_abt_monitor_OBJECTS)
 abt_monitor_LDADD = $(LDADD)
-abt_monitor_DEPENDENCIES = ../src/libait.la ../src/csp/libait_csp.la \
+abt_monitor_DEPENDENCIES = ../src/libait.la \
+	../src/fuzzy/libait_fuzzy.la ../src/csp/libait_csp.la \
 	../src/csp/parser/libait_csp_parser.la
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
 am__v_lt_1 = 
+am_fuzzy_OBJECTS = fuzzy.$(OBJEXT)
+fuzzy_OBJECTS = $(am_fuzzy_OBJECTS)
+fuzzy_LDADD = $(LDADD)
+fuzzy_DEPENDENCIES = ../src/libait.la ../src/fuzzy/libait_fuzzy.la \
+	../src/csp/libait_csp.la \
+	../src/csp/parser/libait_csp_parser.la
+am__dirstamp = $(am__leading_dot)dirstamp
+am_fuzzy_functions_OBJECTS = fuzzy_functions.$(OBJEXT) \
+	utilities/tokenizer.$(OBJEXT)
+fuzzy_functions_OBJECTS = $(am_fuzzy_functions_OBJECTS)
+fuzzy_functions_LDADD = $(LDADD)
+fuzzy_functions_DEPENDENCIES = ../src/libait.la \
+	../src/fuzzy/libait_fuzzy.la ../src/csp/libait_csp.la \
+	../src/csp/parser/libait_csp_parser.la
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -137,8 +174,10 @@ AM_V_CXXLD = $(am__v_CXXLD_@AM_V@)
 am__v_CXXLD_ = $(am__v_CXXLD_@AM_DEFAULT_V@)
 am__v_CXXLD_0 = @echo "  CXXLD   " $@;
 am__v_CXXLD_1 = 
-SOURCES = $(abt_monitor_SOURCES)
-DIST_SOURCES = $(abt_monitor_SOURCES)
+SOURCES = $(abt_monitor_SOURCES) $(fuzzy_SOURCES) \
+	$(fuzzy_functions_SOURCES)
+DIST_SOURCES = $(abt_monitor_SOURCES) $(fuzzy_SOURCES) \
+	$(fuzzy_functions_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -513,11 +552,16 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 AM_CPPFLAGS = -I$(srcdir)/.. $(OTHER_CPPFLAGS)
+AUTOMAKE_OPTIONS = subdir-objects
 LDADD = ../src/libait.la \
+		../src/fuzzy/libait_fuzzy.la \
 		../src/csp/libait_csp.la \
 		../src/csp/parser/libait_csp_parser.la \
-		-lzmq -lexpat
+		-lzmq -lexpat \
+		-lboost_log -lboost_log_setup -lboost_thread -lboost_system -lpthread
 
+fuzzy_SOURCES = fuzzy.cpp
+fuzzy_functions_SOURCES = fuzzy_functions.cpp utilities/tokenizer.cpp
 abt_monitor_SOURCES = abt-monitor.cpp
 TESTS = $(check_PROGRAMS)
 all: all-am
@@ -568,31 +612,54 @@ abt_monitor$(EXEEXT): $(abt_monitor_OBJECTS) $(abt_monitor_DEPENDENCIES) $(EXTRA
 	@rm -f abt_monitor$(EXEEXT)
 	$(AM_V_CXXLD)$(CXXLINK) $(abt_monitor_OBJECTS) $(abt_monitor_LDADD) $(LIBS)
 
+fuzzy$(EXEEXT): $(fuzzy_OBJECTS) $(fuzzy_DEPENDENCIES) $(EXTRA_fuzzy_DEPENDENCIES) 
+	@rm -f fuzzy$(EXEEXT)
+	$(AM_V_CXXLD)$(CXXLINK) $(fuzzy_OBJECTS) $(fuzzy_LDADD) $(LIBS)
+utilities/$(am__dirstamp):
+	@$(MKDIR_P) utilities
+	@: > utilities/$(am__dirstamp)
+utilities/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) utilities/$(DEPDIR)
+	@: > utilities/$(DEPDIR)/$(am__dirstamp)
+utilities/tokenizer.$(OBJEXT): utilities/$(am__dirstamp) \
+	utilities/$(DEPDIR)/$(am__dirstamp)
+
+fuzzy_functions$(EXEEXT): $(fuzzy_functions_OBJECTS) $(fuzzy_functions_DEPENDENCIES) $(EXTRA_fuzzy_functions_DEPENDENCIES) 
+	@rm -f fuzzy_functions$(EXEEXT)
+	$(AM_V_CXXLD)$(CXXLINK) $(fuzzy_functions_OBJECTS) $(fuzzy_functions_LDADD) $(LIBS)
+
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
+	-rm -f utilities/*.$(OBJEXT)
 
 distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/abt-monitor.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/fuzzy.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/fuzzy_functions.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@utilities/$(DEPDIR)/tokenizer.Po@am__quote@
 
 .cpp.o:
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.o$$||'`;\
+@am__fastdepCXX_TRUE@	$(CXXCOMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ $< &&\
+@am__fastdepCXX_TRUE@	$(am__mv) $$depbase.Tpo $$depbase.Po
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXXCOMPILE) -c -o $@ $<
 
 .cpp.obj:
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ `$(CYGPATH_W) '$<'`
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.obj$$||'`;\
+@am__fastdepCXX_TRUE@	$(CXXCOMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ `$(CYGPATH_W) '$<'` &&\
+@am__fastdepCXX_TRUE@	$(am__mv) $$depbase.Tpo $$depbase.Po
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXXCOMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
 
 .cpp.lo:
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LTCXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Plo
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.lo$$||'`;\
+@am__fastdepCXX_TRUE@	$(LTCXXCOMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ $< &&\
+@am__fastdepCXX_TRUE@	$(am__mv) $$depbase.Tpo $$depbase.Plo
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LTCXXCOMPILE) -c -o $@ $<
@@ -796,6 +863,20 @@ recheck: all $(check_PROGRAMS)
 	        am__force_recheck=am--force-recheck \
 	        TEST_LOGS="$$log_list"; \
 	exit $$?
+fuzzy.log: fuzzy$(EXEEXT)
+	@p='fuzzy$(EXEEXT)'; \
+	b='fuzzy'; \
+	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
+	--log-file $$b.log --trs-file $$b.trs \
+	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
+	"$$tst" $(AM_TESTS_FD_REDIRECT)
+fuzzy_functions.log: fuzzy_functions$(EXEEXT)
+	@p='fuzzy_functions$(EXEEXT)'; \
+	b='fuzzy_functions'; \
+	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
+	--log-file $$b.log --trs-file $$b.trs \
+	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
+	"$$tst" $(AM_TESTS_FD_REDIRECT)
 abt_monitor.log: abt_monitor$(EXEEXT)
 	@p='abt_monitor$(EXEEXT)'; \
 	b='abt_monitor'; \
@@ -883,6 +964,8 @@ clean-generic:
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
 	-test . = "$(srcdir)" || test -z "$(CONFIG_CLEAN_VPATH_FILES)" || rm -f $(CONFIG_CLEAN_VPATH_FILES)
+	-rm -f utilities/$(DEPDIR)/$(am__dirstamp)
+	-rm -f utilities/$(am__dirstamp)
 
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
@@ -893,7 +976,7 @@ clean-am: clean-checkPROGRAMS clean-generic clean-libtool \
 	mostlyclean-am
 
 distclean: distclean-am
-	-rm -rf ./$(DEPDIR)
+	-rm -rf ./$(DEPDIR) utilities/$(DEPDIR)
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
 	distclean-tags
@@ -939,7 +1022,7 @@ install-ps-am:
 installcheck-am:
 
 maintainer-clean: maintainer-clean-am
-	-rm -rf ./$(DEPDIR)
+	-rm -rf ./$(DEPDIR) utilities/$(DEPDIR)
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 

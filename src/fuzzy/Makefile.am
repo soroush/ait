@@ -19,20 +19,27 @@
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-SUBDIRS = csp fuzzy .
+SUBDIRS = .
 AUTOMAKE_OPTIONS = subdir-objects
+AM_CPPFLAGS = -pipe
 ACLOCAL_AMFLAGS = ${ACLOCAL_FLAGS} -I m4
-lib_LTLIBRARIES = libait.la
-libait_la_SOURCES =
-libait_la_LDFLAGS = -version-info $(AIT_SO_VERSION)
-libait_la_LIBADD = \
-        $(ZMQ_LIBS) \
-        $(PROTOCOL_BUFFERS_LIBS) \
-        $(BOOST_THREAD_LIBS) \
-	-lexpat -lboost_log -lboost_log_setup -lboost_thread -lboost_system -lpthread \
-	csp/libait_csp.la \
-	fuzzy/libait_fuzzy.la
-ait_includedir = $(includedir)/ait
+noinst_LTLIBRARIES = libait_fuzzy.la
+libait_fuzzy_la_SOURCES = \
+	function.cpp \
+	membership-function.cpp \
+	implicated-mf.cpp \
+	triangular-mf.cpp \
+	triangular-imf.cpp \
+	operator.cpp \
+	rule.cpp \
+	io-base.cpp
+ait_includedir = $(includedir)/ait/fuzzy
 ait_include_HEADERS =  \
-			global.hpp \
-			../config.h
+	function.hpp \
+	membership-function.hpp \
+	implicated-mf.hpp \
+	triangular-mf.hpp \
+	triangular-imf.hpp \
+	rule.hpp \
+	io-base.hpp
+ait_libincludedir = $(libdir)/ait/include

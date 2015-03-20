@@ -14,6 +14,27 @@
 
 @SET_MAKE@
 
+# AIT Library (Artificial Intelligence Toolkit), A C++ library of AI tools.
+#
+# Copyright (c) 2012,2013 Soroush Rabiei <soroush-r@users.sf.net>,
+# Roya Ghasemzadeh <ghasemzadeh.roya1@gmail.com>
+#
+# AIT is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Lesser General Public
+# License as published by the Free Software Foundation; either
+# version 2.1 of the License, or (at your option) any later version.
+# See the file COPYING included with this distribution for more
+# information.
+#
+# This library is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public
+# License along with this library; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+
 
 VPATH = @srcdir@
 am__is_gnu_make = test -n '$(MAKEFILE_LIST)' && test -n '$(MAKELEVEL)'
@@ -126,7 +147,7 @@ am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(ait_includedir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
 am__DEPENDENCIES_1 =
 libait_la_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	csp/libait_csp.la
+	csp/libait_csp.la fuzzy/libait_fuzzy.la
 am_libait_la_OBJECTS =
 libait_la_OBJECTS = $(am_libait_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
@@ -381,13 +402,20 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-SUBDIRS = csp .
+SUBDIRS = csp fuzzy .
 AUTOMAKE_OPTIONS = subdir-objects
 ACLOCAL_AMFLAGS = ${ACLOCAL_FLAGS} -I m4
 lib_LTLIBRARIES = libait.la
 libait_la_SOURCES = 
 libait_la_LDFLAGS = -version-info $(AIT_SO_VERSION)
-libait_la_LIBADD = $(ZMQ_LIBS) $(PROTOCOL_BUFFERS_LIBS) $(BOOST_THREAD_LIBS) csp/libait_csp.la
+libait_la_LIBADD = \
+        $(ZMQ_LIBS) \
+        $(PROTOCOL_BUFFERS_LIBS) \
+        $(BOOST_THREAD_LIBS) \
+	-lexpat -lboost_log -lboost_log_setup -lboost_thread -lboost_system -lpthread \
+	csp/libait_csp.la \
+	fuzzy/libait_fuzzy.la
+
 ait_includedir = $(includedir)/ait
 ait_include_HEADERS = \
 			global.hpp \
