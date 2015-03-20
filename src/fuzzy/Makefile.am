@@ -23,7 +23,8 @@ SUBDIRS = .
 AUTOMAKE_OPTIONS = subdir-objects
 AM_CPPFLAGS = -pipe
 ACLOCAL_AMFLAGS = ${ACLOCAL_FLAGS} -I m4
-noinst_LTLIBRARIES = libait_fuzzy.la
+lib_LTLIBRARIES = libait_fuzzy.la
+libait_fuzzy_la_LDFLAGS = -version-info $(AIT_FUZZY_SO_VERSION)
 libait_fuzzy_la_SOURCES = \
 	function.cpp \
 	membership-function.cpp \
@@ -40,6 +41,7 @@ ait_include_HEADERS =  \
 	implicated-mf.hpp \
 	triangular-mf.hpp \
 	triangular-imf.hpp \
+	operator.hpp \
 	rule.hpp \
 	io-base.hpp
 ait_libincludedir = $(libdir)/ait/include

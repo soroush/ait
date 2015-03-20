@@ -63,11 +63,14 @@ AS_IF([test "x$enable_precompiled_protocols" = "xyes"],
       [AC_DEFINE(PRECOMPILED_PROTOCOLS,1,[Define if uisng pre-compiled sources of protocols])],
       [AC_DEFINE(GENERATED_PROTOCOLS,1,[Define if generating new sources of protocols])])
 
-AC_SUBST([AIT_SO_VERSION], [1:0:0])
-AC_SUBST([AIT_API_VERSION], [1.0.0])
+AC_SUBST([AIT_CSP_SO_VERSION], [1:0:0])
+AC_SUBST([AIT_CSP_API_VERSION], [1.0.0])
 
-AC_CONFIG_FILES([Makefile src/Makefile 
-                    src/csp/Makefile src/csp/parser/Makefile 
+AC_SUBST([AIT_FUZZY_SO_VERSION], [1:0:0])
+AC_SUBST([AIT_FUZZY_API_VERSION], [1.0.0])
+
+AC_CONFIG_FILES([Makefile src/Makefile
+                    src/csp/Makefile src/csp/parser/Makefile
                     src/fuzzy/Makefile
                     test/Makefile
                     libait.pc:libait.pc.in])

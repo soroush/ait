@@ -23,7 +23,8 @@ SUBDIRS = parser .
 AUTOMAKE_OPTIONS = subdir-objects
 AM_CPPFLAGS = -pipe
 ACLOCAL_AMFLAGS = ${ACLOCAL_FLAGS} -I m4
-noinst_LTLIBRARIES = libait_csp.la
+lib_LTLIBRARIES = libait_csp.la
+libait_csp_la_LDFLAGS = -version-info $(AIT_CSP_SO_VERSION)
 if USE_GENERATED_PROTOCOLS
 %.pb.cc %.pb.h: %.proto
 	$(PROTOC) --proto_path=$(srcdir) --cpp_out=$(builddir) $^
@@ -52,7 +53,6 @@ libait_csp_la_SOURCES = \
 			abt-nogood.cpp \
 			abt-endpoint.cpp \
 			abt-solver.cpp
-libait_csp_la_LIBADD = parser/libait_csp_parser.la
 ait_includedir = $(includedir)/ait/csp
 ait_include_HEADERS =  \
 			common_async.hpp \
@@ -78,6 +78,12 @@ ait_include_HEADERS +=  \
 			abt_precompiled.pb.h \
 			common-protocols_precompiled.pb.h
 endif
+libait_csp_la_LIBADD = \
+        $(ZMQ_LIBS) \
+        $(PROTOCOL_BUFFERS_LIBS) \
+        $(BOOST_THREAD_LIBS) \
+	-lexpat -lboost_log -lboost_log_setup -lboost_thread -lboost_system -lpthread \
+	parser/libait_csp_parser.la
 ait_libincludedir = $(libdir)/ait/include
 EXTRA_DIST = \
 	abt.proto

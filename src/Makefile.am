@@ -22,17 +22,9 @@
 SUBDIRS = csp fuzzy .
 AUTOMAKE_OPTIONS = subdir-objects
 ACLOCAL_AMFLAGS = ${ACLOCAL_FLAGS} -I m4
-lib_LTLIBRARIES = libait.la
-libait_la_SOURCES =
-libait_la_LDFLAGS = -version-info $(AIT_SO_VERSION)
-libait_la_LIBADD = \
-        $(ZMQ_LIBS) \
-        $(PROTOCOL_BUFFERS_LIBS) \
-        $(BOOST_THREAD_LIBS) \
-	-lexpat -lboost_log -lboost_log_setup -lboost_thread -lboost_system -lpthread \
-	csp/libait_csp.la \
-	fuzzy/libait_fuzzy.la
-ait_includedir = $(includedir)/ait
-ait_include_HEADERS =  \
+headerdir = $(includedir)/ait
+header_DATA =  \
 			global.hpp \
 			../config.h
+EXTRA_DIST = \
+	global.hpp
