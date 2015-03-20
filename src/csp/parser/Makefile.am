@@ -1,4 +1,26 @@
+# AIT Library (Artificial Intelligence Toolkit), A C++ library of AI tools.
+#
+# Copyright (c) 2012,2013 Soroush Rabiei <soroush-r@users.sf.net>,
+# Roya Ghasemzadeh <ghasemzadeh.roya1@gmail.com>
+#
+# AIT is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Lesser General Public
+# License as published by the Free Software Foundation; either
+# version 2.1 of the License, or (at your option) any later version.
+# See the file COPYING included with this distribution for more
+# information.
+#
+# This library is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public
+# License along with this library; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+
 ACLOCAL_AMFLAGS = ${ACLOCAL_FLAGS} -I m4
+AUTOMAKE_OPTIONS = subdir-objects
 AM_CPPFLAGS = -pipe
 noinst_LTLIBRARIES = libait_csp_parser.la
 ait_includedir = $(includedir)/ait/csp/parser
@@ -82,4 +104,13 @@ ait_include_HEADERS =  \
 		xconstraint-parser.hpp \
 		xconstraints-parser.hpp
 ait_libincludedir = $(libdir)/ait/include
-EXTRA_DIST = *.ih
+EXTRA_DIST = predicate-f_parser.ih \
+		predicate-f_scanner.ih \
+		parameters_parser.ih \
+		parameters_scanner.ih \
+		constraint-scope_parser.ih \
+		constraint-scope_scanner.ih \
+		constraint-parameters_parser.ih \
+		constraint-parameters_scanner.ih \
+		domain_parser.ih \
+		domain_scanner.ih

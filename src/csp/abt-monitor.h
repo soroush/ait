@@ -30,8 +30,9 @@ extern "C" {
 
 struct C_ABT_Monitor;
 typedef struct C_ABT_Monitor C_ABT_Monitor;
-C_ABT_Monitor* abt_monitor_create(char* host, const unsigned short responserPort,
-        const unsigned short publisherPort, char* xcsp);
+C_ABT_Monitor* abt_monitor_create(char* host,
+        const unsigned short responserPort, const unsigned short publisherPort,
+        const char* xcsp, const char* logfile);
 void abt_monitor_destroy(C_ABT_Monitor* m);
 void abt_monitor_start(C_ABT_Monitor* m);
 

@@ -21,17 +21,17 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "../src/csp/abt-monitor.hpp"
-#include "../src/global.hpp"
-
-using namespace AIT::CSP;
-using namespace std;
+//#include "../src/csp/abt-monitor.hpp"
+//#include "../src/global.hpp"
+//
+//using namespace AIT::CSP;
+//using namespace std;
 
 int main()
 {
-	_INFO("Running 8 queens server in background...");
-    ABT_Monitor monitor("127.0.0.1",5000,5001,4);
-    monitor.start();
+//	_INFO("Running 8 queens server in background...");
+//    ABT_Monitor monitor("127.0.0.1",5000,5001,4);
+//    monitor.start();
     return 0;
 }
 

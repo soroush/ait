@@ -31,6 +31,7 @@
 #include <boost/log/core.hpp>
 #include <boost/log/expressions.hpp>
 #include <boost/log/sinks/text_file_backend.hpp>
+#include <boost/log/utility/setup/console.hpp>
 #include <boost/log/utility/setup/file.hpp>
 #include <boost/log/utility/setup/common_attributes.hpp>
 #include <boost/log/sources/severity_logger.hpp>
@@ -56,11 +57,15 @@ ABT_Solver::ABT_Solver(const string& serverHost_,
         const unsigned short& serverResponderPort_,
         const unsigned short& serverPublisherPort_, const string& name_,
         const string& xcspFile, const string& logfile) :
-        name(name_), serverAddress(serverHost_), serverResponderPort(
-                serverResponderPort_), serverPublisherPort(
-                serverPublisherPort_), context(2), listener { context, ZMQ_PULL }, serverRquest {
-                context, ZMQ_REQ }, serverBroadcast { context, ZMQ_SUB }, end(
-                false) {
+        name(name_),
+        serverAddress(serverHost_),
+        serverResponderPort(serverResponderPort_),
+        serverPublisherPort(serverPublisherPort_),
+        context(2),
+        listener { context, ZMQ_PULL },
+        serverRquest { context, ZMQ_REQ },
+        serverBroadcast { context, ZMQ_SUB },
+        end(false) {
     int linger = 0;
     listener.setsockopt(ZMQ_LINGER, &linger, sizeof(linger));
     serverRquest.setsockopt(ZMQ_LINGER, &linger, sizeof(linger));
@@ -71,9 +76,19 @@ ABT_Solver::ABT_Solver(const string& serverHost_,
     this->sequences.assign(this->instance->variables().size(), 0);
     this->prune();
     logging::add_common_attributes();
-    logging::register_simple_formatter_factory<logging::trivial::severity_level,char>("Severity");
-    logging::add_file_log(keywords::file_name = logfile, keywords::auto_flush =
-            true, keywords::format = "[%TimeStamp%][%Severity%]: %Message%");
+    logging::register_simple_formatter_factory<logging::trivial::severity_level,
+            char>("Severity");
+    if (logfile == "std::cout") {
+        logging::register_simple_formatter_factory<
+                logging::trivial::severity_level, char>("Severity");
+        logging::add_console_log(std::cout, boost::log::keywords::format =
+                "[%TimeStamp%][%Severity%]: %Message%");
+    }
+    else {
+        logging::add_file_log(keywords::file_name = logfile,
+                keywords::auto_flush = true, keywords::format =
+                        "[%TimeStamp%][%Severity%]: %Message%");
+    }
 }
 
 ABT_Solver::~ABT_Solver() {
@@ -130,7 +145,8 @@ void ABT_Solver::connect() {
             << this->serverResponderPort;
     try {
         serverRquest.connect(addressName.str().data());
-    } catch (zmq::error_t &e) {
+    }
+    catch (zmq::error_t &e) {
         BOOST_LOG_SEV(lg, error)<< "Unable to connect to monitor. Exiting gracefully";
         BOOST_LOG_SEV(lg, error) << e.what();
         return;
@@ -144,7 +160,8 @@ void ABT_Solver::connect() {
     try {
         serverBroadcast.connect(addressName.str().data());
         serverBroadcast.setsockopt(ZMQ_SUBSCRIBE, "", 0);
-    } catch (zmq::error_t &e) {
+    }
+    catch (zmq::error_t &e) {
         BOOST_LOG_SEV(lg, error)<< "Unable to connect to broadcast channel of monitor agent.";
         BOOST_LOG_SEV(lg, error) << e.what() << endl;
         return;
@@ -172,7 +189,8 @@ void ABT_Solver::connect() {
                 BOOST_LOG_SEV(lg, info) <<
                 "Monitor agent accepted connection. Current priority is: "
                 << this->priority;
-            } else if (introAckPacket.type()
+            }
+            else if (introAckPacket.type()
                     == CP_MessageType::ERR_REPEATED_ID) {
                 BOOST_LOG_SEV(lg, error)
                 <<"An agent with current name ("
@@ -180,10 +198,12 @@ void ABT_Solver::connect() {
                 <<") is already registered. Exiting gracefully";
                 return;
             }
-        } else {
+        }
+        else {
             BOOST_LOG_SEV(lg, error) << "Server didn't reply. Exiting gracefully";
         }
-    } else {
+    }
+    else {
         BOOST_LOG_SEV(lg, error) << "Unable to send introduction message.";
     }
 }
@@ -196,7 +216,8 @@ void ABT_Solver::checkAgentView(const int& priority_) {
             boost::format(
                     "Current value (%1%) is not consistent with recently "
                     "updated agent view.") % this->me->getValue();
-        } else {
+        }
+        else {
             BOOST_LOG_SEV(lg, info) << "No value has been assigned. Trying to find a value";
         }
 
@@ -211,7 +232,8 @@ void ABT_Solver::checkAgentView(const int& priority_) {
                 % agent->priority() % this->priority % this->me->getValue();
                 sendMessageOK(agent->priority());
             }
-        } else {
+        }
+        else {
             backtrack();
         }
     }
@@ -246,7 +268,8 @@ void ABT_Solver::chooseValue() {
                 sequences[this->priority - 1]++;
                 sendMessageOK_Monitor(this->priority, true);
                 return;
-            } else {
+            }
+            else {
                 Variable* culprit = findCulprit(possibleValue);
                 Nogood ngd;
                 ngd.lhs.items.insert(
@@ -265,7 +288,8 @@ void ABT_Solver::backtrack() {
     if (newNogood.items.empty()) {
         end = true;
         sendMessageSTP();
-    } else {
+    }
+    else {
         Message nogoodMessage;
         nogoodMessage.nogood = newNogood;
 
@@ -291,10 +315,12 @@ void ABT_Solver::resolveConflict(const Message& msg) {
         add(msg.nogood);
         me->unset();
         checkAgentView();
-    } else if (coherentSelf(msg.nogood)) {
+    }
+    else if (coherentSelf(msg.nogood)) {
         BOOST_LOG_SEV(lg, info) << "Received nogood was coherent with current assignment.";
         sendMessageOK(msg.sender);
-    } else {
+    }
+    else {
         BOOST_LOG_SEV(lg, info) << boost::format(
                 "Received nogood was not coherent with me and my agent view. Dropping message.");
     }
@@ -388,7 +414,8 @@ void ABT_Solver::getAgentList() {
     this->serverRquest.recvMessage(requestListAck);
     if (requestListAck.type() == CP_MessageType::T_REQUEST_ACK) {
         BOOST_LOG_SEV(lg, info) << boost::format("Monitor has accepted to send list of agents.");
-    } else {
+    }
+    else {
         BOOST_LOG_SEV(lg, error) << "Unable to get agent list from monitor. Exiting gracefully.";
     }
 
@@ -406,10 +433,10 @@ void ABT_Solver::getAgentList() {
                     "\tHost:      %2%\n"
                     "\tVariable:  %3%\n"
                     "\tPort:      %4%")
-                    % listPacket.others(i).priority()
-                    % listPacket.others(i).host()
-                    % listPacket.others(i).name()
-                    % listPacket.others(i).port();
+            % listPacket.others(i).priority()
+            % listPacket.others(i).host()
+            % listPacket.others(i).name()
+            % listPacket.others(i).port();
         }
         for (auto i = everybody.begin(); i < everybody.end(); ++i) {
             Variable* var = this->instance->variable(i->name());
@@ -492,7 +519,8 @@ void ABT_Solver::sendMessage(const AgentID& agent, const Message& message) {
             ep.socket()->sendMessage(message);
             return;
         }
-    } else {
+    }
+    else {
         for (const auto &ep : this->everybody) {
             if (ep.priority() == agent) {
                 ep.socket()->sendMessage(message);
@@ -506,7 +534,8 @@ void ABT_Solver::add(const CompoundAssignment& ca) {
     for (const auto& a : ca.items) {
         if (a.id != this->priority) {
             ngd.lhs.items.insert(a);
-        } else {
+        }
+        else {
             ngd.rhs = a;
         }
     }
@@ -585,7 +614,8 @@ bool ABT_Solver::consistent(const int& possibleValue) {
 bool ABT_Solver::consistent() {
     if (!me->isSet()) {
         return false;
-    } else {
+    }
+    else {
         return this->consistent(this->me->getValue());
     }
 }
@@ -647,7 +677,8 @@ void ABT_Solver::_messageReader() {
     addressName << "tcp://" << this->address << ":*";
     try {
         this->listener.bind(addressName.str().data());
-    } catch (zmq::error_t &e) {
+    }
+    catch (zmq::error_t &e) {
         cerr << e.what() << endl;
     }
     size_t len = 255;
@@ -719,15 +750,17 @@ bool ABT_Solver::findInGammaMinus(const Variable* v) {
 }
 
 /* ********************************** C API **********************************
+ *
  * This is C wrapper around C++ implementation API.
  *
  * **************************************************************************/
 
 C_ABT_Solver* abt_solver_create(char* serverHost,
         const unsigned short serverResponderPort,
-        const unsigned short serverPublisherPort, char* name, char* xcspFile) {
+        const unsigned short serverPublisherPort, const char* name,
+        const char* xcspFile, const char* logFile) {
     return reinterpret_cast<C_ABT_Solver*>(new ABT_Solver(serverHost,
-            serverResponderPort, serverPublisherPort, name, xcspFile));
+            serverResponderPort, serverPublisherPort, name, xcspFile, logFile));
 }
 
 void abt_solver_destrory(C_ABT_Solver* s) {

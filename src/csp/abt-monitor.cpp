@@ -44,6 +44,7 @@
 #include <boost/log/core.hpp>
 #include <boost/log/expressions.hpp>
 #include <boost/log/sinks/text_file_backend.hpp>
+#include <boost/log/utility/setup/console.hpp>
 #include <boost/log/utility/setup/file.hpp>
 #include <boost/log/utility/setup/common_attributes.hpp>
 #include <boost/log/sources/severity_logger.hpp>
@@ -70,10 +71,14 @@ ABT_Monitor::ABT_Monitor(const std::string& host,
         const unsigned short & responserPort,
         const unsigned short & publisherPort, const std::string& xcsp,
         const std::string& logfile) :
-        m_host(host), m_responserPort(responserPort), m_publisherPort(
-                publisherPort), m_context(2), m_responser(m_context, ZMQ_REP), m_publisher(
-                m_context, ZMQ_PUB), m_finished(false), m_instance(
-                unique_ptr<CSP_Problem> { new CSP_Problem() }) {
+        m_host(host),
+        m_responserPort(responserPort),
+        m_publisherPort(publisherPort),
+        m_context(2),
+        m_responser(m_context, ZMQ_REP),
+        m_publisher(m_context, ZMQ_PUB),
+        m_finished(false),
+        m_instance(unique_ptr<CSP_Problem> { new CSP_Problem() }) {
     parse(xcsp);
     this->m_agentCount = m_instance->variables().size();
     m_time = new Awareness*[m_agentCount];
@@ -87,8 +92,17 @@ ABT_Monitor::ABT_Monitor(const std::string& host,
     logging::add_common_attributes();
     logging::register_simple_formatter_factory<logging::trivial::severity_level,
             char>("Severity");
-    logging::add_file_log(keywords::file_name = logfile, keywords::auto_flush =
-            true, keywords::format = "[%TimeStamp%][%Severity%]: %Message%");
+    if (logfile == "std::cout") {
+        logging::register_simple_formatter_factory<
+                logging::trivial::severity_level, char>("Severity");
+        logging::add_console_log(std::cout, boost::log::keywords::format =
+                "[%TimeStamp%][%Severity%]: %Message%");
+    }
+    else {
+        logging::add_file_log(keywords::file_name = logfile,
+                keywords::auto_flush = true, keywords::format =
+                        "[%TimeStamp%][%Severity%]: %Message%");
+    }
 }
 
 ABT_Monitor::~ABT_Monitor() {
@@ -107,7 +121,8 @@ void ABT_Monitor::start() {
     address << "tcp://*:" << this->m_responserPort;
     try {
         this->m_responser.bind(address.str().data());
-    } catch (zmq::error_t* e) {
+    }
+    catch (zmq::error_t* e) {
         cerr << e->what() << endl;
     }
     // Open broadcast channel
@@ -118,7 +133,8 @@ void ABT_Monitor::start() {
         boost::format("Binding to *:%1% broadcast end point...")
         % this->m_publisherPort;
         this->m_publisher.bind(address.str().data());
-    } catch (zmq::error_t &e) {
+    }
+    catch (zmq::error_t &e) {
         BOOST_LOG_SEV(lg, fatal) <<
         boost::format("Unable to bind to broadcast channel at *:%1%. "
                 "Following information may describe possible failure "
@@ -153,7 +169,8 @@ void ABT_Monitor::start() {
                 P_CommunicationProtocol nackPacket;
                 nackPacket.set_type(CP_MessageType::ERR_REPEATED_ID);
                 this->m_responser.sendMessage(nackPacket);
-            } else {
+            }
+            else {
                 requestPacket.mutable_identity()->set_priority(priority);
                 m_agents.push_back(requestPacket.identity());
                 this->m_p2v.insert(
@@ -168,7 +185,8 @@ void ABT_Monitor::start() {
                 ++counter;
                 ++priority;
             }
-        } else if (requestPacket.type() == CP_MessageType::T_REQUEST_LIST) {
+        }
+        else if (requestPacket.type() == CP_MessageType::T_REQUEST_LIST) {
             P_CommunicationProtocol requestListAck;
             requestListAck.set_type(CP_MessageType::T_REQUEST_ACK);
             this->m_responser.sendMessage(requestListAck);
@@ -216,7 +234,8 @@ void ABT_Monitor::start() {
 //            _INFO("Sending Ack for OK_MONITOR...");
             this->m_responser.sendMessage(okAcknowledge);
 
-        } else {
+        }
+        else {
             throw logic_error { "A `T_OK_MONITOR' message is expected though "
                     "received message is not a valid `T_OK_MONITOR' message." };
         }
@@ -293,7 +312,8 @@ bool ABT_Monitor::checkMatrix() {
         int maxSequence = m_time[j][j].sequence;
         if (maxSequence == 0) {
             return false;
-        } else {
+        }
+        else {
             for (int i = j; i < this->m_agentCount; ++i) {
                 if (!m_time[i][j].approved) {
                     return false;
@@ -301,10 +321,12 @@ bool ABT_Monitor::checkMatrix() {
                 int &currentSequence = m_time[i][j].sequence;
                 if (currentSequence == 0 or currentSequence == maxSequence) {
                     // noop
-                } else if (currentSequence < maxSequence) {
+                }
+                else if (currentSequence < maxSequence) {
                     return false;
 
-                } else if (currentSequence > maxSequence) {
+                }
+                else if (currentSequence > maxSequence) {
                     return false;
 
                 }
@@ -315,15 +337,16 @@ bool ABT_Monitor::checkMatrix() {
 }
 
 /* ********************************** C API **********************************
+ *
  * This is C wrapper around C++ implementation API.
  *
  * **************************************************************************/
 
 C_ABT_Monitor* abt_monitor_create(char* host,
         const unsigned short responserPort, const unsigned short publisherPort,
-        char* xcsp) {
+        const char* xcsp, const char* logfile) {
     return reinterpret_cast<C_ABT_Monitor*>(new ABT_Monitor(host, responserPort,
-            publisherPort, xcsp));
+            publisherPort, xcsp, logfile));
 }
 
 void abt_monitor_destroy(C_ABT_Monitor* m) {

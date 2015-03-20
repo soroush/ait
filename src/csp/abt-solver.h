@@ -33,7 +33,10 @@ struct C_ABT_Solver;
 typedef struct C_ABT_Solver C_ABT_Solver;
 C_ABT_Solver* abt_solver_create(char* serverHost,
         const unsigned short serverResponderPort,
-        const unsigned short serverPublisherPort, char* name, char* xcspFile);
+        const unsigned short serverPublisherPort,
+        const char* name,
+        const char* xcspFile,
+        const char* logFile);
 void abt_solver_destrory(C_ABT_Solver* s);
 void abt_solver_solve(C_ABT_Solver* s);
 

@@ -49,7 +49,7 @@ class ABT_Monitor {
 public:
 	ABT_Monitor(const std::string& host, const unsigned short& responserPort,
 			const unsigned short& publisherPort, const std::string& xcsp,
-			const std::string& logfile="");
+			const std::string& logfile="std::cout");
 	virtual ~ABT_Monitor();
 	void start();
 private:
