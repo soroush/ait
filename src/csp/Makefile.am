@@ -22,20 +22,14 @@
 SUBDIRS = parser .
 AUTOMAKE_OPTIONS = subdir-objects
 AM_CPPFLAGS = -pipe
+AM_CXXFLAGS = \
+			$(ZMQ_CFLAGS) \
+			$(BOOST_CPPFLAGS) \
+			$(PROTOCOL_BUFFERS_CFLAGS) \
+			$(EXPAT_CFLAGS)
 ACLOCAL_AMFLAGS = ${ACLOCAL_FLAGS} -I m4
 lib_LTLIBRARIES = libait_csp.la
 libait_csp_la_LDFLAGS = -version-info $(AIT_CSP_SO_VERSION)
-if USE_GENERATED_PROTOCOLS
-%.pb.cc %.pb.h: %.proto
-	$(PROTOC) --proto_path=$(srcdir) --cpp_out=$(builddir) $^
-nodist_libait_csp_la_SOURCES = \
-			abt.pb.cc \
-			common-protocols.pb.cc
-BUILT_SOURCES = \
-			abt.pb.h \
-			common-protocols.pb.h
-MOSTLYCLEANFILES = $(nodist_libait_csp_la_SOURCES) $(BUILT_SOURCES)
-endif
 libait_csp_la_SOURCES = \
 			common_async.cpp \
 			assignment.cpp \
@@ -52,7 +46,9 @@ libait_csp_la_SOURCES = \
 			abt-socket.cpp \
 			abt-nogood.cpp \
 			abt-endpoint.cpp \
-			abt-solver.cpp
+			abt-solver.cpp \
+			abt.pb.cc \
+			common-protocols.pb.cc
 ait_includedir = $(includedir)/ait/csp
 ait_include_HEADERS =  \
 			common_async.hpp \
@@ -69,21 +65,17 @@ ait_include_HEADERS =  \
 			abt-monitor.h \
 			abt-socket.hpp \
 			abt-solver.hpp \
-			abt-solver.h
-if USE_PRECOMPILED_PROTOCOLS
-libait_csp_la_SOURCES += \
-			abt_precompiled.pb.cc \
-			common-protocols_precompiled.pb.cc
-ait_include_HEADERS +=  \
-			abt_precompiled.pb.h \
-			common-protocols_precompiled.pb.h
-endif
+			abt-solver.h \
+			abt.pb.h \
+			common-protocols.pb.h
 libait_csp_la_LIBADD = \
-        $(ZMQ_LIBS) \
+		$(ZMQ_LIBS) \
         $(PROTOCOL_BUFFERS_LIBS) \
-        $(BOOST_THREAD_LIBS) \
-	-lexpat -lboost_log -lboost_log_setup -lboost_thread -lboost_system -lpthread \
-	parser/libait_csp_parser.la
+        $(BOOST_LOG_LIBS) \
+		$(EXPAT_LDFLAGS) \
+		parser/libait_csp_parser.la
+# 	-lexpat -lboost_log -lboost_log_setup -lboost_thread -lboost_system -lpthread \
+#
 ait_libincludedir = $(libdir)/ait/include
 EXTRA_DIST = \
 	abt.proto

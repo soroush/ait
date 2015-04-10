@@ -21,8 +21,10 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include <config.h>
 #include "../src/fuzzy/io-base.hpp"
 #include <iostream>
+#ifdef HAVE_BOOST_LOG_CORE_CORE_HPP
 #define BOOST_ALL_DYN_LINK
 #define DSO
 #include <boost/log/core.hpp>
@@ -35,14 +37,17 @@
 #include <boost/log/sources/severity_logger.hpp>
 #include <boost/log/sources/record_ostream.hpp>
 #include <boost/format.hpp>
+#endif
 
 using namespace AIT::FUZZY;
 using namespace std;
+#ifdef HAVE_BOOST_LOG_CORE_CORE_HPP
 namespace logging = boost::log;
 namespace src = boost::log::sources;
 namespace sinks = boost::log::sinks;
 namespace keywords = boost::log::keywords;
 using namespace logging::trivial;
+#endif
 
 int main() {
 //    src::severity_logger<severity_level> lg;

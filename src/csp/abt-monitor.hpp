@@ -32,9 +32,6 @@
 #include <vector>
 #include <memory>
 #include <zmq.hpp>
-#define BOOST_ALL_DYN_LINK
-#include <boost/log/trivial.hpp>
-#include <boost/log/sources/severity_logger.hpp>
 #include "common_async.hpp"
 #include "abt-solver.hpp"
 #include "abt-socket.hpp"
@@ -71,7 +68,6 @@ private:
 	std::map<size_t,Variable*> m_p2v;
 
 	bool checkMatrix();
-    boost::log::sources::severity_logger<boost::log::trivial::severity_level> lg;
 };
 
 } /* namespace CSP */

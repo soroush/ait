@@ -26,9 +26,10 @@
 
 #include <xsd/cxx/parser/xml-schema.hxx>
 #include "xcsp-pskel.hxx"
-#define BOOST_ALL_DYN_LINK
-#include <boost/log/trivial.hpp>
-#include <boost/log/sources/severity_logger.hpp>
+
+// #define BOOST_ALL_DYN_LINK
+// #include <boost/log/trivial.hpp>
+// #include <boost/log/sources/severity_logger.hpp>
 
 namespace AIT {
 namespace CSP {
@@ -42,7 +43,7 @@ public:
 	~XSemanticsType();
 	virtual RelationBase::Semantics post_semanticsType();
 private:
-    boost::log::sources::severity_logger<boost::log::trivial::severity_level> lg;
+    // boost::log::sources::severity_logger<boost::log::trivial::severity_level> lg;
 };
 
 } /* namespace CSP */

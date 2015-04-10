@@ -26,9 +26,9 @@
 
 #include "xcsp-pskel.hxx"
 #include <memory>
-#define BOOST_ALL_DYN_LINK
-#include <boost/log/trivial.hpp>
-#include <boost/log/sources/severity_logger.hpp>
+// #define BOOST_ALL_DYN_LINK
+// #include <boost/log/trivial.hpp>
+// #include <boost/log/sources/severity_logger.hpp>
 
 namespace AIT {
 namespace CSP {
@@ -53,7 +53,7 @@ private:
     std::string m_solution;
     CSP_Problem::Presentation::Type m_type;
     CSP_Problem::Presentation::Format m_format;
-    boost::log::sources::severity_logger<boost::log::trivial::severity_level> lg;
+    // boost::log::sources::severity_logger<boost::log::trivial::severity_level> lg;
 
 };
 

@@ -24,3 +24,9 @@
 #include "function.hpp"
 
 using namespace AIT::FUZZY;
+
+Function::Function(){
+}
+
+Function::~Function(){
+}

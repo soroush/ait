@@ -25,25 +25,25 @@
 #include <stdexcept>
 #include <vector>
 #include <sstream>
-#define BOOST_ALL_DYN_LINK
-#define DSO
-#include <boost/log/core.hpp>
-#include <boost/log/expressions.hpp>
-#include <boost/log/sinks/text_file_backend.hpp>
-#include <boost/log/utility/setup/file.hpp>
-#include <boost/log/utility/setup/common_attributes.hpp>
-#include <boost/log/sources/severity_logger.hpp>
-#include <boost/log/sources/record_ostream.hpp>
-#include <boost/format.hpp>
+// #define BOOST_ALL_DYN_LINK
+// #define DSO
+// #include <boost/log/core.hpp>
+// #include <boost/log/expressions.hpp>
+// #include <boost/log/sinks/text_file_backend.hpp>
+// #include <boost/log/utility/setup/file.hpp>
+// #include <boost/log/utility/setup/common_attributes.hpp>
+// #include <boost/log/sources/severity_logger.hpp>
+// #include <boost/log/sources/record_ostream.hpp>
+// #include <boost/format.hpp>
 
 using namespace AIT;
 using namespace CSP;
 using namespace std;
-namespace logging = boost::log;
-namespace src = boost::log::sources;
-namespace sinks = boost::log::sinks;
-namespace keywords = boost::log::keywords;
-using namespace logging::trivial;
+// namespace logging = boost::log;
+// namespace src = boost::log::sources;
+// namespace sinks = boost::log::sinks;
+// namespace keywords = boost::log::keywords;
+// using namespace logging::trivial;
 
 XPresentationParser::XPresentationParser() {
 }
@@ -81,14 +81,14 @@ void XPresentationParser::minViolatedConstraints(const string& min) {
                 number.first = CSP_Problem::Presentation::NumberType::Exactly;
                 this->m_minViolatedConstraints = number;
             } catch (std::invalid_argument &e) {
-                BOOST_LOG_SEV(lg, error)<<
-                boost::format("An error occured: `%1%'") % e.what();
+                // BOOST_LOG_SEV(lg, error)<<
+                // boost::format("An error occured: `%1%'") % e.what();
             }
             return;
         }
     }
-    BOOST_LOG_SEV(lg, error)<<
-    boost::format("Invalid value for `minViolatedConstraints': %1%") % min;
+    // BOOST_LOG_SEV(lg, error)<<
+    // boost::format("Invalid value for `minViolatedConstraints': %1%") % min;
     number.first = CSP_Problem::Presentation::NumberType::Unknown;
     this->m_minViolatedConstraints = number;
 }
@@ -119,14 +119,14 @@ void XPresentationParser::nbSolutions(const string& nb) {
                 number.first = CSP_Problem::Presentation::NumberType::Exactly;
                 this->m_nbSolutions = number;
             } catch (std::invalid_argument &e) {
-                BOOST_LOG_SEV(lg, error)<<
-                boost::format("An error occured: %1%") % e.what();
+                // BOOST_LOG_SEV(lg, error)<<
+                // boost::format("An error occured: %1%") % e.what();
             }
             return;
         }
     }
-    BOOST_LOG_SEV(lg, error)<<
-    boost::format("Invalid value for `nbSolutions' : %1%") % nb;
+    // BOOST_LOG_SEV(lg, error)<<
+    // boost::format("Invalid value for `nbSolutions' : %1%") % nb;
     number.first = CSP_Problem::Presentation::NumberType::Unknown;
     this->m_nbSolutions = number;
 }

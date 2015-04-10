@@ -25,15 +25,9 @@
 #define SOCKET_H_
 
 #include "../global.hpp"
-#include <config.h>
-#include "zmq.hpp"
+#include <zmq.hpp>
 #include <string>
-#ifdef PRECOMPILED_PROTOCOLS
-#include "abt_precompiled.pb.h"
-#elif defined(GENERATED_PROTOCOLS)
 #include "abt.pb.h"
-#endif
-
 
 namespace AIT {
 

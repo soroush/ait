@@ -21,11 +21,14 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include <config.h>
 #include "../src/fuzzy/triangular-mf.hpp"
 #include "utilities/tokenizer.hpp"
 #include <iostream>
 #include <fstream>
 #include <cmath>
+#include <limits>
+#ifdef HAVE_BOOST_LOG_CORE_CORE_HPP
 #define BOOST_ALL_DYN_LINK
 #define DSO
 #include <boost/log/core.hpp>
@@ -38,10 +41,12 @@
 #include <boost/log/sources/severity_logger.hpp>
 #include <boost/log/sources/record_ostream.hpp>
 #include <boost/format.hpp>
+#endif
 
 using namespace AIT::FUZZY;
 using namespace AIT::TEST;
 using namespace std;
+#ifdef HAVE_BOOST_LOG_CORE_CORE_HPP
 namespace logging = boost::log;
 namespace src = boost::log::sources;
 namespace sinks = boost::log::sinks;
@@ -49,19 +54,24 @@ namespace keywords = boost::log::keywords;
 using namespace logging::trivial;
 
 src::severity_logger<severity_level> lg;
+#endif
 
 float checkTriangularMF(const TriangularMF& mf, const float& input,
         const float& output) {
     float calculatedValue = mf(input);
     float errorValue = abs(output - calculatedValue);
     if (errorValue < 0.001f) {
+#ifdef HAVE_BOOST_LOG_CORE_CORE_HPP
         BOOST_LOG_SEV(lg, trace)<<
         boost::format("OK\ttrimf(%+011.10f) = %+011.2f ~= %+011.10f, ERROR=%+011.10f")
         % input % calculatedValue % output % errorValue;
+#endif
     } else {
+#ifdef HAVE_BOOST_LOG_CORE_CORE_HPP
         BOOST_LOG_SEV(lg, error)<<
         boost::format("ERROR\ttrimf(%+011.10f) = +%011.2f != %+011.10f, ERROR=+%011.10f")
         % input % calculatedValue % output % errorValue;
+#endif
     }
     return errorValue;
 }
@@ -70,10 +80,12 @@ int main() {
 
     int n = 5; // number of files
     // for each file open it and do this:
+#ifdef HAVE_BOOST_LOG_CORE_CORE_HPP
     logging::add_common_attributes();
     logging::register_simple_formatter_factory<logging::trivial::severity_level,
             char>("Severity");
     logging::add_console_log(std::cout, boost::log::keywords::format = "[%TimeStamp%][%Severity%]: %Message%");
+#endif
     ifstream inputFile { "data/trimf_0.000000_0.250000_0.500000.txt" };
     inputFile.seekg(std::ios::beg);
     // Ignore first line, that's for humans

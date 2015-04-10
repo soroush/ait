@@ -21,17 +21,12 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#ifndef COMPOUND_ASSIGNMENT_H_
-#define COMPOUND_ASSIGNMENT_H_
+#ifndef COMPOUND_ASSIGNMENT_HPP_
+#define COMPOUND_ASSIGNMENT_HPP_
 
-#include <config.h>
-#ifdef PRECOMPILED_PROTOCOLS
-#include "common-protocols_precompiled.pb.h"
-#elif defined(GENERATED_PROTOCOLS)
 #include "common-protocols.pb.h"
-#endif
-#include <set>
 #include "assignment.hpp"
+#include <set>
 
 namespace AIT {
 namespace CSP {
@@ -51,4 +46,4 @@ struct LIBRARY_API CompoundAssignment{
 
 } /* namespace CSP */
 } /* namespace AIT */
-#endif /* COMPOUND_ASSIGNMENT_H_ */
+#endif /* COMPOUND_ASSIGNMENT_HPP_ */

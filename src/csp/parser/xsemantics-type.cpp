@@ -24,24 +24,24 @@
 #include "xsemantics-type.hpp"
 #include "../relation-base.hpp"
 #include <string>
-#define BOOST_ALL_DYN_LINK
-#define DSO
-#include <boost/log/core.hpp>
-#include <boost/log/expressions.hpp>
-#include <boost/log/sinks/text_file_backend.hpp>
-#include <boost/log/utility/setup/file.hpp>
-#include <boost/log/utility/setup/common_attributes.hpp>
-#include <boost/log/sources/severity_logger.hpp>
-#include <boost/log/sources/record_ostream.hpp>
-#include <boost/format.hpp>
+// #define BOOST_ALL_DYN_LINK
+// #define DSO
+// #include <boost/log/core.hpp>
+// #include <boost/log/expressions.hpp>
+// #include <boost/log/sinks/text_file_backend.hpp>
+// #include <boost/log/utility/setup/file.hpp>
+// #include <boost/log/utility/setup/common_attributes.hpp>
+// #include <boost/log/sources/severity_logger.hpp>
+// #include <boost/log/sources/record_ostream.hpp>
+// #include <boost/format.hpp>
 
 using namespace AIT::CSP;
 using namespace std;
-namespace logging = boost::log;
-namespace src = boost::log::sources;
-namespace sinks = boost::log::sinks;
-namespace keywords = boost::log::keywords;
-using namespace logging::trivial;
+// namespace logging = boost::log;
+// namespace src = boost::log::sources;
+// namespace sinks = boost::log::sinks;
+// namespace keywords = boost::log::keywords;
+// using namespace logging::trivial;
 
 XSemanticsType::XSemanticsType() {
 }
@@ -56,7 +56,7 @@ RelationBase::Semantics XSemanticsType::post_semanticsType() {
 	} else if (sem == "conflicts") {
 		return RelationBase::Semantics::Conflicts;
 	}
-    BOOST_LOG_SEV(lg, error) <<
-                boost::format("Invalid semantics type: `%1%'.") % sem;
+    // BOOST_LOG_SEV(lg, error) <<
+    //             boost::format("Invalid semantics type: `%1%'.") % sem;
 }
 

@@ -21,7 +21,9 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include <config.h>
 #include "abt-monitor.hpp"
+#include "abt-monitor.h"
 #include "csp-problem.hpp"
 #include "csp-solver.hpp"
 #include "parser/xinstance-parser.hpp"
@@ -39,6 +41,11 @@
 #include "parser/xconstraint-parser.hpp"
 #include "parser/xrelations-parser.hpp"
 #include "parser/xrelation-parser.hpp"
+#include <chrono>
+#include <sstream>
+#include <algorithm>
+#include <stdexcept>
+#ifdef HAVE_BOOST_LOG_CORE_CORE_HPP
 #define BOOST_ALL_DYN_LINK
 #define DSO
 #include <boost/log/core.hpp>
@@ -50,22 +57,21 @@
 #include <boost/log/sources/severity_logger.hpp>
 #include <boost/log/sources/record_ostream.hpp>
 #include <boost/format.hpp>
-#include "abt-monitor.h"
-#include <chrono>
-#include <sstream>
-#include <algorithm>
-#include <stdexcept>
+boost::log::sources::severity_logger<boost::log::trivial::severity_level> lg;
+#endif
 
 using namespace AIT::CSP;
 using namespace AIT::protocols::csp::abt;
 using namespace zmq;
 using namespace std;
 using namespace std::chrono;
+#ifdef HAVE_BOOST_LOG_CORE_CORE_HPP
 namespace logging = boost::log;
 namespace src = boost::log::sources;
 namespace sinks = boost::log::sinks;
 namespace keywords = boost::log::keywords;
 using namespace logging::trivial;
+#endif
 
 ABT_Monitor::ABT_Monitor(const std::string& host,
         const unsigned short & responserPort,
@@ -89,6 +95,7 @@ ABT_Monitor::ABT_Monitor(const std::string& host,
             m_time[i][j].sequence = 0;
         }
     }
+#ifdef HAVE_BOOST_LOG_CORE_CORE_HPP
     logging::add_common_attributes();
     logging::register_simple_formatter_factory<logging::trivial::severity_level,
             char>("Severity");
@@ -103,6 +110,7 @@ ABT_Monitor::ABT_Monitor(const std::string& host,
                 keywords::auto_flush = true, keywords::format =
                         "[%TimeStamp%][%Severity%]: %Message%");
     }
+#endif
 }
 
 ABT_Monitor::~ABT_Monitor() {
@@ -129,25 +137,32 @@ void ABT_Monitor::start() {
     address.str("");
     address << "tcp://*:" << this->m_publisherPort;
     try {
+#ifdef HAVE_BOOST_LOG_CORE_CORE_HPP
         BOOST_LOG_SEV(lg, trace)<<
         boost::format("Binding to *:%1% broadcast end point...")
         % this->m_publisherPort;
         this->m_publisher.bind(address.str().data());
+#endif
     }
     catch (zmq::error_t &e) {
+#ifdef HAVE_BOOST_LOG_CORE_CORE_HPP
         BOOST_LOG_SEV(lg, fatal) <<
         boost::format("Unable to bind to broadcast channel at *:%1%. "
                 "Following information may describe possible failure "
                 "causes: %2%")
         % this->m_publisherPort % e.what();
+#endif
     }
+#ifdef HAVE_BOOST_LOG_CORE_CORE_HPP
     BOOST_LOG_SEV(lg, trace)<< "Successfully bound to broadcast channel.";
+#endif
     size_t counter = 0;
     size_t priority = 1;
     while (counter != 2 * this->m_agentCount) {
         P_CommunicationProtocol requestPacket;
         this->m_responser.recvMessage(requestPacket);
         if (requestPacket.type() == CP_MessageType::T_INTRODUCE) {
+#ifdef HAVE_BOOST_LOG_CORE_CORE_HPP
             BOOST_LOG_SEV(lg, trace)<<
             boost::format(
                     "New agent subscribed. This information is introduced "
@@ -158,14 +173,17 @@ void ABT_Monitor::start() {
             % requestPacket.identity().host()
             % requestPacket.identity().name()
             % requestPacket.identity().port();
+#endif
             bool repeatedName =
             std::any_of(m_agents.begin(), m_agents.end(),
                     [&](P_EndPoint i) {return (requestPacket.identity().name()==i.name());});
             if (repeatedName) {
+#ifdef HAVE_BOOST_LOG_CORE_CORE_HPP
                 BOOST_LOG_SEV(lg, trace) <<
                 boost::format("An agent with name `%1%'is already registered."
                         "Ignoring this request")
                 %requestPacket.identity().name();
+#endif
                 P_CommunicationProtocol nackPacket;
                 nackPacket.set_type(CP_MessageType::ERR_REPEATED_ID);
                 this->m_responser.sendMessage(nackPacket);
@@ -242,19 +260,21 @@ void ABT_Monitor::start() {
         this->m_finished = checkMatrix();
     }
     auto end = steady_clock::now();
+#ifdef HAVE_BOOST_LOG_CORE_CORE_HPP
     BOOST_LOG_SEV(lg, info)<<
     boost::format("Time to execute algorithm: %d ms.")%duration_cast<milliseconds>(end-start).count();
     BOOST_LOG_SEV(lg, info)<< "Sending all agents finish signal...";
-
+#endif
     P_Message finished;
     finished.set_type(P_MessageType::T_FINISH);
     finished.set_sender(0);
     this->m_publisher.sendMessage(finished);
-
+#ifdef HAVE_BOOST_LOG_CORE_CORE_HPP
     BOOST_LOG_SEV(lg, info)<<"Algorithm is finished. Found values are";
     for (const auto& x : this->m_instance->variables()) {
         cout << x->getName() << "=" << x->getValue() << endl;
-    }
+     }
+#endif
 }
 
 void ABT_Monitor::parse(const string& path) {

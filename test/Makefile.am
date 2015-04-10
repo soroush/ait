@@ -21,12 +21,9 @@
 
 AM_CPPFLAGS = -I$(srcdir)/.. $(OTHER_CPPFLAGS)
 AUTOMAKE_OPTIONS = subdir-objects
-LDADD = ../src/libait.la \
-		../src/fuzzy/libait_fuzzy.la \
+LDADD = ../src/fuzzy/libait_fuzzy.la \
 		../src/csp/libait_csp.la \
-		../src/csp/parser/libait_csp_parser.la \
-		-lzmq -lexpat \
-		-lboost_log -lboost_log_setup -lboost_thread -lboost_system -lpthread
+		../src/csp/parser/libait_csp_parser.la
 check_PROGRAMS = fuzzy fuzzy_functions abt_monitor
 fuzzy_SOURCES = fuzzy.cpp
 fuzzy_functions_SOURCES = fuzzy_functions.cpp utilities/tokenizer.cpp

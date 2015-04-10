@@ -1,67 +1,45 @@
-AC_INIT([libait], [1.0.0], [soroush-r@users.sf.net], [libait], [https://github.com/soroush/ait])
-AC_PREREQ([2.59])
-AM_INIT_AUTOMAKE([1.10 -Wall no-define])
-AM_SILENT_RULES
-AC_CONFIG_MACRO_DIR([m4])
+AC_PREREQ([2.69])
+AC_INIT([libait], [2.0.0], [https://github.com/soroush/ait])
+AC_CONFIG_SRCDIR([src/global.hpp])
 AC_CONFIG_HEADERS([config.h])
-AC_LANG([C++])
-AC_PROG_CXX
-AX_CXX_COMPILE_STDCXX_11([noext],[mandatory])
-AM_PROG_AR
-AC_TYPE_SIZE_T
-AC_HEADER_STDBOOL
-LT_INIT([shared static win32-dll pic-only])
+AC_CONFIG_MACRO_DIR([m4])
 
-# Check for dependencies
+# Checks for programs.
+AC_PROG_CXX
+AC_PROG_CC
+
+# Check for C++11 compiler
+AX_CXX_COMPILE_STDCXX_11([noext],[mandatory])
+
+# Checks for libraries.
 AX_XSDCXX
 AX_LIB_EXPAT(2.0.0)
-PKG_CHECK_MODULES([ZMQ], [libzmq >= 4.0.0])
-PKG_CHECK_MODULES([PROTOCOL_BUFFERS], [protobuf >= 2.4.1])
-BOOST_REQUIRE([1.54])
-BOOST_LOG([])
+PKG_CHECK_MODULES([ZMQ], [libzmq >= 2.2])
+PKG_CHECK_MODULES([PROTOCOL_BUFFERS], [protobuf >= 2.4])
+BOOST_REQUIRE([1.54.0],[AC_MSG_WARN([Unable to find Boost, all logging backends may be disabled...])])
+BOOST_LOG([mt],[AC_MSG_WARN([Boost Logging library not found. All logging backends has been disabled.])])
 
-# Enable custom protobuff directory 
-AC_ARG_WITH([protobuf-libdir],
-    [AS_HELP_STRING([--with-protobuf-libdir=LIB_DIR],
-    [location of the protocol buffers libraries, defaults to /usr/lib])],
-    [PROTOBUF_LIBDIR="$withval"],
-    [PROTOBUF_LIBDIR='/usr/lib'])
-AC_SUBST([PROTOBUF_LIBDIR])
-LDFLAGS="$LDFLAGS -L$PROTOBUF_LIBDIR"
+# Checks for header files.
+AC_CHECK_HEADERS([stddef.h stdlib.h string.h sys/time.h])
 
-# Enable custom xsdcxx directory 
-AC_ARG_WITH([xsd-include],
-    [AS_HELP_STRING([--with-xsdcxx-include=LIB_DIR],
-    [location of the CodeSynthesis XSD C++ headers, defaullts to /usr/lib])],
-    [XSDCXX_INCLUDE="$withval"],
-    [XSDCXX_INCLUDE='/usr/lib'])
-AC_SUBST([XSDCXX_INCLUDE])
-CPPFLAGS="$CPPFLAGS -I$XSDCXX_INCLUDE"
+# Checks for typedefs, structures, and compiler characteristics.
+AC_CHECK_HEADER_STDBOOL
+AC_C_INLINE
+AC_TYPE_INT32_T
+AC_TYPE_SIZE_T
+AC_TYPE_UINT16_T
 
-# Choose between either re-generate protocol sources using protoc or compile pre-generated sources
-AC_ARG_ENABLE([precompiled-protocols],
-		[AC_HELP_STRING([--enable-precompiled-protocols=@<:@yes/no@:>@])],
-		[enable_precompiled_protocols=yes],
-		[enable_precompiled_protocols=no])
+# Checks for library functions.
+AC_FUNC_ERROR_AT_LINE
+AC_CHECK_FUNCS([memset pow socket])
 
-# Custom protoc command
-AC_ARG_WITH([protoc],
-    [AS_HELP_STRING([--with-protoc=PATH],
-    [location of the protoc protocol buffer compiler binary, defaults to protoc])],
-    [PROTOC="$withval"],
-    [PROTOC='protoc'])
-AC_SUBST([PROTOC])
-
-# Check if protocol buffers compiler is available. If not, disable 
-# --enable-precompiled-protocols
-
-# Automake conditions
-AM_CONDITIONAL([USE_PRECOMPILED_PROTOCOLS], [test $enable_precompiled_protocols = yes])
-AM_CONDITIONAL([USE_GENERATED_PROTOCOLS], [test $enable_precompiled_protocols = no])
-
-AS_IF([test "x$enable_precompiled_protocols" = "xyes"],
-      [AC_DEFINE(PRECOMPILED_PROTOCOLS,1,[Define if uisng pre-compiled sources of protocols])],
-      [AC_DEFINE(GENERATED_PROTOCOLS,1,[Define if generating new sources of protocols])])
+AC_CONFIG_FILES([Makefile
+                 src/Makefile
+                 src/csp/Makefile
+                 src/csp/parser/Makefile
+                 src/fuzzy/Makefile
+                 test/Makefile
+                 libait.pc])
 
 AC_SUBST([AIT_CSP_SO_VERSION], [1:0:0])
 AC_SUBST([AIT_CSP_API_VERSION], [1.0.0])
@@ -69,9 +47,10 @@ AC_SUBST([AIT_CSP_API_VERSION], [1.0.0])
 AC_SUBST([AIT_FUZZY_SO_VERSION], [1:0:0])
 AC_SUBST([AIT_FUZZY_API_VERSION], [1.0.0])
 
-AC_CONFIG_FILES([Makefile src/Makefile
-                    src/csp/Makefile src/csp/parser/Makefile
-                    src/fuzzy/Makefile
-                    test/Makefile
-                    libait.pc:libait.pc.in])
+# Configure automake
+AM_INIT_AUTOMAKE([foreign -Wall -Werror])
+AM_SILENT_RULES([yes])
+
+LT_INIT([static shared pic-only])
+
 AC_OUTPUT

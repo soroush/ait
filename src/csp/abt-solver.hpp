@@ -32,9 +32,11 @@
 #include <queue>
 #include <thread>
 #include <mutex>
+#ifdef HAVE_BOOST_LOG_CORE_CORE_HPP
 #define BOOST_ALL_DYN_LINK
 #include <boost/log/trivial.hpp>
 #include <boost/log/sources/severity_logger.hpp>
+#endif
 #include "common_async.hpp"
 #include "compound-assignment.hpp"
 #include "abt-socket.hpp"
@@ -166,7 +168,6 @@ protected:
     std::map<const Variable*, size_t> variable2Priority;
     std::vector<int> sequences;
     bool findInGammaMinus(const Variable* v);
-    boost::log::sources::severity_logger<boost::log::trivial::severity_level> lg;
 };
 
 class LIBRARY_API DA_ABT_Solver: public ABT_Solver{
