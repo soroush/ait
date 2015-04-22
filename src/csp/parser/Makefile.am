@@ -21,9 +21,13 @@
 
 ACLOCAL_AMFLAGS = ${ACLOCAL_FLAGS} -I m4
 AUTOMAKE_OPTIONS = subdir-objects
-AM_CPPFLAGS = -pipe
+AM_CXXFLAGS = -pipe -pedantic
+AM_CPPFLAGS = \
+	$(ZMQ_CFLAGS) \
+	$(PROTOCOL_BUFFERS_CFLAGS) \
+	$(BOOST_LOG_CFLAGS) \
+	$(EXPAT_CFLAGS)
 noinst_LTLIBRARIES = libait_csp_parser.la
-ait_includedir = $(includedir)/ait/csp/parser
 libait_csp_parser_la_SOURCES = \
 		exp_func.cpp \
 		exp_num.cpp \
@@ -56,6 +60,7 @@ libait_csp_parser_la_SOURCES = \
 		xrelations-parser.cpp \
 		xconstraint-parser.cpp \
 		xconstraints-parser.cpp
+ait_includedir = $(includedir)/ait/csp/parser
 ait_include_HEADERS =  \
 		exp_func.hpp \
 		exp_num.hpp \
@@ -103,7 +108,6 @@ ait_include_HEADERS =  \
 		xrelations-parser.hpp \
 		xconstraint-parser.hpp \
 		xconstraints-parser.hpp
-ait_libincludedir = $(libdir)/ait/include
 EXTRA_DIST = predicate-f_parser.ih \
 		predicate-f_scanner.ih \
 		parameters_parser.ih \

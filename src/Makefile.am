@@ -24,7 +24,4 @@ AUTOMAKE_OPTIONS = subdir-objects
 ACLOCAL_AMFLAGS = ${ACLOCAL_FLAGS} -I m4
 headerdir = $(includedir)/ait
 header_DATA =  \
-			global.hpp \
-			../config.h
-EXTRA_DIST = \
-	global.hpp
+			global.hpp

@@ -114,8 +114,6 @@ ABT_Monitor::ABT_Monitor(const std::string& host,
 }
 
 ABT_Monitor::~ABT_Monitor() {
-    this->m_responser.close();
-    this->m_publisher.close();
     for (int i = 0; i < m_agentCount; i++) {
         delete[] m_time[i];
         m_time[i] = nullptr;
@@ -128,7 +126,7 @@ void ABT_Monitor::start() {
     stringstream address;
     address << "tcp://*:" << this->m_responserPort;
     try {
-        this->m_responser.bind(address.str().data());
+        this->m_responser.get_zmq_socket().bind(address.str().c_str());
     }
     catch (zmq::error_t* e) {
         cerr << e->what() << endl;
@@ -141,7 +139,7 @@ void ABT_Monitor::start() {
         BOOST_LOG_SEV(lg, trace)<<
         boost::format("Binding to *:%1% broadcast end point...")
         % this->m_publisherPort;
-        this->m_publisher.bind(address.str().data());
+        this->m_publisher.get_zmq_socket().bind(address.str().c_str());
 #endif
     }
     catch (zmq::error_t &e) {

@@ -19,13 +19,27 @@
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-AM_CPPFLAGS = -I$(srcdir)/.. $(OTHER_CPPFLAGS)
+AM_CPPFLAGS = -I$(srcdir)/..
 AUTOMAKE_OPTIONS = subdir-objects
-LDADD = ../src/fuzzy/libait_fuzzy.la \
-		../src/csp/libait_csp.la \
-		../src/csp/parser/libait_csp_parser.la
-check_PROGRAMS = fuzzy fuzzy_functions abt_monitor
-fuzzy_SOURCES = fuzzy.cpp
-fuzzy_functions_SOURCES = fuzzy_functions.cpp utilities/tokenizer.cpp
-abt_monitor_SOURCES = abt-monitor.cpp
+check_PROGRAMS = \
+    fuzzy \
+    fuzzy_functions \
+    abt_monitor
+fuzzy_SOURCES = \
+    fuzzy.cpp
+fuzzy_LDADD = \
+    ../src/fuzzy/libait_fuzzy.la
+fuzzy_functions_SOURCES = \
+    fuzzy_functions.cpp \
+    utilities/tokenizer.cpp
+fuzzy_functions_LDADD = \
+    ../src/fuzzy/libait_fuzzy.la
+abt_monitor_SOURCES = \
+    abt-monitor.cpp
+abt_monitor_LDADD = \
+    $(ZMQ_LIBS) \
+    $(PROTOCOL_BUFFERS_LIBS) \
+    $(BOOST_LOG_LIBS) \
+    $(EXPAT_LIBS) \
+    ../src/csp/libait_csp.la
 TESTS = $(check_PROGRAMS)

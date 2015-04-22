@@ -7,5 +7,6 @@ Name: @PACKAGE_NAME@
 Description: Artificial Intelligence Toolkit
 Version: @PACKAGE_VERSION@
 URL: @PACKAGE_URL@
+Requires: libzmq >= 2.2 expat >= 2.0 protobuf >= 2.4
 Libs: -L${libdir} -lait_fuzzy -lait_csp
 Cflags: -I${includedir}/ait -I${libdir}/ait/include

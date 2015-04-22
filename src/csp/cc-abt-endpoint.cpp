@@ -41,7 +41,7 @@ CC_ABT_Solver::EndPoint::EndPoint(const P_EndPoint& ep,
         socket_(new Socket(context, ZMQ_PUSH)) {
     this->CopyFrom(ep);
     int linger = 0;
-    this->socket_->setsockopt(ZMQ_LINGER,&linger, sizeof(linger));
+    this->socket_->get_zmq_socket().setsockopt(ZMQ_LINGER,&linger, sizeof(linger));
 }
 
 CC_ABT_Solver::EndPoint::~EndPoint() {

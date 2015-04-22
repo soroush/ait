@@ -33,14 +33,15 @@ using namespace zmq;
 using namespace std;
 
 Socket::Socket(context_t &context_, int type_) :
-        socket_t(context_, type_) {
+    m_socket{context_, type_} {
 }
 
 Socket::Socket(zmq::socket_t&& rhs) :
-        socket_t(std::move(rhs)) {
+    m_socket{std::move(rhs)} {
 }
 
 Socket::~Socket() {
+    this->m_socket.close();
 }
 
 size_t Socket::sendMessage(
@@ -48,27 +49,31 @@ size_t Socket::sendMessage(
     size_t length = packet.ByteSize();
     message_t message(length);
     packet.SerializeToArray(message.data(), length);
-    return socket_t::send(message);
+    return this->m_socket.send(message);
 }
 
 size_t Socket::sendMessage(const protocols::csp::abt::P_Message packet) {
     size_t length = packet.ByteSize();
     message_t message(length);
     packet.SerializeToArray(message.data(), length);
-    return socket_t::send(message);
+    return this->m_socket.send(message);
 }
 
-size_t AIT::Socket::recvMessage(
+size_t Socket::recvMessage(
         protocols::csp::abt::P_CommunicationProtocol& packet) {
     message_t message;
-    bool returnValue = recv(&message);
+    bool returnValue = this->m_socket.recv(&message);
     packet.ParseFromArray(message.data(), message.size());
     return returnValue;
 }
 
-size_t AIT::Socket::recvMessage(protocols::csp::abt::P_Message& packet) {
+size_t Socket::recvMessage(protocols::csp::abt::P_Message& packet) {
     message_t message;
-    bool returnValue = recv(&message);
+    bool returnValue = this->m_socket.recv(&message);
     packet.ParseFromArray(message.data(), message.size());
     return returnValue;
+}
+
+socket_t& Socket::get_zmq_socket(){
+    return this->m_socket;
 }

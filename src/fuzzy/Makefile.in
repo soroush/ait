@@ -78,11 +78,10 @@ DIST_COMMON = $(ait_include_HEADERS) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/ax_cxx_compile_stdcxx_11.m4 \
-	$(top_srcdir)/m4/ax_lib_expat.m4 $(top_srcdir)/m4/ax_xsdcxx.m4 \
-	$(top_srcdir)/m4/boost.m4 $(top_srcdir)/m4/libtool.m4 \
-	$(top_srcdir)/m4/ltoptions.m4 $(top_srcdir)/m4/ltsugar.m4 \
-	$(top_srcdir)/m4/ltversion.m4 $(top_srcdir)/m4/lt~obsolete.m4 \
-	$(top_srcdir)/configure.ac
+	$(top_srcdir)/m4/ax_xsdcxx.m4 $(top_srcdir)/m4/boost.m4 \
+	$(top_srcdir)/m4/libtool.m4 $(top_srcdir)/m4/ltoptions.m4 \
+	$(top_srcdir)/m4/ltsugar.m4 $(top_srcdir)/m4/ltversion.m4 \
+	$(top_srcdir)/m4/lt~obsolete.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
@@ -245,8 +244,7 @@ ECHO_T = @ECHO_T@
 EGREP = @EGREP@
 EXEEXT = @EXEEXT@
 EXPAT_CFLAGS = @EXPAT_CFLAGS@
-EXPAT_LDFLAGS = @EXPAT_LDFLAGS@
-EXPAT_VERSION = @EXPAT_VERSION@
+EXPAT_LIBS = @EXPAT_LIBS@
 FGREP = @FGREP@
 GREP = @GREP@
 HAVE_CXX11 = @HAVE_CXX11@
@@ -350,7 +348,7 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 SUBDIRS = .
 AUTOMAKE_OPTIONS = subdir-objects
-AM_CPPFLAGS = -pipe
+AM_CXXFLAGS = -pipe -pedantic
 ACLOCAL_AMFLAGS = ${ACLOCAL_FLAGS} -I m4
 lib_LTLIBRARIES = libait_fuzzy.la
 libait_fuzzy_la_LDFLAGS = -version-info $(AIT_FUZZY_SO_VERSION)
@@ -375,7 +373,6 @@ ait_include_HEADERS = \
 	rule.hpp \
 	io-base.hpp
 
-ait_libincludedir = $(libdir)/ait/include
 all: all-recursive
 
 .SUFFIXES:

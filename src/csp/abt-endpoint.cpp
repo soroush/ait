@@ -35,13 +35,12 @@ using namespace AIT::protocols::csp::abt;
 using namespace zmq;
 using namespace std;
 
-
 ABT_Solver::EndPoint::EndPoint(const protocols::csp::abt::P_EndPoint& ep,
-        zmq::context_t& context) :
-        socket_(new Socket(context, ZMQ_PUSH)) {
+                               zmq::context_t& context) :
+    socket_(new Socket(context, ZMQ_PUSH)) {
     this->CopyFrom(ep);
     int linger = 0;
-    this->socket_->setsockopt(ZMQ_LINGER,&linger, sizeof(linger));
+    this->socket_->get_zmq_socket().setsockopt(ZMQ_LINGER,&linger, sizeof(linger));
 }
 
 ABT_Solver::EndPoint::~EndPoint() {

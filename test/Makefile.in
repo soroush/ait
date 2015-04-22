@@ -77,11 +77,10 @@ subdir = test
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/ax_cxx_compile_stdcxx_11.m4 \
-	$(top_srcdir)/m4/ax_lib_expat.m4 $(top_srcdir)/m4/ax_xsdcxx.m4 \
-	$(top_srcdir)/m4/boost.m4 $(top_srcdir)/m4/libtool.m4 \
-	$(top_srcdir)/m4/ltoptions.m4 $(top_srcdir)/m4/ltsugar.m4 \
-	$(top_srcdir)/m4/ltversion.m4 $(top_srcdir)/m4/lt~obsolete.m4 \
-	$(top_srcdir)/configure.ac
+	$(top_srcdir)/m4/ax_xsdcxx.m4 $(top_srcdir)/m4/boost.m4 \
+	$(top_srcdir)/m4/libtool.m4 $(top_srcdir)/m4/ltoptions.m4 \
+	$(top_srcdir)/m4/ltsugar.m4 $(top_srcdir)/m4/ltversion.m4 \
+	$(top_srcdir)/m4/lt~obsolete.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
@@ -90,27 +89,21 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am_abt_monitor_OBJECTS = abt-monitor.$(OBJEXT)
 abt_monitor_OBJECTS = $(am_abt_monitor_OBJECTS)
-abt_monitor_LDADD = $(LDADD)
-abt_monitor_DEPENDENCIES = ../src/fuzzy/libait_fuzzy.la \
-	../src/csp/libait_csp.la \
-	../src/csp/parser/libait_csp_parser.la
+am__DEPENDENCIES_1 =
+abt_monitor_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	../src/csp/libait_csp.la
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
 am_fuzzy_OBJECTS = fuzzy.$(OBJEXT)
 fuzzy_OBJECTS = $(am_fuzzy_OBJECTS)
-fuzzy_LDADD = $(LDADD)
-fuzzy_DEPENDENCIES = ../src/fuzzy/libait_fuzzy.la \
-	../src/csp/libait_csp.la \
-	../src/csp/parser/libait_csp_parser.la
+fuzzy_DEPENDENCIES = ../src/fuzzy/libait_fuzzy.la
 am__dirstamp = $(am__leading_dot)dirstamp
 am_fuzzy_functions_OBJECTS = fuzzy_functions.$(OBJEXT) \
 	utilities/tokenizer.$(OBJEXT)
 fuzzy_functions_OBJECTS = $(am_fuzzy_functions_OBJECTS)
-fuzzy_functions_LDADD = $(LDADD)
-fuzzy_functions_DEPENDENCIES = ../src/fuzzy/libait_fuzzy.la \
-	../src/csp/libait_csp.la \
-	../src/csp/parser/libait_csp_parser.la
+fuzzy_functions_DEPENDENCIES = ../src/fuzzy/libait_fuzzy.la
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -191,8 +184,7 @@ ECHO_T = @ECHO_T@
 EGREP = @EGREP@
 EXEEXT = @EXEEXT@
 EXPAT_CFLAGS = @EXPAT_CFLAGS@
-EXPAT_LDFLAGS = @EXPAT_LDFLAGS@
-EXPAT_VERSION = @EXPAT_VERSION@
+EXPAT_LIBS = @EXPAT_LIBS@
 FGREP = @FGREP@
 GREP = @GREP@
 HAVE_CXX11 = @HAVE_CXX11@
@@ -294,15 +286,31 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-AM_CPPFLAGS = -I$(srcdir)/.. $(OTHER_CPPFLAGS)
+AM_CPPFLAGS = -I$(srcdir)/..
 AUTOMAKE_OPTIONS = subdir-objects
-LDADD = ../src/fuzzy/libait_fuzzy.la \
-		../src/csp/libait_csp.la \
-		../src/csp/parser/libait_csp_parser.la
+fuzzy_SOURCES = \
+    fuzzy.cpp
 
-fuzzy_SOURCES = fuzzy.cpp
-fuzzy_functions_SOURCES = fuzzy_functions.cpp utilities/tokenizer.cpp
-abt_monitor_SOURCES = abt-monitor.cpp
+fuzzy_LDADD = \
+    ../src/fuzzy/libait_fuzzy.la
+
+fuzzy_functions_SOURCES = \
+    fuzzy_functions.cpp \
+    utilities/tokenizer.cpp
+
+fuzzy_functions_LDADD = \
+    ../src/fuzzy/libait_fuzzy.la
+
+abt_monitor_SOURCES = \
+    abt-monitor.cpp
+
+abt_monitor_LDADD = \
+    $(ZMQ_LIBS) \
+    $(PROTOCOL_BUFFERS_LIBS) \
+    $(BOOST_LOG_LIBS) \
+    $(EXPAT_LIBS) \
+    ../src/csp/libait_csp.la
+
 TESTS = $(check_PROGRAMS)
 all: all-am
 

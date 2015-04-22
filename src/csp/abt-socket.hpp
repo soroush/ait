@@ -31,19 +31,22 @@
 
 namespace AIT {
 
-class LIBRARY_API Socket: public zmq::socket_t {
+class LIBRARY_API Socket {
 public:
 	Socket(zmq::context_t &context_, int type_);
 	Socket(const Socket&) = delete;
 	Socket(zmq::socket_t&& rhs);
 	~Socket();
 	Socket& operator=(const AIT::Socket&) = delete;
-	// Common
+	zmq::socket_t& get_zmq_socket();
+    // Common
 	size_t sendMessage(const protocols::csp::abt::P_CommunicationProtocol);
 	size_t recvMessage(protocols::csp::abt::P_CommunicationProtocol&);
 	// ABT
 	size_t sendMessage(const protocols::csp::abt::P_Message);
 	size_t recvMessage(protocols::csp::abt::P_Message&);
+private:
+	zmq::socket_t m_socket;
 };
 
 } /* namespace AIT */

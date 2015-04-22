@@ -1,5 +1,5 @@
 AC_PREREQ([2.69])
-AC_INIT([libait], [2.0.0], [https://github.com/soroush/ait])
+AC_INIT([libait], [1.0.0], [https://github.com/soroush/ait])
 AC_CONFIG_SRCDIR([src/global.hpp])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
@@ -13,11 +13,11 @@ AX_CXX_COMPILE_STDCXX_11([noext],[mandatory])
 
 # Checks for libraries.
 AX_XSDCXX
-AX_LIB_EXPAT(2.0.0)
 PKG_CHECK_MODULES([ZMQ], [libzmq >= 2.2])
+PKG_CHECK_MODULES([EXPAT], [expat >= 2.0])
 PKG_CHECK_MODULES([PROTOCOL_BUFFERS], [protobuf >= 2.4])
-BOOST_REQUIRE([1.54.0],[AC_MSG_WARN([Unable to find Boost, all logging backends may be disabled...])])
-BOOST_LOG([mt],[AC_MSG_WARN([Boost Logging library not found. All logging backends has been disabled.])])
+BOOST_REQUIRE([1.54.0],[AC_MSG_WARN([Unable to find Boost. All logging backends has been disabled. Falling back to standard output.])])
+BOOST_LOG([mt],[AC_MSG_WARN([Boost Logging library not found.])])
 
 # Checks for header files.
 AC_CHECK_HEADERS([stddef.h stdlib.h string.h sys/time.h])

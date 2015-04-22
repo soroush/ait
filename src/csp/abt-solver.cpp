@@ -73,9 +73,9 @@ ABT_Solver::ABT_Solver(const string& serverHost_,
         serverBroadcast { context, ZMQ_SUB },
         end(false) {
     int linger = 0;
-    listener.setsockopt(ZMQ_LINGER, &linger, sizeof(linger));
-    serverRquest.setsockopt(ZMQ_LINGER, &linger, sizeof(linger));
-    serverBroadcast.setsockopt(ZMQ_LINGER, &linger, sizeof(linger));
+    listener.get_zmq_socket().setsockopt(ZMQ_LINGER, &linger, sizeof(linger));
+    serverRquest.get_zmq_socket().setsockopt(ZMQ_LINGER, &linger, sizeof(linger));
+    serverBroadcast.get_zmq_socket().setsockopt(ZMQ_LINGER, &linger, sizeof(linger));
     this->parseFromFile(xcspFile);
     this->priority = this->instance->variableIndex(this->name);
     this->me = this->instance->variable(this->name);
@@ -100,9 +100,6 @@ ABT_Solver::ABT_Solver(const string& serverHost_,
 }
 
 ABT_Solver::~ABT_Solver() {
-    serverBroadcast.close();
-    serverRquest.close();
-    listener.close();
     // FIXME: Close socket gracefuly
     // context.close();
 }
@@ -153,7 +150,7 @@ void ABT_Solver::connect() {
     addressName << "tcp://" << this->serverAddress << ':'
             << this->serverResponderPort;
     try {
-        serverRquest.connect(addressName.str().data());
+        serverRquest.get_zmq_socket().connect(addressName.str().data());
     }
     catch (zmq::error_t &e) {
 #ifdef HAVE_BOOST_LOG_CORE_CORE_HPP
@@ -171,8 +168,8 @@ void ABT_Solver::connect() {
     addressName << "tcp://" << this->serverAddress << ':'
             << this->serverPublisherPort;
     try {
-        serverBroadcast.connect(addressName.str().data());
-        serverBroadcast.setsockopt(ZMQ_SUBSCRIBE, "", 0);
+        serverBroadcast.get_zmq_socket().connect(addressName.str().data());
+        serverBroadcast.get_zmq_socket().setsockopt(ZMQ_SUBSCRIBE, "", 0);
     }
     catch (zmq::error_t &e) {
 #ifdef HAVE_BOOST_LOG_CORE_CORE_HPP
@@ -523,7 +520,7 @@ void ABT_Solver::getAgentList() {
             stringstream address;
             address << "tcp://";
             address << agentEndPoint.host() << ":" << agentEndPoint.port();
-            agentEndPoint.socket()->connect(address.str().c_str());
+            agentEndPoint.socket()->get_zmq_socket().connect(address.str().c_str());
         }
     }
 }
@@ -745,7 +742,7 @@ void ABT_Solver::_messageReader() {
     this->address = "127.0.0.1";
     addressName << "tcp://" << this->address << ":*";
     try {
-        this->listener.bind(addressName.str().data());
+        this->listener.get_zmq_socket().bind(addressName.str().data());
     }
     catch (zmq::error_t &e) {
         cerr << e.what() << endl;

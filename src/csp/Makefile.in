@@ -78,11 +78,10 @@ DIST_COMMON = $(ait_include_HEADERS) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/ax_cxx_compile_stdcxx_11.m4 \
-	$(top_srcdir)/m4/ax_lib_expat.m4 $(top_srcdir)/m4/ax_xsdcxx.m4 \
-	$(top_srcdir)/m4/boost.m4 $(top_srcdir)/m4/libtool.m4 \
-	$(top_srcdir)/m4/ltoptions.m4 $(top_srcdir)/m4/ltsugar.m4 \
-	$(top_srcdir)/m4/ltversion.m4 $(top_srcdir)/m4/lt~obsolete.m4 \
-	$(top_srcdir)/configure.ac
+	$(top_srcdir)/m4/ax_xsdcxx.m4 $(top_srcdir)/m4/boost.m4 \
+	$(top_srcdir)/m4/libtool.m4 $(top_srcdir)/m4/ltoptions.m4 \
+	$(top_srcdir)/m4/ltsugar.m4 $(top_srcdir)/m4/ltversion.m4 \
+	$(top_srcdir)/m4/lt~obsolete.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
@@ -250,8 +249,7 @@ ECHO_T = @ECHO_T@
 EGREP = @EGREP@
 EXEEXT = @EXEEXT@
 EXPAT_CFLAGS = @EXPAT_CFLAGS@
-EXPAT_LDFLAGS = @EXPAT_LDFLAGS@
-EXPAT_VERSION = @EXPAT_VERSION@
+EXPAT_LIBS = @EXPAT_LIBS@
 FGREP = @FGREP@
 GREP = @GREP@
 HAVE_CXX11 = @HAVE_CXX11@
@@ -355,12 +353,12 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 SUBDIRS = parser .
 AUTOMAKE_OPTIONS = subdir-objects
-AM_CPPFLAGS = -pipe
-AM_CXXFLAGS = \
-			$(ZMQ_CFLAGS) \
-			$(BOOST_CPPFLAGS) \
-			$(PROTOCOL_BUFFERS_CFLAGS) \
-			$(EXPAT_CFLAGS)
+AM_CXXFLAGS = -pipe -pedantic
+AM_CPPFLAGS = \
+	$(ZMQ_CFLAGS) \
+	$(PROTOCOL_BUFFERS_CFLAGS) \
+	$(BOOST_LOG_CFLAGS) \
+	$(EXPAT_CFLAGS)
 
 ACLOCAL_AMFLAGS = ${ACLOCAL_FLAGS} -I m4
 lib_LTLIBRARIES = libait_csp.la
@@ -406,15 +404,12 @@ ait_include_HEADERS = \
 			common-protocols.pb.h
 
 libait_csp_la_LIBADD = \
-		$(ZMQ_LIBS) \
-        $(PROTOCOL_BUFFERS_LIBS) \
-        $(BOOST_LOG_LIBS) \
-		$(EXPAT_LDFLAGS) \
-		parser/libait_csp_parser.la
+            $(ZMQ_LIBS) \
+            $(PROTOCOL_BUFFERS_LIBS) \
+            $(BOOST_LOG_LIBS) \
+            $(EXPAT_LIBS) \
+            parser/libait_csp_parser.la
 
-# 	-lexpat -lboost_log -lboost_log_setup -lboost_thread -lboost_system -lpthread \
-#
-ait_libincludedir = $(libdir)/ait/include
 EXTRA_DIST = \
 	abt.proto
 

@@ -21,12 +21,12 @@
 
 SUBDIRS = parser .
 AUTOMAKE_OPTIONS = subdir-objects
-AM_CPPFLAGS = -pipe
-AM_CXXFLAGS = \
-			$(ZMQ_CFLAGS) \
-			$(BOOST_CPPFLAGS) \
-			$(PROTOCOL_BUFFERS_CFLAGS) \
-			$(EXPAT_CFLAGS)
+AM_CXXFLAGS = -pipe -pedantic
+AM_CPPFLAGS = \
+	$(ZMQ_CFLAGS) \
+	$(PROTOCOL_BUFFERS_CFLAGS) \
+	$(BOOST_LOG_CFLAGS) \
+	$(EXPAT_CFLAGS)
 ACLOCAL_AMFLAGS = ${ACLOCAL_FLAGS} -I m4
 lib_LTLIBRARIES = libait_csp.la
 libait_csp_la_LDFLAGS = -version-info $(AIT_CSP_SO_VERSION)
@@ -69,13 +69,10 @@ ait_include_HEADERS =  \
 			abt.pb.h \
 			common-protocols.pb.h
 libait_csp_la_LIBADD = \
-		$(ZMQ_LIBS) \
-        $(PROTOCOL_BUFFERS_LIBS) \
-        $(BOOST_LOG_LIBS) \
-		$(EXPAT_LDFLAGS) \
-		parser/libait_csp_parser.la
-# 	-lexpat -lboost_log -lboost_log_setup -lboost_thread -lboost_system -lpthread \
-#
-ait_libincludedir = $(libdir)/ait/include
+            $(ZMQ_LIBS) \
+            $(PROTOCOL_BUFFERS_LIBS) \
+            $(BOOST_LOG_LIBS) \
+            $(EXPAT_LIBS) \
+            parser/libait_csp_parser.la
 EXTRA_DIST = \
 	abt.proto
